@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.RestApi", "CustomPortalV2.RestApi\CustomPortalV2.RestApi.csproj", "{19C8A23E-7CAC-4586-A7A7-1F347069D375}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Model", "CustomPortalV2.Model\CustomPortalV2.Model.csproj", "{363352C1-93C2-453F-B7B2-EB435AFA24F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FF09544-6270-44E0-8ECE-607AE9918B71}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC07CC4B-3F3E-4F0C-B003-3DA67F2841E2}
+	EndGlobalSection
+EndGlobal
