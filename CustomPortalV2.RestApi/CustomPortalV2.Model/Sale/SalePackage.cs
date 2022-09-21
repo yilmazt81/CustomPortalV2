@@ -13,5 +13,6 @@ namespace CustomPortalV2.Model.Sale
         public string TimePeriod { get; set; }
         public string Price { get; set; }
 
+        public bool Active { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace CustomPortalV2.Model.Sale
         public int SalePackageId { get; set; }
         public int SaleProductId { get; set; }
         public bool AllowUse { get; set; } 
-        public string LimitCount { get; set; }
+        public int LimitCount { get; set; }
         public string CustomeText { get; set; }
     }
 }

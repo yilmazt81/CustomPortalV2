@@ -15,6 +15,7 @@ namespace CustomPortalV2.DBLayer
         }
 
         public DbSet<SalePackage> SalePackages { get; set; }
+        public DbSet<SalePackageItem> SalePackagesItems { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +23,12 @@ namespace CustomPortalV2.DBLayer
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
             modelBuilder.Entity<SalePackage>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackage>().Property(k => k.Id).HasColumnName("Id");
+
+
+            modelBuilder.Entity<SalePackageItem>().ToTable("SalePackageItem");
+            modelBuilder.Entity<SalePackageItem>().HasKey(k => k.Id);
+            modelBuilder.Entity<SalePackageItem>().Property(k => k.Id).HasColumnName("Id");
+
 
 
             modelBuilder.UseIdentityColumns();

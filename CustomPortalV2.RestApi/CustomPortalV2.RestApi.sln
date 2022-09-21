@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Service", "CustomPortalV2.Service\CustomPortalV2.Service.csproj", "{04561412-1294-48E2-85E5-FE94BEB2A179}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.DBLayer", "CustomPortalV2.DBLayer\CustomPortalV2.DBLayer.csproj", "{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04561412-1294-48E2-85E5-FE94BEB2A179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04561412-1294-48E2-85E5-FE94BEB2A179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04561412-1294-48E2-85E5-FE94BEB2A179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04561412-1294-48E2-85E5-FE94BEB2A179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

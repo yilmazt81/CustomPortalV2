@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using CustomPortalV2.DBLayer;
+using CustomPortalV2.Service;
 
 namespace CustomPortalV2.RestApi
 {
@@ -34,8 +35,12 @@ namespace CustomPortalV2.RestApi
         {
             services.AddCors();
             services.AddDbContext<DBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SBConnection"))); 
-          
+            options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+
+            services.AddScoped<ISalePackageService, SalePackageService>();
+
+
+
         }
 
 
