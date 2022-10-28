@@ -41,10 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\AppMenu.cs" />
+    <Compile Include="App\Param.cs" />
+    <Compile Include="App\User.cs" />
+    <Compile Include="App\UserSession.cs" />
+    <Compile Include="Company\Company.cs" />
+    <Compile Include="Custom\CustomWork.cs" />
+    <Compile Include="Custom\CustomWorkDocument.cs" />
     <Compile Include="ReturnType.cs" />
     <Compile Include="Sale\SalePackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sale\SalePackageItem.cs" />
+    <Compile Include="Work\WorkFlow.cs" />
+    <Compile Include="Work\WorkFlowStep.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -39,6 +39,7 @@ namespace CustomPortalV2.RestApi
 
             services.AddScoped<ISalePackageService, SalePackageService>();
 
+            services.AddScoped<ICompanyService, CompanyService>();
 
 
         }
