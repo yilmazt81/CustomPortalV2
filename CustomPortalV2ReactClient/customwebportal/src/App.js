@@ -8,6 +8,7 @@ const loading = (
   </div>
 )
 
+
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
