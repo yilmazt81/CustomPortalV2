@@ -26,18 +26,6 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
-        }
-
-        // PUT api/<CompanyController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CompanyController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        }        
     }
 }
