@@ -6,4 +6,18 @@ export const TRANSLATIONS_RU = {
     Forgotpassword :"Забыл пароль ?",
     Signup : "Подписаться",
     RegisterNow:"зарегистрируйтесь сейчас",
+    Createyouraccount:"Создать учетную запись",
+    Register: "регистр",
+    CompanyName:"Название компании",
+    Email:"Эл. адрес",
+    PhoneNumber:"Номер телефона",
+    TaxNumber:"Налоговый номер",
+    AuthorizedPersonName:"Имя уполномоченного лица",
+    city:"город",
+    Country:"Страна",
+    Adress:"Адрес",
+    MersisNo:"Mersis No (Для турецкого)",    
+    Repeatpassword:"Повторите пароль",    
+    CreateAccount :"Зарегистрироваться",
+
 };

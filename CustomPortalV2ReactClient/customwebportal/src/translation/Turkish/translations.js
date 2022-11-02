@@ -7,4 +7,19 @@ export const TRANSLATIONS_TR = {
     Signup : "Yeni Kayıt",
     newRegisterText : "Sistemimizi kullanmak istiyorsanız kayıt yaptırmanız gerekmektedir.",
     RegisterNow:" Kayıt ol",
+    Createyouraccount:"Hesap Oluştur",
+    Register: "Hesap",
+    CompanyName:"Firma Adı",
+    Email:"Email",
+    PhoneNumber: "Telefon No",
+    TaxNumber:"Vergi No",
+    AuthorizedPersonName:"Yetkili Kişi Adı",
+    city:"Şehir",
+    Country:"Ülke",
+    Adress:"Adress",    
+    MersisNo:"Mersis No",    
+    Repeatpassword:"Yeni Şifre Tekrar",    
+    CreateAccount :"Hesap Oluştur",
+
+
 };

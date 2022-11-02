@@ -7,6 +7,18 @@ export const TRANSLATIONS_EN = {
     Signup : "Sign up",    
     newRegisterText : "You must to register for use system.",
     RegisterNow:"Register Now",
-
+    Createyouraccount:"Create your account",
+    Register: "Register",
+    CompanyName:"Company Name",
+    Email:"Email",
+    PhoneNumber:"Phone Number",
+    TaxNumber:"TaxNumber",
+    AuthorizedPersonName:"AuthorizedPersonName",
+    city:"city",
+    Country:"Country",
+    Adress:"Adress",    
+    MersisNo:"MersisNo",
+    Repeatpassword:"Repeat password",
+    CreateAccount :"Create Account",
 
 };
