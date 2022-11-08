@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import "../../../../src/translation/i18";
@@ -18,11 +18,46 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import SimpleReactValidator from 'simple-react-validator';
+//import {authService}  from '../../../lib/auth-service';
+//import {LoginReturn, LoginRequest} from '../../../lib/model/auth/login'
+
 
 const Login = () => {
   const { t } = useTranslation();
+  const [userInfo] = useState({UserName:"",password:""}); 
 
-  return (
+  const validator = new SimpleReactValidator();
+
+  const handleSubmit = () =>{
+     /* fetch("http://localhost:44395/api/Login",
+      {method:"GET",mode:"no-cors",credentials:"same-origin",
+      headers:{'Content-Type': 'application/json','Accept': 'application/json'} })   
+    .then((data) => console.log(data));
+    */
+    fetch("http://localhost:44395/api/Login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userName: "test", password: "password" }),
+    });
+    /*
+    authService
+    .login(userInfo)
+    .then((response) => console.log(response))
+    .catch((error) => console.log(error) );
+    */
+    /*
+     UserApi.GetUser().then((t=>{
+      debugger;
+      console.log(t);
+     }));*/
+  
+
+     
+ }
+ 
+  return ( 
+
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
@@ -37,7 +72,9 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder={t("Username")} autoComplete="username" />
+                      <CFormInput placeholder={t("Username")}
+                        autoComplete="username"                     
+                        onChange={e =>   userInfo.UserName= e.target.value   } />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -45,14 +82,17 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder= {t("Password")}
+                        placeholder={t("Password")} 
+
                         autoComplete="current-password"
+                        onChange={e => userInfo.password=e.target.value } 
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
-                        {t("login")}
+                        <CButton color="primary" className="px-4" 
+                          onClick={handleSubmit} >
+                          {t("login")}
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
@@ -69,13 +109,16 @@ const Login = () => {
                   <div>
                     <h2>{t("Signup")}</h2>
                     <p>
-                    {t("newRegisterText")}
+                      {t("newRegisterText")}
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                      {t("RegisterNow")}
+                    
+                      <CButton color="primary" className="mt-3" 
+                          tabIndex={-1}
+                          type="submit"                       
+                        >
+                        {t("RegisterNow")}                        
                       </CButton>
-                    </Link>
+                    
                   </div>
                 </CCardBody>
               </CCard>
