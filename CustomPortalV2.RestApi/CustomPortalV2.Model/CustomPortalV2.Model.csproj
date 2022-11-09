@@ -48,6 +48,8 @@
     <Compile Include="Company\Company.cs" />
     <Compile Include="Custom\CustomWork.cs" />
     <Compile Include="Custom\CustomWorkDocument.cs" />
+    <Compile Include="DTO\LoginRequest.cs" />
+    <Compile Include="DTO\LoginReturn.cs" />
     <Compile Include="ReturnType.cs" />
     <Compile Include="Sale\SalePackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

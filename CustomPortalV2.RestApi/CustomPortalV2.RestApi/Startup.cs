@@ -34,12 +34,21 @@ namespace CustomPortalV2.RestApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            /* services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+             {
+                 builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+             }));*/
+
             services.AddDbContext<DBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
             services.AddScoped<ISalePackageService, SalePackageService>();
 
             services.AddScoped<ICompanyService, CompanyService>();
+
+            services.AddScoped<IUserService, UserService>();
 
 
         }
@@ -49,6 +58,7 @@ namespace CustomPortalV2.RestApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyOrigin());
             
         }
     }
