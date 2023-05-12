@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomPortalV2.Service
+namespace CustomPortalV2.Business
 {
     public interface IUserService
     {

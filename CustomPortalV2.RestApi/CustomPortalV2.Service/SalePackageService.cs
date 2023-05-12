@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CustomPortalV2.DBLayer;
+using CustomPortalV2.DataAccessLayer;
 using CustomPortalV2.Model.Sale;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomPortalV2.Service
+namespace CustomPortalV2.Business
 {
     public class SalePackageService : ISalePackageService
     {

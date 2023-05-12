@@ -1,7 +1,7 @@
-﻿using CustomPortalV2.DBLayer;
+﻿using CustomPortalV2.DataAccessLayer;
 using CustomPortalV2.Model.Company;
  
-namespace CustomPortalV2.Service
+namespace CustomPortalV2.Business
 {
     public class CompanyService : ICompanyService
     {

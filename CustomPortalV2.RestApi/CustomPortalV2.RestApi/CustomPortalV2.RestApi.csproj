@@ -12,15 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomPortalV2.DBLayer\CustomPortalV2.DBLayer.csproj" />
-    <ProjectReference Include="..\CustomPortalV2.Model\CustomPortalV2.Model.csproj" />
-    <ProjectReference Include="..\CustomPortalV2.Service\CustomPortalV2.Service.csproj" />
+    <ProjectReference Include="..\CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj" />
+    <ProjectReference Include="..\CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\CustomPortalV2.Service\CustomPortalV2.Business.csproj" />
   </ItemGroup>
 
 </Project>

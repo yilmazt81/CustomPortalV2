@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using CustomPortalV2.Model.Work;
 using CustomPortalV2.Model.Custom;
 using CustomPortalV2.Model.App;
+using CustomPortalV2.Core.Model.Lang;
 
-namespace CustomPortalV2.DBLayer
+namespace CustomPortalV2.DataAccessLayer
 {
     public class DBContext : DbContext
     {
@@ -33,6 +34,7 @@ namespace CustomPortalV2.DBLayer
 
         public DbSet<UserSession> UserSessions { get; set; }
 
+        public DbSet<AppLang> AppLangs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -82,7 +84,12 @@ namespace CustomPortalV2.DBLayer
             modelBuilder.Entity<UserSession>().HasKey(k => k.Id);
             modelBuilder.Entity<UserSession>().Property(k => k.Id).HasColumnName("Id");
 
-            modelBuilder.UseIdentityColumns();
+            modelBuilder.Entity<AppLang>().ToTable("AppLang");
+            modelBuilder.Entity<AppLang>().HasKey(k => k.Id);
+            modelBuilder.Entity<AppLang>().Property(k => k.Id).HasColumnName("Id");
+
+
+            //  modelBuilder.UseIdentityColumns();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

@@ -1,7 +1,8 @@
 ﻿using CustomPortalV2.Model;
 using CustomPortalV2.Model.DTO;
-using CustomPortalV2.Service;
+using CustomPortalV2.Business;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,10 +23,14 @@ namespace CustomPortalV2.RestApi.Controllers
 
         // GET: api/<LoginController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            
-            return new string[] { "value1", "value2" };
+
+            return Ok(new LoginReturn()
+            {
+                IsLogin = true,
+                token = Guid.NewGuid().ToString()
+            });
         }
 
         // GET api/<LoginController>/5
@@ -54,8 +59,8 @@ namespace CustomPortalV2.RestApi.Controllers
 
         }
 
-   
 
-         
+
+
     }
 }

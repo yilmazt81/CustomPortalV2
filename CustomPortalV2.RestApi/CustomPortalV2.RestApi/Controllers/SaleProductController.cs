@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CustomPortalV2.Model;
 using CustomPortalV2.Model.Sale;
-using CustomPortalV2.Service;
+using CustomPortalV2.Business;
 
 namespace CustomPortalV2.RestApi.Controllers
 {

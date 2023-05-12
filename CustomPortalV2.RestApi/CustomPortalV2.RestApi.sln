@@ -3,18 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.RestApi", "CustomPortalV2.RestApi\CustomPortalV2.RestApi.csproj", "{19C8A23E-7CAC-4586-A7A7-1F347069D375}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Model", "CustomPortalV2.Model\CustomPortalV2.Model.csproj", "{363352C1-93C2-453F-B7B2-EB435AFA24F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.RestApi", "CustomPortalV2.RestApi\CustomPortalV2.RestApi.csproj", "{19C8A23E-7CAC-4586-A7A7-1F347069D375}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FF09544-6270-44E0-8ECE-607AE9918B71}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Service", "CustomPortalV2.Service\CustomPortalV2.Service.csproj", "{04561412-1294-48E2-85E5-FE94BEB2A179}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.Business", "CustomPortalV2.Service\CustomPortalV2.Business.csproj", "{04561412-1294-48E2-85E5-FE94BEB2A179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.DBLayer", "CustomPortalV2.DBLayer\CustomPortalV2.DBLayer.csproj", "{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.DataAccessLayer", "CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj", "{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Core.Model", "CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj", "{17ADCDA2-D63C-46F1-858A-02B272B84351}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +26,6 @@ Global
 		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19C8A23E-7CAC-4586-A7A7-1F347069D375}.Release|Any CPU.Build.0 = Release|Any CPU
-		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{363352C1-93C2-453F-B7B2-EB435AFA24F8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04561412-1294-48E2-85E5-FE94BEB2A179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04561412-1294-48E2-85E5-FE94BEB2A179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04561412-1294-48E2-85E5-FE94BEB2A179}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,6 +34,10 @@ Global
 		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

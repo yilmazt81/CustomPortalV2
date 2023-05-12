@@ -1,4 +1,6 @@
 using CustomPortalV2.RestApi;
+using CustomPortalV2.DataAccessLayer;
+using CustomPortalV2.Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(
+                options => options.WithOrigins("http://localhost:3000", 
+                "http://127.0.0.1:3000", 
+                "http://localhost", 
+                "http://127.0.0.1").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
+            );
 
 app.UseHttpsRedirection();
 
