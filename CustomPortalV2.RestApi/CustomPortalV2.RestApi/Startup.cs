@@ -55,13 +55,13 @@ namespace CustomPortalV2.RestApi
                 options => options.UseMySql(Configuration.GetConnectionString("DBConnection"), ServerVersion.Parse("5.7.27", ServerType.MySql), null));
 
             services.AddScoped<ISalePackageService, SalePackageService>();
-
-            services.AddScoped<ICompanyService, CompanyService>();
-
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAppLangRepository, AppLangRepository>();
             services.AddScoped<IAppLangService, AppLangService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IUserService, UserService>();
 
+            services.AddScoped<ICompanyRepository, CompanyRepository>();          
+            services.AddScoped<IAppLangRepository, AppLangRepository>();
+           
 
 
 

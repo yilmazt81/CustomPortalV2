@@ -4,6 +4,7 @@ using CustomPortalV2.Model.Work;
 using CustomPortalV2.Model.Custom;
 using CustomPortalV2.Model.App;
 using CustomPortalV2.Core.Model.Lang;
+using CustomPortalV2.Model.Company;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -35,6 +36,8 @@ namespace CustomPortalV2.DataAccessLayer
         public DbSet<UserSession> UserSessions { get; set; }
 
         public DbSet<AppLang> AppLangs { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -88,6 +91,9 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<AppLang>().HasKey(k => k.Id);
             modelBuilder.Entity<AppLang>().Property(k => k.Id).HasColumnName("Id");
 
+            modelBuilder.Entity<Company>().ToTable("MainCompany");
+            modelBuilder.Entity<Company>().HasKey(k => k.Id);
+            modelBuilder.Entity<Company>().Property(k => k.Id).HasColumnName("Id");
 
             //  modelBuilder.UseIdentityColumns();
         }

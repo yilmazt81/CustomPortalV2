@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Model.Company;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,6 +11,12 @@ namespace CustomPortalV2.RestApi.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
+        ICompanyService companyService;
+        public CompanyController(ICompanyService companyService)
+        {
+            this.companyService = companyService;
+        }
+
         // GET: api/<CompanyController>
         [HttpGet]
         public IActionResult Get()
@@ -27,8 +35,13 @@ namespace CustomPortalV2.RestApi.Controllers
 
         // POST api/<CompanyController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Company company)
         {
-        }        
+
+            var returnV = companyService.AddCompany(company);
+
+            return Ok(returnV);
+
+        }
     }
 }

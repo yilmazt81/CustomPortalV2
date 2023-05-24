@@ -29,5 +29,6 @@ namespace CustomPortalV2.Model.Company
 
         public string MersisNo { get; set; }
 
+
     }
 }
