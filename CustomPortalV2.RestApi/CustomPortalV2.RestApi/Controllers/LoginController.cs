@@ -91,6 +91,7 @@ namespace CustomPortalV2.RestApi.Controllers
                     if (user != null)
                     {
                         returnType.token = generateJwtToken(user);
+                        returnType.UserId= user.Id;
                     }
                 }
                 else

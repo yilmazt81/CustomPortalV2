@@ -18,19 +18,20 @@ namespace CustomPortalV2.Business.Service
     {
         IUserRepository _userRepository;
         ICompanyRepository _companyRepository;
-        IParamService _paramservice;
+        IParamRepository _paramrepository;
         ILoginrequestLogRepository _loginRequestLogRepository;
         Encryption encryption;
         public UserService(IUserRepository userRepository,
             ICompanyRepository companyRepository,
-            IParamService paramService,
+            IParamRepository paramRepository,
             ILoginrequestLogRepository loginrequestLogRepository)
         {
             _userRepository = userRepository;
-            encryption = new Encryption("userpwd859");
             _companyRepository = companyRepository;
-            _paramservice = paramService;
+            _paramrepository = paramRepository;
             _loginRequestLogRepository = loginrequestLogRepository;
+
+            encryption = new Encryption("userpwd859");
         }
         public User AddUser(User user)
         {
@@ -83,8 +84,8 @@ namespace CustomPortalV2.Business.Service
                     return enumLoginReturn.CompanyDisabled;
                 }
 
-                var minTimeCount = _paramservice.GetParam("FailTimeOutMinute");
-                var failTimeCount = _paramservice.GetParam("LoginFailMaxCount");
+                var minTimeCount = _paramrepository.GetParam("FailTimeOutMinute");
+                var failTimeCount = _paramrepository.GetParam("LoginFailMaxCount");
 
                 var minTimeValue = int.Parse(minTimeCount.Value) * -1;
                 var minDate = DateTime.Now.AddMinutes(minTimeValue);
