@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import "../../../../src/translation/i18";
@@ -18,7 +18,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import SimpleReactValidator from 'simple-react-validator';
+//import SimpleReactValidator from 'simple-react-validator';
 //import {authService}  from '../../../lib/auth-service';
 import {LoginUser} from '../../../lib/userapi';
 
@@ -27,7 +27,7 @@ const Login = () => {
   const { t } = useTranslation();
   const [userInfo] = useState({ UserName: "", password: "" });
 
-  const validator = new SimpleReactValidator();
+ // const validator = new SimpleReactValidator();
 
 
   const handleSubmit = () => {
@@ -100,14 +100,14 @@ const Login = () => {
                     <p>
                       {t("newRegisterText")}
                     </p>
-
+                    <Link to="/register">
                     <CButton color="primary" className="mt-3"
                       tabIndex={-1}
                       type="submit"
                     >
                       {t("RegisterNow")}
                     </CButton>
-
+                    </Link>
                   </div>
                 </CCardBody>
               </CCard>

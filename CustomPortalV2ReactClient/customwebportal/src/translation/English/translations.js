@@ -20,5 +20,6 @@ export const TRANSLATIONS_EN = {
     MersisNo:"MersisNo",
     Repeatpassword:"Repeat password",
     CreateAccount :"Create Account",
+    CompanyInfo:"Company Info",
 
 };

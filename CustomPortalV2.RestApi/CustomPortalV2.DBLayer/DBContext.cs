@@ -5,6 +5,7 @@ using CustomPortalV2.Model.Custom;
 using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
 using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Company;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -41,6 +42,10 @@ namespace CustomPortalV2.DataAccessLayer
 
         public DbSet<LoginRequestLog> LoginRequestLogs { get; set; }
 
+
+        public DbSet<Country> Countrys { get; set; }
+
+        public DbSet<CountryCity> CountryCitys { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -100,6 +105,16 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<LoginRequestLog>().ToTable("LoginrequestLog");
             modelBuilder.Entity<LoginRequestLog>().HasKey(k => k.Id);
             modelBuilder.Entity<LoginRequestLog>().Property(k => k.Id).HasColumnName("Id");
+
+
+            modelBuilder.Entity<Country>().ToTable("Country");
+            modelBuilder.Entity<Country>().HasKey(k => k.Id);
+            modelBuilder.Entity<Country>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<CountryCity>().ToTable("CountryCity");
+            modelBuilder.Entity<CountryCity>().HasKey(k => k.Id);
+            modelBuilder.Entity<CountryCity>().Property(k => k.Id).HasColumnName("Id");
+
 
             //  modelBuilder.UseIdentityColumns();
         }

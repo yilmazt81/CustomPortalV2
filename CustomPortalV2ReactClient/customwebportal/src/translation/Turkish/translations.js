@@ -20,6 +20,7 @@ export const TRANSLATIONS_TR = {
     MersisNo:"Mersis No",    
     Repeatpassword:"Yeni Şifre Tekrar",    
     CreateAccount :"Hesap Oluştur",
+    CompanyInfo:"Firma Bilgileri",
 
 
 };

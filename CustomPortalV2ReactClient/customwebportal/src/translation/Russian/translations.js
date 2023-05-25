@@ -19,5 +19,6 @@ export const TRANSLATIONS_RU = {
     MersisNo:"Mersis No (Для турецкого)",    
     Repeatpassword:"Повторите пароль",    
     CreateAccount :"Зарегистрироваться",
+    CompanyInfo:"информация о компании",
 
 };
