@@ -2,7 +2,18 @@
 using CustomPortalV2.Model.DTO;
 using CustomPortalV2.Business;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq; 
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Core.Model.App;
+
+using User = CustomPortalV2.Core.Model.App.User;
+using CustomPortalV2.Core.Model.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,15 +23,38 @@ namespace CustomPortalV2.RestApi.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-
+        private readonly IConfiguration Configuration;
         private IUserService _userservice;
         // private ILogger _logger;
         public LoginController(
-            IUserService userService)
+            IUserService userService,
+            IConfiguration configuration)
         {
             _userservice = userService;
+            Configuration = configuration;
         }
+        private string generateJwtToken(User user)
+        {
+            var secretKey = Configuration.GetSection("Secret");
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey.Value);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                         {
+                              new Claim(ClaimTypes.Name,user.FullName.ToString()),
+                              new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
+                              new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
 
+                         }
+                         ),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
         // GET: api/<LoginController>
         [HttpGet]
         public IActionResult Get()
@@ -42,24 +76,36 @@ namespace CustomPortalV2.RestApi.Controllers
 
         // POST api/<LoginController>
         [HttpPost]
-        public ReturnType<LoginReturn> Post(LoginRequest loginRequest)
+        [AllowAnonymous]
+        public IActionResult Post([FromBody] LoginRequest loginRequest)
         {
-            ReturnType<LoginReturn> returnType = new ReturnType<LoginReturn>();
+            LoginReturn returnType = new LoginReturn();
 
             try
             {
-
+                var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+                User? user=null;
+                var loginReturn = _userservice.Login(remoteIpAddress.ToString(), loginRequest.CompanyCode, loginRequest.UserName, loginRequest.password, ref user);
+                if (loginReturn == Business.Helper.Enums.enumLoginReturn.Success)
+                {
+                    if (user != null)
+                    {
+                        returnType.token = generateJwtToken(user);
+                    }
+                }
+                else
+                {
+                    returnType.ReturnMessage = loginReturn.ToString();
+                }
 
             }
             catch (Exception ex)
             {
-                returnType.SetException(ex);
+                returnType.ReturnMessage = ex.Message;
             }
-            return returnType;
+            return Ok(returnType);
 
         }
-
-
 
 
     }

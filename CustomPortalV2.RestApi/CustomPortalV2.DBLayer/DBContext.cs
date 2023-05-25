@@ -1,10 +1,10 @@
 ﻿using CustomPortalV2.Model.Sale;
 using Microsoft.EntityFrameworkCore;
 using CustomPortalV2.Model.Work;
-using CustomPortalV2.Model.Custom;
-using CustomPortalV2.Model.App;
+using CustomPortalV2.Model.Custom; 
 using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
+using CustomPortalV2.Core.Model.App;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -38,6 +38,8 @@ namespace CustomPortalV2.DataAccessLayer
         public DbSet<AppLang> AppLangs { get; set; }
 
         public DbSet<Company> Companies { get; set; }
+
+        public DbSet<LoginRequestLog> LoginRequestLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +96,10 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<Company>().ToTable("MainCompany");
             modelBuilder.Entity<Company>().HasKey(k => k.Id);
             modelBuilder.Entity<Company>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<LoginRequestLog>().ToTable("LoginrequestLog");
+            modelBuilder.Entity<LoginRequestLog>().HasKey(k => k.Id);
+            modelBuilder.Entity<LoginRequestLog>().Property(k => k.Id).HasColumnName("Id");
 
             //  modelBuilder.UseIdentityColumns();
         }

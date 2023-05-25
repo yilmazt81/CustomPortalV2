@@ -61,7 +61,13 @@ namespace CustomPortalV2.RestApi
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();          
             services.AddScoped<IAppLangRepository, AppLangRepository>();
-           
+
+            services.AddScoped<IParamService, ParamService>();
+
+            services.AddScoped<IParamRepository, ParamRepository>();
+            services.AddScoped<ILoginrequestLogRepository, LoginrequestLogRepository>();
+
+            
 
 
 

@@ -9,7 +9,7 @@ namespace CustomPortalV2.Business.Concrete
 {
     public interface ICompanyService
     {
-
+        Company? GetCompanyCode(string companycode);
         Company AddCompany(Company company);    
     }
 }

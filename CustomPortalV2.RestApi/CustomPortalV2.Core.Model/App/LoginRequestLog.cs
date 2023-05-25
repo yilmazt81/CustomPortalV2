@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.App
 {
-    public class UserSession
+    public class LoginRequestLog
     {
+
         public int Id { get; set; }
+        public string UserName { get; set; }
+
+        public DateTime LogDate { get; set; }
+
+        public string ClientIp { get; set; }
+
+        public bool Success { get; set; }
+
         public int AppUserId { get; set; }
-        public Guid Token { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
 
     }
 }

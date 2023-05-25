@@ -23,5 +23,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return company;
         }
+
+        public Company? GetCompanyCode(string companycode)
+        {
+            return _dbContext.Companies.FirstOrDefault(s => s.CompanyCode == companycode);
+
+        }
     }
 }

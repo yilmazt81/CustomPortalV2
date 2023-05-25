@@ -40,5 +40,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<JwtMiddleware>();
 
 app.Run();

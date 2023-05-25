@@ -9,8 +9,10 @@ namespace CustomPortalV2.Model.DTO
     public class LoginRequest
     {
 
+        public string CompanyCode { get; set; }
         public string UserName { get; set; }
         public string password { get; set; }
 
+        public int UserLanguage { get; set; }
     }
 }

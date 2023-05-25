@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomPortalV2.Model.App
+namespace CustomPortalV2.Core.Model.App
 {
     public class Param
     {

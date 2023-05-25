@@ -25,5 +25,11 @@ namespace CustomPortalV2.Business.Service
 
             return comp;
         }
+
+        public Company? GetCompanyCode(string companycode)
+        {
+            return _companyRepository.GetCompanyCode(companycode);
+
+        }
     }
 }

@@ -30,5 +30,11 @@ namespace CustomPortalV2.Model.Company
         public string MersisNo { get; set; }
 
 
+        public string CompanyCode { get; set; }
+
+        public bool Enable { get; set; }
+
+
+
     }
 }

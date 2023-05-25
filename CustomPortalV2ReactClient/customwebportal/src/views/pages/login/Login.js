@@ -20,7 +20,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import SimpleReactValidator from 'simple-react-validator';
 //import {authService}  from '../../../lib/auth-service';
-//import {LoginReturn, LoginRequest} from '../../../lib/model/auth/login'
+import {LoginUser} from '../../../lib/userapi';
 
 
 const Login = () => {
@@ -32,69 +32,19 @@ const Login = () => {
 
   const handleSubmit = () => {
 
-    getComp()
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log("Hata : " + err.toString());
-      });
-    /*fetch("https://localhost:7232/api/Login",
-     {
-     method:"GET",
-     headers:{'Content-Type': 'application/json','Accept': 'application/json'} })   
-     .then((data) => console.log(data));
-     */
-    /*fetch("https://localhost:7232/api/Login")
-      //.then(res => res.json())
-      .then(
-        (result) => {
-
-          console.log(result);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-
-          console.log(error);
-        }
-      )*/
-    /*
-    fetch("https://localhost:7232/api/Login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userName: "test", password: "password" }),
-    });
-    */
-    /*
+   /*
     authService
     .login(userInfo)
     .then((response) => console.log(response))
     .catch((error) => console.log(error) );
+     
     */
-    /*
-     UserApi.GetUser().then((t=>{
-      debugger;
-      console.log(t);
-     }));*/
-
-
+    LoginUser(userInfo);
+    //UserApi.GetAll();
 
   }
 
-  function getComp() {
-    console.log("Istem Basladi");
-    var requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json"},
-      redirect: "follow",
-    };
-    return fetch("https://localhost:7232/api/login", requestOptions);
-  }
+ 
 
   return (
 
@@ -123,7 +73,6 @@ const Login = () => {
                       <CFormInput
                         type="password"
                         placeholder={t("Password")}
-
                         autoComplete="current-password"
                         onChange={e => userInfo.password = e.target.value}
                       />
