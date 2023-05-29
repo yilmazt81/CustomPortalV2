@@ -26,5 +26,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         {
             return _dbContext.CountryCitys.Where(s => s.CountryId == countryId).ToList();
         }
+
+        public IList<Country> GetCountrysForSaleProduct()
+        {
+
+            return _dbContext.Countrys.Where(s => s.ForSaleProduct.HasValue && s.ForSaleProduct.Value).OrderBy(s => s.OrderNumber).ToList();
+        }
     }
 }

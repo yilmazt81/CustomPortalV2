@@ -59,6 +59,7 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICountryService, CountryService>();
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();          
             services.AddScoped<IAppLangRepository, AppLangRepository>();
@@ -68,8 +69,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICountryRepository, CountryRepository>();
-            services.AddScoped<ICountryService, CountryService>();
 
+            services.AddMemoryCache();
 
         }
 

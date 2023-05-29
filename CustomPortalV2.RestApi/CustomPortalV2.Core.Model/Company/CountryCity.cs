@@ -13,7 +13,7 @@ namespace CustomPortalV2.Core.Model.Company
         public string Name { get; set; }
 
         public int CountryId { get; set; }
-        public string IsoCode { get; set; }
+       // public string IsoCode { get; set; }
 
     }
 }

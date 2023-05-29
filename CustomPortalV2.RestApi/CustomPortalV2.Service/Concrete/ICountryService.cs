@@ -12,6 +12,8 @@ namespace CustomPortalV2.Business.Concrete
 
         IList<Country> GetCountries();
 
+        IList<Country> GetCountrysForSaleProduct();
+
         IList<CountryCity> GetCountryCities(int countryId);
     }
 }

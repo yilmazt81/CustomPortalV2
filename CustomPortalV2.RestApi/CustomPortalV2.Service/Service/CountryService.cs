@@ -1,5 +1,6 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,26 @@ namespace CustomPortalV2.Business.Service
 {
     public class CountryService: ICountryService
     {
-        ICountryService _countryService;
-        public CountryService(ICountryService countryService)
+        ICountryRepository _countryRepository;
+        public CountryService(ICountryRepository countryRepository)
         {
-            _countryService=countryService;
+            _countryRepository = countryRepository;
         }
 
         public IList<Country> GetCountries()
         {
-             return _countryService.GetCountries();
+             return _countryRepository.GetCountrys();
         }
 
         public IList<CountryCity> GetCountryCities(int countryId)
         {
-           return _countryService.GetCountryCities(countryId);
+           return _countryRepository.GetCountryCities(countryId);
+        }
+
+        public IList<Country> GetCountrysForSaleProduct()
+        {
+            
+            return _countryRepository.GetCountrysForSaleProduct();
         }
     }
 }

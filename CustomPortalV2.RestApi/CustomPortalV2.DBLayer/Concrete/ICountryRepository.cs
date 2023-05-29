@@ -11,6 +11,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
     public interface ICountryRepository
     {
         IList<Country> GetCountrys();
+        IList<Country> GetCountrysForSaleProduct();
+
         IList<CountryCity> GetCountryCities(int countryId);
 
     }

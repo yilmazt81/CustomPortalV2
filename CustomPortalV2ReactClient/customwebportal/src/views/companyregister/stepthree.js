@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import {
   CButton,
   CCard,
@@ -21,7 +21,19 @@ import "../../translation/i18";
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser, cilPhone, cilRoom, cilIndustry, cilMap } from '@coreui/icons'
 const StepThreeRegister = () => {
+  const [inputValues, setInputValues] = useState ({
+    Repeatpassword :"" ,
+    password : ''
+
+  });
+
   const { t } = useTranslation();
+  function handleChange(event) {
+    const { name, value } = event.target;
+   
+    setInputValues({ ...inputValues, [name]: value });
+    
+  }
 
   return (
     <CRow className="justify-content-center">
@@ -35,6 +47,7 @@ const StepThreeRegister = () => {
               type="password"
               placeholder={t("password")}
               autoComplete="new-password"
+              onChange={handleChange}
             />
           </CInputGroup>
           <CInputGroup className="mb-4">
@@ -45,6 +58,7 @@ const StepThreeRegister = () => {
               type="password"
               placeholder={t("Repeatpassword")}
               autoComplete="new-password"
+              onChange={handleChange}
             />
           </CInputGroup>
           <div className="d-grid">

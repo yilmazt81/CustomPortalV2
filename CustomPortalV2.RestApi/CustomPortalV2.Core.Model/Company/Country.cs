@@ -16,5 +16,7 @@ namespace CustomPortalV2.Core.Model.Company
         public int OrderNumber { get; set; }
 
         public string IsoCode { get; set; }
+
+        public bool? ForSaleProduct { get; set; }
     }
 }
