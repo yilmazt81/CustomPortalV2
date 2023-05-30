@@ -69,8 +69,25 @@ namespace CustomPortalV2.RestApi.Controllers
 
         public IActionResult GetContryCity(int countryId)
         {
-            var cityList = _countryService.GetCountryCities(countryId);
+            var cacheName = $"CountryCity{countryId}";
 
+
+            if (_cache.TryGetValue(cacheName, out IList<CountryCity> cityList))
+            {
+
+            }
+            else
+            {
+                cityList = _countryService.GetCountryCities(countryId);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+                        .SetPriority(CacheItemPriority.Normal)
+                        .SetSize(1024);
+                _cache.Set(cacheName, cityList, cacheEntryOptions);
+
+            }
+            
             return Ok(cityList);
 
         }
