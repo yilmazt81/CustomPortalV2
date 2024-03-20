@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CustomPortalV2.Core.Model.FormDefination
+namespace CustomPortalV2.Core.Model.FDefination
 {
     public class FormDefination
     {

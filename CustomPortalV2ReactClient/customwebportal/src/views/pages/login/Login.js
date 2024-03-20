@@ -85,7 +85,7 @@ const Login = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                        <CButton color="primary" className="px-0">
                           {t("Forgotpassword")}
                         </CButton>
                       </CCol>
@@ -101,7 +101,7 @@ const Login = () => {
                       {t("newRegisterText")}
                     </p>
                     <Link to="/register">
-                    <CButton color="primary" className="mt-3"
+                    <CButton color="light"  variant="outline" className="mt-3"
                       tabIndex={-1}
                       type="submit"
                     >

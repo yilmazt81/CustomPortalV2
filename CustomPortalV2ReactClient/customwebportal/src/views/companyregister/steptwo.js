@@ -52,6 +52,8 @@ const StepTwoRegister = (props) => {
   const loadData = async () => {
     
     setUsersLoading(true);
+    debugger;
+  console.log( process.env.REACT_APP_APIURL);
 
     var list= await GetCountryForSale();
     setcountrys(list.data);

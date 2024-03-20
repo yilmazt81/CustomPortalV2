@@ -6,6 +6,12 @@ using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.Core.Model.Autocomplete;
+using CustomPortalV2.Core.Model.FormDefination;
+using CustomPortalV2.Core.Model.Definations;
+using CustomPortalV2.Core.Model.Log;
+using CustomPortalV2.Core.Model.Form;
+using CustomPortalV2.Core.Model.FDefination;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -48,6 +54,71 @@ namespace CustomPortalV2.DataAccessLayer
         public DbSet<Country> Countrys { get; set; }
 
         public DbSet<CountryCity> CountryCitys { get; set; }
+
+
+
+        public virtual DbSet<AppMenu> AppMenu { get; set; } 
+        public virtual DbSet<AppUserSession> AppUserSession { get; set; }
+        public virtual DbSet<AutocompleteFieldMap> AutocompleteFieldMap { get; set; }
+        public virtual DbSet<BranchPackage> BranchPackage { get; set; }
+        public virtual DbSet<ComboBoxItem> ComboBoxItem { get; set; } 
+        public virtual DbSet<CompanyDefination> CompanyDefination { get; set; }
+        public virtual DbSet<CopyDocumentLog> CopyDocumentLog { get; set; }
+        
+        public virtual DbSet<CustomeParam> CustomeParam { get; set; }
+        public virtual DbSet<CustomSector> CustomSector { get; set; }
+        public virtual DbSet<DefinationType> DefinationType { get; set; }
+        public virtual DbSet<FormDefination> FormDefination { get; set; }
+        public virtual DbSet<FormDefinationField> FormDefinationField { get; set; }
+        public virtual DbSet<FormGroup> FormGroup { get; set; }
+        public virtual DbSet<FormMetaData> FormMetaData { get; set; }
+        public virtual DbSet<FormMetaDataAttribute> FormMetaDataAttribute { get; set; }
+        public virtual DbSet<FormMetaDataAttributeHistory> FormMetaDataAttributeHistory { get; set; }
+        public virtual DbSet<FormMetaDataCounter> FormMetaDataCounter { get; set; }
+        public virtual DbSet<FormRule> FormRule { get; set; }
+        public virtual DbSet<FormVersion> FormVersion { get; set; } 
+        public virtual DbSet<RuleFormDefination> RuleFormDefination { get; set; }
+        public virtual DbSet<SoftDocumentShare> SoftDocumentShare { get; set; }
+        public virtual DbSet<UserRule> UserRule { get; set; }
+        public virtual DbSet<UserRuleMenu> UserRuleMenu { get; set; }
+        public virtual DbSet<CustomeField> CustomeField { get; set; }
+        public virtual DbSet<CustomeFieldItem> CustomeFieldItem { get; set; }
+        public virtual DbSet<FormMetaDataAttribute_CustomeField> FormMetaDataAttribute_CustomeField { get; set; }
+        public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; }
+        public virtual DbSet<ApplicationParam> ApplicationParam { get; set; }
+        public virtual DbSet<FieldType> FieldType { get; set; }
+        public virtual DbSet<FormAttachmentType> FormAttachmentType { get; set; }
+        public virtual DbSet<FormDefinationAttachment> FormDefinationAttachment { get; set; }
+        public virtual DbSet<SoftImageChangeFormatRule> SoftImageChangeFormatRule { get; set; }
+        public virtual DbSet<AutoComplateOldValue> AutoComplateOldValue { get; set; }
+        public virtual DbSet<vGetFormDefinationTypes> vGetFormDefinationTypes { get; set; }
+        public virtual DbSet<UserCreateSoftDocumentLog> UserCreateSoftDocumentLog { get; set; }
+        public virtual DbSet<CustomeField_VirtualTable> CustomeField_VirtualTable { get; set; }
+        public virtual DbSet<SystemEnums> SystemEnums { get; set; }
+        public virtual DbSet<CustomeField_VirtualTableField> CustomeField_VirtualTableField { get; set; }
+        public virtual DbSet<AutocompleteField> AutocompleteField { get; set; }
+        public virtual DbSet<AutoComplateDefination> AutoComplateDefination { get; set; }
+        public virtual DbSet<CustomeField_VirtualTableCalculateRow> CustomeField_VirtualTableCalculateRow { get; set; }
+        public virtual DbSet<CompanyDefinationDefinationType> CompanyDefinationDefinationType { get; set; }
+        public virtual DbSet<FormAttachmentFontStyle> FormAttachmentFontStyle { get; set; }
+        public virtual DbSet<FormAttachmentField> FormAttachmentField { get; set; }
+        public virtual DbSet<FormAttachmentExcelMap> FormAttachmentExcelMap { get; set; }
+        public virtual DbSet<FormAttachmentExcelMapMultiField> FormAttachmentExcelMapMultiField { get; set; }
+        public virtual DbSet<TranslateDictionary> TranslateDictionary { get; set; }
+        public virtual DbSet<CustomWork> CustomWork { get; set; }
+        public virtual DbSet<CustomWorkDocument> CustomWorkDocument { get; set; }
+        public virtual DbSet<CustomWorkWorkFlow> CustomWorkWorkFlow { get; set; }
+        public virtual DbSet<WorkFlow> WorkFlow { get; set; }
+        public virtual DbSet<WorkFlowStep> WorkFlowStep { get; set; }
+        public virtual DbSet<CustomWorkPermission> CustomWorkPermission { get; set; }
+        public virtual DbSet<CustomWorkWorkFlowDocument> CustomWorkWorkFlowDocument { get; set; }
+        public virtual DbSet<CustomWorkWorkFlowStep> CustomWorkWorkFlowStep { get; set; }
+        public virtual DbSet<AppLang> AppLang { get; set; }
+        public virtual DbSet<ApplicationLanguage> ApplicationLanguage { get; set; }
+        public virtual DbSet<FormVersionPDFFieldMap> FormVersionPDFFieldMap { get; set; }
+        public virtual DbSet<CompanyDefinationSenderTarget> CompanyDefinationSenderTarget { get; set; }
+        public virtual DbSet<CustomProduct> CustomProduct { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");

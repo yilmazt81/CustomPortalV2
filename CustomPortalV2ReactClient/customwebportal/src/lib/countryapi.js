@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function   GetCountryForSale()
 { 
-  var result= await axios.get('https://localhost:7232/api/Country/GetForSaleProduct')
+  var result= await axios.get(process.env.REACT_APP_APIURL+"/api/Country/GetForSaleProduct")
    
   return result;
 
@@ -10,7 +10,7 @@ async function   GetCountryForSale()
 
 async function   GetCountryCity(countryId)
 { 
-  var result= await axios.get('https://localhost:7232/api/Country/GetContryCity?countryId='+countryId)
+  var result= await axios.get(process.env.REACT_APP_APIURL+'/api/Country/GetContryCity?countryId='+countryId)
    
   return result;
 
