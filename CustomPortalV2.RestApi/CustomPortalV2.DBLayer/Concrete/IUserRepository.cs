@@ -9,7 +9,15 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 {
     public interface IUserRepository
     {
-        User GetUserName(string userName, int companyId);
+        User? GetUserName(string userName, int companyId);
+        User? Get(int id);
+
+        User AddUser(User user);
+
+        bool Update(User user);
+
+        IEnumerable<User> GetAll(int mainCompany);
+
 
     }
 }

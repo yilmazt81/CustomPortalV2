@@ -35,7 +35,8 @@ namespace CustomPortalV2.Business.Service
         }
         public User AddUser(User user)
         {
-            throw new NotImplementedException();
+            return _userRepository.AddUser(user);
+
         }
 
         public bool DeleteUser(User user)
@@ -129,7 +130,7 @@ namespace CustomPortalV2.Business.Service
 
         public bool UpdateUser(User user)
         {
-            throw new NotImplementedException();
+           return _userRepository.Update(user);
         }
 
 

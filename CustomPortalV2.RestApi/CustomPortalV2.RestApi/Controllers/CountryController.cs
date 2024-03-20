@@ -28,9 +28,7 @@ namespace CustomPortalV2.RestApi.Controllers
             if (_cache.TryGetValue("ListCountry", out IList<Country> countryList))
             {
 
-            }
-            else
-            {
+
                 countryList = _countryService.GetCountries();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                         .SetSlidingExpiration(TimeSpan.FromSeconds(60))
@@ -47,12 +45,9 @@ namespace CustomPortalV2.RestApi.Controllers
         public IActionResult GetForSale()
         {
 
-            if (_cache.TryGetValue("ListCountrySale", out IList<Country> countryList))
+            if (!_cache.TryGetValue("ListCountrySale", out IList<Country> countryList))
             {
 
-            }
-            else
-            {
                 countryList = _countryService.GetCountrysForSaleProduct();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                         .SetSlidingExpiration(TimeSpan.FromSeconds(60))
@@ -61,7 +56,7 @@ namespace CustomPortalV2.RestApi.Controllers
                         .SetSize(1024);
                 _cache.Set("ListCountrySale", countryList, cacheEntryOptions);
 
-            } 
+            }
             return Ok(countryList);
         }
 
@@ -87,7 +82,7 @@ namespace CustomPortalV2.RestApi.Controllers
                 _cache.Set(cacheName, cityList, cacheEntryOptions);
 
             }
-            
+
             return Ok(cityList);
 
         }

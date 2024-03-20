@@ -40,6 +40,8 @@ namespace CustomPortalV2.DataAccessLayer
 
         public DbSet<Company> Companies { get; set; }
 
+        public DbSet<Branch> Branches { get; set; }
+
         public DbSet<LoginRequestLog> LoginRequestLogs { get; set; }
 
 
@@ -114,6 +116,15 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<CountryCity>().ToTable("CountryCity");
             modelBuilder.Entity<CountryCity>().HasKey(k => k.Id);
             modelBuilder.Entity<CountryCity>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<Branch>().ToTable("CompanyBranch");
+            modelBuilder.Entity<Branch>().HasKey(k => k.Id);
+            modelBuilder.Entity<Branch>().Property(k => k.Id).HasColumnName("Id");
+            modelBuilder.Entity<Branch>().Property(k => k.Name).HasColumnName("Branch");
+
+
+
+
 
 
             //  modelBuilder.UseIdentityColumns();
