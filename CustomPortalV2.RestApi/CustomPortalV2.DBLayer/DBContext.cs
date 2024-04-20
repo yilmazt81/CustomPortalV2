@@ -1,7 +1,7 @@
 ﻿using CustomPortalV2.Model.Sale;
 using Microsoft.EntityFrameworkCore;
 using CustomPortalV2.Model.Work;
-using CustomPortalV2.Model.Custom; 
+using CustomPortalV2.Model.Custom;
 using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
 using CustomPortalV2.Core.Model.App;
@@ -12,6 +12,7 @@ using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.Core.Model.FDefination;
+using CustomPortalV2.Core.Model.Custom;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -125,12 +126,24 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<SalePackage>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackage>().Property(k => k.Id).HasColumnName("Id");
 
+            modelBuilder.Entity<FormAttachmentExcelMap>().ToTable("FormAttachmentExcelMap");
+            modelBuilder.Entity<FormAttachmentExcelMap>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormAttachmentExcelMap>().Property(k => k.Id).HasColumnName("Id");
 
             modelBuilder.Entity<SalePackageItem>().ToTable("SalePackageItem");
             modelBuilder.Entity<SalePackageItem>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackageItem>().Property(k => k.Id).HasColumnName("Id");
 
+            modelBuilder.Entity<TranslateDictionary>().ToTable("TranslateDictionary");
+            modelBuilder.Entity<TranslateDictionary>().HasKey(k => k.Id);
+            modelBuilder.Entity<TranslateDictionary>().Property(k => k.Id).HasColumnName("Id");
 
+
+            modelBuilder.Entity<FormAttachmentExcelMapMultiField>().ToTable("FormAttachmentExcelMapMultiField");
+            modelBuilder.Entity<FormAttachmentExcelMapMultiField>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormAttachmentExcelMapMultiField>().Property(k => k.Id).HasColumnName("Id");
+
+             
 
             modelBuilder.Entity<CustomWork>().ToTable("CustomWork");
             modelBuilder.Entity<CustomWork>().HasKey(k => k.Id);
@@ -193,10 +206,18 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<Branch>().Property(k => k.Id).HasColumnName("Id");
             modelBuilder.Entity<Branch>().Property(k => k.Name).HasColumnName("Branch");
 
+            modelBuilder.Entity<CustomeField_VirtualTableCalculateRow>().ToTable("CustomeField_VirtualTableCalculateRow");
+            modelBuilder.Entity<CustomeField_VirtualTableCalculateRow>().HasKey(k => k.Id);
+            modelBuilder.Entity<CustomeField_VirtualTableCalculateRow>().Property(k => k.Id).HasColumnName("Id");
 
 
+            modelBuilder.Entity<FormAttachmentFontStyle>().ToTable("FormAttachmentFontStyle");
+            modelBuilder.Entity<FormAttachmentFontStyle>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormAttachmentFontStyle>().Property(k => k.Id).HasColumnName("Id");
 
-
+            modelBuilder.Entity<FormAttachmentField>().ToTable("FormAttachmentField");
+            modelBuilder.Entity<FormAttachmentField>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormAttachmentField>().Property(k => k.Id).HasColumnName("Id");
 
             //  modelBuilder.UseIdentityColumns();
         }
