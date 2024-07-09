@@ -1,6 +1,7 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Model.Company;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -13,25 +14,32 @@ namespace CustomPortalV2.RestApi.Controllers
     public class CompanyController : ControllerBase
     {
         ICompanyService companyService;
-        public CompanyController(ICompanyService companyService)
+        IBranchService branchService;
+        public CompanyController(ICompanyService companyService, IBranchService branchService)
         {
             this.companyService = companyService;
+            this.branchService = branchService; 
         }
 
         // GET: api/<CompanyController>
         [HttpGet]
         public IActionResult Get()
         {
-            //return new string[] { "value1", "value2" };
-            string data = "{\"Ad\": \"Harun\" , \"Soyad\": \"Aydin\"}";
-            return Ok(JObject.Parse(data));
+            var branchList = branchService.GetCompanyBraches(1);
+
+            return Ok(branchList);
         }
 
         // GET api/<CompanyController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Authorize]
+        public IActionResult Get(int id)
         {
-            return "value";
+
+            var branch = branchService.GetBranch(id);
+
+
+            return Ok(branch);
         }
 
         [HttpPost]

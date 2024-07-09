@@ -41,12 +41,14 @@ namespace CustomPortalV2.Business.Service
 
         public bool DeleteUser(User user)
         {
-            throw new NotImplementedException();
+            user.Deleted = true;
+           return _userRepository.Update(user);
         }
 
         public User GetById(int id)
         {
-            throw new NotImplementedException();
+           return _userRepository.Get(id);
+
         }
 
         public User? GetUserByUserName(string companyCode, string userName)
@@ -61,7 +63,8 @@ namespace CustomPortalV2.Business.Service
 
         public List<User> GetUsers(int companyId)
         {
-            throw new NotImplementedException();
+          return _userRepository.GetAll(companyId).ToList();
+
         }
 
         public enumLoginReturn Login(string clientIp, string companyCode, string username, string password, ref User? user)

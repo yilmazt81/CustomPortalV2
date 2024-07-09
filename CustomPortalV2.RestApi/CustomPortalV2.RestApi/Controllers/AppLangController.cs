@@ -16,9 +16,7 @@ namespace CustomPortalV2.RestApi.Controllers
 
         [HttpGet]
         public IActionResult Get()
-        {
-
-
+        { 
 
          
             var langs= _appLangService.GetAppLangs();

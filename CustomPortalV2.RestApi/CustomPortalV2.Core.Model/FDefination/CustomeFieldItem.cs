@@ -25,7 +25,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public Nullable<int> FontSize { get; set; }
         public Nullable<bool> Bold { get; set; }
         public Nullable<bool> Italic { get; set; }
-        ,
+      
         public virtual CustomeField CustomeField { get; set; }
     }
 }

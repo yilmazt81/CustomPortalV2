@@ -60,6 +60,14 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IBranchService   , BranchService>();
+            services.AddScoped<IFormDefinationService, FormDefinationService>();
+            services.AddScoped<IFormMetaDataService, FormMetaDataService>();
+            services.AddScoped<ICompanyDefinationService, CompanyDefinationService>();
+            services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
+
+  
+
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();          
             services.AddScoped<IAppLangRepository, AppLangRepository>();
@@ -69,7 +77,7 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICountryRepository, CountryRepository>();
-
+            services.AddScoped<IBranchRepository, BranchRepository>();
             services.AddMemoryCache();
 
         }

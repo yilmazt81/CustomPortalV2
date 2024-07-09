@@ -6,8 +6,7 @@ using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Company;
-using CustomPortalV2.Core.Model.Autocomplete;
-using CustomPortalV2.Core.Model.FormDefination;
+using CustomPortalV2.Core.Model.Autocomplete; 
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.Core.Model.Form;
@@ -58,8 +57,7 @@ namespace CustomPortalV2.DataAccessLayer
 
 
 
-        public virtual DbSet<AppMenu> AppMenu { get; set; } 
-        public virtual DbSet<AppUserSession> AppUserSession { get; set; }
+        public virtual DbSet<AppMenu> AppMenu { get; set; }  
         public virtual DbSet<AutocompleteFieldMap> AutocompleteFieldMap { get; set; }
         public virtual DbSet<BranchPackage> BranchPackage { get; set; }
         public virtual DbSet<ComboBoxItem> ComboBoxItem { get; set; } 
@@ -85,8 +83,7 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CustomeField> CustomeField { get; set; }
         public virtual DbSet<CustomeFieldItem> CustomeFieldItem { get; set; }
         public virtual DbSet<FormMetaDataAttribute_CustomeField> FormMetaDataAttribute_CustomeField { get; set; }
-        public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; }
-        public virtual DbSet<ApplicationParam> ApplicationParam { get; set; }
+        public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; } 
         public virtual DbSet<FieldType> FieldType { get; set; }
         public virtual DbSet<FormAttachmentType> FormAttachmentType { get; set; }
         public virtual DbSet<FormDefinationAttachment> FormDefinationAttachment { get; set; }

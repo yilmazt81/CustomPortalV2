@@ -85,7 +85,10 @@ namespace CustomPortalV2.RestApi.Controllers
             {
                 var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
                 User? user=null;
-                var loginReturn = _userservice.Login(remoteIpAddress.ToString(), loginRequest.CompanyCode, loginRequest.UserName, loginRequest.password, ref user);
+                var loginReturn = _userservice.Login(remoteIpAddress.ToString(), 
+                    loginRequest.CompanyCode,
+                    loginRequest.UserName,
+                    loginRequest.password, ref user);
                 if (loginReturn == Business.Helper.Enums.enumLoginReturn.Success)
                 {
                     if (user != null)
