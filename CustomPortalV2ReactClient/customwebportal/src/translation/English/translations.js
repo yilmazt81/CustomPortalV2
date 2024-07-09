@@ -1,5 +1,6 @@
 export const TRANSLATIONS_EN = {
     login: 'Login',
+    CompanyCode:'Company Code',
     SignInAccount: 'Sign In to your account',
     Username : 'Username',
     password:"password",

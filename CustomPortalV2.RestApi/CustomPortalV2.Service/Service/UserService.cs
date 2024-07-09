@@ -31,7 +31,7 @@ namespace CustomPortalV2.Business.Service
             _paramrepository = paramRepository;
             _loginRequestLogRepository = loginrequestLogRepository;
 
-            encryption = new Encryption("userpwd859");
+            encryption = new Encryption("usr_9189f3f");
         }
         public User AddUser(User user)
         {
@@ -81,7 +81,10 @@ namespace CustomPortalV2.Business.Service
                 var company = _companyRepository.GetCompanyCode(companyCode);
 
                 if (company == null)
+                {
+
                     return enumLoginReturn.CompanyCodeIsNotExist;
+                }
 
                 if (!company.Enable)
                 {

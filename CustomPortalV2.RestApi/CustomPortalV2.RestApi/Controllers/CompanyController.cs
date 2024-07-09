@@ -55,8 +55,9 @@ namespace CustomPortalV2.RestApi.Controllers
                 PhoneNumber = createCompany.PhoneNumber,
                 TaxNumber = createCompany.TaxNumber,
                 Enable = true,
-                CountryId = createCompany.Country,
-                CompanyCode = "test",
+                CountryId = createCompany.Country ,
+                Adress= createCompany.Adress,
+
             };
             if (companyService.IsExistCompany(company))
             {

@@ -35,6 +35,9 @@ namespace CustomPortalV2.Model.Company
         public bool Enable { get; set; }
 
 
+        public string Adress { get; set; }
+
+
 
     }
 }

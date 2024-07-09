@@ -38,6 +38,7 @@
     "env-cmd": "^10.1.0",
     "i18next": "^22.0.4",
     "i18next-browser-languagedetector": "^7.0.0",
+    "lottie-react": "^2.4.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",

@@ -34,6 +34,16 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return company;
         }
 
+        public string CreateCompanyCode(string countryid)
+        {
+           var maxCompanyCount= _dbContext.Companies.Count();
+
+            var newCompanyCode = countryid.PadLeft(2, '0') + maxCompanyCount.ToString().PadLeft(3, '0');
+
+            return newCompanyCode;
+
+        }
+
         public Company? FindCompany(Expression<Func<Company, bool>> predicate)
         {
             return _dbContext.Companies.FirstOrDefault(predicate);

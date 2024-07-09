@@ -15,6 +15,8 @@ import {
   CFormSelect,
   CButton,
 } from '@coreui/react'
+import Lottie from "lottie-react";
+import process_color from "../../../content/animation/Process_Color.json";
 
 import CIcon from '@coreui/icons-react'
 
@@ -22,7 +24,8 @@ import { cilLockLocked, cilUser, cilPhone, cilRoom, cilIndustry, cilMap } from '
 import "../../../../src/translation/i18";
 import { GetCountryForSale, GetCountryCity } from '../../../lib/countryapi';
 import {CreateCompany} from '../../../lib/companyapi';
- 
+
+import styles  from './styles.css';
  
 
 import { useTranslation } from "react-i18next";
@@ -51,7 +54,7 @@ const Register = () => {
   function handleChange(event) {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
-    console.log(inputValues);
+ 
   }
 
   async function countryChanges(event) {
@@ -67,6 +70,7 @@ const Register = () => {
     setUsersLoading(false);
 
   }
+  
   useEffect(() => {
     if (countrys.length == 0) {
 
@@ -96,9 +100,7 @@ const Register = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
-
         <CRow className="justify-content-center">
-
           <CCardGroup>
             <CCard className="p-4">
               <CCardBody className="p-4">
@@ -208,6 +210,9 @@ const Register = () => {
 
 
                   </CCol>
+                </CRow>
+                <CRow>
+                  <Lottie animationData={process_color} loop={true} style={{width: "20%", height: "20%"}}></Lottie>
                 </CRow>
               </CCardBody>
             </CCard>

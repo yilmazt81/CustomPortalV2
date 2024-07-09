@@ -17,5 +17,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         Company? FindCompany(Expression<Func<Company, bool>> predicate);
 
         Branch AddBrach(Branch branch);
+
+        string CreateCompanyCode(string countryid);
     }
 }

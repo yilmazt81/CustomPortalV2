@@ -1,5 +1,6 @@
 export const TRANSLATIONS_TR = {
-    login:"Giriş",    
+    login:"Giriş",        
+    CompanyCode:'Firma Kodu',
     SignInAccount: 'Kullanıcı adı ile sisteme giriş yapınız',
     Username : 'Kullanıcı adı',
     password:"Şifre",

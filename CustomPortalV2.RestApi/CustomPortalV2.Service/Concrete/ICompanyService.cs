@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Model.Company;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,8 @@ using System.Threading.Tasks;
 namespace CustomPortalV2.Business.Concrete
 {
     public interface ICompanyService
-    {
-        Company? GetCompanyCode(string companycode);
-
-        Company AddCompany(Company company, string password);
+    { 
+        DefaultReturn<CreateCompanyReturn> AddCompany(Company company, string password);
         bool IsExistCompany(Company company);
 
         Branch AddBrach(Branch branch);

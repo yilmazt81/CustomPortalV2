@@ -32,6 +32,7 @@ namespace CustomPortalV2.Core.Model.Company
 
         public bool SysAdmin { get; set; }
 
+        public string EMailPassword { get; set; }
 
     }
 }

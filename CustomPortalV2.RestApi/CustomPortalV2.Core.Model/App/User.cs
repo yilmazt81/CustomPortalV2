@@ -22,5 +22,6 @@ namespace CustomPortalV2.Core.Model.App
         public int FormRuleId { get; set; }
         public string BranchName { get; set; }
 
+        public int AppLangId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 export const TRANSLATIONS_RU = {
-    login:"Авторизоваться",    
+    login:"Авторизоваться",        
+    CompanyCode:'Код компании',
     SignInAccount: 'Войдите в свой аккаунт',
     Username : 'Имя пользователя',
     password:"пароль",

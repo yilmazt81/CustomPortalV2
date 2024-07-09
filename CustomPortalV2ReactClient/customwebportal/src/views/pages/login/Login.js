@@ -17,20 +17,25 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked, cilUser,cilHome } from '@coreui/icons'
 //import SimpleReactValidator from 'simple-react-validator';
 //import {authService}  from '../../../lib/auth-service';
 import {LoginUser} from '../../../lib/userapi';
-
+import Lottie from "lottie-react";
+import styles from  './styles.css';
+import animationLogin from "../../../content/animation/Login.json";
 
 const Login = () => {
   const { t } = useTranslation();
-  const [userInfo] = useState({ UserName: "", password: "" });
+  const [userInfo] = useState({ UserName: "", 
+                                password: "",
+                                CompanyCode:"" ,
+                                UserLanguage:0});
 
  // const validator = new SimpleReactValidator();
 
-
-  const handleSubmit = () => {
+ async function handleSubmit(event){
+   
 
    /*
     authService
@@ -39,7 +44,7 @@ const Login = () => {
     .catch((error) => console.log(error) );
      
     */
-    LoginUser(userInfo);
+   var loginresult= await LoginUser(userInfo);
     //UserApi.GetAll();
 
   }
@@ -58,6 +63,14 @@ const Login = () => {
                   <CForm>
                     <h1>{t("login")}</h1>
                     <p className="text-medium-emphasis">{t("SignInAccount")}t</p>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilHome} />
+                      </CInputGroupText>
+                      <CFormInput placeholder={t("CompanyCode")}
+                        autoComplete="CompanyCode"
+                        onChange={e => userInfo.CompanyCode = e.target.value} />
+                    </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -89,6 +102,9 @@ const Login = () => {
                           {t("Forgotpassword")}
                         </CButton>
                       </CCol>
+                    </CRow>
+                    <CRow> 
+                      <Lottie animationData={animationLogin} loop={true} style={{width: "20%", height: "20%"}} ></Lottie>
                     </CRow>
                   </CForm>
                 </CCardBody>

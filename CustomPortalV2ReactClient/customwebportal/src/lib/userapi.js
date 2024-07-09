@@ -1,17 +1,14 @@
 import axios from "axios"; 
 
-function LoginUser(logindata)
+async function LoginUser(logindata)
 {
    
  
-  console.log(logindata);
-   axios.post('https://localhost:7232/api/Login', logindata)
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  var result= await axios.post(process.env.REACT_APP_APIURL+'/api/Login',logindata);
+    
+
+  return result;
+   
 }
 
 
