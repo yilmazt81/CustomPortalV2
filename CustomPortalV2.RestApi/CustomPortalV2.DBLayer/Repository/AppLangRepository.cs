@@ -16,6 +16,14 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public AppLangRepository(DBContext dbContext) {
             _dbContext = dbContext;
         }
+
+        public string Get(string appTag, int languageId, string defaultValue)
+        {
+            var appLangTranslate = _dbContext.ApplicationLanguage.FirstOrDefault(s => s.LangId == languageId && s.TranslateTag == appTag);
+
+            return (appLangTranslate == null ? defaultValue : appLangTranslate.TranslateText);
+        }
+
         public List<AppLang> GetAppLangs()
         {
             return _dbContext.AppLangs.ToList();

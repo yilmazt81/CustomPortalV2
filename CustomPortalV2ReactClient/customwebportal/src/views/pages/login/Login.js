@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from "react-i18next";
 import "../../../../src/translation/i18";
-
+import axios from "axios"; 
 import {
   CButton,
   CCard,
@@ -14,42 +14,85 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CRow,
+  CRow, 
+  CAlert
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser,cilHome } from '@coreui/icons'
-//import SimpleReactValidator from 'simple-react-validator';
-//import {authService}  from '../../../lib/auth-service';
+ 
+import {useNavigate } from 'react-router-dom'
+//import SimpleReactValidator from 'simple-react-validator'; 
 import {LoginUser} from '../../../lib/userapi';
-import Lottie from "lottie-react";
-import styles from  './styles.css';
+
+import Lottie from "lottie-react"; 
 import animationLogin from "../../../content/animation/Login.json";
+import { useDispatch, useSelector } from 'react-redux';  
 
 const Login = () => {
-  const { t } = useTranslation();
-  const [userInfo] = useState({ UserName: "", 
+  const { t } = useTranslation(); 
+  const navigate = useNavigate();
+  const [loginStart, setloginStart] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+
+  const userToken= useSelector(state=> state.userToken);   
+
+  const dispatch = useDispatch();
+
+  const [userInfo,setUserInfo] = useState({ UserName: "", 
                                 password: "",
                                 CompanyCode:"" ,
                                 UserLanguage:0});
+   
+ function handleChange(event) { 
+  const { name, value } = event.target;
+  setUserInfo({ ...userInfo, [name]: value }); 
 
- // const validator = new SimpleReactValidator();
-
+}
  async function handleSubmit(event){
    
-
-   /*
-    authService
-    .login(userInfo)
-    .then((response) => console.log(response))
-    .catch((error) => console.log(error) );
+ 
+  setloginStart(true);
+  try {
+    var loginresult= await  LoginUser(userInfo);
+  
+      if (loginresult.isLogin)
+      {  
+        dispatch({ type: 'set', userToken: loginresult.token });       
+        dispatch({ type: 'set', UserName: userInfo.UserName });        
+        dispatch({ type: 'set', CompanyCode: userInfo.CompanyCode })
+        axios.defaults.headers.common['Authorization'] = `Bearer ${loginresult.token}`;
      
-    */
-   var loginresult= await LoginUser(userInfo);
-    //UserApi.GetAll();
+        navigate('../Dashboard');
+
+      }else{ 
+        setLoginError(t(loginresult.returnMessage));
+      }
+    } catch (error) { 
+      setLoginError(error.message);
+    }finally{
+      setloginStart(false);
+    }   
 
   }
+  
+  
+  useEffect(() => { 
+    if (userToken!=null)
+      {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
+        localStorage.setItem("Token",userToken);
+        navigate('../Dashboard'); 
+      }else{
 
- 
+        setLoginError(null);
+      } 
+
+     /* setUserInfo({CompanyCode:companyCode,
+      UserName:userName
+     } );  
+      */
+    
+  }, []);
 
   return (
 
@@ -67,17 +110,17 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilHome} />
                       </CInputGroupText>
-                      <CFormInput placeholder={t("CompanyCode")}
-                        autoComplete="CompanyCode"
-                        onChange={e => userInfo.CompanyCode = e.target.value} />
+                      <CFormInput placeholder={t("CompanyCode")}    
+                            name="CompanyCode"                   
+                        onChange= {e=>handleChange(e)}   value={userInfo.CompanyCode} />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput placeholder={t("Username")}
-                        autoComplete="username"
-                        onChange={e => userInfo.UserName = e.target.value} />
+                       name="UserName"
+                        onChange={e=>handleChange(e)} value={ userInfo.UserName} />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -85,27 +128,40 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
+                        name="password"  
                         placeholder={t("Password")}
                         autoComplete="current-password"
-                        onChange={e => userInfo.password = e.target.value}
+                        onChange={e=>handleChange(e)}
                       />
                     </CInputGroup>
+                    <CRow>
+                    <CRow> 
+                      {
+                      loginStart ?<Lottie animationData={animationLogin} loop={true} style={{width: "40%", height: "40%"}} ></Lottie>:"" 
+                      }
+                      { loginError!=null ?
+                        <CAlert color="warning">{loginError}</CAlert>
+                        :""
+                      }
+                    </CRow>
+                    </CRow>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4"
                           onClick={handleSubmit} >
+                             
                           {t("login")}
+                          
+
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <CButton color="primary" className="px-0">
-                          {t("Forgotpassword")}
+                          {t("Forgotpassword")} 
                         </CButton>
                       </CCol>
                     </CRow>
-                    <CRow> 
-                      <Lottie animationData={animationLogin} loop={true} style={{width: "20%", height: "20%"}} ></Lottie>
-                    </CRow>
+                   
                   </CForm>
                 </CCardBody>
               </CCard>
@@ -130,6 +186,9 @@ const Login = () => {
             </CCardGroup>
           </CCol>
         </CRow>
+
+    
+
       </CContainer>
     </div>
   )

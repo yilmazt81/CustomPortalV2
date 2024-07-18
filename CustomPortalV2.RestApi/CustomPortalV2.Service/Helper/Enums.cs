@@ -15,8 +15,7 @@ namespace CustomPortalV2.Business.Helper
             CompanyDisabled,
             UserNameOrPasswordWrong,
             UserDisable,
-            FailTimeOutMinute,
-            LoginFailMaxCount,
+            FailTimeOutMinute, 
             Success,
         }
     }

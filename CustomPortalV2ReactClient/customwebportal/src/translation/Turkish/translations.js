@@ -22,6 +22,11 @@ export const TRANSLATIONS_TR = {
     Repeatpassword:"Yeni Şifre Tekrar",    
     CreateAccount :"Hesap Oluştur",
     CompanyInfo:"Firma Bilgileri",
-
+    CompanyCodeIsNotExist:"Firma Kodu mevcut değil.",
+    CompanyDisabled:"Firma kodu aktif değil.",
+    UserNameOrPasswordWrong:"Kullanıcı adı veya şifre yanlış",
+    UserDisable:"Kullancı  Aktif Değil",
+    FailTimeOutMinute:"Fazla hatalı giriş denemesi bir süre bekledikten sonra tekrar deneyiniz.",
+    
 
 };

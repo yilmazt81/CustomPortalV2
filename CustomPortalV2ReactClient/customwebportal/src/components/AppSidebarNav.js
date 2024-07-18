@@ -1,13 +1,13 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import PropTypes from 'prop-types'
-
+import PropTypes from 'prop-types' 
 import { CBadge } from '@coreui/react'
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
   const navLink = (name, icon, badge) => {
     return (
+      
       <>
         {icon && icon}
         {name && name}
@@ -20,9 +20,14 @@ export const AppSidebarNav = ({ items }) => {
     )
   }
 
+
+
+ 
+
   const navItem = (item, index) => {
     const { component, name, badge, icon, ...rest } = item
     const Component = component
+    debugger;
     return (
       <Component
         {...(rest.to &&
@@ -39,7 +44,7 @@ export const AppSidebarNav = ({ items }) => {
   const navGroup = (item, index) => {
     const { component, name, icon, to, ...rest } = item
     const Component = component
-    return (
+    return ( 
       <Component
         idx={String(index)}
         key={index}
@@ -63,5 +68,5 @@ export const AppSidebarNav = ({ items }) => {
 }
 
 AppSidebarNav.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  items: PropTypes.arrayOf(PropTypes.any),
 }

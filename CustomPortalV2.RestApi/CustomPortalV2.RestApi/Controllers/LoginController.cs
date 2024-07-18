@@ -2,7 +2,7 @@
 using CustomPortalV2.Model.DTO;
 using CustomPortalV2.Business;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq; 
+using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,7 +35,28 @@ namespace CustomPortalV2.RestApi.Controllers
         }
         private string generateJwtToken(User user)
         {
-            var secretKey = Configuration.GetSection("Secret");
+
+
+            var claims = new List<Claim> {
+                              new Claim(ClaimTypes.Name,user.FullName.ToString()),
+                              new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
+                              new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                              new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
+                 };
+            var jwtToken = new JwtSecurityToken(
+                claims: claims,
+                notBefore: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(
+                       Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"])
+                        ),
+                    SecurityAlgorithms.HmacSha256Signature)
+                );
+            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+            /*
+            var secretKey = Configuration.GetSection("ApplicationSettings:JWT_Secret");
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey.Value);
@@ -46,7 +67,7 @@ namespace CustomPortalV2.RestApi.Controllers
                               new Claim(ClaimTypes.Name,user.FullName.ToString()),
                               new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
                               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-
+                              new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
                          }
                          ),
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -54,6 +75,8 @@ namespace CustomPortalV2.RestApi.Controllers
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+
+            */
         }
         // GET: api/<LoginController>
         [HttpGet]
@@ -84,8 +107,8 @@ namespace CustomPortalV2.RestApi.Controllers
             try
             {
                 var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
-                User? user=null;
-                var loginReturn = _userservice.Login(remoteIpAddress.ToString(), 
+                User? user = null;
+                var loginReturn = _userservice.Login(remoteIpAddress.ToString(),
                     loginRequest.CompanyCode,
                     loginRequest.UserName,
                     loginRequest.password, ref user);
@@ -94,14 +117,15 @@ namespace CustomPortalV2.RestApi.Controllers
                     if (user != null)
                     {
                         returnType.token = generateJwtToken(user);
-                        returnType.UserId= user.Id;
+                        returnType.UserId = user.Id;
+                        returnType.IsLogin = true;
                     }
                 }
                 else
                 {
                     returnType.ReturnMessage = loginReturn.ToString();
-                }
 
+                }
             }
             catch (Exception ex)
             {

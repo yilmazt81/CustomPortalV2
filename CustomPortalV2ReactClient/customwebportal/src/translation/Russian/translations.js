@@ -21,5 +21,12 @@ export const TRANSLATIONS_RU = {
     Repeatpassword:"Повторите пароль",    
     CreateAccount :"Зарегистрироваться",
     CompanyInfo:"информация о компании",
+    CompanyCodeIsNotExist:"Код компании не существует",
+    CompanyDisabled:"Компания не активна",
+    UserNameOrPasswordWrong:"Имя пользователя или пароль неверны",
+    UserDisable:"Отключить пользователя",
+    FailTimeOutMinute : "Слишком много неправильных попыток входа в систему. Подождите некоторое время и повторите попытку.",
+    
+
 
 };

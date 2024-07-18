@@ -12,6 +12,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
     {
 
         List<Branch> GetBranches(Expression<Func<Branch, bool>> predicate);
+        Branch? Get(Expression<Func<Branch, bool>> predicate);
         Branch AddBranch(Branch branch);
     }
 }

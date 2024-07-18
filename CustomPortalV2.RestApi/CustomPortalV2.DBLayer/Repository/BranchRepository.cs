@@ -25,6 +25,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return branch;
         }
 
+        public Branch? Get(Expression<Func<Branch, bool>> predicate)
+        {
+            return _dbContext.Branches.FirstOrDefault(predicate);
+        }
+
         public List<Branch> GetBranches(Expression<Func<Branch, bool>> predicate)
         {
              

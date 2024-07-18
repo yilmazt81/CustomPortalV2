@@ -18,6 +18,12 @@ namespace CustomPortalV2.Core.Model.DTO
             ReturnCode = code;
             ReturnMessage = message;
         }
+
+        public void SetException(Exception exception)
+        {
+            ReturnCode = 5;
+            ReturnMessage = exception.Message + "  " + (exception.InnerException != null ? exception.InnerException.Message : "");
+        }
         public T Data { get; set; }
     }
 }

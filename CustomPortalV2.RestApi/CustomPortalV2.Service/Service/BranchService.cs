@@ -19,9 +19,9 @@ namespace CustomPortalV2.Business.Service
 
             _branchRepository = branchRepository;
         }
-        private ReturnType<Branch> ChecFields(Branch branchDefination)
+        private DefaultReturn<Branch> ChecFields(Branch branchDefination)
         {
-            ReturnType<Branch> returnType = new ReturnType<Branch>();
+            DefaultReturn<Branch> returnType = new DefaultReturn<Branch>();
 
 
             if (string.IsNullOrEmpty(branchDefination.Name))

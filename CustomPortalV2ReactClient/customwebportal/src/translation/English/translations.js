@@ -22,5 +22,10 @@ export const TRANSLATIONS_EN = {
     Repeatpassword:"Repeat password",
     CreateAccount :"Create Account",
     CompanyInfo:"Company Info",
+    CompanyCodeIsNotExist:"Company Code Is Not Exist",
+    CompanyDisabled:"The Company is not active.",    
+    UserNameOrPasswordWrong:"User Name or Password is Wrong",
+    UserDisable:"The User is not active.",
+    FailTimeOutMinute:"Too many incorrect login attempts, wait for a while and try again. ",
 
 };

@@ -13,7 +13,7 @@ import {
   CFormTextarea,
   CFormLabel,
   CFormSelect,
-  CButton,
+  CButton,CSpinner
 } from '@coreui/react'
 import Lottie from "lottie-react";
 import process_color from "../../../content/animation/Process_Color.json";
@@ -70,7 +70,7 @@ const Register = () => {
     setUsersLoading(false);
 
   }
-  
+
   useEffect(() => {
     if (countrys.length == 0) {
 
@@ -203,12 +203,12 @@ const Register = () => {
                         />
                       </CInputGroup>
                       <div className="d-grid">
-                        <CButton color="success" onClick={()=>SaveCompanyInfo()}>{t("CreateAccount")}</CButton>
+                        <CButton color="success" onClick={()=>SaveCompanyInfo()}>{t("CreateAccount")}
+
+                      
+                        </CButton>
                       </div>
-
-                    </CForm>
-
-
+                    </CForm> 
                   </CCol>
                 </CRow>
                 <CRow>

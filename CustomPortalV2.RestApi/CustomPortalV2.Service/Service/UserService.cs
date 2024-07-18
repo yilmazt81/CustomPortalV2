@@ -10,6 +10,8 @@ using CustomPortalV2.DataAccessLayer.Concrete;
 using static CustomPortalV2.Business.Helper.Enums;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Model.DTO;
+using CustomPortalV2.Model;
+using CustomPortalV2.Core.Model.DTO;
 
 namespace CustomPortalV2.Business.Service
 {
@@ -20,16 +22,21 @@ namespace CustomPortalV2.Business.Service
         ICompanyRepository _companyRepository;
         IParamRepository _paramrepository;
         ILoginrequestLogRepository _loginRequestLogRepository;
+        IAppLangRepository _appLangRepository;
+        IBranchRepository _branchRepository;
         Encryption encryption;
         public UserService(IUserRepository userRepository,
             ICompanyRepository companyRepository,
             IParamRepository paramRepository,
-            ILoginrequestLogRepository loginrequestLogRepository)
+            ILoginrequestLogRepository loginrequestLogRepository,
+            IAppLangRepository appLangRepository, IBranchRepository branchRepository)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;
             _paramrepository = paramRepository;
             _loginRequestLogRepository = loginrequestLogRepository;
+            _appLangRepository = appLangRepository;
+            _branchRepository = branchRepository;
 
             encryption = new Encryption("usr_9189f3f");
         }
@@ -42,12 +49,12 @@ namespace CustomPortalV2.Business.Service
         public bool DeleteUser(User user)
         {
             user.Deleted = true;
-           return _userRepository.Update(user);
+            return _userRepository.Update(user);
         }
 
         public User GetById(int id)
         {
-           return _userRepository.Get(id);
+            return _userRepository.Get(id);
 
         }
 
@@ -61,9 +68,41 @@ namespace CustomPortalV2.Business.Service
             return _userRepository.GetUserName(userName, company.Id);
         }
 
+        public DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId, int branchId)
+        {
+            DefaultReturn<List<UserRuleMenuDTO>> returnType = new DefaultReturn<List<UserRuleMenuDTO>>();
+            var branch = _branchRepository.Get(s => s.Id == branchId);
+            if (branch == null)
+            {
+                returnType.ReturnCode = 5;
+                returnType.ReturnMessage = "BranchNotExist";
+                return returnType;
+            }
+            returnType.Data = new List<UserRuleMenuDTO>();
+            var menuList = _userRepository.GetUserRuleMenus(branch.UserRuleId);
+            var user = GetById(userId);
+            foreach (var oneMenu in menuList)
+            {
+                var menuName = _appLangRepository.Get("MainMenu." + oneMenu.MenuAdress, user.AppLangId, oneMenu.MenuName);
+
+                UserRuleMenuDTO userRuleMenuDTO = new UserRuleMenuDTO()
+                {
+                    name = menuName,
+                    to = oneMenu.MenuAdress,
+                    icon = oneMenu.IconClass
+
+                };
+
+                returnType.Data.Add(userRuleMenuDTO);
+            }
+
+            return returnType;
+
+        }
+
         public List<User> GetUsers(int companyId)
         {
-          return _userRepository.GetAll(companyId).ToList();
+            return _userRepository.GetAll(companyId).ToList();
 
         }
 
@@ -101,7 +140,7 @@ namespace CustomPortalV2.Business.Service
                 var countIsSuccessCount = _loginRequestLogRepository.CheckFailedLoginCount(clientIp, minDate);
                 if (countIsSuccessCount >= int.Parse(failTimeCount.Value))
                 {
-                    return enumLoginReturn.LoginFailMaxCount;
+                    return enumLoginReturn.FailTimeOutMinute;
                 }
                 user = _userRepository.GetUserName(username, company.Id);
 
@@ -136,7 +175,7 @@ namespace CustomPortalV2.Business.Service
 
         public bool UpdateUser(User user)
         {
-           return _userRepository.Update(user);
+            return _userRepository.Update(user);
         }
 
 

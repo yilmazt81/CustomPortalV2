@@ -1,4 +1,6 @@
-﻿using CustomPortalV2.Core.Model.App; 
+﻿using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +19,7 @@ namespace CustomPortalV2.Business.Concrete
         User? GetUserByUserName(string companyCode, string userName);
         User AddUser(User user);
         bool DeleteUser(User user);
+
+        DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId,int branchId);
     }
 }

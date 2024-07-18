@@ -11,5 +11,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
     {
 
         List<AppLang> GetAppLangs();
+
+        string Get(string appTag, int languageId, string defaultValue);
     }
 }

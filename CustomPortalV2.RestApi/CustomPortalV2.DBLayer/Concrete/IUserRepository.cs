@@ -18,6 +18,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<User> GetAll(int mainCompany);
 
+        IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId);
+
 
     }
 }

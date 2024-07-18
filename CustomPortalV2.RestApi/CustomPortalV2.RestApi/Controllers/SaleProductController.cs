@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using CustomPortalV2.Model;
 using CustomPortalV2.Model.Sale;
 using CustomPortalV2.Business;
+using CustomPortalV2.Core.Model.DTO;
 
 namespace CustomPortalV2.RestApi.Controllers
 {
@@ -19,35 +20,35 @@ namespace CustomPortalV2.RestApi.Controllers
         }
 
         [HttpGet]
-        public ReturnType<SalePackage> Get()
+        public ActionResult Get()
         {
-            ReturnType<SalePackage> returnType = new ReturnType<SalePackage>();
+            DefaultReturn<SalePackage[]> returnType = new DefaultReturn<SalePackage[]>();
             try
             {
-                returnType.MultiValue = _salePackageService.GetSalePackages().ToList();
+                returnType.Data = _salePackageService.GetSalePackages();
             }
             catch (Exception ex)
             {
                 returnType.SetException(ex);
             }
-            return returnType;
+            return Ok(returnType);
         }
 
         [HttpGet]
         [Route("GetPackageItems/{packageId}")]
-        public ReturnType<SalePackageItem> GetPackageItems(int packageId)
+        public ActionResult GetPackageItems(int packageId)
         {
-            ReturnType<SalePackageItem> returnType = new ReturnType<SalePackageItem>();
+            DefaultReturn<SalePackageItem[]> returnType = new DefaultReturn<SalePackageItem[]>();
             try
             {
-                returnType.MultiValue = _salePackageService.GetSalePackageItem(packageId).ToList();
+                returnType.Data = _salePackageService.GetSalePackageItem(packageId);
             }
             catch (Exception ex)
             {
                 returnType.SetException(ex);
             }
 
-            return returnType;
+            return Ok(returnType);
         }
     }
 }

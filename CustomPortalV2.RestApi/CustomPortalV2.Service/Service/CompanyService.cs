@@ -58,6 +58,10 @@ namespace CustomPortalV2.Business.Service
                 PhoneNumber = company.PhoneNumber,
                 WaitForAllowApp = true,
                 Name = "Main",
+                UserRuleId=1,
+                UserRuleName="Yönetici",
+                BranchPackageId=1,
+                BranchPackageName="Ücretsiz",
             };
 
             _companyRepository.AddBrach(branch);
@@ -73,7 +77,8 @@ namespace CustomPortalV2.Business.Service
                 UserName = "Admin",
                 PhoneNumber = company.PhoneNumber,
                 MainCompanyId = company.Id,
-                AppLangId = 1
+                AppLangId = 1,
+                
             };
             _userRepository.AddUser(user);
 

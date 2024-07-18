@@ -1,15 +1,21 @@
 import axios from "axios"; 
-
-async function LoginUser(logindata)
+import React,{useEffect} from "react";
+import { useDispatch, useSelector } from 'react-redux'; 
+export async function LoginUser(logindata)
 {
    
+
  
-  var result= await axios.post(process.env.REACT_APP_APIURL+'/api/Login',logindata);
+  const{ data:result}= await axios.post(process.env.REACT_APP_APIURL+'/api/Login',logindata);
     
 
   return result;
    
 }
+export async function  getUserMenu() {   
+  
+  const { data } =  await axios.get(process.env.REACT_APP_APIURL+'/api/User/GetUserMenu');
+  return data;
+};
 
-
-export {LoginUser};
+ 

@@ -1,4 +1,5 @@
 ﻿
+
 using CustomPortalV2.Business;
 using CustomPortalV2.Business.Concrete;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,7 @@ namespace CustomPortalV2.RestApi
         {
             try
             {
-                var secretKey = Configuration.GetSection("Secret");
+                var secretKey = Configuration.GetSection("ApplicationSettings:JWT_Secret");
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(secretKey.Value);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters

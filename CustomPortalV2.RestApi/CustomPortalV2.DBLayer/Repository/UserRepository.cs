@@ -31,14 +31,19 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public IEnumerable<User> GetAll(int mainCompany)
         {
-           
-            return _dbContext.Users.Where(s=>s.MainCompanyId==mainCompany).ToList();
+
+            return _dbContext.Users.Where(s => s.MainCompanyId == mainCompany).ToList();
         }
 
         public User? GetUserName(string userName, int companyId)
         {
             return _dbContext.Users.FirstOrDefault(s => s.MainCompanyId == companyId && s.UserName == userName);
 
+        }
+
+        public IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId)
+        {
+            return _dbContext.UserRuleMenu.Where(s => s.UserRuleId == userRuleId).ToArray();
         }
 
         public bool Update(User user)

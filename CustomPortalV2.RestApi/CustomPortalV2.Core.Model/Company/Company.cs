@@ -16,9 +16,9 @@ namespace CustomPortalV2.Model.Company
 
         public string PhoneNumber { get; set; }
 
-        public string TaxNumber { get; set; }
+        public string? TaxNumber { get; set; }
 
-        public string TaxOffice { get; set; }
+        public string? TaxOffice { get; set; }
 
         public string AuthorizedPersonName { get; set; }
 
@@ -35,7 +35,7 @@ namespace CustomPortalV2.Model.Company
         public bool Enable { get; set; }
 
 
-        public string Adress { get; set; }
+        public string? Adress { get; set; }
 
 
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 
 import {
   CAvatar,
@@ -54,8 +54,18 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 
+import { useDispatch, useSelector } from 'react-redux'; 
+import { useNavigate } from "react-router-dom";
+
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+
+  const navigate = useNavigate();
+  //Bu sekilde redux tan okunacak
+  const userToken= useSelector(state=> state.userToken);
+
+ 
+
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },

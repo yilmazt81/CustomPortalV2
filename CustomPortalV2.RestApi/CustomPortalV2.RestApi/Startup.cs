@@ -54,30 +54,32 @@ namespace CustomPortalV2.RestApi
             services.AddDbContextPool<DBContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("DBConnection"), ServerVersion.Parse("5.7.27", ServerType.MySql), null));
 
+
             services.AddScoped<ISalePackageService, SalePackageService>();
             services.AddScoped<IAppLangService, AppLangService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICountryService, CountryService>();
-            services.AddScoped<IBranchService   , BranchService>();
+            services.AddScoped<IBranchService, BranchService>();
             services.AddScoped<IFormDefinationService, FormDefinationService>();
             services.AddScoped<IFormMetaDataService, FormMetaDataService>();
             services.AddScoped<ICompanyDefinationService, CompanyDefinationService>();
             services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
 
-  
 
 
-            services.AddScoped<ICompanyRepository, CompanyRepository>();          
+
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IAppLangRepository, AppLangRepository>();
-             
+
             services.AddScoped<IParamRepository, ParamRepository>();
             services.AddScoped<ILoginrequestLogRepository, LoginrequestLogRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IBranchRepository, BranchRepository>();
+
             services.AddMemoryCache();
 
         }

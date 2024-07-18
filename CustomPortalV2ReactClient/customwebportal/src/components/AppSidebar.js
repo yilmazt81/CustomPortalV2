@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
@@ -11,16 +11,18 @@ import { sygnet } from 'src/assets/brand/sygnet'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
-
+import PropTypes from 'prop-types' 
 // sidebar nav config
-import navigation from '../_nav'
+//import navigation from '../_nav'
 
-const AppSidebar = () => {
+const AppSidebar = (props) => {
+  
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   return (
+
     <CSidebar
       position="fixed"
       unfoldable={unfoldable}
@@ -35,7 +37,7 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={props.menuList} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
@@ -47,3 +49,8 @@ const AppSidebar = () => {
 }
 
 export default React.memo(AppSidebar)
+
+
+AppSidebar.propTypes = {
+  menuList: PropTypes.arrayOf(PropTypes.any),
+}
