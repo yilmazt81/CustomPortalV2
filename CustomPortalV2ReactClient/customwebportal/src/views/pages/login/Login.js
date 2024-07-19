@@ -61,7 +61,7 @@ const Login = () => {
         dispatch({ type: 'set', UserName: userInfo.UserName });        
         dispatch({ type: 'set', CompanyCode: userInfo.CompanyCode })
         axios.defaults.headers.common['Authorization'] = `Bearer ${loginresult.token}`;
-     
+        localStorage.setItem("LastToken",loginresult.token);
         navigate('../Dashboard');
 
       }else{ 
@@ -77,10 +77,10 @@ const Login = () => {
   
   
   useEffect(() => { 
-    if (userToken!=null)
-      {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
-        localStorage.setItem("Token",userToken);
+    var lastToken=localStorage.getItem("LastToken");
+    if (lastToken!=null)
+      { debugger;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
         navigate('../Dashboard'); 
       }else{
 

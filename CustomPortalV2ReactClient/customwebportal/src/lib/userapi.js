@@ -13,7 +13,8 @@ export async function LoginUser(logindata)
    
 }
 export async function  getUserMenu() {   
-  
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
   const { data } =  await axios.get(process.env.REACT_APP_APIURL+'/api/User/GetUserMenu');
   return data;
 };

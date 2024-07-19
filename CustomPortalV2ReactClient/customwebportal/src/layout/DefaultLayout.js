@@ -9,8 +9,7 @@ const DefaultLayout = () => {
   const [userMenu,setUserMenu] = useState([]);
 
   const navigate = useNavigate();
-
-
+ 
 
   async function LoadUserMenu(){
     var appUserMenu =  await  getUserMenu();
@@ -22,24 +21,29 @@ const DefaultLayout = () => {
     }
   }
 
-   useEffect(  () => {
+   useEffect( () => {
  
-    if (userToken==null)
+    var lastToken=localStorage.getItem("LastToken");
+    if (lastToken==null)
     {
       navigate('../Login');
       
     }else{
-     
+      
+      debugger;
+     if (userMenu.length==0)
+     {
       LoadUserMenu();
+     }
     } 
   
   }); 
 
   return (
     <div>
-      <AppSidebar />
+      <AppSidebar  menuList={userMenu}/>
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
-        <AppHeader menuList={userMenu} />
+        <AppHeader />
         <div className="body flex-grow-1 px-3">
           <AppContent />
         </div>

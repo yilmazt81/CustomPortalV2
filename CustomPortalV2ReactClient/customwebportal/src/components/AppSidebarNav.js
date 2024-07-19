@@ -1,15 +1,15 @@
 import React,{useEffect} from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types' 
-import { CBadge } from '@coreui/react'
-
+import { CBadge ,CNavItem,CNavGroup } from '@coreui/react' 
+import CIcon from '@coreui/icons-react'
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
   const navLink = (name, icon, badge) => {
     return (
       
       <>
-        {icon && icon}
+        
         {name && name}
         {badge && (
           <CBadge color={badge.color} className="ms-auto">
@@ -25,11 +25,11 @@ export const AppSidebarNav = ({ items }) => {
  
 
   const navItem = (item, index) => {
-    const { component, name, badge, icon, ...rest } = item
-    const Component = component
+    const {  name, badge, icon, ...rest } = item
+  
     debugger;
     return (
-      <Component
+      <CNavItem
         {...(rest.to &&
           !rest.items && {
             component: NavLink,
@@ -38,14 +38,14 @@ export const AppSidebarNav = ({ items }) => {
         {...rest}
       >
         {navLink(name, icon, badge)}
-      </Component>
+      </CNavItem>
     )
   }
   const navGroup = (item, index) => {
-    const { component, name, icon, to, ...rest } = item
-    const Component = component
+    const { name, icon, to, ...rest } = item
+    
     return ( 
-      <Component
+      <CNavGroup
         idx={String(index)}
         key={index}
         toggler={navLink(name, icon)}
@@ -55,7 +55,7 @@ export const AppSidebarNav = ({ items }) => {
         {item.items?.map((item, index) =>
           item.items ? navGroup(item, index) : navItem(item, index),
         )}
-      </Component>
+      </CNavGroup>
     )
   }
 
