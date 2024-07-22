@@ -14,10 +14,12 @@ namespace CustomPortalV2.Business.Service
     public class BranchService : IBranchService
     {
         IBranchRepository _branchRepository;
+        Encryption encryption = null;
         public BranchService(IBranchRepository branchRepository)
         {
 
             _branchRepository = branchRepository;
+            encryption = new Encryption("brnc_9178d95v59d");
         }
         private DefaultReturn<Branch> ChecFields(Branch branchDefination)
         {
@@ -54,16 +56,46 @@ namespace CustomPortalV2.Business.Service
 
             return returnType;
         }
-        public DefaultReturn<Branch> AddBranch(Branch branch)
+        public DefaultReturn<Branch> Save(Branch branch)
         {
             DefaultReturn<Branch> returnBranch = new DefaultReturn<Branch>();
 
-            var returnT = ChecFields(branch);
 
-            var newBranch = _branchRepository.AddBranch(branch);
+            returnBranch = ChecFields(branch);
+            if (returnBranch.ReturnCode != 1)
+            {
+                return returnBranch;
+            }
+            if (branch.Id != 0)
+            {
+                var oldBranch = _branchRepository.GetBranches(s => s.Id == branch.Id).FirstOrDefault();
+                if (oldBranch == null)
+                {
+                    throw new Exception("BranchIsNotExist");
+                }
 
-            returnBranch.Data = newBranch;
+                if (oldBranch.Name != "Main")
+                {
+                    branch.CompanyAdmin = false;
+                }
+                if (!string.IsNullOrEmpty(branch.EMailPassword))
+                {
+                    branch.EMailPassword = encryption.Encrypt(branch.EMailPassword);
+                }
+                else if (!string.IsNullOrEmpty(oldBranch.EMailPassword))
+                {
+                    branch.EMailPassword = oldBranch.EMailPassword;
+                };
+                var updateBrach = _branchRepository.UpdateBrach(branch);
+                returnBranch.Data = updateBrach;
 
+            }
+            else
+            {
+                branch.CompanyAdmin = false;
+                var newBranch = _branchRepository.AddBranch(branch);
+                returnBranch.Data = newBranch;
+            }
 
             return returnBranch;
         }
@@ -74,7 +106,7 @@ namespace CustomPortalV2.Business.Service
             try
             {
                 var data = _branchRepository.GetBranches(s => s.Id == id).FirstOrDefault();
-                if (data==null)
+                if (data == null)
                 {
                     throw new Exception("BranshisNotExist");
                 }
@@ -88,7 +120,7 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.SetException(ex);
             }
-          
+
             return defaultReturn;
         }
 
@@ -101,7 +133,7 @@ namespace CustomPortalV2.Business.Service
             try
             {
                 var userBranch = _branchRepository.Get(s => s.Id == branchId);
-                if (userBranch == null)
+                if(userBranch == null)
                 {
                     throw new Exception("Branchisnull");
                 }
@@ -116,8 +148,8 @@ namespace CustomPortalV2.Business.Service
                 }
                 else
                 {
-                    var branchList = _branchRepository.GetBranches(s => s.Id == branchId &&  !s.Deleted );
-                    defaultReturn.Data= branchList;
+                    var branchList = _branchRepository.GetBranches(s => s.Id == branchId && !s.Deleted);
+                    defaultReturn.Data = branchList;
                 }
 
             }
@@ -128,6 +160,37 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
 
+        }
+
+        public DefaultReturn<bool> Delete(int companyId, int id)
+        {
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            try
+            {
+
+                var deleteBranch = _branchRepository.Get(s => s.Id == id && !s.Deleted);
+                if (deleteBranch == null)
+                {
+                    throw new Exception("BranchNotFound");
+                }
+                if (deleteBranch.MainCompanyId != companyId)
+                {
+                    throw new Exception("CompanyIsNotSame");
+                }
+                if (deleteBranch.CompanyAdmin)
+                {
+                    throw new Exception("YouCantDeleteAdminBranch");
+                }
+                _branchRepository.DeleteBranch(deleteBranch);
+
+                defaultReturn.Data = true;
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
     }
 }

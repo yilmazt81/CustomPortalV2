@@ -25,6 +25,14 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return branch;
         }
 
+        public bool DeleteBranch(Branch branch)
+        {
+            var deletedB = _dbContext.Branches.Single(s => s.Id == branch.Id);
+            deletedB.Deleted = true;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
         public Branch? Get(Expression<Func<Branch, bool>> predicate)
         {
             return _dbContext.Branches.FirstOrDefault(predicate);
@@ -32,8 +40,24 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public List<Branch> GetBranches(Expression<Func<Branch, bool>> predicate)
         {
-             
+
             return _dbContext.Branches.Where(predicate).ToList();
+        }
+
+        public Branch UpdateBrach(Branch branch)
+        {
+            var oldBrach = _dbContext.Branches.Single(s => s.Id == branch.Id);
+
+            oldBrach.BranchPackageId = branch.BranchPackageId;
+            oldBrach.Name = branch.Name;
+            oldBrach.BranchPackageName = branch.BranchPackageName;
+            oldBrach.PhoneNumber = branch.PhoneNumber;
+            oldBrach.Email = branch.Email;
+            oldBrach.EMailPassword = branch.EMailPassword;
+            oldBrach.UserRuleId = branch.UserRuleId;
+            _dbContext.SaveChanges();
+
+            return oldBrach;
         }
     }
 }

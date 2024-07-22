@@ -37,6 +37,12 @@ export const TRANSLATIONS_TR = {
     BranchEdit:"Şube Güncelle",
     Close:"Kapat",
     Save:"Kaydet",
+    BranchDelete:"Şube Sil",
+    Ok:"Tamam",
+    DeleteMessage1:"Silmek istediğinizden emin misiniz ?",
+    DeleteMessage2:"Sildikten sonra Şube kullanıcıları dokumanlarına ulaşılamayacaktır.",
+    
+
 
 
 

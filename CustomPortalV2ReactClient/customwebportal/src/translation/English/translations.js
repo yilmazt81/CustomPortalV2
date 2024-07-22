@@ -37,6 +37,12 @@ export const TRANSLATIONS_EN = {
     BranchEdit:"Branch Edit",
     Close:"Close",
     Save:"Save",
+    BranchDelete:"Delete Branch",
+    Ok:"Ok",
+    DeleteMessage1:"Are you sure you want to delete ?",
+    DeleteMessage2:"After deletion, Branch users will not be able to access their documents.",
+    
+    
 
     
 };

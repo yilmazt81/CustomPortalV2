@@ -33,7 +33,7 @@ namespace CustomPortalV2.RestApi.Controllers
             var branchId = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
             var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
 
-            string key = $"CompanyBranch{branchId}";
+            string key = $"CompanyBranch{companyId}";
              
           if (_memoryCache.TryGetValue(key, out DefaultReturn<List<Branch>> list))
                 return Ok(list);
@@ -58,11 +58,32 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(branch);
         }
 
+        [HttpGet("DeleteBranch/{id}")]
+        public IActionResult DeleteBranch(int id)
+        {
+            var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
+
+            string key = $"CompanyBranch{companyId}";
+            _memoryCache.Remove(key);
+            var deleteResult = branchService.Delete(int.Parse(companyId), id);
+
+
+            return Ok(deleteResult);
+        }
+
+
         [HttpPost]
         public IActionResult Post([FromBody] Branch branchDefination)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var branchId = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
+            var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
 
-            var returnV = branchService.AddBranch(branchDefination);
+            branchDefination.MainCompanyId =int.Parse(companyId);
+           
+            var returnV = branchService.Save(branchDefination);
+            string key = $"CompanyBranch{companyId}";
+            _memoryCache.Remove(key);
 
             return Ok(returnV);
 

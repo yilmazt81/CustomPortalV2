@@ -16,6 +16,8 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<Branch> GetBranch(int companyId, int id);
 
-        DefaultReturn<Branch> AddBranch(Branch branch);
+        DefaultReturn<Branch> Save(Branch branch);
+
+        DefaultReturn<bool> Delete(int companyId,int id);
     }
 }

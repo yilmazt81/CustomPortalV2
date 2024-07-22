@@ -25,7 +25,9 @@ import {
   CModalBody,
   CFormLabel,
   CFormInput,
-  CFormSelect
+  CFormSelect,
+  CCardText
+  
 
 } from '@coreui/react'
 import { CChartLine } from '@coreui/react-chartjs'
@@ -71,7 +73,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { Gridcolumns } from './DataGrid';
-import { GetBranchList, GetBranch,SaveBranch } from '../../lib/companyapi';
+import { GetBranchList, GetBranch, SaveBranch ,DeleteBranch} from '../../lib/companyapi';
 import { getUserRoles, GetBranchpackages } from '../../lib/userapi';
 
 
@@ -87,8 +89,12 @@ const BranchDefination = () => {
   const [editBranch, setEditBranch] = useState(null);
 
   const [visible, setVisible] = useState(false)
+  const [visibleDelete, setVisibleDelete] = useState(false)
+
 
   const [saveStart, setsaveStart] = useState(false);
+  const [deleteStart, setdeleteStart] = useState(false);
+
   const [saveError, setSaveError] = useState(null);
 
 
@@ -99,9 +105,9 @@ const BranchDefination = () => {
     try {
 
       var companyBranchList = await GetBranchList();
-       
+
       if (companyBranchList.returnCode === 1) {
-        setBranchList(companyBranchList.data); 
+        setBranchList(companyBranchList.data);
       } else {
         setSaveError(companyBranchList.ReturnMessage);
       }
@@ -113,12 +119,12 @@ const BranchDefination = () => {
   }
 
   async function LoadUserRoles() {
-   
+
     try {
       var userRolesList = await getUserRoles();
       if (userRolesList.returnCode === 1) {
         setUserRoles(userRolesList.data);
-      }else{
+      } else {
         setSaveError(userRolesList.ReturnMessage);
       }
     } catch (error) {
@@ -128,12 +134,12 @@ const BranchDefination = () => {
   }
 
   async function LoadBrachPackages() {
- 
+
     try {
       var branchPackagesList = await GetBranchpackages();
       if (branchPackagesList.returnCode === 1) {
         setBranchPackages(branchPackagesList.data);
-      }else{
+      } else {
         setSaveError(branchPackagesList.ReturnMessage);
       }
     } catch (error) {
@@ -160,7 +166,6 @@ const BranchDefination = () => {
   async function EditData(row) {
     var id = row.original["id"];
     setsaveStart(true);
-
     try {
 
       var editbranch = await GetBranch(id);
@@ -175,8 +180,27 @@ const BranchDefination = () => {
     } finally {
       setsaveStart(false);
     }
-
   }
+
+  async function DeleteData(row) {
+    var id = row.original["id"];
+    setdeleteStart(true);
+    try {
+       
+      var editbranch = await GetBranch(id);
+      if (editbranch.returnCode === 1) {
+        setEditBranch(editbranch.data);
+        setVisibleDelete(!visibleDelete);
+      } else {
+        setSaveError(editbranch.ReturnMessage);
+      }
+    } catch (error) {
+      setSaveError(error.message);
+    } finally {
+      setdeleteStart(false);
+    }
+  }
+
   function handleChange(event) {
     const { name, value } = event.target;
     setEditBranch({ ...editBranch, [name]: value });
@@ -187,10 +211,10 @@ const BranchDefination = () => {
 
     try {
       var saveBranchReturn = await SaveBranch(editBranch);
-      if (saveBranchReturn.ReturnCode === 1) {
+      if (saveBranchReturn.returnCode === 1) {
         setVisible(!visible);
         LoadBranchList();
-      }else{
+      } else {
         setSaveError(saveBranchReturn.ReturnMessage);
       }
     } catch (error) {
@@ -199,18 +223,34 @@ const BranchDefination = () => {
 
   }
 
+  async function DeleteDataServer(){
+    try {   
+      var deleteBranchReturn = await DeleteBranch(editBranch.id);
+      if (deleteBranchReturn.returnCode === 1) {
+        setVisibleDelete(!visibleDelete);
+        LoadBranchList();
+      } else {
+        setSaveError(deleteBranchReturn.returnMessage);
+      }
+    } catch (error) {
+      setSaveError(error.message);
+    }
+  }
+
   async function NewBranch() {
     setsaveStart(false);
     setSaveError(null);
-    setEditBranch({ branchPackageId: 0,
-                    id:0,
-                    mainCompanyId:0,
-                    userRuleId:0,
-                    companyAdmin:false,
-                    branchPackageName:"",
-                    deleted:false,
-                    userRuleName:"",
-                    sysAdmin:false, });
+    setEditBranch({
+      branchPackageId: 0,
+      id: 0,
+      mainCompanyId: 0,
+      userRuleId: 0,
+      companyAdmin: false,
+      branchPackageName: "",
+      deleted: false,
+      userRuleName: "",
+      sysAdmin: false,
+    });
     setVisible(!visible);
   }
 
@@ -225,7 +265,7 @@ const BranchDefination = () => {
         <IconButton onClick={() => EditData(row)}>
           <EditIcon />
         </IconButton>
-        <IconButton onClick={() => EditData(row)}>
+        <IconButton onClick={() => DeleteData(row)}>
           <DeleteIcon />
         </IconButton>
 
@@ -236,8 +276,56 @@ const BranchDefination = () => {
 
   return (<>
 
-    <CModal
 
+    <CModal
+      backdrop="static"
+      visible={visibleDelete}
+      onClose={() => setVisibleDelete(false)}
+      alignment='center'
+      
+
+    >
+      <CModalHeader>
+        <CModalTitle>{t("BranchDelete")}</CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+
+        <CRow>
+            <CCardText>{t("DeleteMessage1")}</CCardText>
+        </CRow>
+        <CRow>
+            <CCardText>{t("DeleteMessage2")}</CCardText>
+        </CRow>
+
+        <CRow xs={{ cols: 4 }}>
+          <CCol> </CCol>
+          <CCol>
+            {
+              saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "80%", height: "80%" }} ></Lottie> : ""
+            }
+          </CCol>
+          <CCol> </CCol>
+          <CCol> </CCol>
+
+
+
+        </CRow>
+        <CRow>
+          {saveError != null ?
+            <CAlert color="warning">{saveError}</CAlert>
+            : ""
+          }
+        </CRow>
+
+      </CModalBody>
+      <CModalFooter>
+        <CButton color="secondary" onClick={() => setVisibleDelete(!visibleDelete)}>{t("Close")}</CButton>
+        <CButton color="primary" onClick={() => DeleteDataServer()}>{t("Ok")}</CButton>
+      </CModalFooter>
+
+    </CModal>
+
+    <CModal
       backdrop="static"
       visible={visible}
       onClose={() => setVisible(false)}
@@ -330,6 +418,7 @@ const BranchDefination = () => {
         </CRow>
 
       </CModalBody>
+
       <CModalFooter>
         <CButton color="secondary" onClick={() => setVisible(!visible)}>{t("Close")}</CButton>
         <CButton color="primary" onClick={() => SaveData()}>{t("Save")}</CButton>
@@ -354,8 +443,8 @@ const BranchDefination = () => {
         <CRow>
           {
             saveError != null ?
-            <CAlert color="warning">{saveError}</CAlert>
-            : ""
+              <CAlert color="warning">{saveError}</CAlert>
+              : ""
           }
         </CRow>
       </CCardBody>
