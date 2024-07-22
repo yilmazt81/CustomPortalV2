@@ -27,5 +27,16 @@ export const TRANSLATIONS_EN = {
     UserNameOrPasswordWrong:"User Name or Password is Wrong",
     UserDisable:"The User is not active.",
     FailTimeOutMinute:"Too many incorrect login attempts, wait for a while and try again. ",
+    Dashboard:"Dashboard",
+    BranchDefination:"Branch Definations",
+    BranchName:"Branch Name",
+    PackedName:"Paked Name",
+    AddNew:"Add New",
+    UserRuleName:"User Rule Name",    
+    EMailPassword:"E Mail Password",
+    BranchEdit:"Branch Edit",
+    Close:"Close",
+    Save:"Save",
 
+    
 };

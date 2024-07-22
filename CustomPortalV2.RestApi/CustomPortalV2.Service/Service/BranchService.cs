@@ -68,20 +68,66 @@ namespace CustomPortalV2.Business.Service
             return returnBranch;
         }
 
-        public DefaultReturn<Branch> GetBranch(int id)
+        public DefaultReturn<Branch> GetBranch(int companyId, int id)
         {
             DefaultReturn<Branch> defaultReturn = new DefaultReturn<Branch>();
-            defaultReturn.Data = _branchRepository.GetBranches(s => s.Id == id).First();
-
+            try
+            {
+                var data = _branchRepository.GetBranches(s => s.Id == id).FirstOrDefault();
+                if (data==null)
+                {
+                    throw new Exception("BranshisNotExist");
+                }
+                if (data.MainCompanyId != companyId)
+                {
+                    throw new Exception("BranchISNotSameCompany");
+                }
+                defaultReturn.Data = data;
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+          
             return defaultReturn;
         }
 
-        public DefaultReturn<List<Branch>> GetCompanyBraches(int companyId)
+
+
+        public DefaultReturn<List<Branch>> GetCompanyBraches(int companyId, int branchId)
         {
             DefaultReturn<List<Branch>> defaultReturn = new DefaultReturn<List<Branch>>();
-            defaultReturn.Data = _branchRepository.GetBranches(s => s.MainCompanyId == companyId && !s.Deleted);
+
+            try
+            {
+                var userBranch = _branchRepository.Get(s => s.Id == branchId);
+                if (userBranch == null)
+                {
+                    throw new Exception("Branchisnull");
+                }
+                if (userBranch.MainCompanyId != companyId)
+                {
+                    throw new Exception("MainCompanyIdDiffrend");
+                }
+                if (userBranch.CompanyAdmin)
+                {
+                    var branchList = _branchRepository.GetBranches(s => s.MainCompanyId == companyId && !s.Deleted);
+                    defaultReturn.Data = branchList;
+                }
+                else
+                {
+                    var branchList = _branchRepository.GetBranches(s => s.Id == branchId &&  !s.Deleted );
+                    defaultReturn.Data= branchList;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
 
             return defaultReturn;
+
         }
     }
 }

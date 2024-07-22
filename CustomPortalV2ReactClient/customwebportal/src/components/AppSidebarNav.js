@@ -3,17 +3,21 @@ import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types' 
 import { CBadge ,CNavItem,CNavGroup } from '@coreui/react' 
 import CIcon from '@coreui/icons-react'
+
+import DynamicFaIcon  from './DynamicFaIcon';
+
+
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
   const navLink = (name, icon, badge) => {
     return (
       
       <>
-        
+        <DynamicFaIcon name={icon}></DynamicFaIcon>
         {name && name}
         {badge && (
           <CBadge color={badge.color} className="ms-auto">
-            {badge.text}
+               {badge.text}
           </CBadge>
         )}
       </>
@@ -27,7 +31,6 @@ export const AppSidebarNav = ({ items }) => {
   const navItem = (item, index) => {
     const {  name, badge, icon, ...rest } = item
   
-    debugger;
     return (
       <CNavItem
         {...(rest.to &&

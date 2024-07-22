@@ -13,14 +13,26 @@ namespace CustomPortalV2.DataAccessLayer.Repository
     {
 
         DBContext _dbContext;
-        public AppLangRepository(DBContext dbContext) {
+        public AppLangRepository(DBContext dbContext)
+        {
             _dbContext = dbContext;
         }
 
         public string Get(string appTag, int languageId, string defaultValue)
         {
             var appLangTranslate = _dbContext.ApplicationLanguage.FirstOrDefault(s => s.LangId == languageId && s.TranslateTag == appTag);
-
+            if (appLangTranslate == null)
+            {
+                _dbContext.ApplicationLanguage.Add(new Core.Model.App.ApplicationLanguage()
+                {
+                    CreatedDate = DateTime.Now,
+                    LangId = (byte)languageId,
+                    TranslateTag = appTag,
+                    TranslateText = defaultValue,
+                    MustTranslate = 1,
+                });
+                _dbContext.SaveChanges();
+            }
             return (appLangTranslate == null ? defaultValue : appLangTranslate.TranslateText);
         }
 

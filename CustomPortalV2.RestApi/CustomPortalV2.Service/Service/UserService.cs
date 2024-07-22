@@ -52,6 +52,30 @@ namespace CustomPortalV2.Business.Service
             return _userRepository.Update(user);
         }
 
+        public DefaultReturn<List<BranchPackage>> GetBranchPackage(int userId)
+        {
+            var user = GetById(userId);
+            DefaultReturn<List<BranchPackage>> defaultReturn = new DefaultReturn<List<BranchPackage>>();
+            var branchPackages = _userRepository.GetBranchPackages();
+            List<BranchPackage> rPackages = new List<BranchPackage>();
+
+            foreach (var brancPackage in branchPackages)
+            {
+                var packageName = _appLangRepository.Get("BranchPackage." + brancPackage.Name, user.AppLangId, brancPackage.Name);
+
+                rPackages.Add(new BranchPackage()
+                {
+                    Id = brancPackage.Id,
+                    Name = packageName,
+                    MonthlyRecordCount= brancPackage.MonthlyRecordCount 
+                });
+
+            }
+            defaultReturn.Data = rPackages;
+
+            return defaultReturn;
+        }
+
         public User GetById(int id)
         {
             return _userRepository.Get(id);
@@ -89,14 +113,37 @@ namespace CustomPortalV2.Business.Service
                 {
                     name = menuName,
                     to = oneMenu.MenuAdress,
-                    icon = oneMenu.IconClass
-
+                    icon = oneMenu.IconClass,
                 };
 
                 returnType.Data.Add(userRuleMenuDTO);
             }
 
             return returnType;
+
+        }
+
+        public DefaultReturn<List<UserRule>> GetUserRoles(int userId)
+        {
+            var user = GetById(userId);
+            DefaultReturn<List<UserRule>> defaultReturn = new DefaultReturn<List<UserRule>>();
+            var userRoles = _userRepository.GetUserRules();
+            List<UserRule> ruserRules = new List<UserRule>();
+
+            foreach (var userRule in userRoles)
+            {
+                var roleName = _appLangRepository.Get("UserRole." + userRule.Name, user.AppLangId, userRule.Name);
+
+                ruserRules.Add(new UserRule()
+                {
+                    Id = userRule.Id,
+                    Name = roleName,
+                });
+
+            }
+            defaultReturn.Data = ruserRules;
+
+            return defaultReturn;
 
         }
 
@@ -178,7 +225,7 @@ namespace CustomPortalV2.Business.Service
             return _userRepository.Update(user);
         }
 
-
+        
     }
 
 

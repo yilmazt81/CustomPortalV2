@@ -1,4 +1,6 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +24,14 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache = memoryCache;
         }
 
-        [HttpGet("GetUserMenu")]
-        [Authorize]
+        [HttpGet("GetUserMenu")] 
         public IActionResult GetUserMenu()
         {
 
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var branchId = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
+            //Todo: badge için ekleme yapılacak. cachedende dönse db sen sayi alinacak.
 
             string key = $"UserMenu{userId}";
             if (_memoryCache.TryGetValue(key, out DefaultReturn<List<UserRuleMenuDTO>> list))
@@ -44,6 +46,43 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(applicationMenu);
         }
+        [HttpGet("GetUserRoles")]
+        public IActionResult GetUserRoles()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            string key = $"UserRoles{userId}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<UserRule>> list))
+                return Ok(list);
+
+            var userRoles = _userService.GetUserRoles(int.Parse(userId));
+            _memoryCache.Set(key, userRoles, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(userRoles);
+        }
+
+        [HttpGet("GetBranchpackages")]
+        public IActionResult GetBranchpackages()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            string key = $"Branchpackage{userId}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<BranchPackage>> list))
+                return Ok(list);
+
+            var userRoles = _userService.GetBranchPackage(int.Parse(userId));
+            _memoryCache.Set(key, userRoles, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(userRoles);
+        }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
@@ -56,18 +95,9 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

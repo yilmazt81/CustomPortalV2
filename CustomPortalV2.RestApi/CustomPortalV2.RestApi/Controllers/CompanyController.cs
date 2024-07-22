@@ -19,28 +19,7 @@ namespace CustomPortalV2.RestApi.Controllers
         {
             this.companyService = companyService;
             this.branchService = branchService; 
-        }
-
-        // GET: api/<CompanyController>
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var branchList = branchService.GetCompanyBraches(1);
-
-            return Ok(branchList);
-        }
-
-        // GET api/<CompanyController>/5
-        [HttpGet("{id}")]
-        [Authorize]
-        public IActionResult Get(int id)
-        {
-
-            var branch = branchService.GetBranch(id);
-
-
-            return Ok(branch);
-        }
+        }  
 
         [HttpPost]
         public IActionResult Post([FromBody] CreateCompanyRequest createCompany)

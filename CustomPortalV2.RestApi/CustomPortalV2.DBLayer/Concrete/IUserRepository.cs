@@ -20,6 +20,10 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId);
 
+        IEnumerable<UserRule> GetUserRules();
+
+        IEnumerable<BranchPackage> GetBranchPackages();
+
 
     }
 }

@@ -27,6 +27,19 @@ export const TRANSLATIONS_TR = {
     UserNameOrPasswordWrong:"Kullanıcı adı veya şifre yanlış",
     UserDisable:"Kullancı  Aktif Değil",
     FailTimeOutMinute:"Fazla hatalı giriş denemesi bir süre bekledikten sonra tekrar deneyiniz.",
+    Dashboard:"Genel Görünüm",    
+    BranchDefination:"Şube Tanımları",
+    BranchName:"Şube Adı",
+    PackedName:"Paket Adı",
+    AddNew:"Yeni Ekle",
+    UserRuleName:"Şube Yetkisi",
+    EMailPassword:"E Mail Şifresi",
+    BranchEdit:"Şube Güncelle",
+    Close:"Kapat",
+    Save:"Kaydet",
+
+
+
     
 
 };

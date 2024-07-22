@@ -12,9 +12,9 @@ namespace CustomPortalV2.Business.Concrete
     public interface IBranchService
     {
 
-        DefaultReturn<List<Branch>> GetCompanyBraches(int companyId);
+        DefaultReturn<List<Branch>> GetCompanyBraches(int companyId,int branchId);
 
-        DefaultReturn<Branch> GetBranch(int id);
+        DefaultReturn<Branch> GetBranch(int companyId, int id);
 
         DefaultReturn<Branch> AddBranch(Branch branch);
     }

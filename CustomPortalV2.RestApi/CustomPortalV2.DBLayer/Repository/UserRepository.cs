@@ -35,6 +35,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.Users.Where(s => s.MainCompanyId == mainCompany).ToList();
         }
 
+        public IEnumerable<BranchPackage> GetBranchPackages()
+        {
+           return _dbContext.BranchPackage.ToList();
+        }
+
         public User? GetUserName(string userName, int companyId)
         {
             return _dbContext.Users.FirstOrDefault(s => s.MainCompanyId == companyId && s.UserName == userName);
@@ -44,6 +49,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId)
         {
             return _dbContext.UserRuleMenu.Where(s => s.UserRuleId == userRuleId).ToArray();
+        }
+
+        public IEnumerable<UserRule> GetUserRules()
+        {
+
+            return _dbContext.UserRule.ToList();
         }
 
         public bool Update(User user)

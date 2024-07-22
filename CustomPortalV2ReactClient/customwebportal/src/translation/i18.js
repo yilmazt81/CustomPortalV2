@@ -24,3 +24,6 @@ i18n
  });
  
 i18n.changeLanguage("tr");
+
+
+export default i18n;

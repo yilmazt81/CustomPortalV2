@@ -16,7 +16,7 @@ import {
 } from '@coreui/react'
 import { cilMagnifyingGlass } from '@coreui/icons'
 import { useTranslation } from "react-i18next";
-import "../../translation/i18";
+import "../../../translation/i18";
 
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser, cilPhone, cilRoom, cilIndustry, cilMap } from '@coreui/icons'

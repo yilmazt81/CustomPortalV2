@@ -26,7 +26,17 @@ export const TRANSLATIONS_RU = {
     UserNameOrPasswordWrong:"Имя пользователя или пароль неверны",
     UserDisable:"Отключить пользователя",
     FailTimeOutMinute : "Слишком много неправильных попыток входа в систему. Подождите некоторое время и повторите попытку.",
-    
+    Dashboard:"Панель приборов",
+    BranchDefination:"Определения ветвей",
+    BranchName:"Название филиала",
+    PackedName:"Упакованное имя",
+    AddNew:"Добавить новое",
+    UserRuleName:"Имя правила ветки",
+    EMailPassword:"Пароль от электронной почты",    
+    BranchEdit:"Филиал Править",
+    Close:"закрывать",
+    Save:"Сохранять",
+
 
 
 };

@@ -21,5 +21,10 @@ namespace CustomPortalV2.Business.Concrete
         bool DeleteUser(User user);
 
         DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId,int branchId);
+
+        DefaultReturn<List<UserRule>>  GetUserRoles(int userId);
+
+        DefaultReturn<List<BranchPackage>> GetBranchPackage(int userId);
+
     }
 }

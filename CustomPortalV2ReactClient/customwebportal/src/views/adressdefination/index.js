@@ -50,7 +50,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const UserDefination = () => {
+const AdresDefination = () => {
     const navigate = useNavigate();
     //Bu sekilde redux tan okunacak
     const userToken= useSelector(state=> state.userToken);
@@ -63,4 +63,4 @@ const UserDefination = () => {
       )
 }
 
-export default UserDefination;
+export default AdresDefination;
