@@ -32,6 +32,29 @@ export async function  GetBranchpackages() {
   return data;
 };
 
+export async function  GetUserList() {   
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  const { data } =  await axios.get(process.env.REACT_APP_APIURL+'/api/User');
+  return data;
+};
+
+
+export async function  GetUser(id) {   
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/User/${id}`);
+  return data;
+};
+
+export async function  CreateNewUser() {   
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/User/CreateNewUser`);
+  return data;
+};
+
+
 
 
 

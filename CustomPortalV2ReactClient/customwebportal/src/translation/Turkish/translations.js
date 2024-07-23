@@ -41,6 +41,8 @@ export const TRANSLATIONS_TR = {
     Ok:"Tamam",
     DeleteMessage1:"Silmek istediğinizden emin misiniz ?",
     DeleteMessage2:"Sildikten sonra Şube kullanıcıları dokumanlarına ulaşılamayacaktır.",
+    FullName:"Tam Adı",
+    EditUserName:"Kullanıcı Güncelle",
     
 
 

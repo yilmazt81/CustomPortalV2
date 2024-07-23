@@ -41,7 +41,7 @@ export const TRANSLATIONS_EN = {
     Ok:"Ok",
     DeleteMessage1:"Are you sure you want to delete ?",
     DeleteMessage2:"After deletion, Branch users will not be able to access their documents.",
-    
+    FullName:"Full Name",
     
 
     

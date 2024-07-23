@@ -52,22 +52,22 @@ namespace CustomPortalV2.Business.Service
             return _userRepository.Update(user);
         }
 
-        public DefaultReturn<List<BranchPackage>> GetBranchPackage(int userId)
+        public DefaultReturn<List<BranchPackage>> GetBranchPackage(int companyId, int userId)
         {
-            var user = GetById(userId);
+            var user = GetById(companyId,userId);
             DefaultReturn<List<BranchPackage>> defaultReturn = new DefaultReturn<List<BranchPackage>>();
             var branchPackages = _userRepository.GetBranchPackages();
             List<BranchPackage> rPackages = new List<BranchPackage>();
 
             foreach (var brancPackage in branchPackages)
             {
-                var packageName = _appLangRepository.Get("BranchPackage." + brancPackage.Name, user.AppLangId, brancPackage.Name);
+                var packageName = _appLangRepository.Get("BranchPackage." + brancPackage.Name, user.Data.AppLangId, brancPackage.Name);
 
                 rPackages.Add(new BranchPackage()
                 {
                     Id = brancPackage.Id,
                     Name = packageName,
-                    MonthlyRecordCount= brancPackage.MonthlyRecordCount 
+                    MonthlyRecordCount = brancPackage.MonthlyRecordCount
                 });
 
             }
@@ -76,10 +76,30 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public User GetById(int id)
+        public DefaultReturn<User> GetById(int companyId, int id)
         {
-            return _userRepository.Get(id);
+            DefaultReturn<User> defaultReturn = new DefaultReturn<User>();
+            try
+            {
+                var user = _userRepository.Get(id);
+                if (user == null)
+                {
+                    throw new Exception("UserIsNull");
+                }
+                if (user.MainCompanyId != companyId)
+                {
+                    throw new Exception("UserIsNotSameCompany");
+                }
 
+                defaultReturn.Data = user;
+
+            }
+            catch (Exception ex)
+            {
+
+                defaultReturn.SetException(ex);
+            }
+            return defaultReturn;
         }
 
         public User? GetUserByUserName(string companyCode, string userName)
@@ -104,10 +124,10 @@ namespace CustomPortalV2.Business.Service
             }
             returnType.Data = new List<UserRuleMenuDTO>();
             var menuList = _userRepository.GetUserRuleMenus(branch.UserRuleId);
-            var user = GetById(userId);
+            var user = GetById(branch.MainCompanyId,userId);
             foreach (var oneMenu in menuList)
             {
-                var menuName = _appLangRepository.Get("MainMenu." + oneMenu.MenuAdress, user.AppLangId, oneMenu.MenuName);
+                var menuName = _appLangRepository.Get("MainMenu." + oneMenu.MenuAdress, user.Data.AppLangId, oneMenu.MenuName);
 
                 UserRuleMenuDTO userRuleMenuDTO = new UserRuleMenuDTO()
                 {
@@ -123,16 +143,16 @@ namespace CustomPortalV2.Business.Service
 
         }
 
-        public DefaultReturn<List<UserRule>> GetUserRoles(int userId)
+        public DefaultReturn<List<UserRule>> GetUserRoles(int companyId,int userId)
         {
-            var user = GetById(userId);
+            var user = GetById(companyId,userId);
             DefaultReturn<List<UserRule>> defaultReturn = new DefaultReturn<List<UserRule>>();
             var userRoles = _userRepository.GetUserRules();
             List<UserRule> ruserRules = new List<UserRule>();
 
             foreach (var userRule in userRoles)
             {
-                var roleName = _appLangRepository.Get("UserRole." + userRule.Name, user.AppLangId, userRule.Name);
+                var roleName = _appLangRepository.Get("UserRole." + userRule.Name, user.Data.AppLangId, userRule.Name);
 
                 ruserRules.Add(new UserRule()
                 {
@@ -147,9 +167,36 @@ namespace CustomPortalV2.Business.Service
 
         }
 
-        public List<User> GetUsers(int companyId)
+        public DefaultReturn<List<User>> GetUsers(int companyId, int branchId)
         {
-            return _userRepository.GetAll(companyId).ToList();
+            DefaultReturn<List<User>> defaultReturn = new DefaultReturn<List<User>>();
+            try
+            {
+
+                var branch = _branchRepository.Get(s => s.Id == branchId);
+                if (branch.MainCompanyId != companyId)
+                {
+                    throw new Exception("CompanyDiffrendForBranch");
+                }
+                if (branch.CompanyAdmin)
+                {
+                    defaultReturn.Data = _userRepository.GetAll(companyId).ToList();
+                }
+                else
+                {
+                    defaultReturn.Data = _userRepository.GetBranchUsers(companyId).ToList();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+
+            return defaultReturn;
+
 
         }
 
@@ -225,7 +272,7 @@ namespace CustomPortalV2.Business.Service
             return _userRepository.Update(user);
         }
 
-        
+
     }
 
 

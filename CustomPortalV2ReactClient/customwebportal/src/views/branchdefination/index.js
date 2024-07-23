@@ -78,8 +78,7 @@ import { getUserRoles, GetBranchpackages } from '../../lib/userapi';
 
 
 
-const BranchDefination = () => {
-  const navigate = useNavigate();
+const BranchDefination = () => { 
 
   const { t } = useTranslation();
   const [branchList, setBranchList] = useState([]);
@@ -281,8 +280,7 @@ const BranchDefination = () => {
       backdrop="static"
       visible={visibleDelete}
       onClose={() => setVisibleDelete(false)}
-      alignment='center'
-      
+      alignment='center'      
 
     >
       <CModalHeader>

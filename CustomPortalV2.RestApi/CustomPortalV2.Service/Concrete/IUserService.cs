@@ -14,17 +14,17 @@ namespace CustomPortalV2.Business.Concrete
     {
         enumLoginReturn Login(string clientIp, string companyCode,string username, string password,ref User? user);
         bool UpdateUser(User user);
-        List<User> GetUsers(int companyId);
-        User GetById(int id);
+        DefaultReturn< List<User>> GetUsers(int companyId,int branchId);
+        DefaultReturn<User> GetById(int companyId, int id);
         User? GetUserByUserName(string companyCode, string userName);
         User AddUser(User user);
         bool DeleteUser(User user);
 
         DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId,int branchId);
 
-        DefaultReturn<List<UserRule>>  GetUserRoles(int userId);
+        DefaultReturn<List<UserRule>>  GetUserRoles(int companyId, int userId);
 
-        DefaultReturn<List<BranchPackage>> GetBranchPackage(int userId);
+        DefaultReturn<List<BranchPackage>> GetBranchPackage(int companyId, int userId);
 
     }
 }

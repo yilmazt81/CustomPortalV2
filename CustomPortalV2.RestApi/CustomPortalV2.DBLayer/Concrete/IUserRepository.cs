@@ -17,7 +17,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         bool Update(User user);
 
         IEnumerable<User> GetAll(int mainCompany);
-
+        IEnumerable<User> GetBranchUsers(int branchId);
         IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId);
 
         IEnumerable<UserRule> GetUserRules();

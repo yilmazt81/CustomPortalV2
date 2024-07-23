@@ -32,12 +32,17 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<User> GetAll(int mainCompany)
         {
 
-            return _dbContext.Users.Where(s => s.MainCompanyId == mainCompany).ToList();
+            return _dbContext.Users.Where(s => s.MainCompanyId == mainCompany && !s.Deleted).ToList();
         }
 
         public IEnumerable<BranchPackage> GetBranchPackages()
         {
            return _dbContext.BranchPackage.ToList();
+        }
+
+        public IEnumerable<User> GetBranchUsers(int branchId)
+        {
+            return _dbContext.Users.Where(s => s.CompanyBranchId == branchId && !s.Deleted).ToList();
         }
 
         public User? GetUserName(string userName, int companyId)

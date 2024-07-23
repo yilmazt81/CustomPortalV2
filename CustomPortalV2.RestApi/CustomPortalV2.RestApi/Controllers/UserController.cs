@@ -2,6 +2,7 @@
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.RestApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -24,7 +25,7 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache = memoryCache;
         }
 
-        [HttpGet("GetUserMenu")] 
+        [HttpGet("GetUserMenu")]
         public IActionResult GetUserMenu()
         {
 
@@ -49,13 +50,13 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetUserRoles")]
         public IActionResult GetUserRoles()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.GetUserId();
 
             string key = $"UserRoles{userId}";
             if (_memoryCache.TryGetValue(key, out DefaultReturn<List<UserRule>> list))
                 return Ok(list);
 
-            var userRoles = _userService.GetUserRoles(int.Parse(userId));
+            var userRoles = _userService.GetUserRoles(User.GetCompanyId(), userId);
             _memoryCache.Set(key, userRoles, new MemoryCacheEntryOptions
             {
                 AbsoluteExpiration = DateTime.Now.AddMinutes(30),
@@ -68,13 +69,12 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetBranchpackages")]
         public IActionResult GetBranchpackages()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+            var userId = User.GetUserId();
             string key = $"Branchpackage{userId}";
             if (_memoryCache.TryGetValue(key, out DefaultReturn<List<BranchPackage>> list))
                 return Ok(list);
 
-            var userRoles = _userService.GetBranchPackage(int.Parse(userId));
+            var userRoles = _userService.GetBranchPackage(User.GetCompanyId(), userId);
             _memoryCache.Set(key, userRoles, new MemoryCacheEntryOptions
             {
                 AbsoluteExpiration = DateTime.Now.AddMinutes(30),
@@ -84,11 +84,73 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(userRoles);
         }
 
+        [HttpGet]
+        public ActionResult Get()
+        {
+            var branchId = User.GetBranchId();
+            var companyId = User.GetCompanyId();
+            string key = $"BranchUser{branchId}";
+
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<User>> list))
+                return Ok(list);
+
+
+            var userList = _userService.GetUsers(companyId, branchId);
+
+            _memoryCache.Set(key, userList, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+
+            return Ok(userList);
+
+        }
+        [HttpGet("CreateNewUser")]
+        public ActionResult CreateNewUser()
+        {
+            var branchId = User.GetBranchId();
+            var companyId = User.GetCompanyId();
+            string key = $"BranchUser{branchId}";
+
+            DefaultReturn<User> defaultReturn = new DefaultReturn<User>();
+            defaultReturn.Data = new User()
+            {
+                MainCompanyId = companyId,
+                CompanyBranchId = branchId,
+                BranchName="",
+                FullName="",
+                PhoneNumber="",
+                UserName="",
+                Email="",
+            };
+
+            return Ok(defaultReturn);
+
+        }
+        
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult Get(int id)
         {
-            return "value";
+            var branchId = User.GetBranchId();
+            var companyId = User.GetCompanyId();
+            string key = $"User{id}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<User> list))
+                return Ok(list);
+
+            var userReturn = _userService.GetById(companyId, id);
+
+            _memoryCache.Set(key, userReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(userReturn);
         }
 
         // POST api/<UserController>
@@ -98,6 +160,6 @@ namespace CustomPortalV2.RestApi.Controllers
 
         }
 
-        
+
     }
 }
