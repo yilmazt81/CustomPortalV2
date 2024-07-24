@@ -21,17 +21,17 @@ export  const Gridcolumns = [
     size: 150,
   },
   {
-    accessorKey: 'PhoneNumber',
+    accessorKey: 'phoneNumber',
     header:  i18.t('PhoneNumber'),
     size: 150,
   },
   {
-    accessorKey: 'Email',
+    accessorKey: 'email',
     header:  i18.t('Email'),
     size: 150,
   },
   {
-    accessorKey: 'BranchName',
+    accessorKey: 'branchName',
     header:  i18.t('BranchName'),
     size: 150,
   },

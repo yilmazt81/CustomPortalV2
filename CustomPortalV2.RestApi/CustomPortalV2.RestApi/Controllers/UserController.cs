@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Business.Service;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.DTO;
@@ -120,17 +121,36 @@ namespace CustomPortalV2.RestApi.Controllers
             {
                 MainCompanyId = companyId,
                 CompanyBranchId = branchId,
-                BranchName="",
-                FullName="",
-                PhoneNumber="",
-                UserName="",
-                Email="",
+                BranchName = "",
+                FullName = "",
+                PhoneNumber = "",
+                UserName = "",
+                Email = "",
             };
 
             return Ok(defaultReturn);
 
         }
-        
+
+        [HttpGet("DeleteUser")]
+        public ActionResult DeleteUser(int id)
+        {
+            var branchId = User.GetBranchId();
+            var companyId = User.GetCompanyId();
+
+            string key = $"BranchUser{branchId}";
+
+            DefaultReturn<User> defaultReturn = new DefaultReturn<User>();
+            string userKey = $"User{id}";
+
+            var deleteUser = _userService.DeleteUser(companyId, branchId, id);
+
+            _memoryCache.Remove(userKey);
+
+            return Ok(deleteUser);
+
+        }
+
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
@@ -154,12 +174,36 @@ namespace CustomPortalV2.RestApi.Controllers
         }
 
         // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("UpdateUser")]
+        public ActionResult UpdateUser([FromBody] User user)
         {
+            string key = $"User{user.Id}";
+            _memoryCache.Remove(key);
 
+            var branchId = User.GetBranchId();
+            string keyBranch = $"BranchUser{branchId}";
+            var updateReturn = _userService.UpdateUser(user);
+            _memoryCache.Remove(keyBranch);
+
+
+            return Ok(updateReturn);
         }
 
+        [HttpPost]
+        public ActionResult Post([FromBody] User user)
+        {
+            string key = $"User{user.Id}";
+            _memoryCache.Remove(key);
+
+            var branchId = User.GetBranchId();
+            user.MainCompanyId = User.GetCompanyId();
+
+            var addReturn = _userService.AddUser(user);
+            string keyBranch = $"BranchUser{branchId}";
+            _memoryCache.Remove(keyBranch);
+
+            return Ok(addReturn);
+        }
 
     }
 }

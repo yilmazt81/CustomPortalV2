@@ -54,7 +54,22 @@ export async function  CreateNewUser() {
   return data;
 };
 
+export async function  SaveUser(user) {   
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  const { data } =  await axios.post(process.env.REACT_APP_APIURL+(user.id==0?"/api/User":"/api/User/UpdateUser"),user);
+  return data;
+};
 
+export async function  DeleteUser(id) { 
+  var lastToken=localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/User/DeleteUser?id=${id}`);
+  return data;
+}
+
+
+ 
 
 
 

@@ -73,7 +73,8 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbUser.UserName = user.UserName;
             dbUser.Email = user.Email;
             dbUser.PhoneNumber = user.PhoneNumber;
-
+            dbUser.CompanyBranchId = user.CompanyBranchId;
+            dbUser.Deleted=user.Deleted;
             _dbContext.SaveChanges();
             return true;
         }

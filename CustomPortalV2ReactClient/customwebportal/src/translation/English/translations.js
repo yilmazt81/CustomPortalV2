@@ -42,7 +42,9 @@ export const TRANSLATIONS_EN = {
     DeleteMessage1:"Are you sure you want to delete ?",
     DeleteMessage2:"After deletion, Branch users will not be able to access their documents.",
     FullName:"Full Name",
-    
-
+    EditUserName:"User Update",
+    UserDelete:"User Delete",    
+    UserDeleteMessage:"Are you sure you want to delete the user ?",
+    Userdefination:"User Definations",
     
 };

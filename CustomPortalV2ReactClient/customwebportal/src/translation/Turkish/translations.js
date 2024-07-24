@@ -43,7 +43,10 @@ export const TRANSLATIONS_TR = {
     DeleteMessage2:"Sildikten sonra Şube kullanıcıları dokumanlarına ulaşılamayacaktır.",
     FullName:"Tam Adı",
     EditUserName:"Kullanıcı Güncelle",
-    
+    UserDelete:"Kullanıcı Sil",
+    UserDeleteMessage:"Kullanıcıyı silmek istediğinizden emin misiniz ?",
+    Userdefination:"Kullanıcı Tanımları",
+
 
 
 

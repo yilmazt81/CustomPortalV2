@@ -18,7 +18,7 @@ const routes = [
   { path: '/AdressDefination', name: 'AdressDefination', element: AdressDefination }, 
   { path: '/FormDefinationType', name: 'FormDefinationType', element: FormDefinationType }, 
   { path: '/productdefination', name: 'productdefination', element: ProductDefination }, 
-  { path: '/userdefination', name: 'userdefination', element: UserDefination }, 
+  { path: '/userdefination', name: 'Userdefination', element: UserDefination }, 
   
 ]
 export default routes

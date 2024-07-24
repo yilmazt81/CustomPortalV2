@@ -108,7 +108,7 @@ const BranchDefination = () => {
       if (companyBranchList.returnCode === 1) {
         setBranchList(companyBranchList.data);
       } else {
-        setSaveError(companyBranchList.ReturnMessage);
+        setSaveError(companyBranchList.returnMessage);
       }
 
     } catch (error) {

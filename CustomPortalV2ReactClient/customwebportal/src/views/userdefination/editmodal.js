@@ -1,4 +1,4 @@
-import React, { useEffect, useState,setstate } from 'react'
+import React, { useEffect, useState, setstate, useContext } from 'react'
 
 import {
     CAvatar,
@@ -36,7 +36,8 @@ import CIcon from '@coreui/icons-react'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { GetUserList } from '../../lib/userapi';
+import { SaveUser} from '../../lib/userapi';
+import { GetBranchList } from 'src/lib/companyapi'
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -47,15 +48,14 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const EditModal = ( props ) => {
-    /*const [editUser, visible] =  props;
-     
-    */
+const EditModal = ({ visiblep, userp, setFormData }) => {
 
-    const [visible, setvisible] = useState({...props.visible});  
-    const [user, setUser] = useState({...props.user});
+
+    const [visible, setvisible] = useState(visiblep);
+    const [user, setUser] = useState({ ...userp });
 
     const [saveError, setSaveError] = useState(null);
+    const[branchList,setbranchList] =useState([]);
 
     const [saveStart, setsaveStart] = useState(false);
 
@@ -66,35 +66,64 @@ const EditModal = ( props ) => {
         setUser({ ...user, [name]: value });
 
     }
+    async function ClosedClick(){
+        setvisible(false);
+    }
+    async function LoadBranchList() {
+        try {
+    
+          var companyBranchList = await GetBranchList();
+    
+          if (companyBranchList.returnCode === 1) {
+            setbranchList(companyBranchList.data);
+          } else {
+            setSaveError(companyBranchList.returnMessage);
+          }
+    
+        } catch (error) {
+          setSaveError(error.message);
+        }
+    
+      }
+
     useEffect(() => {
-        setvisible(props.visible);
-        setUser(props.user);
-    }, [props.visible])
+        setvisible(visiblep);
+        setUser(userp);
+
+       LoadBranchList();
+
+    }, [visiblep, userp])
 
     async function SaveData() {
 
         try {
-            /* var saveBranchReturn = await SaveBranch(editBranch);
-             if (saveBranchReturn.returnCode === 1) {
-               setVisible(!visible);
-               LoadBranchList();
-             } else {
-               setSaveError(saveBranchReturn.ReturnMessage);
-             }
-             */
+            
+            setsaveStart(true);
+            var saveUserResult = await SaveUser(user);
+           
+            if (saveUserResult.returnCode === 1) {  
+                setFormData(user);
+                setvisible(false);
+            } else {
+              setSaveError(saveUserResult.returnMessage);
+            }
+             
+          
         } catch (error) {
             setSaveError(error.message);
+        }finally{
+            
+            setsaveStart(false);
         }
 
     }
-  
     return (
-     
+
         <>
             <CModal
-             backdrop="static"
-             visible={visible} 
-             onClose={() => setvisible( false)}
+                backdrop="static"
+                visible={visible}
+                onClose={() => ClosedClick()}
 
             >
                 <CModalHeader>
@@ -142,6 +171,21 @@ const EditModal = ( props ) => {
                         </CCol>
                     </CRow>
 
+                    <CRow className="mb-12">
+                        <CFormLabel htmlFor="cmbBranchId" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
+                        <CCol sm={9}>
+                            <CFormSelect type="text" id='cmbBranchId' name="companyBranchId"
+                                onChange={e => handleChange(e)} value={user?.companyBranchId}    >
+
+                                <option value="0">Seçiniz</option>
+                                {branchList.map(item => {
+                                    return (<option key={item.id} value={item.id}  >{item.name}</option>);
+                                })}
+                            </CFormSelect>
+
+                        </CCol>
+                    </CRow>
+
 
                     <CRow xs={{ cols: 4 }}>
                         <CCol> </CCol>
@@ -165,7 +209,7 @@ const EditModal = ( props ) => {
                 </CModalBody>
 
                 <CModalFooter>
-                    <CButton color="secondary" onClick={() => setvisible( false)}  >{t("Close")}</CButton>
+                    <CButton color="secondary" onClick={() =>ClosedClick()}  >{t("Close")}</CButton>
                     <CButton color="primary" onClick={() => SaveData()}>{t("Save")}</CButton>
                 </CModalFooter>
             </CModal>
@@ -179,7 +223,8 @@ const EditModal = ( props ) => {
 
 export default EditModal;
 
+
 EditModal.propTypes = {
-    user: PropTypes.object,
-    visible: PropTypes.bool,
-}
+    visiblep: PropTypes.bool,
+    userp: PropTypes.object,
+};

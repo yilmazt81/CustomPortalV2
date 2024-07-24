@@ -37,7 +37,7 @@ import CIcon from '@coreui/icons-react'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { GetUserList, GetUser,CreateNewUser } from '../../lib/userapi';
+import { GetUserList, GetUser,CreateNewUser,DeleteUser } from '../../lib/userapi';
 import Lottie from 'lottie-react';
 
 import {
@@ -73,6 +73,7 @@ import { Gridcolumns } from './DataGrid';
 import { useTranslation } from "react-i18next";
 
 import  EditModal  from './editmodal';
+import  DeleteModal from 'src/components/DeleteModal'
 
 const UserDefination = () => {
   const navigate = useNavigate();
@@ -84,7 +85,10 @@ const UserDefination = () => {
   const [error, setError] = useState(null);
   const [useredit, setuseredit] = useState({id:0});
   const [saveError, setSaveError] = useState(null);
+  const[deleteStart,setDeleteStart]=useState(null);
+
   const [visible, setVisible] = useState(false);
+  const [visibleDelete, setVisibleDelete] = useState(false);
   async function LoadUserList() {
 
     try {
@@ -114,24 +118,22 @@ const UserDefination = () => {
       setSaveError(error.message);
     } finally {
      // setdeleteStart(false);
-    }
-
-   
-
+    } 
   }
 
   async function EditData(row) { 
     var id = row.original["id"];
     
     try {
+      setDeleteStart(false);
       setVisible(false);
-      var editUser = await GetUser(id);
+      var getuserReturn = await GetUser(id);
       
-      if (editUser.returnCode === 1) {
-        setuseredit(editUser.data);
+      if (getuserReturn.returnCode === 1) {
+        setuseredit(getuserReturn.data);
         setVisible(true);
       } else {
-        setSaveError(editUser.returnMessage);
+        setSaveError(getuserReturn.returnMessage);
       }
     } catch (error) {
       setSaveError(error.message);
@@ -143,22 +145,47 @@ const UserDefination = () => {
 
   async function DeleteData(row) {
     var id = row.original["id"];
-   /* 
+   
     try {
-       
+      setVisibleDelete(false);
+      setVisible(false);
       var editUser = await GetUser(id);
+      
       if (editUser.returnCode === 1) {
         setuseredit(editUser.data);
-        setVisible(!visible);
+        setVisibleDelete(true);
       } else {
         setSaveError(editUser.returnMessage);
       }
     } catch (error) {
-      setSaveError(error.message);
+      setVisibleDelete(error.message);
     } finally {
-     // setdeleteStart(false);
-    }*/
-    
+      setDeleteStart(false);
+    }
+
+  }
+
+  async function DeleteAccepted(data) {
+    setDeleteStart(true);
+
+    try{
+      if (data==null)
+        return;
+        var deleteUserReturn = await DeleteUser(useredit.id);
+      
+      if (deleteUserReturn.returnCode === 1) {
+        LoadUserList();
+        setVisibleDelete(false);
+      } else {
+        setSaveError(deleteUserReturn.returnMessage);
+      }
+    } catch (error) {
+      setVisibleDelete(error.message);
+    } finally {
+      setDeleteStart(false);
+    }
+
+    setDeleteStart(false);
   }
 
   useEffect(() => {
@@ -223,8 +250,12 @@ const UserDefination = () => {
         </CCardBody>
       </CCard>
 
-      <EditModal user={useredit} visible={visible} ></EditModal>
-
+      <EditModal userp={useredit} visiblep={visible} setFormData ={()=>LoadUserList()}></EditModal>
+      <DeleteModal visiblep={visibleDelete}
+       OnClickOk={(data)=>DeleteAccepted(data)} 
+       title={t("UserDelete")}
+       message={useredit.fullName}
+       message2={t("UserDeleteMessage")} saveError={error} saveStart={deleteStart}></DeleteModal>    
     </>
   )
 }
