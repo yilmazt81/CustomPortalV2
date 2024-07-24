@@ -146,6 +146,7 @@ namespace CustomPortalV2.RestApi.Controllers
             var deleteUser = _userService.DeleteUser(companyId, branchId, id);
 
             _memoryCache.Remove(userKey);
+            _memoryCache.Remove(key);
 
             return Ok(deleteUser);
 

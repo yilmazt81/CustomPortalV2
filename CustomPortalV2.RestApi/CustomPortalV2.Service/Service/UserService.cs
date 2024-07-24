@@ -81,6 +81,10 @@ namespace CustomPortalV2.Business.Service
                 {
                     throw new Exception("CompanyIdIsDiffrend");
                 }
+                if (user.UserName == "Admin")
+                {
+                    throw new Exception("YouCantDeleteAdmin");
+                }
 
                 if (!branch.CompanyAdmin)
                 {

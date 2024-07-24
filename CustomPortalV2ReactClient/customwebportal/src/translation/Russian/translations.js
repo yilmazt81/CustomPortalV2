@@ -45,7 +45,12 @@ export const TRANSLATIONS_RU = {
     UserDelete :"Удалить пользователя",    
     UserDeleteMessage:"Вы уверены, что хотите удалить пользователя?",
     Userdefination :"Определения пользователя",
-
+    FormName:"Имя формы",
+    CreatedBy:"сделано",
+    CreatedDate:"Дата создания",
+    CustomSectorName:"сектор",
+    AddNewFormDefination:"Добавить новое",
+    FormDefinationModalTitle:"Определение формы Править",
     
 
 

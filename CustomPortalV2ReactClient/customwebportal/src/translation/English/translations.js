@@ -46,5 +46,13 @@ export const TRANSLATIONS_EN = {
     UserDelete:"User Delete",    
     UserDeleteMessage:"Are you sure you want to delete the user ?",
     Userdefination:"User Definations",
+    FormName:"Form Name",
+    CreatedBy:"Created By",
+    CreatedDate:"Created Date",
+    CustomSectorName:"Sector",    
+    AddNewFormDefination:"Add New",
+    FormDefinationModalTitle:"Form definition Edit",
+
+
     
 };

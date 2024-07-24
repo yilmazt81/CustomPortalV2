@@ -1,62 +1,29 @@
 import React, { useEffect, useState } from 'react'
 
 import {
-  CAvatar,
   CButton,
   CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
-  CCardHeader,
   CCol,
   CAlert,
-  CProgress,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalFooter,
-  CModalBody,
-  CFormLabel,
-  CFormInput,
-  CFormSelect,
-  CCardText,
-
-
+  CRow, 
 
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { GetUserList, GetUser,CreateNewUser,DeleteUser } from '../../lib/userapi';
-import Lottie from 'lottie-react';
 
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  MRT_ColumnDef,
-  MRT_GlobalFilterTextField,
-  MRT_ToggleFiltersButton,
 
 
 } from 'material-react-table';
 
 import {
   Box,
-  Button,
-  ListItemIcon,
-  MenuItem,
-  Typography,
-  lighten,
   IconButton
 
 
@@ -64,10 +31,7 @@ import {
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Email as EmailIcon,
-  AlignHorizontalCenter,
 } from '@mui/icons-material';
-import ProcessAnimation from "../../content/animation/Process.json";
 import { Gridcolumns } from './DataGrid';
 
 import { useTranslation } from "react-i18next";
@@ -79,11 +43,11 @@ const UserDefination = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  //Bu sekilde redux tan okunacak
-  const userToken = useSelector(state => state.userToken);
+  //Bu sekilde redux tan okunacak 
+  
+  const [useredit, setuseredit] = useState({id:0});
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-  const [useredit, setuseredit] = useState({id:0});
   const [saveError, setSaveError] = useState(null);
   const[deleteStart,setDeleteStart]=useState(null);
 
@@ -101,8 +65,8 @@ const UserDefination = () => {
     } catch (error) {
       setError(error.message);
     }
-
   }
+  
   async function NewUser() {
     try {
       setVisible(false);

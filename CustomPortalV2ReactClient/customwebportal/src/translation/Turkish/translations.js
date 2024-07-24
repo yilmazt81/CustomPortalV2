@@ -46,7 +46,12 @@ export const TRANSLATIONS_TR = {
     UserDelete:"Kullanıcı Sil",
     UserDeleteMessage:"Kullanıcıyı silmek istediğinizden emin misiniz ?",
     Userdefination:"Kullanıcı Tanımları",
-
+    FormName:"Form Adı",
+    CreatedBy:"Oluşturan",
+    CreatedDate:"Oluşturma Tarihi",
+    CustomSectorName:"Sektör",
+    AddNewFormDefination:"Yeni Ekle",
+    FormDefinationModalTitle:"Form Türü Düzenle"
 
 
 

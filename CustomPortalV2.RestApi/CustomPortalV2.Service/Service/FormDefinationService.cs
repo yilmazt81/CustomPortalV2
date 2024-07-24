@@ -2,6 +2,7 @@
 using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
+using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,11 @@ namespace CustomPortalV2.Business.Service
 {
     public class FormDefinationService : IFormDefinationService
     {
+        IFormDefinationRepository _formDefinationService;
+        public FormDefinationService(IFormDefinationRepository formDefinationRepository)
+        {
+            _formDefinationService = formDefinationRepository;
+        }
         public DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName)
         {
             throw new NotImplementedException();
@@ -34,7 +40,12 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<List<FormDefination>> GetCompanyDefinations(int mainCompanyId)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<FormDefination>> defaultReturn = new DefaultReturn<List<FormDefination>>();
+
+            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && !s.Deleted.Value).ToList();
+
+
+            return defaultReturn;
         }
 
         public DefaultReturn<FormDefination> GetFormDefination(int id)

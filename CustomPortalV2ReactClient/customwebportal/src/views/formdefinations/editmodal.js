@@ -17,8 +17,7 @@ import {
 
 } from '@coreui/react'
 
-import { SaveUser} from '../../lib/userapi';
-import { GetBranchList } from 'src/lib/companyapi'
+import { SaveDefination } from '../../lib/formdef'; 
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -29,14 +28,14 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const EditModal = ({ visiblep, userp, setFormData }) => {
+const EditModal = ({ visiblep, formdefinationp, setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [user, setUser] = useState({ ...userp });
+    const [formdefination, setFormdefination] = useState({ ...formdefinationp });
 
     const [saveError, setSaveError] = useState(null);
-    const[branchList,setbranchList] =useState([]);
+    const[sectorList,setSectorList] =useState([]);
 
     const [saveStart, setsaveStart] = useState(false);
 
@@ -50,7 +49,7 @@ const EditModal = ({ visiblep, userp, setFormData }) => {
     async function ClosedClick(){
         setvisible(false);
     }
-    async function LoadBranchList() {
+  /*  async function LoadSectorList() {
         try {
     
           var companyBranchList = await GetBranchList();
@@ -66,21 +65,22 @@ const EditModal = ({ visiblep, userp, setFormData }) => {
         }
     
       }
+      */
 
     useEffect(() => {
         setvisible(visiblep);
-        setUser(userp);
+        setFormdefination(formdefinationp);
 
-       LoadBranchList();
+       //LoadBranchList();
 
-    }, [visiblep, userp])
+    }, [visiblep, formdefinationp])
 
     async function SaveData() {
 
         try {
             
             setsaveStart(true);
-            var saveUserResult = await SaveUser(user);
+           /* var saveUserResult = await SaveUser(user);
            
             if (saveUserResult.returnCode === 1) {  
                 setFormData(user);
@@ -88,7 +88,7 @@ const EditModal = ({ visiblep, userp, setFormData }) => {
             } else {
               setSaveError(saveUserResult.returnMessage);
             }
-             
+             */
           
         } catch (error) {
             setSaveError(error.message);
@@ -108,55 +108,24 @@ const EditModal = ({ visiblep, userp, setFormData }) => {
 
             >
                 <CModalHeader>
-                    <CModalTitle>{t("EditUserName")}</CModalTitle>
+                    <CModalTitle>{t("FormDefinationModalTitle")}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
 
                     <CRow className="mb-12">
-                        <CFormLabel htmlFor="txtUserName" className="col-sm-3 col-form-label">{t("UserName")}</CFormLabel>
+                        <CFormLabel htmlFor="txtFormName" className="col-sm-3 col-form-label">{t("FormName")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormInput type="text" id='txtUserName' name="userName"
-                                onChange={e => handleChange(e)} value={user.userName} />
+                            <CFormInput type="text" id='txtFormName' name="FormName"
+                                onChange={e => handleChange(e)} value={formdefination.formName} />
                         </CCol>
                     </CRow>
 
+               
                     <CRow className="mb-12">
-                        <CFormLabel htmlFor="txtEMail" className="col-sm-3 col-form-label">{t("Email")}</CFormLabel>
+                        <CFormLabel htmlFor="cmbCustomSector" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormInput type="text" id='txtEMail' name="email"
-                                onChange={e => handleChange(e)} value={user.email} />
-                        </CCol>
-                    </CRow>
-
-                    <CRow className="mb-12">
-                        <CFormLabel htmlFor="txtPassword" className="col-sm-3 col-form-label">{t("Password")}</CFormLabel>
-                        <CCol sm={9}>
-                            <CFormInput type="Password" id='txtPassword' name="password"
-                                onChange={e => handleChange(e)} />
-                        </CCol>
-                    </CRow>
-
-                    <CRow className="mb-12">
-                        <CFormLabel htmlFor="txtFullName" className="col-sm-3 col-form-label">{t("FullName")}</CFormLabel>
-                        <CCol sm={9}>
-                            <CFormInput type="text" id='txtFullName' name="fullName"
-                                onChange={e => handleChange(e)} value={user.fullName} />
-                        </CCol>
-                    </CRow>
-
-                    <CRow className="mb-12">
-                        <CFormLabel htmlFor="txtPhoneNumber" className="col-sm-3 col-form-label">{t("PhoneNumber")}</CFormLabel>
-                        <CCol sm={9}>
-                            <CFormInput type="text" id='txtPhoneNumber' name="phoneNumber"
-                                onChange={e => handleChange(e)} value={user.phoneNumber} />
-                        </CCol>
-                    </CRow>
-
-                    <CRow className="mb-12">
-                        <CFormLabel htmlFor="cmbBranchId" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
-                        <CCol sm={9}>
-                            <CFormSelect type="text" id='cmbBranchId' name="companyBranchId"
-                                onChange={e => handleChange(e)} value={user?.companyBranchId}    >
+                            <CFormSelect type="text" id='cmbCustomSector' name="companyBranchId"
+                                onChange={e => handleChange(e)} value={formdefination?.customSectorId}    >
 
                                 <option value="0">Seçiniz</option>
                                 {branchList.map(item => {
