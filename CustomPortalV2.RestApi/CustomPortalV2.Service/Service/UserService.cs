@@ -19,14 +19,14 @@ namespace CustomPortalV2.Business.Service
     public class UserService : IUserService
     {
         IUserRepository _userRepository;
-        ICompanyRepository _companyRepository;
+        ICompanyDefinationRepository _companyRepository;
         IParamRepository _paramrepository;
         ILoginrequestLogRepository _loginRequestLogRepository;
         IAppLangRepository _appLangRepository;
         IBranchRepository _branchRepository;
         Encryption encryption;
         public UserService(IUserRepository userRepository,
-            ICompanyRepository companyRepository,
+            ICompanyDefinationRepository companyRepository,
             IParamRepository paramRepository,
             ILoginrequestLogRepository loginrequestLogRepository,
             IAppLangRepository appLangRepository, IBranchRepository branchRepository)

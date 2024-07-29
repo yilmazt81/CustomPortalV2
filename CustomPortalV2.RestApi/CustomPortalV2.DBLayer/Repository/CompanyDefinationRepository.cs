@@ -1,0 +1,66 @@
+﻿using CustomPortalV2.Core.Model.Definations;
+using CustomPortalV2.DataAccessLayer.Concrete;
+using CustomPortalV2.Model.Company;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CustomPortalV2.DataAccessLayer.Repository
+{
+    public class CompanyDefinationRepository : ICompanyAdresDefinationRepository
+    {
+        DBContext _dbContext;
+        public CompanyDefinationRepository(DBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public CompanyDefination Add(CompanyDefination companyDefination)
+        {
+            _dbContext.Add(companyDefination);
+
+            _dbContext.SaveChanges();
+
+            return companyDefination;
+        }
+
+        public List<CompanyDefination> GetCompanyDefinations(Expression<Func<CompanyDefination, bool>> predicate)
+        {
+
+            return _dbContext.CompanyDefination.Include(y => y.CompanyDefinationDefinationType).Where(predicate).ToList();
+        }
+
+        public IEnumerable<DefinationType> GetDefinationTypes()
+        {
+
+            return _dbContext.DefinationType.ToArray();
+        }
+
+        public CompanyDefination Update(CompanyDefination companyDefination)
+        {
+            var dbdefination = _dbContext.CompanyDefination.Single(s => s.Id == companyDefination.Id);
+
+            dbdefination.Adress = companyDefination.Adress;
+            dbdefination.FactoryNumber = companyDefination.FactoryNumber;
+            dbdefination.Adress = companyDefination.Adress;
+            dbdefination.CompanyName = companyDefination.CompanyName;
+            dbdefination.FieldForSearch = companyDefination.FieldForSearch;
+            dbdefination.Country = companyDefination.Country;
+            dbdefination.City = companyDefination.City;
+            dbdefination.DefinationTypeName = companyDefination.DefinationTypeName;
+            dbdefination.DefinationTypeId = companyDefination.DefinationTypeId;
+            dbdefination.FactoryNumber = companyDefination.FactoryNumber;
+            dbdefination.Email = companyDefination.Email;
+            dbdefination.FaxNumber = companyDefination.FaxNumber;
+            dbdefination.PhoneNumber = companyDefination.PhoneNumber;
+            dbdefination.IsoCode = companyDefination.IsoCode;
+            dbdefination.Deleted= companyDefination.Deleted;
+            _dbContext.SaveChanges();
+            return dbdefination;
+        }
+    }
+}

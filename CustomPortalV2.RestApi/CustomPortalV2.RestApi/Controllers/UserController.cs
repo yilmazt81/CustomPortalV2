@@ -29,8 +29,6 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetUserMenu")]
         public IActionResult GetUserMenu()
         {
-
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var branchId = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
             //Todo: badge için ekleme yapılacak. cachedende dönse db sen sayi alinacak.

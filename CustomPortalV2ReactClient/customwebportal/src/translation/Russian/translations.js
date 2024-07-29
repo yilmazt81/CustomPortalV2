@@ -51,8 +51,15 @@ export const TRANSLATIONS_RU = {
     CustomSectorName:"сектор",
     AddNewFormDefination:"Добавить новое",
     FormDefinationModalTitle:"Определение формы Править",
-    
-
-
-
+    IsoCode:"ISO-код",
+    FactoryNumber: "Заводской номер",    
+    DefinationTypeName:"Типы адресов",
+    AdressDefinationModalTitle:"Адрес Редактировать",
+    Country_ISO:"страна / Iso код", 
+    FactoryNumber:"Фабрика код",
+    PhoneNumber:"Номер телефона",
+    FaxNumber:"Номер факса",
+    AdressDefinationTypes:"Типы адресов",    
+    CompanyDefinationDelete:"Вы уверены, что хотите удалить определение адреса ?",
+    ModalCompanyDeleteTitle:"Удалить вопрос",
 };

@@ -7,7 +7,8 @@ import {
   CCardBody,
   CCol,
   CRow,
-  CAlert
+  CAlert,
+  
 } from '@coreui/react'
 
   
@@ -33,6 +34,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 import DeleteModal from '../../components/DeleteModal';
+import EditModal from './editmodal';
 
 import {CreateNewFormDefination,GetFormDefinations} from '../../lib/formdef';
 
@@ -139,7 +141,9 @@ async function EditData(row) {
      // setdeleteStart(false);
     } 
   }
-
+  async function SaveComplated() {
+    LoadFormDefinations();
+  }
 
   async function DeleteData(row) {
     var id = row.original["id"];
@@ -209,6 +213,8 @@ async function EditData(row) {
         </CCardBody>
       </CCard>
  
+      <EditModal visiblep={visible} formdefinationp={FormDefination} setFormData={()=>SaveComplated()}></EditModal>
+
       <DeleteModal visiblep={visibleDelete}
        OnClickOk={(data)=>DeleteAccepted(data)} 
        title={t("UserDelete")}

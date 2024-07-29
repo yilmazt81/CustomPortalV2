@@ -11,15 +11,18 @@ namespace CustomPortalV2.Business.Concrete
 {
     public interface ICompanyDefinationService
     {
+         
 
-        DefaultReturn<List<CompanyDefinationDefinationType>> GetDefinationTypes();
+        DefaultReturn<List<CompanyDefination>> GetCompanyDefinations(int companyId,int brachId);
 
-        DefaultReturn<List<CompanyDefination>> GetCompanyDefinations(User user);
+        DefaultReturn<CompanyDefination> GetCompanyDefination(int companyId, int brachId, int id);
 
-        DefaultReturn<bool> DeleteCompany(User user, int id);
+        DefaultReturn<bool> DeleteCompany(int mainCompanyId, int id);
 
 
         DefaultReturn<CompanyDefination> Save(CompanyDefination companyDefination);
+
+        DefaultReturn<List<DefinationType>> GetDefinationTypes();
 
     }
 }

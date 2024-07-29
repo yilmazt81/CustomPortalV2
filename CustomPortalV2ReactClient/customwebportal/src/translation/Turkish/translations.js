@@ -51,11 +51,17 @@ export const TRANSLATIONS_TR = {
     CreatedDate:"Oluşturma Tarihi",
     CustomSectorName:"Sektör",
     AddNewFormDefination:"Yeni Ekle",
-    FormDefinationModalTitle:"Form Türü Düzenle"
-
-
-
-
-    
+    FormDefinationModalTitle:"Form Türü Düzenle",
+    IsoCode:"İso Kodu",
+    FactoryNumber:"Firma Kodu",
+    DefinationTypeName:"Adres Türü",
+    AdressDefinationModalTitle:"Adres Düzenle",
+    Country_ISO:"Ülke / Iso Kodu",
+    FactoryNumber:"Üretici Kodu",
+    PhoneNumber:"Telefon No",
+    FaxNumber:"Fax No",
+    AdressDefinationTypes:"Adres Türü",
+    CompanyDefinationDelete:"Adres Tanımını silmek istediğinizden emin mi siniz ?",
+    ModalCompanyDeleteTitle:"Silme Onayı",
 
 };

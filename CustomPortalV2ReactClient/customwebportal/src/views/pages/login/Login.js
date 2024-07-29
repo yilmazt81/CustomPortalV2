@@ -79,7 +79,7 @@ const Login = () => {
   useEffect(() => { 
     var lastToken=localStorage.getItem("LastToken");
     if (lastToken!=null)
-      { debugger;
+      {  
         axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
         navigate('../Dashboard'); 
       }else{

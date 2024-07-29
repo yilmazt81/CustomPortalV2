@@ -43,29 +43,13 @@ const EditModal = ({ visiblep, formdefinationp, setFormData }) => {
 
     function handleChange(event) {
         const { name, value } = event.target;
-        setUser({ ...user, [name]: value });
+        setFormdefination({ ...formdefination, [name]: value });
 
     }
     async function ClosedClick(){
         setvisible(false);
     }
-  /*  async function LoadSectorList() {
-        try {
-    
-          var companyBranchList = await GetBranchList();
-    
-          if (companyBranchList.returnCode === 1) {
-            setbranchList(companyBranchList.data);
-          } else {
-            setSaveError(companyBranchList.returnMessage);
-          }
-    
-        } catch (error) {
-          setSaveError(error.message);
-        }
-    
-      }
-      */
+  
 
     useEffect(() => {
         setvisible(visiblep);
@@ -80,15 +64,7 @@ const EditModal = ({ visiblep, formdefinationp, setFormData }) => {
         try {
             
             setsaveStart(true);
-           /* var saveUserResult = await SaveUser(user);
-           
-            if (saveUserResult.returnCode === 1) {  
-                setFormData(user);
-                setvisible(false);
-            } else {
-              setSaveError(saveUserResult.returnMessage);
-            }
-             */
+       
           
         } catch (error) {
             setSaveError(error.message);
@@ -124,11 +100,11 @@ const EditModal = ({ visiblep, formdefinationp, setFormData }) => {
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbCustomSector" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormSelect type="text" id='cmbCustomSector' name="companyBranchId"
+                            <CFormSelect type="text" id='cmbCustomSector' name="customSectorId"
                                 onChange={e => handleChange(e)} value={formdefination?.customSectorId}    >
 
                                 <option value="0">Seçiniz</option>
-                                {branchList.map(item => {
+                                {sectorList.map(item => {
                                     return (<option key={item.id} value={item.id}  >{item.name}</option>);
                                 })}
                             </CFormSelect>

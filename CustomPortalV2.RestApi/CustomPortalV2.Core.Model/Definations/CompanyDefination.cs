@@ -16,21 +16,21 @@ namespace CustomPortalV2.Core.Model.Definations
         public string CompanyName { get; set; }
         public string Adress { get; set; }
         public string Country { get; set; }
-        public string City { get; set; }
-        public string IsoCode { get; set; }
-        public Nullable<bool> IsSender { get; set; }
+        public string? City { get; set; }
+        public string? IsoCode { get; set; }
+        public bool IsSender { get; set; }
         public bool Deleted { get; set; }
-        public string DefinationTypeId { get; set; }
-        public string DefinationTypeName { get; set; }
-        public Nullable<int> MainCompanyId { get; set; }
-        public Nullable<int> CompanyBranchId { get; set; }
+        public string? DefinationTypeId { get; set; }
+        public string? DefinationTypeName { get; set; }
+        public  int  MainCompanyId { get; set; }
+        public  int  CompanyBranchId { get; set; }
         public Nullable<int> CountryId { get; set; }
         public Nullable<int> CountryCityId { get; set; }
-        public string FieldForSearch { get; set; }
-        public string FactoryNumber { get; set; }
-        public string PhoneNumber { get; set; }
-        public string FaxNumber { get; set; }
-        public string Email { get; set; }
+        public string? FieldForSearch { get; set; }
+        public string? FactoryNumber { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? FaxNumber { get; set; }
+        public string? Email { get; set; }
         public virtual ICollection<CompanyDefinationDefinationType> CompanyDefinationDefinationType { get; set; }
     }
 }

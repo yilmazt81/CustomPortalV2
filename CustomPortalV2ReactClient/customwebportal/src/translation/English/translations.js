@@ -52,7 +52,16 @@ export const TRANSLATIONS_EN = {
     CustomSectorName:"Sector",    
     AddNewFormDefination:"Add New",
     FormDefinationModalTitle:"Form definition Edit",
+    IsoCode:"ISO Code",
+    FactoryNumber:"Factory Number",
+    DefinationTypeName:"Adress Types",
+    AdressDefinationModalTitle:"Adress Edit",
+    Country_ISO:"Country / Iso Code", 
+    FactoryNumber:"Factory Code",
+    PhoneNumber:"Phone Number",
+    FaxNumber:"Fax Number",
+    AdressDefinationTypes:"Adress Types",
+    CompanyDefinationDelete:"Are you sure you want to delete the Address Definition ?",
+    ModalCompanyDeleteTitle:"Delete Question",
 
-
-    
 };

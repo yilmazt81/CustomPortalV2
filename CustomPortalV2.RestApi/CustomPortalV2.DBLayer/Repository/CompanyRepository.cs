@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CustomPortalV2.DataAccessLayer.Repository
 {
-    public class CompanyRepository : ICompanyRepository
+    public class CompanyRepository : ICompanyDefinationRepository
     {
         DBContext _dbContext;
         public CompanyRepository(DBContext dbContext)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomPortalV2.DataAccessLayer.Concrete
 {
-    public interface ICompanyRepository
+    public interface ICompanyDefinationRepository
     {
         Company? GetCompanyCode(string companycode);
         Company AddCompany(Company company);

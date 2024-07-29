@@ -17,11 +17,11 @@ namespace CustomPortalV2.Business.Service
 {
     public class CompanyService : ICompanyService
     {
-        ICompanyRepository _companyRepository;
+        ICompanyDefinationRepository _companyRepository;
         IUserRepository _userRepository;
         Encryption encryption = null;
 
-        public CompanyService(ICompanyRepository companyRepository, IUserRepository userRepository)
+        public CompanyService(ICompanyDefinationRepository companyRepository, IUserRepository userRepository)
         {
             _companyRepository = companyRepository;
             _userRepository = userRepository;

@@ -1,10 +1,13 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Business.Helper;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,24 +15,141 @@ namespace CustomPortalV2.Business.Service
 {
     public class CompanyDefinationService : ICompanyDefinationService
     {
-        public DefaultReturn<bool> DeleteCompany(User user, int id)
+
+        ICompanyAdresDefinationRepository _companyDefinationRepository = null;
+        IBranchRepository _branchRepository = null;
+        public CompanyDefinationService(ICompanyAdresDefinationRepository companyDefination, IBranchRepository branchRepository)
         {
-            throw new NotImplementedException();
+            _companyDefinationRepository = companyDefination;
+            _branchRepository = branchRepository;
         }
 
-        public DefaultReturn<List<CompanyDefination>> GetCompanyDefinations(User user)
+        public DefaultReturn<bool> DeleteCompany(int mainCompanyId, int id)
         {
-            throw new NotImplementedException();
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            try
+            {
+                var companyDefination = _companyDefinationRepository.GetCompanyDefinations(s => s.Id == id && s.MainCompanyId == mainCompanyId).FirstOrDefault();
+                if (companyDefination == null)
+                {
+                    throw new Exception("CompanyDefinationIsNotDefined");
+                }
+
+                companyDefination.Deleted = true;
+                _companyDefinationRepository.Update(companyDefination);
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+
+            return defaultReturn;
+
         }
 
-        public DefaultReturn<List<CompanyDefinationDefinationType>> GetDefinationTypes()
+        public DefaultReturn<CompanyDefination> GetCompanyDefination(int companyId, int brachId, int id)
         {
-            throw new NotImplementedException();
+            DefaultReturn<CompanyDefination> defaultReturn = new DefaultReturn<CompanyDefination>();
+
+            try
+            {
+                var branch = _branchRepository.Get(s => s.Id == brachId && !s.Deleted);
+
+                if (branch == null)
+                {
+                    throw new Exception("BranchIsnotDefined");
+                }
+                var companyDefination = _companyDefinationRepository.GetCompanyDefinations(s => s.Id == id && !s.Deleted).FirstOrDefault(); ;
+
+                if (companyDefination==null)
+                {
+                    throw new Exception("CompanyDefinationIsNotDefined");
+                }
+
+                if (companyDefination.MainCompanyId != companyId)
+                {
+                    throw new Exception("DefinationIsNotSameCompany");
+                }
+
+                defaultReturn.Data = companyDefination;
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+
+
+        }
+
+        public DefaultReturn<List<CompanyDefination>> GetCompanyDefinations(int companyId, int brachId)
+        {
+            DefaultReturn<List<CompanyDefination>> defaultReturn = new DefaultReturn<List<CompanyDefination>>();
+
+            try
+            {
+                var branch = _branchRepository.Get(s => s.Id == brachId && !s.Deleted);
+                if (branch == null)
+                {
+                    throw new Exception("BranchIsnotDefined");
+                }
+                if (!branch.CompanyAdmin)
+                {
+                    defaultReturn.Data = _companyDefinationRepository.GetCompanyDefinations(s => s.MainCompanyId == companyId && s.CompanyBranchId == brachId && !s.Deleted);
+
+                }
+                else
+                {
+                    defaultReturn.Data = _companyDefinationRepository.GetCompanyDefinations(s => s.MainCompanyId == companyId && !s.Deleted);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<DefinationType>> GetDefinationTypes()
+        {
+            DefaultReturn<List<DefinationType>> defaultReturn = new DefaultReturn<List<DefinationType>>();
+            try
+            {
+
+                defaultReturn.Data = _companyDefinationRepository.GetDefinationTypes().ToList();
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+            return defaultReturn;
         }
 
         public DefaultReturn<CompanyDefination> Save(CompanyDefination companyDefination)
         {
-            throw new NotImplementedException();
+            DefaultReturn<CompanyDefination> defaultReturn = new DefaultReturn<CompanyDefination>();
+            companyDefination.FieldForSearch=StringHelper.ReplaceIncorrectedCharForUrl(companyDefination.CompanyName);
+
+            if (companyDefination.Id == 0)
+            {
+                defaultReturn.Data = _companyDefinationRepository.Add(companyDefination);
+
+            }
+            else
+            {
+                defaultReturn.Data = _companyDefinationRepository.Update(companyDefination);
+
+            }
+
+            return defaultReturn;
         }
     }
 }

@@ -37,7 +37,8 @@ const AppHeaderDropdown = () => {
   const dispatch = useDispatch();
 
   async function LogOut(){ 
-    dispatch({ type: 'set', userToken: null });       
+    dispatch({ type: 'set', userToken: null });  
+    localStorage.removeItem("LastToken");     
     navigate('../Login');
  
   }
