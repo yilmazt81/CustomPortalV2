@@ -37,6 +37,8 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<FormVersion> GetFormVersions(int formDefinationId);
 
+        DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId);
+
 
 
     }

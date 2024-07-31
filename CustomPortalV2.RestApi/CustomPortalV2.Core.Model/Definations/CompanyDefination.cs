@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.Definations
@@ -31,6 +32,9 @@ namespace CustomPortalV2.Core.Model.Definations
         public string? PhoneNumber { get; set; }
         public string? FaxNumber { get; set; }
         public string? Email { get; set; }
+        [JsonPropertyName("definations")]   
+
+        
         public virtual ICollection<CompanyDefinationDefinationType> CompanyDefinationDefinationType { get; set; }
     }
 }

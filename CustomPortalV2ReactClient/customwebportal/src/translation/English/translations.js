@@ -63,5 +63,7 @@ export const TRANSLATIONS_EN = {
     AdressDefinationTypes:"Adress Types",
     CompanyDefinationDelete:"Are you sure you want to delete the Address Definition ?",
     ModalCompanyDeleteTitle:"Delete Question",
+    TemplatePath:"Template File",
+    
 
 };

@@ -63,7 +63,7 @@ namespace CustomPortalV2.Business.Service
                 }
                 var companyDefination = _companyDefinationRepository.GetCompanyDefinations(s => s.Id == id && !s.Deleted).FirstOrDefault(); ;
 
-                if (companyDefination==null)
+                if (companyDefination == null)
                 {
                     throw new Exception("CompanyDefinationIsNotDefined");
                 }
@@ -136,10 +136,25 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<CompanyDefination> Save(CompanyDefination companyDefination)
         {
             DefaultReturn<CompanyDefination> defaultReturn = new DefaultReturn<CompanyDefination>();
-            companyDefination.FieldForSearch=StringHelper.ReplaceIncorrectedCharForUrl(companyDefination.CompanyName);
+            companyDefination.FieldForSearch = StringHelper.ToUpperTrk(companyDefination.CompanyName);
+
+            if (!string.IsNullOrEmpty(companyDefination.DefinationTypeId))
+            {
+                var definationType = companyDefination.DefinationTypeId.Split(',');
+                List<CompanyDefinationDefinationType> companyDefinationDefinationTypes = new List<CompanyDefinationDefinationType>();
+                foreach (var def in definationType)
+                {
+                    if (string.IsNullOrEmpty(def))
+                        continue;
+                    var definationTypeId = int.Parse(def);
+                    companyDefinationDefinationTypes.Add(new CompanyDefinationDefinationType() { DefinationTypeId = definationTypeId });
+
+                }
+                companyDefination.CompanyDefinationDefinationType = companyDefinationDefinationTypes;
+            }
 
             if (companyDefination.Id == 0)
-            {
+            { 
                 defaultReturn.Data = _companyDefinationRepository.Add(companyDefination);
 
             }

@@ -63,5 +63,5 @@ export const TRANSLATIONS_TR = {
     AdressDefinationTypes:"Adres Türü",
     CompanyDefinationDelete:"Adres Tanımını silmek istediğinizden emin mi siniz ?",
     ModalCompanyDeleteTitle:"Silme Onayı",
-
+    TemplatePath:"Form Şablonu",
 };

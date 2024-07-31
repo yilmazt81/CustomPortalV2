@@ -72,6 +72,7 @@ namespace CustomPortalV2.RestApi.Controllers
     
             var deleteResult = _companyDefinationService.DeleteCompany(companyId, id);
             _memoryCache.Remove(key);
+            RemoveCache();
 
             return Ok(deleteResult);
         }
@@ -152,6 +153,11 @@ namespace CustomPortalV2.RestApi.Controllers
             companyDefination.MainCompanyId = User.GetCompanyId();
             companyDefination.CompanyBranchId = User.GetBranchId();
             var returnT = _companyDefinationService.Save(companyDefination);
+
+            string key = $"CompanyDefination{companyDefination.Id}";
+             
+            _memoryCache.Remove(key);
+
 
             RemoveCache();
 

@@ -21,6 +21,8 @@ namespace CustomPortalV2.Core.Model.FDefination
         public Nullable<bool> DesingTemplate { get; set; }
         public string TemplatePath { get; set; }
 
-       
+        public  bool BaseDefinationType { get; set; }
+
+
     }
 }

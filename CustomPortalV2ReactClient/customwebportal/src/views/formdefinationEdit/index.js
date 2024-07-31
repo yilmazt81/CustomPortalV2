@@ -38,7 +38,7 @@ import EditModal from './editmodal';
 
 import { CreateNewFormDefination, GetFormDefinations, GetSector,GetFormDefination } from '../../lib/formdef';
 
-const FormDefination = () => {
+const FormDefinationEdit = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -245,4 +245,4 @@ const FormDefination = () => {
   )
 }
 
-export default FormDefination;
+export default FormDefinationEdit;

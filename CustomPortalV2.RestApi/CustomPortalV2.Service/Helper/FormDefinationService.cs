@@ -58,6 +58,11 @@ namespace CustomPortalV2.Business.Helper
             throw new NotImplementedException();
         }
 
+        public DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId)
+        {
+            throw new NotImplementedException();
+        }
+
         public DefaultReturn<FormDefination> Save(FormDefination formDefination)
         {
             throw new NotImplementedException();

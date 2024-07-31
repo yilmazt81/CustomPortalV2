@@ -42,7 +42,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public CompanyDefination Update(CompanyDefination companyDefination)
         {
-            var dbdefination = _dbContext.CompanyDefination.Single(s => s.Id == companyDefination.Id);
+            var dbdefination = _dbContext.CompanyDefination.Include(s => s.CompanyDefinationDefinationType).Single(s => s.Id == companyDefination.Id);
 
             dbdefination.Adress = companyDefination.Adress;
             dbdefination.FactoryNumber = companyDefination.FactoryNumber;
@@ -58,7 +58,35 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbdefination.FaxNumber = companyDefination.FaxNumber;
             dbdefination.PhoneNumber = companyDefination.PhoneNumber;
             dbdefination.IsoCode = companyDefination.IsoCode;
-            dbdefination.Deleted= companyDefination.Deleted;
+            dbdefination.Deleted = companyDefination.Deleted;
+
+            var olddefinations = dbdefination.CompanyDefinationDefinationType.ToArray();
+
+            foreach (var item in olddefinations)
+            {
+                if (!companyDefination.CompanyDefinationDefinationType.Any(s => s.DefinationTypeId == item.DefinationTypeId))
+                {
+                    dbdefination.CompanyDefinationDefinationType.Remove(item);
+                }
+            }
+
+            foreach (var definationType in companyDefination.CompanyDefinationDefinationType)
+            {
+                if (olddefinations.Any(s => s.DefinationTypeId == definationType.DefinationTypeId))
+                {
+                    continue;
+                }
+                else
+                {
+                    dbdefination.CompanyDefinationDefinationType.Add(new CompanyDefinationDefinationType()
+                    {
+                        DefinationTypeId = definationType.DefinationTypeId,
+                        CompanyDefinationId = dbdefination.Id
+                    });
+                }
+            }
+
+
             _dbContext.SaveChanges();
             return dbdefination;
         }

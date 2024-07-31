@@ -12,7 +12,11 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 {
     public interface IFormDefinationRepository
     {
-
         IEnumerable<FormDefination> Get(Expression<Func<FormDefination, bool>> predicate);
+        IEnumerable<CustomSector> GetCompanySectors(int companyId);
+
+        IEnumerable<List<FormGroup>> GetFormGroups(int formDefinationId);
+        FormDefination Add(FormDefination formDefination);
+        FormDefination Update(FormDefination formDefination);
     }
 }

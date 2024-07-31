@@ -34,6 +34,7 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
     const [visible, setvisible] = useState(visiblep);
     const [adressfination, setadressfination] = useState({ ...adressdefinationp });
     const[selectData,setSelectData]=useState([]);
+    const[defaultSelectData,setdefaultSelectData]=useState([]);
 
     const [saveError, setSaveError] = useState(null); 
 
@@ -57,14 +58,14 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
         for(var i=0;i<event.length;i++)
         {
             var s=event[i];
-            itemList.push({DefinationTypeId:s.value});
+            itemList.push({ typeid:s.value});
             definationTypeIdList+=s.value+",";
             definationNameList+=s.label+",";
         } 
 
-        adressfination.companyDefinationDefinationType=itemList;       
-        adressfination.definationTypeId =definationTypeIdList;
-        adressfination.definationTypeName=definationNameList;
+        adressfination.definations = itemList;       
+        adressfination.definationTypeId = definationTypeIdList;
+        adressfination.definationTypeName= definationNameList;
         setadressfination(adressfination); 
     }
 
@@ -75,9 +76,12 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
 
     async function SaveData()
     {
-        try {
-            debugger;
-            setsaveStart(true);
+        try { 
+            setSaveError(null);
+            
+            adressfination.definations=[];
+            setadressfination(adressfination);
+            setsaveStart(true); 
             var savedefinationResult = await SaveDefination(adressfination);
            
             if (savedefinationResult.returnCode === 1) {  
@@ -100,12 +104,34 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
         setvisible(visiblep);
         setadressfination(adressdefinationp); 
         var selecL =  [];
- 
+        setSaveError(null);
+
          adresDefinationTypesp.map(s=>{ selecL.push({value:s.id,label:s.name})} );
      
          setSelectData(selecL);
+         setdefaultSelectData([]);
+        if (adressdefinationp!=null)
+        { 
+           var defaultSelectData=[];
+            if (adressdefinationp.definations!=null){
+                for (let index = 0; index < adressdefinationp.definations.length; index++) {
+                    const adressdefination =  adressdefinationp.definations[index];
+                  
+                     var item = selecL.find(t=>t.value==adressdefination.typeid);
+            
+                     defaultSelectData.push(item);   
 
-
+                } 
+                setdefaultSelectData(defaultSelectData);
+            }else{
+                setdefaultSelectData([]);
+            } 
+    
+        }else{
+            
+            setdefaultSelectData([]);
+        }
+      
     }, [visiblep, adressdefinationp])
 
     const animatedComponents = makeAnimated();
@@ -200,6 +226,7 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
                              closeMenuOnSelect={false} 
                              isMulti 
                              onChange={e=>handleChangeSelect(e)}
+                             defaultValue={defaultSelectData}
                              //value={adressfination?.DefinationTypesList}
                              components={animatedComponents}
                              options ={selectData}/>

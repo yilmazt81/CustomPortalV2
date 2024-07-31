@@ -27,7 +27,7 @@ export  const Gridcolumns = [
   },
   {
     accessorKey: 'isoCode',
-    size: 50,
+    size: 150,
     
     header:  i18.t('IsoCode'),
   

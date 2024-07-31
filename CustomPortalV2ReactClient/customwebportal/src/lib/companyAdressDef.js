@@ -27,6 +27,8 @@ export async function  GetUserCompanyDefinations() {
 
   var lastToken=localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+   
+  debugger;
   const { data } =  await axios.post(process.env.REACT_APP_APIURL+(defination.id==0?"/api/CompanyDefination":"/api/CompanyDefination/UpdateAdress"),defination);
   return data;
  }
@@ -34,6 +36,7 @@ export async function  GetUserCompanyDefinations() {
  export async function  GetCompanyDefination(id) {   
   var lastToken=localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  axios.defaults.headers.common['content-type']='application/json';
   const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination/${id}`);
   return data;
 };

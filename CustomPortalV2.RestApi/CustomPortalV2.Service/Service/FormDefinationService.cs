@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Business.Helper;
 using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
@@ -14,9 +15,11 @@ namespace CustomPortalV2.Business.Service
     public class FormDefinationService : IFormDefinationService
     {
         IFormDefinationRepository _formDefinationService;
-        public FormDefinationService(IFormDefinationRepository formDefinationRepository)
+        IAppLangRepository _appLangRepository;
+        public FormDefinationService(IFormDefinationRepository formDefinationRepository, IAppLangRepository appLangRepository)
         {
             _formDefinationService = formDefinationRepository;
+            _appLangRepository = appLangRepository;
         }
         public DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName)
         {
@@ -50,7 +53,18 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<FormDefination> GetFormDefination(int id)
         {
-            throw new NotImplementedException();
+            DefaultReturn<FormDefination> defaultReturn = new DefaultReturn<FormDefination>();
+            try
+            {
+                defaultReturn.Data = _formDefinationService.Get(s => s.Id == id).FirstOrDefault();
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
         public DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formdefinationId, int formgroupId)
@@ -60,7 +74,10 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<List<FormGroup>> GetFormGroups(int formDefinationId)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<FormGroup>> defaultReturn=new DefaultReturn<List<FormGroup>>();
+
+ 
+            return defaultReturn;
         }
 
         public DefaultReturn<FormVersion> GetFormVersions(int formDefinationId)
@@ -68,9 +85,45 @@ namespace CustomPortalV2.Business.Service
             throw new NotImplementedException();
         }
 
+        public DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId)
+        {
+            DefaultReturn<List<CustomSectorDTO>> defaultReturn = new DefaultReturn<List<CustomSectorDTO>>();
+            var sectorList = _formDefinationService.GetCompanySectors(mainCompanyId);
+            defaultReturn.Data = new List<CustomSectorDTO>();
+
+            foreach (var sector in sectorList)
+            {
+                var translateText = _appLangRepository.Get($"CustomSector{sector.Name.ToTrktoING()}", applicationLangId, sector.Name);
+                defaultReturn.Data.Add(new CustomSectorDTO() { id = sector.Id, Name = translateText });
+            }
+
+            return defaultReturn;
+        }
+
         public DefaultReturn<FormDefination> Save(FormDefination formDefination)
         {
-            throw new NotImplementedException();
+            DefaultReturn<FormDefination> defaultReturn = new DefaultReturn<FormDefination>();
+            try
+            {
+                var sectorList = _formDefinationService.GetCompanySectors(formDefination.MainCompanyId);
+                var sector = sectorList.First(s => s.Id == formDefination.CustomSectorId);
+                formDefination.CustomSectorName = sector.Name;
+
+                if (formDefination.Id == 0)
+                {
+                    defaultReturn.Data = _formDefinationService.Add(formDefination);
+                }
+                else
+                {
+                    defaultReturn.Data = _formDefinationService.Update(formDefination);
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
         public DefaultReturn<FormDefinationField> Save(FormDefinationField formDefinationField)

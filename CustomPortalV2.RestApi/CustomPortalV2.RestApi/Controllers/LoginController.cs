@@ -42,6 +42,8 @@ namespace CustomPortalV2.RestApi.Controllers
                               new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
                               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                               new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
+                              new Claim(ClaimTypes.Locality, user.AppLangId.ToString())
+                              
                  };
             var jwtToken = new JwtSecurityToken(
                 claims: claims,
@@ -112,6 +114,7 @@ namespace CustomPortalV2.RestApi.Controllers
                     loginRequest.CompanyCode,
                     loginRequest.UserName,
                     loginRequest.password, ref user);
+               
                 if (loginReturn == Business.Helper.Enums.enumLoginReturn.Success)
                 {
                     if (user != null)

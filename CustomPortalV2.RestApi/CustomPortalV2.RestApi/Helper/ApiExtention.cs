@@ -23,6 +23,18 @@ namespace CustomPortalV2.RestApi.Helper
             var companyId = user.FindFirst(ClaimTypes.GroupSid)?.Value;
             return int.Parse(companyId);
         }
+        public static string GetUserFullName(this ClaimsPrincipal user)
+        {
+
+            var fullName = user.FindFirst(ClaimTypes.Name)?.Value;
+            return fullName;
+        }
+        public static int GetUserLangId(this ClaimsPrincipal user)
+        {
+            var langId = user.FindFirst(ClaimTypes.Locality)?.Value;
+            return (string.IsNullOrEmpty(langId) ? 1 : int.Parse(langId));
+
+        }
 
     }
 }

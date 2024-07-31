@@ -9,7 +9,7 @@ import {
   CRow,
   CAlert
 } from '@coreui/react'
- 
+
 
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import { Gridcolumns } from './DataGrid'
 import {
   MaterialReactTable,
   useMaterialReactTable,
-
+  MenuItem
 
 } from 'material-react-table';
 import {
@@ -30,12 +30,16 @@ import {
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
+  AccessibilityNew,
+  BorderAll,
 } from '@mui/icons-material';
-import { CreateDefinationTypes,
-   NewCompanyDefination ,
-   GetUserCompanyDefinations,
-   GetCompanyDefination , 
-   DeleteCompanyDefination} from '../../lib/companyAdressDef';
+import {
+  CreateDefinationTypes,
+  NewCompanyDefination,
+  GetUserCompanyDefinations,
+  GetCompanyDefination,
+  DeleteCompanyDefination
+} from '../../lib/companyAdressDef';
 import EditModal from './editmodal';
 import DeleteModal from 'src/components/DeleteModal';
 const AdresDefination = () => {
@@ -48,22 +52,22 @@ const AdresDefination = () => {
   const [visibleEdit, setVisibleEdit] = useState(false);
 
   const [saveError, setSaveError] = useState(null);
-  
+
   const [adressDefinationList, setadressDefinationList] = useState([]);
   const [adressDefinationTypes, setadressDefinationTypes] = useState([]);
   const [updateAdressDefination, setupdateAdressDefination] = useState(null);
-  const [deleteStart,setDeleteStart]=useState(false);
+  const [deleteStart, setDeleteStart] = useState(false);
 
 
 
   async function NewDefination() {
-    try { 
+    try {
       setSaveError(null);
-      
+
       LoadDefinationTypes();
       var adresDefinationService = await NewCompanyDefination();
       if (adresDefinationService.returnCode === 1) {
-       
+
         setupdateAdressDefination(adresDefinationService.data);
         setVisibleEdit(true);
       } else {
@@ -119,14 +123,14 @@ const AdresDefination = () => {
 
   async function EditData(row) {
     var id = row.original["id"];
-    
+
     try {
       //setDeleteStart(false);
- 
+
       setSaveError(null);
       setVisibleEdit(false);
       var getcompanyDefinationReturn = await GetCompanyDefination(id);
-      
+
       if (getcompanyDefinationReturn.returnCode === 1) {
         setupdateAdressDefination(getcompanyDefinationReturn.data);
         setVisibleEdit(true);
@@ -136,21 +140,21 @@ const AdresDefination = () => {
     } catch (error) {
       setSaveError(error.message);
     } finally {
-     // setdeleteStart(false);
+      // setdeleteStart(false);
     }
-    
+
   }
 
   async function DeleteAccepted(data) {
     setDeleteStart(true);
 
-    try{
+    try {
       setSaveError(null);
 
-      if (data==null)
+      if (data == null)
         return;
-        var deleteCompanyReturn = await DeleteCompanyDefination(updateAdressDefination.id);
-      
+      var deleteCompanyReturn = await DeleteCompanyDefination(updateAdressDefination.id);
+
       if (deleteCompanyReturn.returnCode === 1) {
         LoadUserAdressDefinations();
         setVisibleDelete(false);
@@ -167,24 +171,24 @@ const AdresDefination = () => {
   }
   async function DeleteData(row) {
     var id = row.original["id"];
- 
-     try {
-       setVisibleEdit(false);
-       setVisibleDelete(false);
-       var editCompanyDefination = await GetCompanyDefination(id);
-       debugger;
-       if (editCompanyDefination.returnCode === 1) {
-         setupdateAdressDefination(editCompanyDefination.data);
-         setVisibleDelete(true);
-       } else {
-         setSaveError(editCompanyDefination.returnMessage);
-       }
-     } catch (error) {
-       setVisibleDelete(error.message);
-     } finally {
-       //setDeleteStart(false);
-     }
- 
+
+    try {
+      setVisibleEdit(false);
+      setVisibleDelete(false);
+      var editCompanyDefination = await GetCompanyDefination(id);
+      debugger;
+      if (editCompanyDefination.returnCode === 1) {
+        setupdateAdressDefination(editCompanyDefination.data);
+        setVisibleDelete(true);
+      } else {
+        setSaveError(editCompanyDefination.returnMessage);
+      }
+    } catch (error) {
+      setVisibleDelete(error.message);
+    } finally {
+      //setDeleteStart(false);
+    }
+
   }
   const table = useMaterialReactTable({
     columns: Gridcolumns,
@@ -193,15 +197,17 @@ const AdresDefination = () => {
     layoutMode: "grid",
     positionActionsColumn: 'last',
     renderRowActions: ({ row }) => (
-      <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '3px' }}>
-        <IconButton onClick={() => EditData(row)}>
-          <EditIcon />
-        </IconButton>
-        <IconButton onClick={() => DeleteData(row)}>
-          <DeleteIcon />
-        </IconButton>
+   
+        <Box ml={{ display: 'flex', flexWrap: 'nowrap', gap: '0rem' }}>
+          <IconButton onClick={() => EditData(row)} >
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => DeleteData(row)}>
+            <DeleteIcon />
+          </IconButton>   
 
-      </Box>
+        </Box>
+    
     ),
 
   });
@@ -221,7 +227,7 @@ const AdresDefination = () => {
           <CRow>
             <CCol>
 
-              <MaterialReactTable table={table} />
+              <MaterialReactTable table={table} enableColumnResizing={true}/>
             </CCol>
           </CRow>
           <CRow>
@@ -234,21 +240,21 @@ const AdresDefination = () => {
         </CCardBody>
       </CCard>
 
-      <EditModal  adressdefinationp={updateAdressDefination} 
-      visiblep={visibleEdit} 
-      adresDefinationTypesp={adressDefinationTypes}
-      setFormData={e=>LoadUserAdressDefinations()}
+      <EditModal adressdefinationp={updateAdressDefination}
+        visiblep={visibleEdit}
+        adresDefinationTypesp={adressDefinationTypes}
+        setFormData={e => LoadUserAdressDefinations()}
       ></EditModal>
 
       <DeleteModal message={updateAdressDefination?.companyName}
-       message2={t("CompanyDefinationDelete")} 
-       visiblep={visibleDelete}
-       OnClickOk={(data)=>DeleteAccepted(data)}
-       saveStart={deleteStart}
-       title={t("ModalCompanyDeleteTitle")}
-       deleteError={saveError}
+        message2={t("CompanyDefinationDelete")}
+        visiblep={visibleDelete}
+        OnClickOk={(data) => DeleteAccepted(data)}
+        saveStart={deleteStart}
+        title={t("ModalCompanyDeleteTitle")}
+        deleteError={saveError}
        
-       ></DeleteModal>
+      ></DeleteModal>
     </>
   )
 }

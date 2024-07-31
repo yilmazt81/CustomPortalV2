@@ -108,7 +108,7 @@ DeleteModal.propTypes = {
     title: PropTypes.string,
     message: PropTypes.string,
     message2: PropTypes.string,
-    saveStart: PropTypes.string,
+    saveStart: PropTypes.bool,
     deleteError: PropTypes.string,
     OnClickOk:PropTypes.func,
 

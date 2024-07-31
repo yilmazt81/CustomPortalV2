@@ -62,4 +62,6 @@ export const TRANSLATIONS_RU = {
     AdressDefinationTypes:"Типы адресов",    
     CompanyDefinationDelete:"Вы уверены, что хотите удалить определение адреса ?",
     ModalCompanyDeleteTitle:"Удалить вопрос",
+    TemplatePath:"Файл шаблона",
+    
 };
