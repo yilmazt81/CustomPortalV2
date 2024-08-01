@@ -10,7 +10,7 @@ import {
   CAlert,
 
 } from '@coreui/react'
-
+import { Link } from 'react-router-dom';
 
 import { useNavigate } from "react-router-dom";
 import { Gridcolumns } from './DataGrid'
@@ -154,13 +154,14 @@ const FormDefination = () => {
       // setdeleteStart(false);
     }
   }
-  
+
   async function SaveComplated() {
     LoadFormDefinations();
   }
 
   async function DeleteData(row) {
     var id = row.original["id"];
+    navigate(`FormDefinationEdit/${id}`);
     /*
      try {
        setVisibleDelete(false);
@@ -180,6 +181,12 @@ const FormDefination = () => {
      }
  */
   }
+
+  async function NavigateFormEdit(row) {
+    var id = row.original["id"];
+    navigate(`/FormDefinationTypeEdit`,{formdefinationId:id});
+
+  }
   const table = useMaterialReactTable({
     columns: Gridcolumns,
     data: formDefinations,
@@ -194,7 +201,11 @@ const FormDefination = () => {
       </IconButton>
  
       <IconButton>
-        <DynamicForm></DynamicForm>
+        <Link to={{
+        pathname: '/FormDefinationTypeEdit',
+        search: '?formdefinationId='+row.original["id"],
+        }} >   <DynamicForm></DynamicForm></Link>
+     
       </IconButton>
       </Box>
 

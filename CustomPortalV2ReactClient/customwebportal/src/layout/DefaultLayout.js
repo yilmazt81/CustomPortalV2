@@ -40,8 +40,7 @@ const DefaultLayout = () => {
       if (userMenu.length == 0) {
         LoadUserMenu();
       }
-
-
+ 
     }
 
   });

@@ -27,9 +27,18 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return formDefination;
         }
 
+        public FormGroup AddGroup(FormGroup formGroup)
+        {
+            _dbContext.FormGroup.Add(formGroup);
+
+            _dbContext.SaveChanges();
+
+            return formGroup;
+        }
+
         public IEnumerable<FormDefination> Get(Expression<Func<FormDefination, bool>> predicate)
         {
-          
+
             return _dbContext.FormDefination.Where(predicate).ToList();
         }
 
@@ -39,22 +48,46 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.CustomSector.Where(s => s.MainCompanyId == companyId).ToList();
         }
 
-        public IEnumerable<List<FormGroup>> GetFormGroups(int formDefinationId)
+        public FormGroup GetFormGroup(int id)
         {
 
-            return _dbContext.FormGroup.Where(s=>s.FormDefinationId== formDefinationId).OrderBy(s=>s.OrderNumber).ToList();
+            return _dbContext.FormGroup.Single(s => s.Id == id);
+        }
+
+        public IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId)
+        {
+            return _dbContext.FormDefinationField.Where(s => s.FormGroupId == formGroupId).OrderBy(s => s.OrderNumber).ToList();
+        }
+
+        public IEnumerable<FormGroup> GetFormGroups(int formDefinationId)
+        { 
+            return _dbContext.FormGroup.Where(s => s.FormDefinationId == formDefinationId && !s.Deleted).ToList().OrderBy(s => s.OrderNumber).ToList();
         }
 
         public FormDefination Update(FormDefination formDefination)
         {
             var dbDefination = _dbContext.FormDefination.Single(s => s.Id == formDefination.Id);
-            dbDefination.FormName= formDefination.FormName;
+            dbDefination.FormName = formDefination.FormName;
             dbDefination.CustomSectorId = formDefination.CustomSectorId;
             dbDefination.CustomSectorName = formDefination.CustomSectorName;
             dbDefination.Deleted = formDefination.Deleted;
             _dbContext.SaveChanges();
 
             return dbDefination;
+        }
+
+        public FormGroup UpdateGroup(FormGroup formGroup)
+        {
+            var dbGroup = _dbContext.FormGroup.Single(s => s.Id == formGroup.Id);
+            dbGroup.Deleted = formGroup.Deleted;
+            dbGroup.OrderNumber = formGroup.OrderNumber;
+            dbGroup.FormNumber = formGroup.FormNumber;
+            dbGroup.AllowEditCustomer = formGroup.AllowEditCustomer;
+            dbGroup.Name = formGroup.Name;
+
+            _dbContext.SaveChanges();
+
+            return dbGroup;
         }
     }
 }

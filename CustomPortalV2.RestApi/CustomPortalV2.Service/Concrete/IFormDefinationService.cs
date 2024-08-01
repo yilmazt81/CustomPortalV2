@@ -11,35 +11,33 @@ namespace CustomPortalV2.Business.Concrete
 {
     public interface IFormDefinationService
     {
-        DefaultReturn< List<FormDefination>> GetCompanyDefinations(int mainCompanyId);
-        DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId); 
+        DefaultReturn<List<FormDefination>> GetCompanyDefinations(int mainCompanyId);
+        DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId);
 
-        DefaultReturn<FormDefination> GetFormDefination(int id); 
+        DefaultReturn<FormDefination> GetFormDefination(int id);
 
         DefaultReturn<FormDefination> Save(FormDefination formDefination);
 
         DefaultReturn<FormDefinationField> Save(FormDefinationField formDefinationField);
-
-        DefaultReturn<FormGroup> Save(FormGroup formGroup);
-
+         
         DefaultReturn<AutocompleteField> Save(AutocompleteField autocompleteField);
         DefaultReturn<AutocompleteFieldMap> Save(AutocompleteFieldMap autocompleteFieldMap);
 
         DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem);
-        DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formdefinationId, int formgroupId);
+        DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId);
 
         DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName);
         DefaultReturn<List<AutocompleteFieldMap>> GetAutocompleteFieldMaps(int autoComplateFieldId);
 
         DefaultReturn<List<FormGroup>> GetFormGroups(int formDefinationId);
-
-        DefaultReturn<ComboBoxItem> GetComboBoxItems(int mainCompanyId,string tagName);
+        DefaultReturn<FormGroup> GetFormGroup(int id);
+        DefaultReturn<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string tagName);
 
         DefaultReturn<FormVersion> GetFormVersions(int formDefinationId);
 
         DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId);
+        DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup);
 
-
-
+        DefaultReturn<bool> DeleteGroup(int formDefinationTypeId, int groupid, int companyId);
     }
 }

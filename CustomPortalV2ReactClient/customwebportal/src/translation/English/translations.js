@@ -64,6 +64,17 @@ export const TRANSLATIONS_EN = {
     CompanyDefinationDelete:"Are you sure you want to delete the Address Definition ?",
     ModalCompanyDeleteTitle:"Delete Question",
     TemplatePath:"Template File",
+    FormGroupModalTitle:"Form Group Edit",
+    GroupFormNumber:"Group Number",
+    GroupName:"Group Caption",
+    OrderNumber:"Order Number",
+    GroupTag:"Group Tag",    
+    CustomerCanChange:"Customer Can Change",
+    FieldCaption:"Field Caption",
+    TagName:"Field Tag",    
+    ControlType:"Control Type",
+    Mandatory:"Mandatory",
+    GroupDelete:"Delete Group",
     
-
+    GroupDeleteMessage:"Are you sure you want to delete the selected Group?"
 };

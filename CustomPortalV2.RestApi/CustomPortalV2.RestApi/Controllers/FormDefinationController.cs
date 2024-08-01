@@ -85,6 +85,60 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(defaultReturn);
         }
 
+        [HttpGet("CreateFormDefinationGroup")]
+        public IActionResult CreateFormDefinationGroup(int formDefinationId)
+        {
+            DefaultReturn<FormGroup> defaultReturn = new DefaultReturn<FormGroup>();
+
+            defaultReturn.Data = new FormGroup()
+            {
+
+                Deleted = false,
+                AllowEditCustomer = false,
+                FormNumber = "",
+                GroupTag = "",
+                Name = "",
+                OrderNumber = 0,
+                FormDefinationId = formDefinationId,
+
+
+
+            };
+            return Ok(defaultReturn);
+        }
+
+
+        [HttpGet("CreateNewGroupField")]
+        public IActionResult CreateNewGroupField(int formDefinationId, int formGroupId)
+        {
+            DefaultReturn<FormDefinationField> defaultReturn = new DefaultReturn<FormDefinationField>();
+
+            defaultReturn.Data = new FormDefinationField()
+            {
+
+                Deleted = false,
+                AutoComplate = false,
+                Bold = false,
+                CellName = "",
+                ControlType = "TextBox",
+                FieldCaption = "",
+                FormGroupId = formGroupId,
+                DefaultProp = "",
+                FontSize = 19,
+                Mandatory = false,
+                TagName = "",
+                OrderNumber = 0,
+                TranslateLanguage = "",
+                Italic = false,
+                FormDefinationId = formDefinationId,
+                
+
+            };
+            return Ok(defaultReturn);
+        }
+
+
+
         [HttpGet("GetSectors")]
         public IActionResult GetSectors()
         {
@@ -105,17 +159,59 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(sectorList);
         }
 
-        [HttpGet("GetFormGroup")]
+        [HttpGet("GetFormGroups")]
 
         public IActionResult GetFormGroups(int formDefinationId)
         {
-            string key = $"FormDefinationGroup{formDefinationId}";
+            string key = $"FormDefinationGroups{formDefinationId}";
 
             if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormGroup>> list))
                 return Ok(list);
 
 
-           var formGroupList= _formDefinationService.GetFormGroups(formDefinationId);
+            var formGroupList = _formDefinationService.GetFormGroups(formDefinationId);
+
+            _memoryCache.Set(key, formGroupList, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formGroupList);
+        }
+
+        [HttpGet("GetFormGroup/{id}")]
+
+        public IActionResult GetFormGroup(int id)
+        {
+            string key = $"FormDefinationGroup{id}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<FormGroup> list))
+                return Ok(list);
+
+
+            var formGroupList = _formDefinationService.GetFormGroup(id);
+
+            _memoryCache.Set(key, formGroupList, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formGroupList);
+        }
+
+
+        [HttpGet("GetGroupFields/{formGroupId}")]
+        public IActionResult GetGroupFields(int formGroupId)
+        {
+            string key = $"FormGroupFields{formGroupId}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormDefinationField>> list))
+                return Ok(list);
+
+
+            var formGroupList = _formDefinationService.GetFormGroups(formGroupId);
 
             _memoryCache.Set(key, formGroupList, new MemoryCacheEntryOptions
             {
@@ -139,6 +235,34 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formDefinationReturn);
         }
+
+        [HttpPost("SaveGroup")]
+        public IActionResult SaveGroup(FormGroup formGroup)
+        {
+            string key = $"FormDefinationGroups{formGroup.FormDefinationId}";
+            _memoryCache.Remove(key);
+
+            key = $"FormDefinationGroup{formGroup.Id}";
+            _memoryCache.Remove(key);
+            var formGroupReturn = _formDefinationService.SaveGroup(formGroup);
+            return Ok(formGroupReturn);
+        }
+        [HttpGet("DeleteGroup")]
+        public IActionResult DeleteGroup(int formDefinationId, int groupId)
+        {
+
+            var deleteResult = _formDefinationService.DeleteGroup(formDefinationId, groupId, User.GetCompanyId());
+            string key = $"FormDefinationGroups{formDefinationId}";
+            _memoryCache.Remove(key);
+            key = $"FormDefinationGroup{groupId}";
+            _memoryCache.Remove(key);
+
+            return Ok(deleteResult);
+
+
+        }
+
+
     }
 
 }

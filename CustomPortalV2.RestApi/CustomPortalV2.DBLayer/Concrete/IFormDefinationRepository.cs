@@ -15,8 +15,14 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         IEnumerable<FormDefination> Get(Expression<Func<FormDefination, bool>> predicate);
         IEnumerable<CustomSector> GetCompanySectors(int companyId);
 
-        IEnumerable<List<FormGroup>> GetFormGroups(int formDefinationId);
+        IEnumerable<FormGroup> GetFormGroups(int formDefinationId);
         FormDefination Add(FormDefination formDefination);
         FormDefination Update(FormDefination formDefination);
+        FormGroup AddGroup(FormGroup formGroup);
+        FormGroup UpdateGroup(FormGroup formGroup);
+
+        IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId);
+
+        FormGroup GetFormGroup(int id);
     }
 }

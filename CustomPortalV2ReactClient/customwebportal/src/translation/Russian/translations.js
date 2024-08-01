@@ -63,5 +63,16 @@ export const TRANSLATIONS_RU = {
     CompanyDefinationDelete:"Вы уверены, что хотите удалить определение адреса ?",
     ModalCompanyDeleteTitle:"Удалить вопрос",
     TemplatePath:"Файл шаблона",
-    
+    FormGroupModalTitle:"Группа форм Править",
+    GroupFormNumber:"Номер группы",
+    GroupName:"Имя группы",
+    OrderNumber:"Номер заказа",
+    GroupTag:"Групповой тег",
+    CustomerCanChange:"Клиент может измениться",
+    FieldCaption:"поле Заголовок",
+    TagName:"Тег поля",
+    ControlType:"Тип управления",
+    Mandatory:"Обязательный",
+    GroupDelete:"Удалить группу",    
+    GroupDeleteMessage:"Вы уверены, что хотите удалить выбранную группу ?"
 };

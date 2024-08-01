@@ -34,7 +34,7 @@ const DeleteModal = ({ visiblep, title, message,message2, saveStart, deleteError
     async function DeleteAccepted() {
 
         OnClickOk({return:"ok"});
-        setvisible(false);
+        //setvisible(false);
     }
 
  

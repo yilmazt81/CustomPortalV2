@@ -64,4 +64,19 @@ export const TRANSLATIONS_TR = {
     CompanyDefinationDelete:"Adres Tanımını silmek istediğinizden emin mi siniz ?",
     ModalCompanyDeleteTitle:"Silme Onayı",
     TemplatePath:"Form Şablonu",
+    FormGroupModalTitle:"Form Group Güncelle",
+    GroupFormNumber:"Group No",
+    GroupName:"Group Başlığı",
+    OrderNumber:"Sıra No",
+    GroupTag:"Group Adı",
+    CustomerCanChange:"Müşteri Değiştirebilir",
+    FieldCaption:"Alan Başlığı",
+    TagName:"Alan Adı",
+    ControlType:"Kontrol Türü",
+    Mandatory:"Zorumlu",
+    GroupDelete:"Group Sil",
+    GroupDeleteMessage:"Seçili Group'u silmek istediğinizden emin misiniz?"
+
+
+
 };

@@ -21,6 +21,36 @@ namespace CustomPortalV2.Business.Service
             _formDefinationService = formDefinationRepository;
             _appLangRepository = appLangRepository;
         }
+
+        public DefaultReturn<bool> DeleteGroup(int formDefinationTypeId, int groupid, int companyId)
+        {
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            try
+            {
+                var formDefination = _formDefinationService.Get(s => s.Id == formDefinationTypeId).FirstOrDefault();
+
+                if (formDefination == null)
+                {
+                    throw new Exception("FormDefinationNotFount");
+                }
+
+                if (formDefination.MainCompanyId != companyId)
+                {
+                    throw new Exception("CompanyDiffrend");
+                }
+
+                var group = GetFormGroup(groupid);
+                group.Data.Deleted = true;
+                _formDefinationService.UpdateGroup(group.Data);
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
+
         public DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName)
         {
             throw new NotImplementedException();
@@ -67,16 +97,27 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formdefinationId, int formgroupId)
+        public DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<FormDefinationField>> defaultReturn = new DefaultReturn<List<FormDefinationField>>();
+
+            defaultReturn.Data = _formDefinationService.GetFormGroupFields(formgroupId).ToList();
+            return defaultReturn;
+        }
+
+        public DefaultReturn<FormGroup> GetFormGroup(int id)
+        {
+            DefaultReturn<FormGroup> defaultReturn = new DefaultReturn<FormGroup>();
+            defaultReturn.Data = _formDefinationService.GetFormGroup(id);
+
+            return defaultReturn;
         }
 
         public DefaultReturn<List<FormGroup>> GetFormGroups(int formDefinationId)
         {
-            DefaultReturn<List<FormGroup>> defaultReturn=new DefaultReturn<List<FormGroup>>();
+            DefaultReturn<List<FormGroup>> defaultReturn = new DefaultReturn<List<FormGroup>>();
 
- 
+            defaultReturn.Data = _formDefinationService.GetFormGroups(formDefinationId).ToList();
             return defaultReturn;
         }
 
@@ -149,6 +190,22 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
             throw new NotImplementedException();
+        }
+
+        public DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup)
+        {
+            DefaultReturn<FormGroup> defaultReturn = new DefaultReturn<FormGroup>();
+
+            if (formGroup.Id == 0)
+            {
+                defaultReturn.Data = _formDefinationService.AddGroup(formGroup);
+            }
+            else
+            {
+                defaultReturn.Data = _formDefinationService.UpdateGroup(formGroup);
+            }
+
+            return defaultReturn;
         }
     }
 }
