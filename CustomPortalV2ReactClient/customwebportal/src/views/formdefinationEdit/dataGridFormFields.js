@@ -6,11 +6,30 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
+import {
+  CButton,
+  CCol,
+  CAlert,
+  CRow,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalFooter,
+  CModalBody,
+  CFormLabel,
+  CFormInput,
+  CFormCheck,
+  CFormSwitch
+
+} from '@coreui/react'
+
+
+
 const OptionClick = (option, id) => {
   console.log(option);
 }
 
-const GridcolumnFormFields = () => {
+const GridcolumnFormFields = (OptionClick) => {
   return [
     {
       field: 'orderNumber',
@@ -31,16 +50,29 @@ const GridcolumnFormFields = () => {
       field: 'controlType',
       headerName: i18.t('ControlType'),
       width: 100,
+      renderCell: (params) => (
+          <CFormLabel>{i18.t(params.row.controlType)}</CFormLabel>
+      )
     },
     {
       field: 'mandatory',
       headerName: i18.t('Mandatory'),
       width: 100,
+      renderCell: (params) => (
+        <div>
+          <CFormSwitch size='xl' checked={params.row.mandatory}></CFormSwitch>
+        </div>
+      )
     },
     {
       field: 'deleted',
       headerName: i18.t('Deleted'),
       width: 100,
+      renderCell: (params) => (
+        <div>
+          <CFormSwitch size='xl' checked={params.row.deleted}></CFormSwitch>
+        </div>
+      )
     },
     {
       field: 'actions',

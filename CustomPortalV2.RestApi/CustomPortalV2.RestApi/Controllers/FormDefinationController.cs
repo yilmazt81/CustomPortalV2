@@ -7,6 +7,7 @@ using CustomPortalV2.RestApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Generic;
 
 namespace CustomPortalV2.RestApi.Controllers
 {
@@ -107,12 +108,37 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(defaultReturn);
         }
 
+        [HttpGet("GetFieldTypes")]
+        public IActionResult GetFieldTypes()
+        {
+            var companyId = User.GetCompanyId();
+            string key = $"CompanyFieldTypes{companyId}";
+
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FieldType>> list))
+                return Ok(list);
+
+
+            var fieldTypeList = _formDefinationService.GetFielTypes(companyId);
+            _memoryCache.Set(key, fieldTypeList, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(fieldTypeList);
+        }
+
 
         [HttpGet("CreateNewGroupField")]
+        [AllowAnonymous]
         public IActionResult CreateNewGroupField(int formDefinationId, int formGroupId)
         {
             DefaultReturn<FormDefinationField> defaultReturn = new DefaultReturn<FormDefinationField>();
-
+            
+            var grupList = GetGroupFieldsReturnList(formGroupId);
+            var maxOrder = (grupList.Data.Count == 0 ? 0 : grupList.Data.Max(s => s.OrderNumber));
+            maxOrder++;
             defaultReturn.Data = new FormDefinationField()
             {
 
@@ -124,20 +150,20 @@ namespace CustomPortalV2.RestApi.Controllers
                 FieldCaption = "",
                 FormGroupId = formGroupId,
                 DefaultProp = "",
-                FontSize = 19,
+                FontSize = 20,
                 Mandatory = false,
                 TagName = "",
-                OrderNumber = 0,
+                OrderNumber = maxOrder,
                 TranslateLanguage = "",
                 Italic = false,
                 FormDefinationId = formDefinationId,
-                
+                FontFamily = "Times New Roman",
+
+
 
             };
             return Ok(defaultReturn);
         }
-
-
 
         [HttpGet("GetSectors")]
         public IActionResult GetSectors()
@@ -201,25 +227,31 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(formGroupList);
         }
 
-
-        [HttpGet("GetGroupFields/{formGroupId}")]
-        public IActionResult GetGroupFields(int formGroupId)
+        private DefaultReturn<List<FormDefinationField>> GetGroupFieldsReturnList(int formGroupId)
         {
             string key = $"FormGroupFields{formGroupId}";
-
+            DefaultReturn<List<FormDefinationField>> defaultReturn = null;
             if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormDefinationField>> list))
-                return Ok(list);
+                return list;
 
 
-            var formGroupList = _formDefinationService.GetFormGroups(formGroupId);
+            defaultReturn = _formDefinationService.GetFormDefinationFields(formGroupId);
 
-            _memoryCache.Set(key, formGroupList, new MemoryCacheEntryOptions
+            _memoryCache.Set(key, defaultReturn, new MemoryCacheEntryOptions
             {
                 AbsoluteExpiration = DateTime.Now.AddMinutes(30),
                 Priority = CacheItemPriority.Normal
             });
 
-            return Ok(formGroupList);
+            return defaultReturn;
+        }
+
+        [HttpGet("GetGroupFields/{formGroupId}")]
+        public IActionResult GetGroupFields(int formGroupId)
+        {
+           
+
+            return Ok(GetGroupFieldsReturnList(formGroupId));
         }
 
         [HttpPost]
@@ -247,6 +279,19 @@ namespace CustomPortalV2.RestApi.Controllers
             var formGroupReturn = _formDefinationService.SaveGroup(formGroup);
             return Ok(formGroupReturn);
         }
+        [HttpPost("SaveFormDefinationField")]
+        [AllowAnonymous]
+        public IActionResult SaveFormDefinationField(FormDefinationField formDefinationField)
+        {
+
+
+            string key = $"FormGroupFields{formDefinationField.FormGroupId}";             
+            _memoryCache.Remove(key);             
+            var formGroupReturn = _formDefinationService.SaveFormDefinationField(formDefinationField);
+
+            return Ok(formGroupReturn);
+        }
+
         [HttpGet("DeleteGroup")]
         public IActionResult DeleteGroup(int formDefinationId, int groupId)
         {
@@ -260,6 +305,25 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(deleteResult);
 
 
+        }
+        [HttpGet("GetFonts")]
+        public ActionResult GetFonts()
+        {
+            string key = $"FontTypes";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FontType>> list))
+                return Ok(list);
+
+
+            var fontTypeslist = _formDefinationService.GetFontTypes();
+
+            _memoryCache.Set(key, fontTypeslist, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddHours(2),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(fontTypeslist);
         }
 
 

@@ -187,6 +187,15 @@ const FormDefination = () => {
     navigate(`/FormDefinationTypeEdit`,{formdefinationId:id});
 
   }
+
+  
+  async function ImportDefinationFromFile(){
+
+  }
+
+  async function ImportBaseDefination(){
+    
+  }
   const table = useMaterialReactTable({
     columns: Gridcolumns,
     data: formDefinations,
@@ -221,6 +230,9 @@ const FormDefination = () => {
             <CCol>
               <CButtonGroup role="group">
                 <CButton color="primary" shape='rounded-3' onClick={() => NewDefination()} > {t("AddNewFormDefination")}</CButton>
+                <CButton color="primary" shape='rounded-3' onClick={() => ImportDefinationFromFile()} > {t("ImportFormDefinations")}</CButton>
+                <CButton color="primary" shape='rounded-3' onClick={() => ImportBaseDefination()} > {t("ImportBaseDefination")}</CButton>
+
               </CButtonGroup>
             </CCol>
           </CRow>

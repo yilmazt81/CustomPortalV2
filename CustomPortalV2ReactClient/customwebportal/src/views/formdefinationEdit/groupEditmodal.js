@@ -12,8 +12,8 @@ import {
     CModalBody,
     CFormLabel,
     CFormInput,
-    CFormSelect,
     CFormCheck,
+    CFormSwitch
 
 } from '@coreui/react'
 
@@ -41,15 +41,25 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
     const { t } = useTranslation();
 
     function handleChange(event) {
-        const { name, value } = event.target; 
+        const { name, value } = event.target;
+       
         setformdefinationGroup({ ...formdefinationGroup, [name]: value });
 
     }
+    function handleChangeSwich(event) {
+       const { name, value } = event.target;
+       var newValue =formdefinationGroup[name];
+       newValue=!newValue;
+
+       setformdefinationGroup({ ...formdefinationGroup, [name]: newValue });
+
+    }
+
     async function ClosedClick() {
         setvisible(false);
     }
 
-  
+
 
     useEffect(() => {
         setSaveError(null);
@@ -64,7 +74,7 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
         try {
 
             try {
-                setSaveError(null); 
+                setSaveError(null);
                 setsaveStart(true);
                 debugger;
                 var savedefinationResult = await SaveFormGroup(formdefinationGroup);
@@ -91,6 +101,8 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
         }
 
     }
+
+    
     return (
 
         <>
@@ -105,7 +117,7 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
                 </CModalHeader>
                 <CModalBody>
 
-                  
+
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="txtname" className="col-sm-3 col-form-label">{t("GroupName")}</CFormLabel>
                         <CCol sm={9}>
@@ -129,10 +141,12 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
                     </CRow>
 
                     <CRow className="mb-12">
-                 
+                        <CCol>
+                            <CFormSwitch label={t("CustomerCanChange")} name='allowEditCustomer' size='lg' 
+                            onChange={e => handleChangeSwich(e)} 
+                            checked={formdefinationGroup?.allowEditCustomer} ></CFormSwitch>
 
-                        <CFormCheck id="chckallowEditCustomer" label={t("CustomerCanChange")}   
-                         onChange={e => handleChange(e)} name='allowEditCustomer' value={formdefinationGroup?.allowEditCustomer} />
+                        </CCol>
 
                     </CRow>
 

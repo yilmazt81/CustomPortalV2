@@ -27,6 +27,15 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return formDefination;
         }
 
+        public FormDefinationField AddDefinationField(FormDefinationField formDefinationField)
+        {
+             _dbContext.FormDefinationField.Add(formDefinationField);
+
+            _dbContext.SaveChanges();
+
+            return formDefinationField;
+        }
+
         public FormGroup AddGroup(FormGroup formGroup)
         {
             _dbContext.FormGroup.Add(formGroup);
@@ -48,6 +57,16 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.CustomSector.Where(s => s.MainCompanyId == companyId).ToList();
         }
 
+        public IEnumerable<FieldType> GetDefaultFieldTypes()
+        {
+            return _dbContext.FieldType.ToList();
+        }
+
+        public IEnumerable<FontType> GetFontTypes()
+        {
+            return _dbContext.FontTypes.ToArray();
+        }
+
         public FormGroup GetFormGroup(int id)
         {
 
@@ -64,6 +83,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.FormGroup.Where(s => s.FormDefinationId == formDefinationId && !s.Deleted).ToList().OrderBy(s => s.OrderNumber).ToList();
         }
 
+        public bool IsExistFormDefinationField(int formDefinationId, string tagName)
+        {
+
+            return _dbContext.FormDefinationField.Any(s => s.FormDefinationId == formDefinationId && s.TagName == tagName);
+        }
+
         public FormDefination Update(FormDefination formDefination)
         {
             var dbDefination = _dbContext.FormDefination.Single(s => s.Id == formDefination.Id);
@@ -74,6 +99,28 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             _dbContext.SaveChanges();
 
             return dbDefination;
+        }
+
+        public FormDefinationField UpdateDefinationField(FormDefinationField definationField)
+        {
+            var dbField = _dbContext.FormDefinationField.Single(s => s.Id == definationField.Id);
+            dbField.FieldCaption = definationField.FieldCaption;
+            dbField.TagName = definationField.TagName;
+            dbField.CellName = definationField.CellName;
+            dbField.Deleted = definationField.Deleted;
+            dbField.Mandatory = definationField.Mandatory;
+            dbField.AutoComplate = definationField.AutoComplate;
+            dbField.ControlType = definationField.ControlType;
+            dbField.FormGroupId = definationField.FormGroupId;
+            dbField.OrderNumber = definationField.OrderNumber;
+            dbField.Bold = definationField.Bold;
+            dbField.Italic = definationField.Italic;
+            dbField.FontSize = definationField.FontSize;
+            dbField.TranslateLanguage = definationField.TranslateLanguage;
+            dbField.FontFamily = definationField.FontFamily;
+            _dbContext.SaveChanges();
+
+            return dbField;
         }
 
         public FormGroup UpdateGroup(FormGroup formGroup)

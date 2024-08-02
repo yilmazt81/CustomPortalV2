@@ -36,8 +36,12 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<FormVersion> GetFormVersions(int formDefinationId);
 
         DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId);
-        DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup);
-
+        DefaultReturn<FormGroup> SaveGroup(FormGroup formDefinationField);
+        DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formGroup);
         DefaultReturn<bool> DeleteGroup(int formDefinationTypeId, int groupid, int companyId);
+
+        DefaultReturn<List<FieldType>> GetFielTypes(int companyId);
+
+        DefaultReturn<List<FontType>> GetFontTypes();
     }
 }

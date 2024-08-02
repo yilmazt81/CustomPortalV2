@@ -24,5 +24,16 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId);
 
         FormGroup GetFormGroup(int id);
+
+        IEnumerable<FieldType> GetDefaultFieldTypes();
+
+        IEnumerable<FontType> GetFontTypes();
+
+        FormDefinationField AddDefinationField(FormDefinationField formDefinationField);
+        FormDefinationField UpdateDefinationField(FormDefinationField formDefinationField);
+
+        bool IsExistFormDefinationField(int formDefinationId, string tagName);
+
+
     }
 }

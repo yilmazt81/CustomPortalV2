@@ -117,6 +117,7 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CompanyDefinationSenderTarget> CompanyDefinationSenderTarget { get; set; }
         public virtual DbSet<CustomProduct> CustomProduct { get; set; }
 
+        public virtual DbSet<FontType> FontTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -140,7 +141,11 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FormAttachmentExcelMapMultiField>().HasKey(k => k.Id);
             modelBuilder.Entity<FormAttachmentExcelMapMultiField>().Property(k => k.Id).HasColumnName("Id");
 
-             
+            modelBuilder.Entity<FontType>().ToTable("FontType");
+            modelBuilder.Entity<FontType>().HasKey(k => k.Id);
+            modelBuilder.Entity<FontType>().Property(k => k.Id).HasColumnName("Id");
+
+            
 
             modelBuilder.Entity<CustomWork>().ToTable("CustomWork");
             modelBuilder.Entity<CustomWork>().HasKey(k => k.Id);

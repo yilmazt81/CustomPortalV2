@@ -1,31 +1,26 @@
 import axios from "axios";
 
 
-export async function CreateNewFormDefination() {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } = await axios.get(process.env.REACT_APP_APIURL + `/api/FormDefination/CreateFormDefination`);
+export async function CreateNewFormDefination() { 
+  const { data } = await GetRequest(`/api/FormDefination/CreateFormDefination`);
   return data;
 };
 
 
-export async function GetFormDefinations() {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } = await axios.get(process.env.REACT_APP_APIURL + `/api/FormDefination`);
+export async function GetFormDefinations() { 
+  const { data } = await  GetRequest(`/api/FormDefination`);
   return data;
 };
 
-export async function GetSector() {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } = await axios.get(process.env.REACT_APP_APIURL + `/api/FormDefination/GetSectors`);
+export async function GetSector() { 
+  const { data } = await GetRequest(`/api/FormDefination/GetSectors`);
   return data;
 };
 
 export async function SaveFormDefination(formdefination) {
   var lastToken = localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  axios.defaults.headers.common['Content-Type'] = 'application/json';
   const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination`, formdefination);
   return data;
 };
@@ -42,24 +37,34 @@ export async function GetFormGroups(formdefinationId) {
 
 
 
-export async function CreateNewFormDefinationGroup(formdefinationId) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } = await axios.get(process.env.REACT_APP_APIURL + `/api/FormDefination/CreateFormDefinationGroup?formDefinationId=${formdefinationId}`);
+export async function CreateNewFormDefinationGroup(formdefinationId) { 
+  const { data } = await  GetRequest(`/api/FormDefination/CreateFormDefinationGroup?formDefinationId=${formdefinationId}`);
   return data;
 };
 
 export async function SaveFormGroup(formGroup) {
   var lastToken = localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  axios.defaults.headers.common['Content-Type'] = 'application/json';
   const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveGroup`, formGroup);
   return data;
 };
-export async function GetFormGroupFields(formgroupid) {
+
+export async function SaveFormDefinationField(formdefinationField) {
   var lastToken = localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  const { data } = await axios.get(process.env.REACT_APP_APIURL + `/api/FormDefination/GetGroupFields/${formgroupid}`);
+  axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
+ 
+  
+  debugger;
+  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveFormDefinationField`, formdefinationField);
+  return data;
+};
+
+
+export async function GetFormGroupFields(formgroupid) {
+ 
+  const { data } = await GetRequest(`/api/FormDefination/GetGroupFields/${formgroupid}`);
   return data;
 };
 
@@ -83,7 +88,20 @@ export async function DeleteFormGroup(formdefinationid,groupid) {
 };
 
 export async function CreateNewGroupField(formdefinationid,groupid) {
-
-  const { data } = await GetRequest(`api/FormDefination/CreateNewGroupField?formDefinationId=${formdefinationid}&formGroupId=${groupid}`);
+                           
+  const { data } = await GetRequest(`/api/FormDefination/CreateNewGroupField?formDefinationId=${formdefinationid}&formGroupId=${groupid}`);
   return data;
 };
+
+export async function GetFieldTypes() {
+                          
+  const { data } = await GetRequest(`/api/FormDefination/GetFieldTypes`);
+  return data;
+};
+export async function GetFonts() {
+                           
+  const { data } = await GetRequest(`/api/FormDefination/GetFonts`);
+  return data;
+};
+
+

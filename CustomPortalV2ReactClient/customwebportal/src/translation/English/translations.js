@@ -74,7 +74,25 @@ export const TRANSLATIONS_EN = {
     TagName:"Field Tag",    
     ControlType:"Control Type",
     Mandatory:"Mandatory",
-    GroupDelete:"Delete Group",
+    GroupDelete:"Delete Group",    
+    GroupDeleteMessage:"Are you sure you want to delete the selected Group?",
+    ImportFormDefinations:"Import Form Defination",
+    ImportBaseDefination:"Import Base Forms",
+    FormFieldModalTitle:"Field Edit",
+    FontSize:"Font Size",
+    Bold:"Bold",
+    Italic:"Italic",
+    Mandatory:"Mandatory",
+    TranslateLanguage:"Translate Language",
+    FontFamily:"Font",
+    AutoComplate:"Auto Complate",
+    Text:'Text Box',
+    DateTime:'Date',
+    CheckBox:'CheckBox',
+    RadioBox:'RadioBox',
+    Hidden:'Hidden',
+    ComboBox:'ComboBox',
+
     
-    GroupDeleteMessage:"Are you sure you want to delete the selected Group?"
+    
 };

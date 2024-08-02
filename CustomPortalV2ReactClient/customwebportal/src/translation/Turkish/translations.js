@@ -75,8 +75,25 @@ export const TRANSLATIONS_TR = {
     ControlType:"Kontrol Türü",
     Mandatory:"Zorumlu",
     GroupDelete:"Group Sil",
-    GroupDeleteMessage:"Seçili Group'u silmek istediğinizden emin misiniz?"
+    GroupDeleteMessage:"Seçili Group'u silmek istediğinizden emin misiniz?",
+    ImportFormDefinations:"Form Tanımını içeri al",
+    ImportBaseDefination:"Hazır Tanımları al",
+    FormFieldModalTitle:"Alan Düzenle",
+    FontSize:"Font Boyutu",
+    Bold:"Koyu",
+    Italic:"Eğimli",    
+    Mandatory:"Zorumlu",
+    TranslateLanguage:"Çeviri Dili",
+    FontFamily:"Font",
+    AutoComplate:"Otomatik Tamamla",
+    Text:'Kısa Metin',
+    DateTime:'Tarih',
+    CheckBox:'Onay kutusu',
+    RadioBox:'Çoktan Seçmeli',
+    Hidden:'Gizli Alan',
+    ComboBox:'Açılır kutu',
 
+    
 
 
 };

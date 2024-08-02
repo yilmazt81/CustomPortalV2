@@ -81,6 +81,23 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
+        public DefaultReturn<List<FieldType>> GetFielTypes(int companyId)
+        {
+            DefaultReturn<List<FieldType>> defaultReturn = new DefaultReturn<List<FieldType>>();
+
+            defaultReturn.Data = _formDefinationService.GetDefaultFieldTypes().ToList();
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<FontType>> GetFontTypes()
+        {
+            DefaultReturn<List<FontType>> defaultReturn = new DefaultReturn<List<FontType>>();
+
+            defaultReturn.Data = _formDefinationService.GetFontTypes().ToList();
+            return defaultReturn;
+        }
+
         public DefaultReturn<FormDefination> GetFormDefination(int id)
         {
             DefaultReturn<FormDefination> defaultReturn = new DefaultReturn<FormDefination>();
@@ -190,6 +207,34 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
             throw new NotImplementedException();
+        }
+
+        public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)
+        {
+            DefaultReturn < FormDefinationField >   defaultReturn = new DefaultReturn<FormDefinationField >();
+            try
+            {
+                if (formDefinationField.Id == 0)
+                {
+                    if (_formDefinationService.IsExistFormDefinationField(formDefinationField.FormDefinationId, formDefinationField.TagName))
+                    {
+                        throw new Exception("FieldAllradyExist");
+                    }
+                    defaultReturn.Data= _formDefinationService.AddDefinationField(formDefinationField);
+
+                }
+                else
+                {
+                    defaultReturn.Data = _formDefinationService.UpdateDefinationField(formDefinationField);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
         public DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup)
