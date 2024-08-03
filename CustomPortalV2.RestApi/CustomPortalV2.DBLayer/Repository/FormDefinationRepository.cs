@@ -27,9 +27,27 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return formDefination;
         }
 
-        public FormDefinationField AddDefinationField(FormDefinationField formDefinationField)
+        public ComboBoxItem AddComboboxItem(ComboBoxItem comboBoxItem)
         {
-             _dbContext.FormDefinationField.Add(formDefinationField);
+                _dbContext.ComboBoxItem.Add(comboBoxItem);
+                _dbContext.SaveChanges();
+
+                return comboBoxItem;
+            
+
+        }
+
+        public bool IsExistComboboxItem(ComboBoxItem comboBoxItem)
+        {
+
+            return _dbContext.ComboBoxItem.Any(s => s.MainCompanyId == comboBoxItem.MainCompanyId && s.ItemType == s.ItemType && s.TagName == comboBoxItem.TagName);
+
+        }
+            
+
+            public FormDefinationField AddDefinationField(FormDefinationField formDefinationField)
+        {
+            _dbContext.FormDefinationField.Add(formDefinationField);
 
             _dbContext.SaveChanges();
 
@@ -51,6 +69,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.FormDefination.Where(predicate).ToList();
         }
 
+        public IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string fieldTag)
+        {
+
+            return _dbContext.ComboBoxItem.Where(s => s.MainCompanyId == mainCompanyId && s.ItemType == fieldTag).ToList();
+        }
+
         public IEnumerable<CustomSector> GetCompanySectors(int companyId)
         {
 
@@ -67,6 +91,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.FontTypes.ToArray();
         }
 
+        public FormDefinationField GetFormDefinationField(int id)
+        {
+            return _dbContext.FormDefinationField.Single(s => s.Id == id);
+        }
+
         public FormGroup GetFormGroup(int id)
         {
 
@@ -79,7 +108,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         }
 
         public IEnumerable<FormGroup> GetFormGroups(int formDefinationId)
-        { 
+        {
             return _dbContext.FormGroup.Where(s => s.FormDefinationId == formDefinationId && !s.Deleted).ToList().OrderBy(s => s.OrderNumber).ToList();
         }
 

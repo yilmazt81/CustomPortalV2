@@ -25,13 +25,14 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem);
         DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId);
+        DefaultReturn<FormDefinationField> GetFormDefinationField(int id);
 
         DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName);
         DefaultReturn<List<AutocompleteFieldMap>> GetAutocompleteFieldMaps(int autoComplateFieldId);
 
         DefaultReturn<List<FormGroup>> GetFormGroups(int formDefinationId);
         DefaultReturn<FormGroup> GetFormGroup(int id);
-        DefaultReturn<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string tagName);
+        DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(int mainCompanyId, string tagName);
 
         DefaultReturn<FormVersion> GetFormVersions(int formDefinationId);
 

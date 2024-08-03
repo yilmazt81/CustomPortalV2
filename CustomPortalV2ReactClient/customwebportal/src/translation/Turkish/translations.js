@@ -92,7 +92,11 @@ export const TRANSLATIONS_TR = {
     RadioBox:'Çoktan Seçmeli',
     Hidden:'Gizli Alan',
     ComboBox:'Açılır kutu',
-
+    Setting:"Ayarlar",
+    FormComboFieldModalTitle:"Alan Seçenekleri",
+    ComboBoxName:"Alan Başlığı",
+    ComboBoxTag:"Alan Değeri",
+    
     
 
 

@@ -55,11 +55,20 @@ export async function SaveFormDefinationField(formdefinationField) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
   axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
  
-  
-  debugger;
   const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveFormDefinationField`, formdefinationField);
   return data;
 };
+
+
+export async function SaveComboBoxItem(comboboxItem) {
+  var lastToken = localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
+ 
+  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveComboBoxItem`, comboboxItem);
+  return data;
+};
+
 
 
 export async function GetFormGroupFields(formgroupid) {
@@ -105,3 +114,21 @@ export async function GetFonts() {
 };
 
 
+
+export async function GetFormDefinationField(id) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationField/${id}`);
+  return data;
+}
+
+export async function GetComboBoxItems(fieldTag) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetComboBoxItems/${fieldTag}`);
+  return data;
+}
+
+export async function CreateComboBoxItem(fieldTag) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/CreateComboBoxItem/${fieldTag}`);
+  return data;
+}

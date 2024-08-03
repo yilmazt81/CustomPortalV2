@@ -12,5 +12,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string ItemType { get; set; }
         public string Name { get; set; }
         public string TagName { get; set; }
+        public int MainCompanyId { get; set; }
+
     }
 }

@@ -61,9 +61,19 @@ namespace CustomPortalV2.Business.Service
             throw new NotImplementedException();
         }
 
-        public DefaultReturn<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string tagName)
+        public DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(int mainCompanyId, string tagName)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<ComboBoxItem>> defaultReturn = new DefaultReturn<List<ComboBoxItem>>();
+            try
+            {
+                defaultReturn.Data= _formDefinationService.GetComboBoxItems(mainCompanyId, tagName).ToList();
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
         public DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId)
@@ -112,6 +122,25 @@ namespace CustomPortalV2.Business.Service
             }
 
             return defaultReturn;
+        }
+
+        public DefaultReturn<FormDefinationField> GetFormDefinationField(int id)
+        {
+            DefaultReturn<FormDefinationField> defaultReturn    =new DefaultReturn<FormDefinationField>();
+
+            try
+            {
+                defaultReturn.Data = _formDefinationService.GetFormDefinationField(id);
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+
+
         }
 
         public DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId)
@@ -206,7 +235,25 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
-            throw new NotImplementedException();
+            DefaultReturn<ComboBoxItem> defaultReturn   =new DefaultReturn<ComboBoxItem>();
+
+            try
+            {
+                if (_formDefinationService.IsExistComboboxItem(comboBoxItem))
+                {
+                    throw new Exception("ComboItemAlreadyExist");
+                }
+                defaultReturn.Data = _formDefinationService.AddComboboxItem(comboBoxItem);
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+            
+
+            return defaultReturn;
+
         }
 
         public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)

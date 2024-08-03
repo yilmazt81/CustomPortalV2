@@ -92,6 +92,11 @@ export const TRANSLATIONS_EN = {
     RadioBox:'RadioBox',
     Hidden:'Hidden',
     ComboBox:'ComboBox',
+    Setting:"Settings",    
+    FormComboFieldModalTitle:"Field Options",
+    ComboBoxName:"Item Title",
+    ComboBoxTag:"Item Value",
+    
 
     
     

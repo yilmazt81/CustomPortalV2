@@ -53,6 +53,7 @@ namespace CustomPortalV2.RestApi.Controllers
                 return Ok(list);
 
 
+
             var companyDefination = _formDefinationService.GetFormDefination(id);
             _memoryCache.Set(key, companyDefination, new MemoryCacheEntryOptions
             {
@@ -61,6 +62,27 @@ namespace CustomPortalV2.RestApi.Controllers
             });
 
             return Ok(companyDefination);
+
+        }
+
+        [HttpGet("GetFormDefinationField/{id}")]
+        public IActionResult GetFormDefinationField(int id)
+        {
+            var key = $"FormDefinationFieldId{id}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<FormDefinationField> list))
+                return Ok(list);
+
+            var formDefinationField = _formDefinationService.GetFormDefinationField(id);
+
+            _memoryCache.Set(key, formDefinationField, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+
+            return Ok(formDefinationField);
+
 
         }
 
@@ -82,6 +104,20 @@ namespace CustomPortalV2.RestApi.Controllers
                 Deleted = false,
 
 
+            };
+            return Ok(defaultReturn);
+        }
+        [HttpGet("CreateComboBoxItem/{tagName}")]
+        public IActionResult CreateComboBoxItem(string tagName)
+        {
+            DefaultReturn<ComboBoxItem> defaultReturn = new DefaultReturn<ComboBoxItem>();
+
+            defaultReturn.Data = new ComboBoxItem()
+            {
+                MainCompanyId = User.GetCompanyId(),
+                ItemType = tagName,
+                Name="",
+                TagName="",
             };
             return Ok(defaultReturn);
         }
@@ -135,7 +171,7 @@ namespace CustomPortalV2.RestApi.Controllers
         public IActionResult CreateNewGroupField(int formDefinationId, int formGroupId)
         {
             DefaultReturn<FormDefinationField> defaultReturn = new DefaultReturn<FormDefinationField>();
-            
+
             var grupList = GetGroupFieldsReturnList(formGroupId);
             var maxOrder = (grupList.Data.Count == 0 ? 0 : grupList.Data.Max(s => s.OrderNumber));
             maxOrder++;
@@ -146,7 +182,7 @@ namespace CustomPortalV2.RestApi.Controllers
                 AutoComplate = false,
                 Bold = false,
                 CellName = "",
-                ControlType = "TextBox",
+                ControlType = "Text",
                 FieldCaption = "",
                 FormGroupId = formGroupId,
                 DefaultProp = "",
@@ -249,7 +285,7 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetGroupFields/{formGroupId}")]
         public IActionResult GetGroupFields(int formGroupId)
         {
-           
+
 
             return Ok(GetGroupFieldsReturnList(formGroupId));
         }
@@ -285,10 +321,12 @@ namespace CustomPortalV2.RestApi.Controllers
         {
 
 
-            string key = $"FormGroupFields{formDefinationField.FormGroupId}";             
-            _memoryCache.Remove(key);             
             var formGroupReturn = _formDefinationService.SaveFormDefinationField(formDefinationField);
 
+            string key = $"FormGroupFields{formDefinationField.FormGroupId}";
+            _memoryCache.Remove(key);
+            key = $"FormDefinationFieldId{formDefinationField.Id}";
+            _memoryCache.Remove(key);
             return Ok(formGroupReturn);
         }
 
@@ -325,8 +363,35 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(fontTypeslist);
         }
+        [HttpGet("GetComboBoxItems/{fieldTag}")]
+        public IActionResult GetComboBoxItems(string fieldTag)
+        {
+            string key = $"ComboBoxItems_{fieldTag}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<ComboBoxItem>> list))
+                return Ok(list);
+
+            var fieldTags = _formDefinationService.GetComboBoxItems(User.GetCompanyId(), fieldTag);
+            _memoryCache.Set(key, fieldTags, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddHours(2),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(fieldTags);
 
 
+        }
+
+        [HttpPost("SaveComboBoxItem")]
+        public IActionResult SaveComboBoxItem(ComboBoxItem comboBoxItem)
+        {
+            comboBoxItem.MainCompanyId = User.GetCompanyId();
+            var comboBoxReturn = _formDefinationService.Save(comboBoxItem);
+            string key = $"ComboBoxItems_{comboBoxItem.ItemType}";
+            _memoryCache.Remove(key);
+            return Ok(comboBoxReturn);
+        }
     }
 
 }

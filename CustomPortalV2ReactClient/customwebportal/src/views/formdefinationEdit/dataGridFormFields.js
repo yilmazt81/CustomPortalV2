@@ -5,6 +5,8 @@ import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AutoModeIcon from '@mui/icons-material/AutoMode'; 
 
 import {
   CButton,
@@ -28,8 +30,11 @@ import {
 const OptionClick = (option, id) => {
   console.log(option);
 }
+const CheckItemValueChange = (option, id, checked) => {
 
-const GridcolumnFormFields = (OptionClick) => {
+}
+
+const GridcolumnFormFields = (OptionClick, CheckItemValueChange) => {
   return [
     {
       field: 'orderNumber',
@@ -51,51 +56,55 @@ const GridcolumnFormFields = (OptionClick) => {
       headerName: i18.t('ControlType'),
       width: 100,
       renderCell: (params) => (
-          <CFormLabel>{i18.t(params.row.controlType)}</CFormLabel>
+        <CFormLabel>{i18.t(params.row.controlType)}</CFormLabel>
       )
     },
     {
       field: 'mandatory',
       headerName: i18.t('Mandatory'),
-      width: 100,
+      width: 70,
       renderCell: (params) => (
         <div>
-          <CFormSwitch size='xl' checked={params.row.mandatory}></CFormSwitch>
+          <CFormSwitch size='xl' checked={params.row.mandatory} onChange={() => CheckItemValueChange('mandatory', params.row.id, params.row.mandatory)}></CFormSwitch>
         </div>
       )
     },
     {
       field: 'deleted',
       headerName: i18.t('Deleted'),
-      width: 100,
+      width: 70,
       renderCell: (params) => (
         <div>
-          <CFormSwitch size='xl' checked={params.row.deleted}></CFormSwitch>
+          <CFormSwitch size='xl' checked={params.row.deleted} onChange={() => CheckItemValueChange('deleted', params.row.id, params.row.deleted)}></CFormSwitch>
         </div>
       )
     },
     {
-      field: 'actions',
-      headerName: 'Actions',
-      width: 150,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            onClick={() => OptionClick('Edit', params.row.id)}
-            aria-label="edit"
-            color="primary"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => OptionClick('Delete', params.row.id)}
-            aria-label="delete"
-            color="secondary"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </div>
-      ),
+      headerName: i18.t('Actions'),
+      width: 100,
+      renderCell: (params) => {
+        let statusIcon;
+        if (params.row.controlType == 'ComboBox') {
+          statusIcon = <IconButton color="secondary" onClick={() => OptionClick('AddComboItem', params.row.id)} > <AddCircleIcon /></IconButton>;
+        } else if (params.row.autoComplate === true) {
+          statusIcon = <AutoModeIcon />;
+        }
+        return (
+          <div>
+            <IconButton
+              onClick={() => OptionClick('Edit', params.row.id)}
+              aria-label="delete"
+              color="secondary"
+            >
+              <EditIcon />
+            </IconButton>
+
+            {statusIcon}
+
+
+          </div>
+        )
+      }
     },
   ];
 };

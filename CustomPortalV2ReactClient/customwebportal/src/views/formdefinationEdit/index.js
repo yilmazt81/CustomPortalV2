@@ -23,10 +23,10 @@ import { useTranslation } from "react-i18next";
 import DeleteModal from '../../components/DeleteModal';
 import GroupEditModal from './groupEditmodal';
 import FieldEditModal from './fieldEditModal';
+import ComboBoxItemEditModal from './comboBoxItemEditModal';
 
 import GridcolumnsGroups from './dataGridGroup'
 import GridcolumnFormFields from './dataGridFormFields';
-
 import { useSearchParams } from 'react-router-dom';
 
 import StickyBox from "react-sticky-box";
@@ -40,15 +40,14 @@ import {
     CreateNewGroupField,
     DeleteFormGroup,
     GetFieldTypes,
-    GetFonts
+    GetFonts,
+    GetFormDefinationField
 } from '../../lib/formdef';
 import { bool } from 'prop-types';
 
 const FormDefinationEdit = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-
-    const gridcolumnFormFields = GridcolumnFormFields();
 
 
 
@@ -58,6 +57,7 @@ const FormDefinationEdit = () => {
     const [visiblemodalGroupDelete, setvisiblemodalGroupDelete] = useState(false);
 
     const [visiblemodalEditField, setvisiblemodalEditField] = useState(false);
+    const [visibleEditComboItems, setvisibleEditComboItems] = useState(false);
 
 
     const [formdefinationEdit, setFormDefinationEdit] = useState({ id: 0, formName: "" });
@@ -85,7 +85,7 @@ const FormDefinationEdit = () => {
 
     }, []);
 
-    async function LoadFieldTypes(){
+    async function LoadFieldTypes() {
         var getFieldTypesreturn = await GetFieldTypes();
 
         if (getFieldTypesreturn.returnCode === 1) {
@@ -93,10 +93,10 @@ const FormDefinationEdit = () => {
             //setVisible(true);
         } else {
             setSaveError(getFieldTypesreturn.returnMessage);
-        } 
-        
+        }
+
     }
-    async function LoadFontTypes(){
+    async function LoadFontTypes() {
 
         var getFontTypesReturn = await GetFonts();
 
@@ -105,8 +105,8 @@ const FormDefinationEdit = () => {
             //setVisible(true);
         } else {
             setSaveError(getFontTypesReturn.returnMessage);
-        } 
-        
+        }
+
     }
 
     async function GetDefination(id) {
@@ -163,13 +163,13 @@ const FormDefinationEdit = () => {
         try {
             setSaveError(null);
             setvisiblemodalGroup(false);
-     
+
             var editformdefination = await CreateNewFormDefinationGroup(formdefinationEdit.id);
-            
+
             if (editformdefination.returnCode === 1) {
                 setformdefinationGroup(editformdefination.data);
-               
- 
+
+
                 setvisiblemodalGroup(true);
             } else {
                 setSaveError(editformdefination.returnMessage);
@@ -182,16 +182,16 @@ const FormDefinationEdit = () => {
     }
 
 
-    async function NewGroupFieldDefination(){
+    async function NewGroupFieldDefination() {
         try {
             setSaveError(null);
-            setvisiblemodalGroup(false); 
-            var editfieldfination = await CreateNewGroupField(formdefinationEdit.id,formdefinationGroup.id);
+            setvisiblemodalGroup(false);
+            var editfieldfination = await CreateNewGroupField(formdefinationEdit.id, formdefinationGroup.id);
 
             if (editfieldfination.returnCode === 1) {
 
                 setformdefinationFieldEdit(editfieldfination.data);
-           
+
                 setvisiblemodalEditField(true);
 
             } else {
@@ -226,13 +226,13 @@ const FormDefinationEdit = () => {
         }
     }
 
-    async function GetGroupFieldList(groupId){
+    async function GetGroupFieldList(groupId) {
         try {
             var getgroupFieldReturn = await GetFormGroupFields(groupId);
 
             if (getgroupFieldReturn.returnCode === 1) {
                 setformgroupFields(getgroupFieldReturn.data);
-               
+
             } else {
                 setSaveError(getgroupFieldReturn.returnMessage);
             }
@@ -243,24 +243,65 @@ const FormDefinationEdit = () => {
 
     async function handleSelectFormGroupClick(params) {
         setvisiblemodalGroup(false);
-       GetGroupFieldList(params.id);
-       //setformdefinationGroup
+        GetGroupFieldList(params.id);
+        //setformdefinationGroup
     };
 
 
-    async function GridGroupRowChange(e){
-     
+    async function GridGroupRowChange(e) {
+
         var editformdefination = await GetFormGroup(e);
 
         if (editformdefination.returnCode === 1) {
             setformdefinationGroup(editformdefination.data);
         }
     }
+
+    
+    async function EditDefinationField(operation, id) {
+        try {
+            setSaveError(null);
+            setvisiblemodalGroup(false);
+            setvisiblemodalGroupDelete(false);
+            var editformdefination = await GetFormDefinationField(id);
+
+            if (editformdefination.returnCode === 1) {
+                setformdefinationFieldEdit(editformdefination.data);
+                if (operation==='Edit') {
+                    setvisiblemodalEditField(true);
+                } else if (operation=='AddComboItem') {
+                    setvisibleEditComboItems(true);
+                }
+
+            } else {
+                setSaveError(editformdefination.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        } finally {
+            // setdeleteStart(false);
+        }
+    }
+
     const optionClick = (option, id) => {
         EditGroupDefination(option === 'Delete', id);
     }
 
+    const   optionClickField = (option, id) => {
+        
+        EditDefinationField(option , id);
+    }
+
+    const CheckItemValueChange = (option, id, checked) => {
+        debugger;
+
+    }
+
+
     const gridcolumnsGroups = GridcolumnsGroups(optionClick);
+
+
+    const gridcolumnFormFields = GridcolumnFormFields(optionClickField, CheckItemValueChange);
 
     return (
         <>
@@ -270,7 +311,7 @@ const FormDefinationEdit = () => {
                         <CCol>
                             <CButtonGroup role="group">
                                 <CButton color="primary" shape='rounded-3'
-                                 onClick={() => NewGroupDefination()} > {t("AddNewFormDefination")}</CButton>
+                                    onClick={() => NewGroupDefination()} > {t("AddNewFormDefination")}</CButton>
 
                             </CButtonGroup>
                         </CCol>
@@ -281,7 +322,7 @@ const FormDefinationEdit = () => {
                             <DataGrid rows={formdefinationGroups}
                                 columns={gridcolumnsGroups}
                                 onRowClick={handleSelectFormGroupClick}
-                                onRowSelectionModelChange={(e)=>GridGroupRowChange(e)}
+                                onRowSelectionModelChange={(e) => GridGroupRowChange(e)}
                             />
                         </CCol>
                         <CCol xs={7}>
@@ -327,11 +368,17 @@ const FormDefinationEdit = () => {
             <FieldEditModal
                 formDefinationFieldp={formdefinationFieldEdit}
                 visiblep={visiblemodalEditField}
-                setFormData={()=>GetGroupFieldList(formdefinationGroup.id)}
+                setFormData={() => GetGroupFieldList(formdefinationGroup.id)}
                 fieldTypesp={fieldTypes}
                 formGroupp={formdefinationGroup}
                 fontTypesp={fontTypes}
             ></FieldEditModal>
+
+            <ComboBoxItemEditModal 
+                visiblep={visibleEditComboItems}
+                formDefinationFieldp={formdefinationFieldEdit}
+            
+            ></ComboBoxItemEditModal>
 
             <DeleteModal visiblep={visiblemodalGroupDelete}
                 OnClickOk={(data) => DeleteGroupDefination()}

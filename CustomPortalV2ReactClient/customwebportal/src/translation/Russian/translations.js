@@ -91,4 +91,10 @@ export const TRANSLATIONS_RU = {
     RadioBox:'РадиоБокс',
     Hidden:'Скрытый',
     ComboBox:'Поле со списком',
+    Setting:"параметр",    
+    FormComboFieldModalTitle:"Параметры поля",
+    ComboBoxName:"Название предмета",
+    ComboBoxTag:"Значение товара",
+    
+
 };
