@@ -78,7 +78,10 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<FormDefination>> defaultReturn = new DefaultReturn<List<FormDefination>>();
+
+            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && s.CustomSectorId == sectorId).ToList();
+            return defaultReturn;
         }
 
         public DefaultReturn<List<FormDefination>> GetCompanyDefinations(int mainCompanyId)

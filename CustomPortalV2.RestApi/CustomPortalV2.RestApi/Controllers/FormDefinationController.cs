@@ -195,8 +195,6 @@ namespace CustomPortalV2.RestApi.Controllers
                 FormDefinationId = formDefinationId,
                 FontFamily = "Times New Roman",
 
-
-
             };
             return Ok(defaultReturn);
         }
@@ -300,6 +298,9 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache.Remove(key);
 
             var formDefinationReturn = _formDefinationService.Save(formDefination);
+            key = $"FormDefinationBySector_{User.GetCompanyId()}_{formDefination.CustomSectorId}";
+            _memoryCache.Remove(key);
+
 
             return Ok(formDefinationReturn);
         }
@@ -380,6 +381,26 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(fieldTags);
 
+
+        }
+
+        [HttpGet("GetFormDefinationBySector/{sectorid}")]
+        public IActionResult GetFormDefinationBySector(int sectorid)
+        {
+            string key = $"FormDefinationBySector_{User.GetCompanyId()}_{sectorid}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormDefination>> list))
+                return Ok(list);
+
+
+            var formDefinations = _formDefinationService.GetCompanyDefination(User.GetCompanyId(), sectorid);
+            _memoryCache.Set(key, formDefinations, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddHours(2),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formDefinations);
 
         }
 

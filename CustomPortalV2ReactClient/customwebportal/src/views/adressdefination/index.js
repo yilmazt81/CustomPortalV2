@@ -44,8 +44,7 @@ import EditModal from './editmodal';
 import DeleteModal from 'src/components/DeleteModal';
 const AdresDefination = () => {
   const navigate = useNavigate();
-  //Bu sekilde redux tan okunacak
-  const userToken = useSelector(state => state.userToken);
+  //Bu sekilde redux tan okunacak 
   const { t } = useTranslation();
 
   const [visibleDelete, setVisibleDelete] = useState(false);

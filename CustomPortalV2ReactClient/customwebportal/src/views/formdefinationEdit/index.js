@@ -77,6 +77,7 @@ const FormDefinationEdit = () => {
     useEffect(() => {
 
         const id = searchParams.get('formdefinationId');
+        
         LoadFieldTypes();
         LoadFontTypes();
         GetDefination(id);

@@ -132,3 +132,9 @@ export async function CreateComboBoxItem(fieldTag) {
   const { data } = await GetRequest(`/api/FormDefination/CreateComboBoxItem/${fieldTag}`);
   return data;
 }
+
+export async function GetFormDefinationBySector(sectorid) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationBySector/${sectorid}`);
+  return data;
+}

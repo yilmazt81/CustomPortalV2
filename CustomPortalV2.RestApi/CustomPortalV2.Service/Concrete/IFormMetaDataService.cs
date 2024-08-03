@@ -12,7 +12,8 @@ namespace CustomPortalV2.Business.Concrete
     public interface IFormMetaDataService
     {
 
-        DefaultReturn<List<FormMetaData>> GetCompanyFormMetaData(User user);
+        DefaultReturn<List<FormMetaData>> GetBranchFormMetaData(int companyId,int brachId);
+        DefaultReturn<FormMetaData> GetCompanyFormMetaData(int companyId,int branchId,int id);
 
         DefaultReturn<FormMetaData> GetFormMetaData(User user,int id);
 
