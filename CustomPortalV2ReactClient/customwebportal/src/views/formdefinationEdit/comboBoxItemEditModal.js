@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import {
     CButton,
@@ -35,7 +35,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [validated,setvalidated] = useState(false);
+    const [validated, setvalidated] = useState(false);
     const [formDefinationField, setformDefinationField] = useState({ ...formDefinationFieldp });
     const [comboboxItems, setComboboxItems] = useState([]);
     const [comboboxItem, setComboboxItem] = useState(null);
@@ -45,6 +45,8 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
     const [saveStart, setsaveStart] = useState(false);
 
     const { t } = useTranslation();
+    const formRef = useRef(null); // Form referansını oluşturun
+
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -59,6 +61,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
     useEffect(() => {
         setSaveError(null);
+        debugger;
         setvisible(visiblep);
         setformDefinationField(formDefinationFieldp);
         //LoadBranchList();
@@ -71,8 +74,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
 
         try {
-            setsaveStart(true);
-            debugger;
+            setsaveStart(true); 
             var comboboxItemReturn = await CreateComboBoxItem(formDefinationField.tagName);
 
             if (comboboxItemReturn.returnCode === 1) {
@@ -118,12 +120,13 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
             try {
                 setSaveError(null);
                 setsaveStart(true);
-                debugger;
+           
                 var savedefinationResult = await SaveComboBoxItem(comboboxItem);
 
                 if (savedefinationResult.returnCode === 1) {
+                    LoadComboboxItems();
                     NewComboBoxItem();
-                    //setvisible(false);
+                    setvisible(true);
                 } else {
                     setSaveError(savedefinationResult.returnMessage);
                 }
@@ -141,22 +144,13 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
             setsaveStart(false);
         }
+        setvisible(true);
 
     }
     const optionClick = (option, id) => {
         //EditGroupDefination(option === 'Delete', id);
-    }   
-     const handleSubmit = (event) => {
-        const form = event.currentTarget 
-        if (form.checkValidity() === false) {
-          
-            event.preventDefault()
-            event.stopPropagation()
-        }else{
-            SaveData();
-        }
-        setvalidated(true)
     }
+
 
     const gridcolumnsGroups = DataGridComboItems(optionClick);
 
@@ -174,24 +168,19 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
                 </CModalHeader>
                 <CModalBody>
 
-                    <CForm
-                        className="row g-3 needs-validation"
-                        validated={validated}
-                        onSubmit={handleSubmit} 
-                    >
-
+           
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txtComboText" className="col-sm-3 col-form-label">{t("ComboBoxName")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="text" id='txtname' name="name"
-                                    onChange={e => handleChange(e)} />
+                                <CFormInput type="text" id='txtname' name="name"  
+                                    onChange={e => handleChange(e)}value={comboboxItem?.name} />
                             </CCol>
                         </CRow>
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txttagName" className="col-sm-3 col-form-label">{t("ComboBoxTag")}</CFormLabel>
                             <CCol sm={7}>
                                 <CFormInput type="text" id='txttagName' name="tagName"
-                                    onChange={e => handleChange(e)} />
+                                    onChange={e => handleChange(e)} value={comboboxItem?.tagName} />
                             </CCol>
                             <CCol>
 
@@ -199,13 +188,13 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
                                 <IconButton
                                     aria-label="delete"
                                     color="secondary"
-                                type='submit' >
+                                    onClick={() => SaveData()}  >
                                     <AddCircleOutlineIcon />
                                 </IconButton>
 
                             </CCol>
                         </CRow>
-                    </CForm>
+                   
                     <CRow>
                         <CCol>
                             <DataGrid columns={gridcolumnsGroups}

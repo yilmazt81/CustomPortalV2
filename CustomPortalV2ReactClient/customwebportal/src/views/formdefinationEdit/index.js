@@ -186,6 +186,7 @@ const FormDefinationEdit = () => {
         try {
             setSaveError(null);
             setvisiblemodalGroup(false);
+            setvisibleEditComboItems(false);
             var editfieldfination = await CreateNewGroupField(formdefinationEdit.id, formdefinationGroup.id);
 
             if (editfieldfination.returnCode === 1) {
@@ -263,6 +264,7 @@ const FormDefinationEdit = () => {
             setSaveError(null);
             setvisiblemodalGroup(false);
             setvisiblemodalGroupDelete(false);
+            setvisiblemodalEditField(false);
             var editformdefination = await GetFormDefinationField(id);
 
             if (editformdefination.returnCode === 1) {

@@ -116,8 +116,8 @@ namespace CustomPortalV2.RestApi.Controllers
             {
                 MainCompanyId = User.GetCompanyId(),
                 ItemType = tagName,
-                Name="",
-                TagName="",
+                Name = "",
+                TagName = "",
             };
             return Ok(defaultReturn);
         }
@@ -174,7 +174,7 @@ namespace CustomPortalV2.RestApi.Controllers
 
             var grupList = GetGroupFieldsReturnList(formGroupId);
             var maxOrder = (grupList.Data.Count == 0 ? 0 : grupList.Data.Max(s => s.OrderNumber));
-            maxOrder++;
+            maxOrder = maxOrder + 10;
             defaultReturn.Data = new FormDefinationField()
             {
 
