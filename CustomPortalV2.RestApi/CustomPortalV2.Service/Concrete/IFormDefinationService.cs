@@ -44,5 +44,7 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<FieldType>> GetFielTypes(int companyId);
 
         DefaultReturn<List<FontType>> GetFontTypes();
+
+        DefaultReturn<List<GroupDTO>> GetFormGroupDTOs(int formDefinationId);
     }
 }

@@ -17,12 +17,13 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int CreatedId { get; set; }
         public int CustomSectorId { get; set; }
         public string CustomSectorName { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<bool> DesingTemplate { get; set; }
+        public  bool  Deleted { get; set; }
+        public bool  DesingTemplate { get; set; }
         public string TemplatePath { get; set; }
 
         public  bool BaseDefinationType { get; set; }
 
+        public bool Deployed { get; set; }
 
     }
 }

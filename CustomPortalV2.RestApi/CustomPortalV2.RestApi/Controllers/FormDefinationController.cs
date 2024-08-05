@@ -240,6 +240,7 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(formGroupList);
         }
 
+
         [HttpGet("GetFormGroup/{id}")]
 
         public IActionResult GetFormGroup(int id)
@@ -413,6 +414,26 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache.Remove(key);
             return Ok(comboBoxReturn);
         }
+
+        [HttpGet("GetFormGroupFormApp/{formdefinationId}")]
+
+        public IActionResult GetFormGroupFormApp(int formdefinationId)
+        {
+            string key = $"FormDefinationGroupDTO{formdefinationId}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<GroupDTO>> list))
+                return Ok(list);
+
+
+            var formGroups = _formDefinationService.GetFormGroupDTOs(formdefinationId);
+            _memoryCache.Set(key, formGroups, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formGroups);
+        }
+
     }
 
 }

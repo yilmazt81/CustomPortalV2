@@ -66,7 +66,7 @@ namespace CustomPortalV2.Business.Service
             DefaultReturn<List<ComboBoxItem>> defaultReturn = new DefaultReturn<List<ComboBoxItem>>();
             try
             {
-                defaultReturn.Data= _formDefinationService.GetComboBoxItems(mainCompanyId, tagName).ToList();
+                defaultReturn.Data = _formDefinationService.GetComboBoxItems(mainCompanyId, tagName).ToList();
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<List<FormDefination>> defaultReturn = new DefaultReturn<List<FormDefination>>();
 
-            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && s.CustomSectorId == sectorId).ToList();
+            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && s.CustomSectorId == sectorId && s.Deployed).ToList();
             return defaultReturn;
         }
 
@@ -88,7 +88,7 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<List<FormDefination>> defaultReturn = new DefaultReturn<List<FormDefination>>();
 
-            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && !s.Deleted.Value).ToList();
+            defaultReturn.Data = _formDefinationService.Get(s => s.MainCompanyId == mainCompanyId && !s.Deleted).ToList();
 
 
             return defaultReturn;
@@ -129,7 +129,7 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<FormDefinationField> GetFormDefinationField(int id)
         {
-            DefaultReturn<FormDefinationField> defaultReturn    =new DefaultReturn<FormDefinationField>();
+            DefaultReturn<FormDefinationField> defaultReturn = new DefaultReturn<FormDefinationField>();
 
             try
             {
@@ -158,6 +158,42 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<FormGroup> defaultReturn = new DefaultReturn<FormGroup>();
             defaultReturn.Data = _formDefinationService.GetFormGroup(id);
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<GroupDTO>> GetFormGroupDTOs(int formDefinationId)
+        {
+            DefaultReturn<List<GroupDTO>> defaultReturn = new DefaultReturn<List<GroupDTO>>();
+            var getFormGroups = GetFormGroups(formDefinationId);
+            var formDefination=GetFormDefination(formDefinationId);
+            defaultReturn.Data = new List<GroupDTO>();
+            foreach (var group in getFormGroups.Data)
+            {
+                GroupDTO groupDTO = new GroupDTO()
+                {
+                    Name = group.Name,
+                    FormNumber = group.FormNumber,
+                    GroupTag = group.GroupTag,
+                    id= group.Id,   
+                };
+                groupDTO.FormFields = new List<DefinationFieldDTO>();
+                var groupFields = GetFormDefinationFields(group.Id);
+
+                foreach (var oneField in groupFields.Data)
+                {
+                    DefinationFieldDTO definationFieldDTO = new DefinationFieldDTO(oneField);
+                    if (definationFieldDTO.ControlType== "ComboBox" || definationFieldDTO.ControlType== "CheckBox" || definationFieldDTO.ControlType== "RadioBox")
+                    {
+                        var comboitems = GetComboBoxItems(formDefination.Data.MainCompanyId, definationFieldDTO.TagName);
+
+                        definationFieldDTO.ComboBoxItems = comboitems.Data;
+                    }
+
+                    groupDTO.FormFields.Add(definationFieldDTO);
+                }
+                defaultReturn.Data.Add(groupDTO);
+            }
 
             return defaultReturn;
         }
@@ -238,7 +274,7 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
-            DefaultReturn<ComboBoxItem> defaultReturn   =new DefaultReturn<ComboBoxItem>();
+            DefaultReturn<ComboBoxItem> defaultReturn = new DefaultReturn<ComboBoxItem>();
 
             try
             {
@@ -253,7 +289,7 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.SetException(ex);
             }
-            
+
 
             return defaultReturn;
 
@@ -261,7 +297,7 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)
         {
-            DefaultReturn < FormDefinationField >   defaultReturn = new DefaultReturn<FormDefinationField >();
+            DefaultReturn<FormDefinationField> defaultReturn = new DefaultReturn<FormDefinationField>();
             try
             {
                 if (formDefinationField.Id == 0)
@@ -270,7 +306,7 @@ namespace CustomPortalV2.Business.Service
                     {
                         throw new Exception("FieldAllradyExist");
                     }
-                    defaultReturn.Data= _formDefinationService.AddDefinationField(formDefinationField);
+                    defaultReturn.Data = _formDefinationService.AddDefinationField(formDefinationField);
 
                 }
                 else

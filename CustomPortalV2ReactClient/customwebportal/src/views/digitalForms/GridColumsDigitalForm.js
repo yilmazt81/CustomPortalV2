@@ -18,12 +18,12 @@ const GridColumsDigitalForm = (OptionClick) => {
         {
             field: 'formDefinationName',
             headerName: i18.t('FormDefinationName'),
-            width: 200,
+            width: 100,
         },
         {
             field: 'brancName',
             headerName: i18.t('BrancName'),
-            width: 200,
+            width: 100,
         },
 
         {
@@ -41,25 +41,25 @@ const GridColumsDigitalForm = (OptionClick) => {
         {
             field: 'createdBy',
             headerName: i18.t('CreatedBy'),
-            width: 200,
+            width: 100,
         },
         
         {
             field: 'createdDate',
             headerName: i18.t('CreatedDate'),
-            width: 200,
+            width: 100,
         },
         
         {
             field: 'editedBy',
             headerName: i18.t('EditedBy'),
-            width: 200,
+            width: 100,
         },
         
         {
             field: 'editedDate',
             headerName: i18.t('EditedDate'),
-            width: 200,
+            width: 100,
         },
         {
             field: 'actions',

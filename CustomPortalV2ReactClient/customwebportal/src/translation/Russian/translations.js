@@ -94,7 +94,10 @@ export const TRANSLATIONS_RU = {
     Setting:"параметр",    
     FormComboFieldModalTitle:"Параметры поля",
     ComboBoxName:"Название предмета",
-    ComboBoxTag:"Значение товара",
-    
-
+    ComboBoxTag:"Значение товара",    
+    FormDefinationName:"Определение формы",
+    SenderCompanyName:"Компания-отправитель",
+    RecrivedCompanyName:"Восстановленная компания",
+    EditedBy:"Отредактировано",
+    EditedDate:"Дата редактирования"
 };

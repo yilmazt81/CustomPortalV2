@@ -96,7 +96,11 @@ export const TRANSLATIONS_TR = {
     FormComboFieldModalTitle:"Alan Seçenekleri",
     ComboBoxName:"Alan Başlığı",
     ComboBoxTag:"Alan Değeri",
-    
+    FormDefinationName:"Form Türü",
+    SenderCompanyName:"Gönderen Firma",
+    RecrivedCompanyName:"Alıcı Firma",
+    EditedBy:"Güncelleyen",
+    EditedDate:"Güncelleme Tarihi"
     
 
 

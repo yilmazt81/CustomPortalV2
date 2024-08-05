@@ -95,8 +95,14 @@ export const TRANSLATIONS_EN = {
     Setting:"Settings",    
     FormComboFieldModalTitle:"Field Options",
     ComboBoxName:"Item Title",
-    ComboBoxTag:"Item Value",
+    ComboBoxTag:"Item Value",    
+    FormDefinationName:"Form Defination",
     
+    SenderCompanyName:"Sender Company",
+    RecrivedCompanyName:"Recrived Company",
+    EditedBy:"Edited By",
+    EditedDate:"Edited Date"
+
 
     
     

@@ -41,15 +41,7 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
-import {
-    MaterialReactTable,
-    useMaterialReactTable,
-    MRT_ColumnDef,
-    MRT_GlobalFilterTextField,
-    MRT_ToggleFiltersButton,
 
-
-} from 'material-react-table';
 
 import {
     Box,
@@ -72,9 +64,10 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-import { GetSector, GetFormDefinationBySector } from 'src/lib/formdef'
+import { GetSector, GetFormDefinationBySector, GetFormGroup,GetFormGroupFormApp ,GetFormGroupFields } from 'src/lib/formdef'
 import { GetFormMetaDataById } from 'src/lib/formMetaDataApi'
 import { useSearchParams } from 'react-router-dom';
+import DynamicForm from './dynamicForm';
 
 const DigitalFormEdit = () => {
 
@@ -85,6 +78,9 @@ const DigitalFormEdit = () => {
     const [customSectors, setCustomSectors] = useState([]);
     const [formMetaData, setformMetaData] = useState(null);
     const [formDefinationTypes, setFormDefinationTypes] = useState([]);
+    const [formdefinationGroups, setFormDefinationGroups] = useState([]);
+    const [useTemplate, setuseTemplate] = useState(false);
+    const [formdefinationType, setformdefinationType] = useState(0);
 
     async function LoadCustomSectors() {
 
@@ -97,6 +93,8 @@ const DigitalFormEdit = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+            console.log(error);
+
         }
     }
 
@@ -112,6 +110,8 @@ const DigitalFormEdit = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+            console.log(error);
+
         }
     }
 
@@ -127,6 +127,8 @@ const DigitalFormEdit = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+            console.log(error);
+
         }
     }
 
@@ -140,19 +142,42 @@ const DigitalFormEdit = () => {
 
 
     }, []);
+    async function GetGroupList(id) {
 
+        if (id == 0) {
+            return null;
+        }
+        var getgroupsReturn = await GetFormGroupFormApp(id);
+ 
+        if (getgroupsReturn.returnCode === 1) {
+            setFormDefinationGroups(getgroupsReturn.data);
+
+        } else {
+            setSaveError(getgroupsReturn.returnMessage);
+
+            return null;
+        }
+    }
 
     function handleChange(event) {
         const { name, value } = event.target;
         setformMetaData({ ...formMetaData, [name]: value });
 
-        if (name=='customSectorId')
-        {
+        if (name == 'customSectorId') {
             GetformDefinationTypes(value);
         }
 
-        if (name=='formDefinationTypeId'){
-            
+        if (name == 'formDefinationTypeId') {
+
+            if (value != 0) { 
+                var formDef = formDefinationTypes.find(s => s.id == value);
+                setformdefinationType(formDef.id);
+                setuseTemplate(formDef.desingTemplate)
+                GetGroupList(formDef.id);
+            }else{
+                setFormDefinationGroups([]);
+            }
+
         }
     }
 
@@ -200,6 +225,13 @@ const DigitalFormEdit = () => {
                             <CAlert color="warning">{saveError}</CAlert>
                             : ""
                     }
+                </CRow>
+
+                <CRow>
+
+                    <DynamicForm formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm> :
+
+
                 </CRow>
 
                 <CRow>

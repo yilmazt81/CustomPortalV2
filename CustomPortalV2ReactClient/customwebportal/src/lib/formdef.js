@@ -138,3 +138,9 @@ export async function GetFormDefinationBySector(sectorid) {
   const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationBySector/${sectorid}`);
   return data;
 }
+export async function GetFormGroupFormApp(formdefinationTypeId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormGroupFormApp/${formdefinationTypeId}`);
+  return data;
+}
+

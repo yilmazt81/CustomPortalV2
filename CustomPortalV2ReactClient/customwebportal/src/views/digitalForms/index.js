@@ -48,7 +48,7 @@ import { useSearchParams } from 'react-router-dom';
 
 
 
- import {
+import {
     Box,
     Button,
     ListItemIcon,
@@ -69,7 +69,7 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-import { GetSector } from 'src/lib/formdef'
+import { GetSector, GetFormDefinationBySector } from 'src/lib/formdef'
 import { GetBrachData } from '../../lib/formMetaDataApi';
 
 import GridColumsDigitalForm from './GridColumsDigitalForm';
@@ -82,7 +82,7 @@ const DigitalForms = () => {
     const [branchFormMetaData, setBranchFormMetaData] = useState([]);
     const [filterItem, setfilterItem] = useState({ customSectorId: 0, formDefinationTypeId: 0, companyName: "" });
     const [searchParams, setSearchParams] = useSearchParams();
-
+    const [formDefinationTypes, setFormDefinationTypes] = useState([]);
 
     async function LoadCustomSectors() {
 
@@ -90,6 +90,19 @@ const DigitalForms = () => {
             var fSectorService = await GetSector();
             if (fSectorService.returnCode === 1) {
                 setCustomSectors(fSectorService.data);
+            } else {
+                setSaveError(fSectorService.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        }
+    }
+    async function GetformDefinationTypes(sectorid) {
+
+        try {
+            var fSectorService = await GetFormDefinationBySector(sectorid);
+            if (fSectorService.returnCode === 1) {
+                setFormDefinationTypes(fSectorService.data);
             } else {
                 setSaveError(fSectorService.returnMessage);
             }
@@ -115,7 +128,9 @@ const DigitalForms = () => {
     function handleChange(event) {
         const { name, value } = event.target;
         setfilterItem({ ...filterItem, [name]: value });
-
+        if (name == 'customSectorId') {
+            GetformDefinationTypes(value);
+        }
     }
 
     useEffect(() => {
@@ -171,13 +186,17 @@ const DigitalForms = () => {
                         </CFormSelect>
                     </CCol>
                     <CCol sm={2}>
-                        <CFormLabel htmlFor="cmbFormDefinationType" className="form-label">{t("CustomSectorName")}</CFormLabel>
+                        <CFormLabel htmlFor="cmbFormDefinationType" className="form-label">{t("FormDefinationName")}</CFormLabel>
                     </CCol>
                     <CCol sm={2}>
                         <CFormSelect type="text" id='cmbFormDefinationType' name="formDefinationTypeId"
                             onChange={e => handleChange(e)}      >
 
                             <option value="0">Seçiniz</option>
+                            {formDefinationTypes.map(item => {
+                                return (<option key={item.id} value={item.id}  >{item.formName}</option>);
+                            })}
+
                         </CFormSelect>
                     </CCol>
 
@@ -205,6 +224,11 @@ const DigitalForms = () => {
 
                         <DataGrid rows={branchFormMetaData}
                             columns={gridDigitalForm}
+                            slotProps={{
+                                toolbar: {
+                                    showQuickFilter: true,
+                                },
+                            }}
                         // onRowClick={handleSelectFormGroupClick}
                         // onRowSelectionModelChange={(e) => GridGroupRowChange(e)}
                         />
