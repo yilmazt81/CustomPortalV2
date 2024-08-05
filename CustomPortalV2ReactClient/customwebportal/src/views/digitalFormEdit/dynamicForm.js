@@ -21,8 +21,7 @@ import PropTypes from 'prop-types';
 
 
 import { GetFormGroupFields } from 'src/lib/formdef'
-import { useSearchParams } from 'react-router-dom';
-import CreateTextField from './TextControl';
+import { useSearchParams } from 'react-router-dom'; 
 import CreateGroupField from './CreateGroupField';
 import { Padding } from '@mui/icons-material';
 
@@ -55,16 +54,16 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups }) => {
     function CreateGroupCard(item) {
 
         return (
-            <> 
- 
-                <CCard style={{Padding:10}} >
-                    <CCardHeader>{item.name}</CCardHeader>
-                    <CCardBody>
+            <>
+                <CRow xs={{ gutterX: 1,gutterY: 1 }}>
+                    <CCard >
+                        <CCardHeader>{item.name}</CCardHeader>
+                        <CCardBody>
 
-                        <CreateGroupField fieldList={item.formFields}></CreateGroupField>
-                    </CCardBody>
-                </CCard>
-
+                            <CreateGroupField fieldList={item.formFields}></CreateGroupField>
+                        </CCardBody>
+                    </CCard>
+                </CRow>
             </>
         )
     }
