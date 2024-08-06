@@ -30,6 +30,9 @@ namespace CustomPortalV2.Core.Model.FDefination
         [JsonIgnore]
         public virtual FormDefination? FormDefination { get; set; }
         [JsonIgnore]
-        public virtual FormGroup? FormGroup { get; set; } 
+        public virtual FormGroup? FormGroup { get; set; }
+
+        public string AutoComlateType { get; set; }
+
     }
 }

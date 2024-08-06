@@ -25,15 +25,11 @@ import {
 
 } from '@coreui/react'
 
+import { Link } from 'react-router-dom';
 
 
-const OptionClick = (option, id) => {
-  console.log(option);
-}
-const CheckItemValueChange = (option, id, checked) => {
-
-}
-
+ 
+ 
 const GridcolumnFormFields = (OptionClick, CheckItemValueChange) => {
   return [
     {
@@ -87,7 +83,11 @@ const GridcolumnFormFields = (OptionClick, CheckItemValueChange) => {
         if (params.row.controlType == 'ComboBox' || params.row.controlType=='CheckBox' || params.row.controlType=='RadioBox')  {
           statusIcon = <IconButton color="secondary" onClick={() => OptionClick('AddComboItem', params.row.id)} > <AddCircleIcon /></IconButton>;
         } else if (params.row.autoComplate === true) {
-          statusIcon = <AutoModeIcon />;
+          debugger;
+          statusIcon =<Link  to={{
+            pathname: '/formdefinationsAComp',
+            search: `?formfieldid=${params.row.id}`,
+            }}> <AutoModeIcon /></Link>;
         }
         return (
           <div>

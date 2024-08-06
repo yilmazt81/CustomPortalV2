@@ -96,12 +96,21 @@ export const TRANSLATIONS_EN = {
     FormComboFieldModalTitle:"Field Options",
     ComboBoxName:"Item Title",
     ComboBoxTag:"Item Value",    
-    FormDefinationName:"Form Defination",
-    
+    FormDefinationName:"Form Defination",    
     SenderCompanyName:"Sender Company",
     RecrivedCompanyName:"Recrived Company",
     EditedBy:"Edited By",
-    EditedDate:"Edited Date"
+    EditedDate:"Edited Date",
+    AutoComplateTitleDefination:"Auto Complate Field Defination",
+    AutoComplateDefinationTable:"Defination Type",
+    AdressDefination:"Adress Defination",
+    ProductDefination:"Product Defination",    
+    AutoComplateDefinationFilter:"Field Filter",
+    TagName:"Field Name",
+    DefinationFieldList:"Field List"
+
+    
+
 
 
     

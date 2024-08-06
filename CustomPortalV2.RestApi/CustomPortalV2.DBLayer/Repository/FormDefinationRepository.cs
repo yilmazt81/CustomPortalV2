@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
@@ -164,6 +165,16 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             _dbContext.SaveChanges();
 
             return dbGroup;
+        }
+
+        public AutocompleteField? GetAutoComplateField(int definationFieldId)
+        {
+            return _dbContext.AutocompleteField.FirstOrDefault(s => s.FormDefinationFieldId == definationFieldId);
+        }
+
+        public List<AutocompleteFieldMap> GetAutoComplateFieldMaps(int definationFieldId)
+        {
+           return _dbContext.AutocompleteFieldMap.Where(s=>s.FormDefinationFieldId== definationFieldId).ToList();
         }
     }
 }

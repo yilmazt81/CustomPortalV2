@@ -100,8 +100,16 @@ export const TRANSLATIONS_TR = {
     SenderCompanyName:"Gönderen Firma",
     RecrivedCompanyName:"Alıcı Firma",
     EditedBy:"Güncelleyen",
-    EditedDate:"Güncelleme Tarihi"
-    
+    EditedDate:"Güncelleme Tarihi",    
+    AutoComplateTitleDefination:"Otomatik Alan Tanımları",
+    AutoComplateDefinationTable:"Tanım Tablosu",
+    AdressDefination:"Adres Tanımı",    
+    ProductDefination:"Ürün Tanımı",
+    AutoComplateDefinationFilter:"Alan Filtre",
+    TagName:"Alan Adı",
+    DefinationFieldList:"Alan Listesi"
+
+
 
 
 };

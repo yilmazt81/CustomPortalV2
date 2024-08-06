@@ -15,26 +15,17 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId);
 
         DefaultReturn<FormDefination> GetFormDefination(int id);
-
-        DefaultReturn<FormDefination> Save(FormDefination formDefination);
-
-        DefaultReturn<FormDefinationField> Save(FormDefinationField formDefinationField);
-         
-        DefaultReturn<AutocompleteField> Save(AutocompleteField autocompleteField);
-        DefaultReturn<AutocompleteFieldMap> Save(AutocompleteFieldMap autocompleteFieldMap);
-
+        DefaultReturn<FormDefination> Save(FormDefination formDefination); 
         DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem);
         DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId);
         DefaultReturn<FormDefinationField> GetFormDefinationField(int id);
-
-        DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName);
-        DefaultReturn<List<AutocompleteFieldMap>> GetAutocompleteFieldMaps(int autoComplateFieldId);
+          
 
         DefaultReturn<List<FormGroup>> GetFormGroups(int formDefinationId);
         DefaultReturn<FormGroup> GetFormGroup(int id);
         DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(int mainCompanyId, string tagName);
 
-        DefaultReturn<FormVersion> GetFormVersions(int formDefinationId);
+        
 
         DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId);
         DefaultReturn<FormGroup> SaveGroup(FormGroup formDefinationField);
@@ -46,5 +37,10 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<FontType>> GetFontTypes();
 
         DefaultReturn<List<GroupDTO>> GetFormGroupDTOs(int formDefinationId);
+
+        DefaultReturn<AutocompleteField> GetAutoComplateField(int formdefinationFieldId);
+
+        DefaultReturn<List<AutocompleteFieldMap>> GetAutoComplateFieldMaps(int formDefinationFieldid);
+         
     }
 }

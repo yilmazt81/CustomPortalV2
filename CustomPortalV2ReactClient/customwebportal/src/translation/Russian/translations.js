@@ -99,5 +99,12 @@ export const TRANSLATIONS_RU = {
     SenderCompanyName:"Компания-отправитель",
     RecrivedCompanyName:"Восстановленная компания",
     EditedBy:"Отредактировано",
-    EditedDate:"Дата редактирования"
+    EditedDate:"Дата редактирования",    
+    AutoComplateTitleDefination:"Определение поля автоматического заполнения",
+    AutoComplateDefinationTable:"Тип определения",
+    AdressDefination:"Определение адреса",    
+    ProductDefination:"Определение продукта",    
+    AutoComplateDefinationFilter:"Полевой фильтр",    
+    DefinationFieldList:"Список полей",
+    
 };

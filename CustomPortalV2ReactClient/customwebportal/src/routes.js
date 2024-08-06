@@ -10,6 +10,7 @@ const UserDefination = React.lazy(() => import('./views/userdefination'))
 const FormDefinationEdit=  React.lazy(() => import('./views/formdefinationEdit'))
 const DigitalForms=React.lazy(() => import('./views/digitalForms'))
 const DigitalFormEdit=React.lazy(() => import('./views/digitalFormEdit'))
+const FormDefinationAutoComplate=React.lazy(() => import('./views/formdefinationsAComp'))
 
 const routes = [
 
@@ -25,6 +26,8 @@ const routes = [
   
   { path: '/digitalForms', name: 'DigitalForms', element: DigitalForms }, 
   { path: '/digitalFormEdit', name: 'DigitalForms/digitalFormEdit', element: DigitalFormEdit }, 
+  { path: '/formdefinationsAComp', name: 'FormDefinationEdit/AutoComplate', element: FormDefinationAutoComplate }, 
+  
   
 ]
 export default routes

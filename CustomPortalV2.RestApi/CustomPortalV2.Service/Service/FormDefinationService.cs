@@ -51,14 +51,42 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<AutocompleteField> GetAutocompleteField(int formdefinationId, string tagName)
+        public DefaultReturn<AutocompleteField> GetAutoComplateField(int formdefinationFieldId)
         {
-            throw new NotImplementedException();
+            DefaultReturn<AutocompleteField> defaultReturn = new DefaultReturn<AutocompleteField>();
+            try
+            {
+               var autoComplate = _formDefinationService.GetAutoComplateField(formdefinationFieldId);
+
+                if (autoComplate == null)
+                {
+                    autoComplate = new AutocompleteField() { FormDefinationFieldId = formdefinationFieldId };
+                }
+
+                defaultReturn.Data=autoComplate;
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
-        public DefaultReturn<List<AutocompleteFieldMap>> GetAutocompleteFieldMaps(int autoComplateFieldId)
+        public DefaultReturn<List<AutocompleteFieldMap>> GetAutoComplateFieldMaps(int formDefinationFieldid)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<AutocompleteFieldMap>> defaultReturn = new   DefaultReturn<List<AutocompleteFieldMap>>();
+
+            try
+            {
+                defaultReturn.Data = _formDefinationService.GetAutoComplateFieldMaps(formDefinationFieldid);
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;   
         }
 
         public DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(int mainCompanyId, string tagName)
@@ -206,10 +234,7 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<FormVersion> GetFormVersions(int formDefinationId)
-        {
-            throw new NotImplementedException();
-        }
+  
 
         public DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId)
         {
@@ -252,25 +277,7 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<FormDefinationField> Save(FormDefinationField formDefinationField)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DefaultReturn<FormGroup> Save(FormGroup formGroup)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DefaultReturn<AutocompleteField> Save(AutocompleteField autocompleteField)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DefaultReturn<AutocompleteFieldMap> Save(AutocompleteFieldMap autocompleteFieldMap)
-        {
-            throw new NotImplementedException();
-        }
+    
 
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
@@ -294,6 +301,8 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
 
         }
+
+      
 
         public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)
         {

@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.Model.Company;
 using System;
@@ -41,5 +42,9 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         ComboBoxItem AddComboboxItem(ComboBoxItem comboBoxItem);
 
         bool IsExistComboboxItem(ComboBoxItem comboBoxItem);
+
+        AutocompleteField? GetAutoComplateField(int definationFieldId);
+
+        List<AutocompleteFieldMap> GetAutoComplateFieldMaps(int definationFieldId);
     }
 }

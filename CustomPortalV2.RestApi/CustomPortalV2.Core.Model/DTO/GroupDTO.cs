@@ -31,6 +31,7 @@ namespace CustomPortalV2.Core.Model.DTO
             ControlType = definationField.ControlType;
             AutoComplate= definationField.AutoComplate;
             id=definationField.Id;
+            AutoComlateType=definationField.AutoComlateType;
         }
 
         public int id { get; set; }
@@ -39,6 +40,8 @@ namespace CustomPortalV2.Core.Model.DTO
         public bool AutoComplate { get; set; }
 
         public string ControlType { get; set; }
+
+        public string AutoComlateType { get; set; }
         public List<ComboBoxItem> ComboBoxItems { get; set; }
     }
 }

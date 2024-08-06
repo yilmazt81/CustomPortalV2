@@ -144,3 +144,16 @@ export async function GetFormGroupFormApp(formdefinationTypeId) {
   return data;
 }
 
+
+
+
+export async function GetAutoComlateField(formdefinationTypeId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetAutoComlateField/${formdefinationTypeId}`);
+  return data;
+}
+export async function GetAutoComlateFieldMaps(formdefinationTypeId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetAutoComlateFieldMaps/${formdefinationTypeId}`);
+  return data;
+}

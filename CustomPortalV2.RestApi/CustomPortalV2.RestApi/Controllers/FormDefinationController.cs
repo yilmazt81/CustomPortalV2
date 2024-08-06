@@ -1,5 +1,6 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
@@ -309,12 +310,17 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpPost("SaveGroup")]
         public IActionResult SaveGroup(FormGroup formGroup)
         {
+
+            var formGroupReturn = _formDefinationService.SaveGroup(formGroup);
             string key = $"FormDefinationGroups{formGroup.FormDefinationId}";
             _memoryCache.Remove(key);
 
             key = $"FormDefinationGroup{formGroup.Id}";
             _memoryCache.Remove(key);
-            var formGroupReturn = _formDefinationService.SaveGroup(formGroup);
+
+            key = $"FormDefinationGroupDTO{formGroup.FormDefinationId}";
+            _memoryCache.Remove(key);
+
             return Ok(formGroupReturn);
         }
         [HttpPost("SaveFormDefinationField")]
@@ -329,6 +335,9 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache.Remove(key);
             key = $"FormDefinationFieldId{formDefinationField.Id}";
             _memoryCache.Remove(key);
+            key = $"FormDefinationGroupDTO{formDefinationField.FormDefinationId}";
+            _memoryCache.Remove(key);
+
             return Ok(formGroupReturn);
         }
 
@@ -433,6 +442,41 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formGroups);
         }
+
+        [HttpGet("GetAutoComlateField/{formDefinationId}")]
+        public IActionResult GetAutoComlateField(int formdefinationId)
+        {
+            string key = $"GetAutoComlateField{formdefinationId}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<AutocompleteField> list))
+                return Ok(list);
+
+            var formAutoComplate = _formDefinationService.GetAutoComplateField(formdefinationId);
+            _memoryCache.Set(key, formAutoComplate, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formAutoComplate);
+        }
+
+        [HttpGet("GetAutoComlateFieldMaps/{formDefinationId}")]
+        public IActionResult GetAutoComlateFieldMaps(int formdefinationId)
+        {
+            string key = $"GetAutoComlateFieldMaps{formdefinationId}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<AutocompleteFieldMap>> list))
+                return Ok(list);
+
+            var formAutoComplate = _formDefinationService.GetAutoComplateFieldMaps(formdefinationId);
+            _memoryCache.Set(key, formAutoComplate, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formAutoComplate);
+        }
+
 
     }
 
