@@ -107,7 +107,15 @@ export const TRANSLATIONS_TR = {
     ProductDefination:"Ürün Tanımı",
     AutoComplateDefinationFilter:"Alan Filtre",
     TagName:"Alan Adı",
-    DefinationFieldList:"Alan Listesi"
+    DefinationFieldList:"Alan Listesi",
+    ProperyValue:"Kaynak Alan 1",
+    ProperyValue2:"Kaynak Alan 2",
+    ProperyValue3:"Kaynak Alan 3",
+    AutoComplateFielDefinationTitle:"Alan Tanımı",
+    CountryDefination:"Ülke Tanımı",
+    
+    
+    
 
 
 

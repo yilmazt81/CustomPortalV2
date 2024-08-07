@@ -41,6 +41,8 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<AutocompleteField> GetAutoComplateField(int formdefinationFieldId);
 
         DefaultReturn<List<AutocompleteFieldMap>> GetAutoComplateFieldMaps(int formDefinationFieldid);
+
+        DefaultReturn<List<ObjectFieldDTO>> GetObjectFieldList(string objectName,int userLangId);
          
     }
 }

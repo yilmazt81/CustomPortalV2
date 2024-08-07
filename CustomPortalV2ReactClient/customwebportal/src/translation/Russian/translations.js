@@ -106,5 +106,10 @@ export const TRANSLATIONS_RU = {
     ProductDefination:"Определение продукта",    
     AutoComplateDefinationFilter:"Полевой фильтр",    
     DefinationFieldList:"Список полей",
+    ProperyValue:"Исходное поле 1",
+    ProperyValue2:"Исходное поле 2",
+    ProperyValue3:"Исходное поле 3", 
+    AutoComplateFielDefinationTitle:"Определение поля",
+    CountryDefination:"Определение страны",
     
 };

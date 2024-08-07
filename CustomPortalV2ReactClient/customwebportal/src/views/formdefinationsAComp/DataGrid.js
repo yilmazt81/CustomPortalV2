@@ -11,30 +11,37 @@ const Gridcolumns = (OptionClick) => {
   return [
 
 
-    {
-      accessorKey: 'tagName',
-      header: i18.t('TagName'),
-      size: 150,
+    { 
+      field: 'fieldCaption',
+      headerName: i18.t('TagName'),
+      width: 150,
+      height:20,
     },
     {
-      accessorKey: 'properyValue',
-      header: i18.t('ProperyValue'),
-      size: 150,
+      field: 'properyValue',
+      headerName: i18.t('ProperyValue'),
+      width: 150,
+      height:20,
     },
     {
-      accessorKey: 'properyValue2',
-      header: i18.t('ProperyValue2'),
-      size: 150,
+      field: 'properyValue2',
+      headerName: i18.t('ProperyValue2'),
+      width: 150,
+      height:20,
     },
     {
-      accessorKey: 'properyValue3',
-      header: i18.t('ProperyValue3'),
-      size: 150,
+      field: 'properyValue3',
+      headerName: i18.t('ProperyValue3'),
+      width: 150,
+      height:20,
+
     },
     {
+      
       field: 'actions',
       headerName: 'Actions',
       width: 100,
+      height:20,
       renderCell: (params) => (
         <div>
           <IconButton

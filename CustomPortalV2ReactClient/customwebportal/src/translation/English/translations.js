@@ -107,7 +107,15 @@ export const TRANSLATIONS_EN = {
     ProductDefination:"Product Defination",    
     AutoComplateDefinationFilter:"Field Filter",
     TagName:"Field Name",
-    DefinationFieldList:"Field List"
+    DefinationFieldList:"Field List",
+    ProperyValue:"Source Field 1",
+    ProperyValue2:"Source Field 2",
+    ProperyValue3:"Source Field 3",
+    AutoComplateFielDefinationTitle:"Field Defination",
+    CountryDefination:"Country Defination",
+    
+    
+
 
     
 

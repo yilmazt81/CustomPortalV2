@@ -476,6 +476,32 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formAutoComplate);
         }
+        /*
+        [HttpGet("CreateAutoComplateField/{formdefinationFieldId}/{complateObject}/{filterValue}")]
+        public IActionResult CreateAutoComplateField(int formdefinationFieldId,string complateObject,string filterValue)
+        {
+            DefaultReturn<AutocompleteField> defaultReturn = new DefaultReturn<AutocompleteField>();
+            var formDefinationField = _formDefinationService.GetFormDefinationField(formdefinationFieldId);
+            defaultReturn.Data = new AutocompleteField()
+            {
+                FormDefinationFieldId = formdefinationFieldId,
+                ComplateObject = complateObject,
+                FilterValue= filterValue,
+                FieldName= formDefinationField.Data.TagName,
+
+            };
+
+            return Ok(defaultReturn);
+        }*/
+
+        [HttpGet("GetReflectionFields")]
+        public IActionResult GetReflectionFields(string complateObject)
+        {
+            var objectListReturn = _formDefinationService.GetObjectFieldList(complateObject,User.GetUserLangId()); 
+
+
+            return Ok(objectListReturn);
+        }
 
 
     }

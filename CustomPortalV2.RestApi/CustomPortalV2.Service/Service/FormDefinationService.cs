@@ -1,6 +1,8 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Business.Helper;
 using CustomPortalV2.Core.Model.Autocomplete;
+using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.DataAccessLayer.Concrete;
@@ -56,14 +58,14 @@ namespace CustomPortalV2.Business.Service
             DefaultReturn<AutocompleteField> defaultReturn = new DefaultReturn<AutocompleteField>();
             try
             {
-               var autoComplate = _formDefinationService.GetAutoComplateField(formdefinationFieldId);
+                var autoComplate = _formDefinationService.GetAutoComplateField(formdefinationFieldId);
 
                 if (autoComplate == null)
                 {
                     autoComplate = new AutocompleteField() { FormDefinationFieldId = formdefinationFieldId };
                 }
 
-                defaultReturn.Data=autoComplate;
+                defaultReturn.Data = autoComplate;
             }
             catch (Exception ex)
             {
@@ -75,7 +77,7 @@ namespace CustomPortalV2.Business.Service
 
         public DefaultReturn<List<AutocompleteFieldMap>> GetAutoComplateFieldMaps(int formDefinationFieldid)
         {
-            DefaultReturn<List<AutocompleteFieldMap>> defaultReturn = new   DefaultReturn<List<AutocompleteFieldMap>>();
+            DefaultReturn<List<AutocompleteFieldMap>> defaultReturn = new DefaultReturn<List<AutocompleteFieldMap>>();
 
             try
             {
@@ -86,7 +88,7 @@ namespace CustomPortalV2.Business.Service
                 defaultReturn.SetException(ex);
             }
 
-            return defaultReturn;   
+            return defaultReturn;
         }
 
         public DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(int mainCompanyId, string tagName)
@@ -194,7 +196,7 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<List<GroupDTO>> defaultReturn = new DefaultReturn<List<GroupDTO>>();
             var getFormGroups = GetFormGroups(formDefinationId);
-            var formDefination=GetFormDefination(formDefinationId);
+            var formDefination = GetFormDefination(formDefinationId);
             defaultReturn.Data = new List<GroupDTO>();
             foreach (var group in getFormGroups.Data)
             {
@@ -203,7 +205,7 @@ namespace CustomPortalV2.Business.Service
                     Name = group.Name,
                     FormNumber = group.FormNumber,
                     GroupTag = group.GroupTag,
-                    id= group.Id,   
+                    id = group.Id,
                 };
                 groupDTO.FormFields = new List<DefinationFieldDTO>();
                 var groupFields = GetFormDefinationFields(group.Id);
@@ -211,7 +213,7 @@ namespace CustomPortalV2.Business.Service
                 foreach (var oneField in groupFields.Data)
                 {
                     DefinationFieldDTO definationFieldDTO = new DefinationFieldDTO(oneField);
-                    if (definationFieldDTO.ControlType== "ComboBox" || definationFieldDTO.ControlType== "CheckBox" || definationFieldDTO.ControlType== "RadioBox")
+                    if (definationFieldDTO.ControlType == "ComboBox" || definationFieldDTO.ControlType == "CheckBox" || definationFieldDTO.ControlType == "RadioBox")
                     {
                         var comboitems = GetComboBoxItems(formDefination.Data.MainCompanyId, definationFieldDTO.TagName);
 
@@ -234,7 +236,53 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-  
+       
+        public DefaultReturn<List<ObjectFieldDTO>> GetObjectFieldList(string objectName,int userLangId)
+        {
+            DefaultReturn<List<ObjectFieldDTO>> defaultReturn = new DefaultReturn<List<ObjectFieldDTO>>();
+            defaultReturn.Data = new List<ObjectFieldDTO>();
+
+            if (objectName == "CompanyDefination")
+            {
+                CompanyDefination companyDefination = new CompanyDefination();
+
+                foreach (var prop in companyDefination.GetType().GetProperties())
+                {
+                    var caption = _appLangRepository.Get($"CompanyDefination_{prop.Name}", userLangId, prop.Name);
+                    defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
+                }
+            }
+            else if (objectName == "ProductDefination")
+            {
+                CustomProduct product = new CustomProduct();
+                foreach (var prop in product.GetType().GetProperties())
+                {
+                    var caption = _appLangRepository.Get($"ProductDefination_{prop.Name}", userLangId, prop.Name);
+                    defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
+                }
+            }
+            else if (objectName == "Country")
+            {
+                Country country = new Country();
+                foreach (var prop in country.GetType().GetProperties())
+                {
+                    var caption = _appLangRepository.Get($"Country_{prop.Name}", userLangId, prop.Name);
+                    defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
+                }
+            }
+            else
+            {
+                AutoComplateDefination autocompleteField = new AutoComplateDefination();
+
+                foreach (var prop in autocompleteField.GetType().GetProperties())
+                {
+                    var caption = _appLangRepository.Get($"AutoComplate_{prop.Name}", userLangId, prop.Name);
+                    defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
+                }
+
+            }
+            return defaultReturn;
+        }
 
         public DefaultReturn<List<CustomSectorDTO>> GetSector(int mainCompanyId, int applicationLangId)
         {
@@ -277,7 +325,7 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-    
+
 
         public DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem)
         {
@@ -302,7 +350,7 @@ namespace CustomPortalV2.Business.Service
 
         }
 
-      
+
 
         public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)
         {

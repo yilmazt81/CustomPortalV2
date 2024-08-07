@@ -157,3 +157,14 @@ export async function GetAutoComlateFieldMaps(formdefinationTypeId) {
   const { data } = await GetRequest(`/api/FormDefination/GetAutoComlateFieldMaps/${formdefinationTypeId}`);
   return data;
 }
+/*
+export async function CreateAutoComplateField(formdefinationFieldId,complateObject,filterValue) {
+  
+  const { data } = await GetRequest(`/api/CreateAutoComplateField/${formdefinationFieldId}/${complateObject}/${filterValue}`);
+  return data;
+}*/
+export async function GetReflectionFields(complateObject) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetReflectionFields?complateObject=${complateObject}`);
+  return data;
+}

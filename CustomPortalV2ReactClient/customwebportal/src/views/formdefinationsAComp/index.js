@@ -44,17 +44,19 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import { Link } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-
+import { nlNL } from '@mui/x-data-grid/locales';
 
 
 
 
 import { useTranslation } from "react-i18next";
 
-import { GetAutoComlateField, GetAutoComlateFieldMaps } from 'src/lib/formdef'
+import { GetAutoComlateField, GetAutoComlateFieldMaps, GetReflectionFields,GetFormDefinationField } from 'src/lib/formdef'
+import { CreateDefinationTypes } from 'src/lib/companyAdressDef';
 
 
 import Gridcolumns from './DataGrid';
+import AutoComplateFieldModal from './autoComplateFieldModal'
 
 const FormdefinationsAutoComlate = () => {
     const { t } = useTranslation();
@@ -62,9 +64,13 @@ const FormdefinationsAutoComlate = () => {
     const [saveError, setSaveError] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [autoComplateFieldMaps, setautoComplateFieldMaps] = useState([]);
-    const [autoComplateField, setautoComplateField] = useState(null);
-    const [filterSelectVisible,setfilterSelectVisible]=useState(true);
-
+    const [autoComplateFieldMap, setautoComplateFieldMap] = useState({ id: 0,fieldCaption:'', formDefinationFieldId: 0, tagName: '', properyValue: '', properyValue2: '', properyValue3: '' });
+    const [autoComplateField, setautoComplateField] = useState({ formDefinationFieldId: 0, id: 0, fieldName: '', complateObject: 'CompanyDefination', filterValue: '', relationalFieldName: '' });
+    const [filterSelectVisible, setfilterSelectVisible] = useState(true);
+    const [autoComplateFieldVisible, setautoComplateFieldVisible] = useState(false);
+    const [adressDefinationTypes, setadressDefinationTypes] = useState([]);
+    const [objecReflectionFields, setobjecReflectionFields] = useState([]);
+    const [formdefinationField,setformdefinationField]=useState(null);
 
     async function getAutoComplateDefination(id) {
 
@@ -82,6 +88,8 @@ const FormdefinationsAutoComlate = () => {
         }
     }
 
+
+
     async function getAutoComplateDefinationMaps(id) {
 
         try {
@@ -98,30 +106,118 @@ const FormdefinationsAutoComlate = () => {
         }
     }
 
+    async function LoadDefinationTypes() {
+
+        try {
+            var AdresDefinationService = await CreateDefinationTypes();
+            if (AdresDefinationService.returnCode === 1) {
+                setadressDefinationTypes(AdresDefinationService.data);
+            } else {
+                setSaveError(AdresDefinationService.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        }
+    }
+
+
+
     useEffect(() => {
 
         const id = searchParams.get('formfieldid');
+
+        autoComplateField.formDefinationFieldId = id;
+     
+        setautoComplateField(autoComplateField);
         getAutoComplateDefination(id);
 
         getAutoComplateDefinationMaps(id);
+        GetFiel(id);
+
+        LoadDefinationTypes();
 
 
 
     }, []);
 
+    async function GetFiel(id) {
+        
+
+        try {
+            var formdefinationFielReturn = await GetFormDefinationField(id);
+            if (formdefinationFielReturn.returnCode === 1) {
+                setformdefinationField(formdefinationFielReturn.data);
+            } else {
+                setSaveError(formdefinationFielReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        }
+    }
     const optionClick = (option, id) => {
         // EditGroupDefination(option === 'Delete', id);
     }
 
     function handleChange(event) {
         const { name, value } = event.target;
-        if (name=='selectDefinationType'){
+        setautoComplateField({ ...autoComplateField, [name]: value });
+        if (name == 'selectDefinationType') {
+
+            setfilterSelectVisible(value == 'Adress');
 
         }
     }
 
     const gridDigitalForm = Gridcolumns(optionClick);
 
+    function ShowFilterRow() {
+        if (filterSelectVisible) {
+            return (
+                <CRow>
+                    <CCol sm={3}>
+                        <CFormLabel htmlFor="selectFilterType"
+                            className="col-sm-6 col-form-label">{t("AutoComplateDefinationFilter")}</CFormLabel>
+                    </CCol>
+
+                    <CCol sm={3}>
+                        <CFormSelect id='selectFilterType' name='filterValue' onChange={e => handleChange(e)}>
+
+                            <option value=''></option>
+                            {adressDefinationTypes.map(item => {
+                                return <option key={item.id} value={item.id}>{item.name}</option>
+                            })}
+                        </CFormSelect>
+                    </CCol>
+                    <CCol sm={3}>
+
+
+                    </CCol>
+
+                </CRow>
+            )
+        } else {
+            return null;
+        }
+    }
+
+    async function NewDefination() {
+        try {
+        
+            autoComplateFieldMap.formDefinationFieldId = autoComplateField.formDefinationFieldId;
+
+            var replectionFieldList = await GetReflectionFields(autoComplateField.complateObject);
+
+            if (replectionFieldList.returnCode === 1) {
+                setobjecReflectionFields(replectionFieldList.data);
+                setautoComplateFieldVisible(true);
+            } else {
+                setSaveError(replectionFieldList.returnMessage);
+            }
+
+        } catch (error) {
+            setSaveError(error.message);
+        }
+    }
 
     return (
         <> <CCard className="mb-4">
@@ -134,35 +230,29 @@ const FormdefinationsAutoComlate = () => {
                     </CCol>
 
                     <CCol sm={3}>
-                        
-                        <CFormSelect id='selectDefinationType' onChange={e => handleChange(e)} >
-                            <option value='Adress'>{t("AdressDefination")}</option>
-                            <option value='Product'>{t("ProductDefination")}</option>
+
+                        <CFormSelect id='selectDefinationType' name='complateObject' onChange={e => handleChange(e)} >
+                            <option value='CompanyDefination'>{t("AdressDefination")}</option>
+                            <option value='ProductDefination'>{t("ProductDefination")}</option>
+                            <option value='Country'>{t("CountryDefination")}</option>
+
                         </CFormSelect>
                     </CCol>
+                    {ShowFilterRow()}
                     <CCol sm={3}>
 
                     </CCol>
 
                 </CRow>
-
                 <CRow>
-                    <CCol sm={3}>
-                        <CFormLabel htmlFor="selectFilterType"
-                            className="col-sm-6 col-form-label">{t("AutoComplateDefinationFilter")}</CFormLabel>
-                    </CCol>
 
-                    <CCol sm={3}>
-                        <CFormSelect id='selectFilterType'>
-                            <option value=''></option>
-                        </CFormSelect>
-                    </CCol>
-                    <CCol sm={3}>
-
+                    <CCol>
+                        <CButton color="primary" shape='rounded-3' onClick={() => NewDefination()} > {t("AddNewFormDefination")}</CButton>
 
                     </CCol>
 
                 </CRow>
+
 
                 <CRow>
                     <CCol>
@@ -172,9 +262,8 @@ const FormdefinationsAutoComlate = () => {
                             <CCardBody>
 
                                 <DataGrid columns={gridDigitalForm}
-                                    rows={autoComplateFieldMaps}>
+                                    rows={autoComplateFieldMaps} />
 
-                                </DataGrid>
                             </CCardBody>
                         </CCard>
 
@@ -190,7 +279,11 @@ const FormdefinationsAutoComlate = () => {
             </CCardBody>
         </CCard>
 
-
+            <AutoComplateFieldModal visiblep={autoComplateFieldVisible}
+                fieldListp={objecReflectionFields} 
+                autoComplateFieldMapp={autoComplateFieldMap}
+      
+                formdefinationFieldp={formdefinationField} ></AutoComplateFieldModal>
         </>
     )
 
