@@ -113,7 +113,8 @@ export const TRANSLATIONS_TR = {
     ProperyValue3:"Kaynak Alan 3",
     AutoComplateFielDefinationTitle:"Alan Tanımı",
     CountryDefination:"Ülke Tanımı",
-    
+    AutoComplateMapDeleteMessage:"Seçili Alan tanımını silmek istediğinizden emin misiniz?",
+
     
     
 

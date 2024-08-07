@@ -30,11 +30,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public ComboBoxItem AddComboboxItem(ComboBoxItem comboBoxItem)
         {
-                _dbContext.ComboBoxItem.Add(comboBoxItem);
-                _dbContext.SaveChanges();
+            _dbContext.ComboBoxItem.Add(comboBoxItem);
+            _dbContext.SaveChanges();
 
-                return comboBoxItem;
-            
+            return comboBoxItem;
+
 
         }
 
@@ -44,9 +44,9 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.ComboBoxItem.Any(s => s.MainCompanyId == comboBoxItem.MainCompanyId && s.ItemType == s.ItemType && s.TagName == comboBoxItem.TagName);
 
         }
-            
 
-            public FormDefinationField AddDefinationField(FormDefinationField formDefinationField)
+
+        public FormDefinationField AddDefinationField(FormDefinationField formDefinationField)
         {
             _dbContext.FormDefinationField.Add(formDefinationField);
 
@@ -174,7 +174,73 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public List<AutocompleteFieldMap> GetAutoComplateFieldMaps(int definationFieldId)
         {
-           return _dbContext.AutocompleteFieldMap.Where(s=>s.FormDefinationFieldId== definationFieldId).ToList();
+            return _dbContext.AutocompleteFieldMap.Where(s => s.FormDefinationFieldId == definationFieldId).ToList();
+        }
+
+        public AutocompleteField Add(AutocompleteField autocompleteField)
+        {
+            var dbDefination = _dbContext.AutocompleteField.FirstOrDefault(s => s.FormDefinationFieldId == autocompleteField.FormDefinationFieldId);
+            if (dbDefination == null)
+            {
+                _dbContext.AutocompleteField.Add(autocompleteField);
+                _dbContext.SaveChanges();
+
+                return autocompleteField;
+            }
+            else
+            {
+                autocompleteField.Id = dbDefination.Id;
+
+                return Update(autocompleteField);
+            }
+
+
+        }
+
+        public AutocompleteField Update(AutocompleteField autocompleteField)
+        {
+            var dbAutoComplateField = _dbContext.AutocompleteField.Single(s => s.Id == autocompleteField.Id);
+
+            dbAutoComplateField.FilterValue = autocompleteField.FilterValue;
+            dbAutoComplateField.RelationalFieldName = autocompleteField.RelationalFieldName;
+            dbAutoComplateField.FieldName = autocompleteField.FieldName;
+            dbAutoComplateField.ComplateObject = autocompleteField.ComplateObject;
+
+            return dbAutoComplateField;
+        }
+
+        public AutocompleteFieldMap Add(AutocompleteFieldMap autocompleteFieldmap)
+        {
+            _dbContext.AutocompleteFieldMap.Add(autocompleteFieldmap);
+            _dbContext.SaveChanges();
+            return autocompleteFieldmap;
+        }
+
+        public AutocompleteFieldMap Update(AutocompleteFieldMap autocompleteFieldmap)
+        {
+            var dbAutoComplateFieldmap = _dbContext.AutocompleteFieldMap.Single(s => s.Id == autocompleteFieldmap.Id);
+
+            dbAutoComplateFieldmap.FieldCaption = autocompleteFieldmap.FieldCaption;
+            dbAutoComplateFieldmap.TagName = autocompleteFieldmap.TagName;
+            dbAutoComplateFieldmap.PropertyValue1 = autocompleteFieldmap.PropertyValue1;
+            dbAutoComplateFieldmap.PropertyValue2 = autocompleteFieldmap.PropertyValue2;
+            dbAutoComplateFieldmap.PropertyValue3 = autocompleteFieldmap.PropertyValue3;
+            _dbContext.SaveChanges();
+            return dbAutoComplateFieldmap;
+        }
+
+        public FormDefinationField GetDefinationField(int definationTypeId, string tagName)
+        {
+            return _dbContext.FormDefinationField.Single(s => s.FormDefinationId == definationTypeId && s.TagName == tagName);
+        }
+
+        public bool DeleteAutoComplateFieldMap(int autocomplateFieldMapid)
+        {
+            var dbComplate = _dbContext.AutocompleteFieldMap.Single(s => s.Id == autocomplateFieldMapid);
+            _dbContext.AutocompleteFieldMap.Remove(dbComplate);
+            _dbContext.SaveChanges();
+            return true;
+
         }
     }
 }

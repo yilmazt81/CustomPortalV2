@@ -62,7 +62,15 @@ namespace CustomPortalV2.Business.Service
 
                 if (autoComplate == null)
                 {
-                    autoComplate = new AutocompleteField() { FormDefinationFieldId = formdefinationFieldId };
+                    var fieldName = GetFormDefinationField(formdefinationFieldId);
+                    autoComplate = new AutocompleteField()
+                    {
+                        FormDefinationFieldId = formdefinationFieldId,
+                        ComplateObject = "CompanyDefination",
+                        FieldName = fieldName.Data.TagName,
+                        FilterValue = "",
+                        RelationalFieldName = "",
+                    };
                 }
 
                 defaultReturn.Data = autoComplate;
@@ -173,7 +181,10 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
 
-
+        }
+        private FormDefinationField GetFormDefinationField(int definationFieldId, string tagName)
+        {
+            return _formDefinationService.GetDefinationField(definationFieldId, tagName);
         }
 
         public DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId)
@@ -236,8 +247,8 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-       
-        public DefaultReturn<List<ObjectFieldDTO>> GetObjectFieldList(string objectName,int userLangId)
+
+        public DefaultReturn<List<ObjectFieldDTO>> GetObjectFieldList(string objectName, int userLangId)
         {
             DefaultReturn<List<ObjectFieldDTO>> defaultReturn = new DefaultReturn<List<ObjectFieldDTO>>();
             defaultReturn.Data = new List<ObjectFieldDTO>();
@@ -350,7 +361,44 @@ namespace CustomPortalV2.Business.Service
 
         }
 
+        public DefaultReturn<AutocompleteFieldMap> SaveAutoComplate(SaveAutoComplateDTO saveAutoComplate)
+        {
+            DefaultReturn<AutocompleteFieldMap> defaultReturn = new DefaultReturn<AutocompleteFieldMap>();
+            try
+            {
+                var mainFieldType = GetFormDefinationField(saveAutoComplate.Complate.FormDefinationFieldId);
+                saveAutoComplate.Complate.FieldName = mainFieldType.Data.TagName;
+                if (saveAutoComplate.Complate.Id == 0)
+                {
+                    _formDefinationService.Add(saveAutoComplate.Complate);
+                }
+                else
+                {
+                    _formDefinationService.Update(saveAutoComplate.Complate);
+                }
 
+                var mapFieldName = GetFormDefinationField(mainFieldType.Data.FormDefinationId, saveAutoComplate.Map.TagName);
+                saveAutoComplate.Map.FieldCaption = mapFieldName.FieldCaption;
+                if (saveAutoComplate.Map.Id == 0)
+                {
+                    defaultReturn.Data = _formDefinationService.Add(saveAutoComplate.Map);
+                }
+                else
+                {
+
+                    defaultReturn.Data = _formDefinationService.Update(saveAutoComplate.Map);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                defaultReturn.SetException(ex);
+            }
+
+
+            return defaultReturn;
+        }
 
         public DefaultReturn<FormDefinationField> SaveFormDefinationField(FormDefinationField formDefinationField)
         {
@@ -392,6 +440,15 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.Data = _formDefinationService.UpdateGroup(formGroup);
             }
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<bool> DeleteAutoComplate(int autoComplateFieldId)
+        {
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            defaultReturn.Data = _formDefinationService.DeleteAutoComplateFieldMap(autoComplateFieldId);
+
 
             return defaultReturn;
         }

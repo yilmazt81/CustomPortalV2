@@ -497,12 +497,37 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetReflectionFields")]
         public IActionResult GetReflectionFields(string complateObject)
         {
-            var objectListReturn = _formDefinationService.GetObjectFieldList(complateObject,User.GetUserLangId()); 
+            var objectListReturn = _formDefinationService.GetObjectFieldList(complateObject, User.GetUserLangId());
 
 
             return Ok(objectListReturn);
         }
 
+
+        [HttpPost("SaveAutoComplateField")]
+        public IActionResult SaveAutoComplateField(SaveAutoComplateDTO saveAutoComplateDTO)
+        {
+            var defaultReturn = _formDefinationService.SaveAutoComplate(saveAutoComplateDTO);
+            string key = $"GetAutoComlateFieldMaps{saveAutoComplateDTO.Complate.FormDefinationFieldId}";
+            _memoryCache.Remove(key);
+
+            key = $"GetAutoComlateField{saveAutoComplateDTO.Complate.FormDefinationFieldId}";
+
+            _memoryCache.Remove(key);
+            return Ok(defaultReturn);
+        }
+
+        [HttpGet("DeleteAutoComplateFieldMap")]
+        public IActionResult DeleteAutoComplateFieldMap(int formdefinationId,int autoComplateMapid)
+        {
+           var deleteReturn= _formDefinationService.DeleteAutoComplate(autoComplateMapid);
+
+            string key = $"GetAutoComlateFieldMaps{formdefinationId}";
+            _memoryCache.Remove(key);
+
+            return Ok(deleteReturn);
+
+        }
 
     }
 

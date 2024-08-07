@@ -43,6 +43,10 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<AutocompleteFieldMap>> GetAutoComplateFieldMaps(int formDefinationFieldid);
 
         DefaultReturn<List<ObjectFieldDTO>> GetObjectFieldList(string objectName,int userLangId);
+
+        DefaultReturn<AutocompleteFieldMap> SaveAutoComplate(SaveAutoComplateDTO saveAutoComplate);
+
+        DefaultReturn<bool> DeleteAutoComplate(int autoComplateFieldId);
          
     }
 }

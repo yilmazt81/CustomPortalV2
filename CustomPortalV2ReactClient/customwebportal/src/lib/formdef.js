@@ -84,6 +84,14 @@ async function GetRequest(apiAdress) {
   const  data   = await axios.get(process.env.REACT_APP_APIURL + apiAdress);
   return data;
 }
+
+async function Post(apiAdress,postData) {
+  var lastToken = localStorage.getItem("LastToken");
+  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
+  axios.defaults.headers.common['Content-Type'] = 'application/json';
+  const  data   = await axios.post(process.env.REACT_APP_APIURL + apiAdress,postData);
+  return data;
+}
 export async function GetFormGroup(id) {
 
   const { data } = await GetRequest(`/api/FormDefination/GetFormGroup/${id}`);
@@ -166,5 +174,18 @@ export async function CreateAutoComplateField(formdefinationFieldId,complateObje
 export async function GetReflectionFields(complateObject) {
   
   const { data } = await GetRequest(`/api/FormDefination/GetReflectionFields?complateObject=${complateObject}`);
+  return data;
+}
+
+
+export async function SaveAutoComplateField(complateObject) {
+  
+  const { data } = await Post(`/api/FormDefination/SaveAutoComplateField`,complateObject);
+  return data;
+}
+
+export async function DeleteAutoComplateFieldMap(formdefinationId,autcomplatefieldmapid) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/DeleteAutoComplateFieldMap?formdefinationId=${formdefinationId}&autoComplateMapid=${autcomplatefieldmapid}`);
   return data;
 }

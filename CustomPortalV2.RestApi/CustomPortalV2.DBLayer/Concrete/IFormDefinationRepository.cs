@@ -24,6 +24,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId);
 
+        FormDefinationField GetDefinationField(int definationTypeId, string tagName);
+
         FormGroup GetFormGroup(int id);
 
         IEnumerable<FieldType> GetDefaultFieldTypes();
@@ -46,5 +48,14 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         AutocompleteField? GetAutoComplateField(int definationFieldId);
 
         List<AutocompleteFieldMap> GetAutoComplateFieldMaps(int definationFieldId);
+
+        AutocompleteField Add(AutocompleteField autocompleteField);
+        AutocompleteField Update(AutocompleteField autocompleteField);
+
+        AutocompleteFieldMap Add(AutocompleteFieldMap autocompleteFieldmap);
+        AutocompleteFieldMap Update(AutocompleteFieldMap autocompleteFieldmap);
+
+
+        bool DeleteAutoComplateFieldMap(int autocomplateFieldMapid);
     }
 }

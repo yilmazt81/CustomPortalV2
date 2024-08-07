@@ -1,59 +1,33 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
-    CAvatar,
     CButton,
-    CButtonGroup,
     CCard,
     CCardBody,
-    CCardFooter,
     CCardHeader,
     CCol,
     CAlert,
-    CProgress,
     CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-    CModal,
-    CModalHeader,
-    CModalTitle,
-    CModalFooter,
-    CModalBody,
     CFormLabel,
-    CFormInput,
     CFormSelect,
-    CCardText,
 
 
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import { cilNoteAdd } from '@coreui/icons'
-import Lottie from 'lottie-react';
 
-import ProcessAnimation from "../../content/animation/Process.json";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid';
 
-import { Link } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-import { nlNL } from '@mui/x-data-grid/locales';
 
 
 
 
 import { useTranslation } from "react-i18next";
 
-import { GetAutoComlateField, GetAutoComlateFieldMaps, GetReflectionFields,GetFormDefinationField } from 'src/lib/formdef'
+import { GetAutoComlateField, GetAutoComlateFieldMaps, GetReflectionFields,GetFormDefinationField,DeleteAutoComplateFieldMap } from 'src/lib/formdef'
 import { CreateDefinationTypes } from 'src/lib/companyAdressDef';
 
+import DeleteModal from 'src/components/DeleteModal';
 
 import Gridcolumns from './DataGrid';
 import AutoComplateFieldModal from './autoComplateFieldModal'
@@ -64,13 +38,15 @@ const FormdefinationsAutoComlate = () => {
     const [saveError, setSaveError] = useState(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [autoComplateFieldMaps, setautoComplateFieldMaps] = useState([]);
-    const [autoComplateFieldMap, setautoComplateFieldMap] = useState({ id: 0,fieldCaption:'', formDefinationFieldId: 0, tagName: '', properyValue: '', properyValue2: '', properyValue3: '' });
+    const [autoComplateFieldMap, setautoComplateFieldMap] = useState({ id: 0,fieldCaption:'', formDefinationFieldId: 0, tagName: '', propertyValue1: '', propertyValue2: '', propertyValue3: '' });
     const [autoComplateField, setautoComplateField] = useState({ formDefinationFieldId: 0, id: 0, fieldName: '', complateObject: 'CompanyDefination', filterValue: '', relationalFieldName: '' });
     const [filterSelectVisible, setfilterSelectVisible] = useState(true);
+    const [deletemodalVisible,setDeleteModalVisible]=useState(false);
     const [autoComplateFieldVisible, setautoComplateFieldVisible] = useState(false);
     const [adressDefinationTypes, setadressDefinationTypes] = useState([]);
     const [objecReflectionFields, setobjecReflectionFields] = useState([]);
     const [formdefinationField,setformdefinationField]=useState(null);
+    const [formdefinationTypeId,setFormDefinationTypeId]=useState(0);
 
     async function getAutoComplateDefination(id) {
 
@@ -80,10 +56,12 @@ const FormdefinationsAutoComlate = () => {
             if (editformdefination.returnCode === 1) {
                 setautoComplateField(editformdefination.data);
             } else {
+          
                 setSaveError(editformdefination.returnMessage);
             }
 
         } catch (error) {
+          
             setSaveError(error.message);
         }
     }
@@ -98,10 +76,11 @@ const FormdefinationsAutoComlate = () => {
             if (editformdefination.returnCode === 1) {
                 setautoComplateFieldMaps(editformdefination.data);
             } else {
+             
                 setSaveError(editformdefination.returnMessage);
             }
 
-        } catch (error) {
+        } catch (error) { 
             setSaveError(error.message);
         }
     }
@@ -115,7 +94,7 @@ const FormdefinationsAutoComlate = () => {
             } else {
                 setSaveError(AdresDefinationService.returnMessage);
             }
-        } catch (error) {
+        } catch (error) { 
             setSaveError(error.message);
         }
     }
@@ -125,7 +104,7 @@ const FormdefinationsAutoComlate = () => {
     useEffect(() => {
 
         const id = searchParams.get('formfieldid');
-
+        setFormDefinationTypeId(id);
         autoComplateField.formDefinationFieldId = id;
      
         setautoComplateField(autoComplateField);
@@ -147,14 +126,25 @@ const FormdefinationsAutoComlate = () => {
             var formdefinationFielReturn = await GetFormDefinationField(id);
             if (formdefinationFielReturn.returnCode === 1) {
                 setformdefinationField(formdefinationFielReturn.data);
-            } else {
+            } else { 
                 setSaveError(formdefinationFielReturn.returnMessage);
             }
-        } catch (error) {
+        } catch (error) { 
             setSaveError(error.message);
         }
     }
     const optionClick = (option, id) => {
+        setDeleteModalVisible(false);
+        setautoComplateFieldVisible(false);
+            
+        var selectedD= autoComplateFieldMaps.find(s=>s.id==id);
+        setautoComplateFieldMap(selectedD);
+        if (option==='Delete'){
+            setDeleteModalVisible(true);
+
+        }else{
+            setautoComplateFieldVisible(true);
+        }
         // EditGroupDefination(option === 'Delete', id);
     }
 
@@ -165,7 +155,7 @@ const FormdefinationsAutoComlate = () => {
 
             setfilterSelectVisible(value == 'Adress');
 
-        }
+        } 
     }
 
     const gridDigitalForm = Gridcolumns(optionClick);
@@ -180,7 +170,7 @@ const FormdefinationsAutoComlate = () => {
                     </CCol>
 
                     <CCol sm={3}>
-                        <CFormSelect id='selectFilterType' name='filterValue' onChange={e => handleChange(e)}>
+                        <CFormSelect id='selectFilterType' name='filterValue' value={autoComplateField?.filterValue} onChange={e => handleChange(e)}>
 
                             <option value=''></option>
                             {adressDefinationTypes.map(item => {
@@ -203,12 +193,14 @@ const FormdefinationsAutoComlate = () => {
     async function NewDefination() {
         try {
         
+            setDeleteModalVisible(false);
             autoComplateFieldMap.formDefinationFieldId = autoComplateField.formDefinationFieldId;
 
             var replectionFieldList = await GetReflectionFields(autoComplateField.complateObject);
-
+               
             if (replectionFieldList.returnCode === 1) {
                 setobjecReflectionFields(replectionFieldList.data);
+                setautoComplateFieldMap({ id: 0,fieldCaption:'', formDefinationFieldId: autoComplateFieldMap.formDefinationFieldId , tagName: '', propertyValue1: '', propertyValue2: '', propertyValue3: '' });
                 setautoComplateFieldVisible(true);
             } else {
                 setSaveError(replectionFieldList.returnMessage);
@@ -217,6 +209,31 @@ const FormdefinationsAutoComlate = () => {
         } catch (error) {
             setSaveError(error.message);
         }
+    }
+
+
+    async function DeleteAutoComplateMaps() {
+
+        
+
+        try {
+        
+       
+            
+            var replectionFieldList = await DeleteAutoComplateFieldMap(formdefinationField.id,autoComplateFieldMap.id);
+               
+            if (replectionFieldList.returnCode === 1) {
+             
+                setDeleteModalVisible(false);
+                getAutoComplateDefinationMaps(formdefinationTypeId);
+            } else {
+                setSaveError(replectionFieldList.returnMessage);
+            }
+
+        } catch (error) {
+            setSaveError(error.message);
+        }
+
     }
 
     return (
@@ -255,7 +272,7 @@ const FormdefinationsAutoComlate = () => {
 
 
                 <CRow>
-                    <CCol>
+                    <CCol style={{ height: 350, width: '100%' }}>
 
                         <CCard className="mb-4">
                             <CCardHeader>{t("DefinationFieldList")}</CCardHeader>
@@ -282,8 +299,16 @@ const FormdefinationsAutoComlate = () => {
             <AutoComplateFieldModal visiblep={autoComplateFieldVisible}
                 fieldListp={objecReflectionFields} 
                 autoComplateFieldMapp={autoComplateFieldMap}
-      
-                formdefinationFieldp={formdefinationField} ></AutoComplateFieldModal>
+                autoComplateFieldp={autoComplateField}
+                formdefinationFieldp={formdefinationField} 
+                setFormData ={()=> getAutoComplateDefinationMaps(formdefinationTypeId)}></AutoComplateFieldModal>
+
+
+        <DeleteModal deleteError={saveError} visiblep={deletemodalVisible}
+         message={autoComplateFieldMap.fieldCaption}
+         message2={t("AutoComplateMapDeleteMessage")}
+         OnClickOk={()=> DeleteAutoComplateMaps()}
+        ></DeleteModal>
         </>
     )
 
