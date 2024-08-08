@@ -66,7 +66,7 @@ const CreateGroupField = ({ fieldList }) => {
         return (
             <>
 
-                <CCol sm={6} ><CFormInput key={textField.id} type="text" id={`txt=${textField.tagName}`} /></CCol>
+                <CCol sm={6} ><CFormInput key={textField.id} type="text" id={`txt${textField.tagName}`} /></CCol>
                 <CCol sm={3}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
                     {GetIcon(textField.autoComlateType)}
                 </CButton> </CCol>
@@ -76,8 +76,24 @@ const CreateGroupField = ({ fieldList }) => {
     function CreateText(textField) {
 
         return (
-            <CCol sm={9} ><CFormInput key={textField.id} type="text" id={`txt=${textField.tagName}`} /></CCol>
+            <CCol sm={9} ><CFormInput key={textField.id} type="text" id={`txt${textField.tagName}`} /></CCol>
         )
+    }
+
+    function LoadControlData(controlDataList){
+        if (controlDataList==null)
+            return;
+        for(var i=0;i<controlDataList.length;i++)
+        {
+            var item=controlDataList[i];
+            
+            const inputElement = document.getElementById(item.controlName); 
+            if (inputElement==null)
+                continue;
+         
+            inputElement.value =item.controlValue;
+        
+        } 
     }
 
     return (
@@ -102,7 +118,7 @@ const CreateGroupField = ({ fieldList }) => {
                             <CFormLabel htmlFor={`txt${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
                             <CCol sm={9} >
                                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="tr">
-                                    <DatePicker key={item.id} id={`txt=${item.tagName}`} />
+                                    <DatePicker key={item.id} id={`txt${item.tagName}`} />
                                 </LocalizationProvider>
                             </CCol>
                         </CRow>)
@@ -147,7 +163,7 @@ const CreateGroupField = ({ fieldList }) => {
                     </CRow>
                 } else if (item.controlType == "Hidden") {
                     return (
-                        <CFormInput key={item.id} type="Hidden" id={`hdn=${item.tagName}`} />
+                        <CFormInput key={item.id} type="Hidden" id={`hdn${item.tagName}`} />
                     )
                 } else {
                     return (
@@ -157,7 +173,7 @@ const CreateGroupField = ({ fieldList }) => {
             })}
 
             <BrowserAdressModal visiblep={autocomplatemodalform}
-                setFormData={() => setautocomplatemodalform(false)} formDefinationTypeIdp={formdefinationtypeid} ></BrowserAdressModal>
+                setClose={() => setautocomplatemodalform(false)} setFormData={(e)=>LoadControlData(e) } formDefinationTypeIdp={formdefinationtypeid} ></BrowserAdressModal>
 
             <BrowserProductModal visiblep={autoComplateModalFormProduct}
                 setFormData={() => setautoComplateModalFormProduct(false)}

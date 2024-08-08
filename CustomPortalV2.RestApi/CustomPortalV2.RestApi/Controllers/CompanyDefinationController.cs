@@ -176,6 +176,8 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetAutoComplateAdress/{formdefinationId}/{adressId}")]
         public IActionResult GetAutoComplateAdress(int formdefinationId,int adressId)
         {
+            string key = $"CompanyDefination{formdefinationId}_{adressId}";
+
             var autoComplateDefinationFieldlist=_companyDefinationService.GetAutoComplateDefinationValues(formdefinationId,adressId);
             return Ok(autoComplateDefinationFieldlist);
         }

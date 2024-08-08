@@ -42,5 +42,11 @@ export async function FilterCompanyDefination(filterData){
 
 }
 
+ 
 
+export async function GetAutoComplateAdress(formdefinationTypeid,id){
+  
+  const { data } =  await GetRequest(`/api/CompanyDefination/GetAutoComplateAdress/${formdefinationTypeid}/${id}`);
+  return data;
 
+}

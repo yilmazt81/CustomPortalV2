@@ -26,7 +26,8 @@ import {
     CFormLabel,
     CFormInput,
     CFormSelect,
-    CCardText
+    CCardText,
+    CForm
 
 
 } from '@coreui/react'
@@ -41,7 +42,7 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
- 
+
 
 
 import {
@@ -65,11 +66,11 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-import { GetSector, GetFormDefinationBySector, GetFormGroup,GetFormGroupFormApp ,GetFormGroupFields } from 'src/lib/formdef'
+import { GetSector, GetFormDefinationBySector, GetFormGroup, GetFormGroupFormApp, GetFormGroupFields } from 'src/lib/formdef'
 import { GetFormMetaDataById } from 'src/lib/formMetaDataApi'
 import { useSearchParams } from 'react-router-dom';
 import DynamicForm from './dynamicForm';
- import MenuButtons from './MenuButtons'
+import MenuButtons from './MenuButtons'
 
 const DigitalFormEdit = () => {
 
@@ -150,7 +151,7 @@ const DigitalFormEdit = () => {
             return null;
         }
         var getgroupsReturn = await GetFormGroupFormApp(id);
- 
+
         if (getgroupsReturn.returnCode === 1) {
             setFormDefinationGroups(getgroupsReturn.data);
 
@@ -171,12 +172,12 @@ const DigitalFormEdit = () => {
 
         if (name == 'formDefinationTypeId') {
 
-            if (value != 0) { 
+            if (value != 0) {
                 var formDef = formDefinationTypes.find(s => s.id == value);
                 setformdefinationType(formDef.id);
                 setuseTemplate(formDef.desingTemplate)
                 GetGroupList(formDef.id);
-            }else{
+            } else {
                 setFormDefinationGroups([]);
             }
 
@@ -184,9 +185,14 @@ const DigitalFormEdit = () => {
     }
 
 
+
     return (
         <><CCard className="mb-4">
             <CCardBody>
+
+
+
+
                 <CRow>
 
                     <CCol sm={3}>
@@ -228,41 +234,41 @@ const DigitalFormEdit = () => {
                             : ""
                     }
                 </CRow>
+                <CForm>
+                    <CRow>
+                        <CCol>
+                            {
+                                formdefinationType != 0 ? <MenuButtons></MenuButtons> : ""
 
-                <CRow>
-                    <CCol>
-                    {
-                            formdefinationType!=0 ? <MenuButtons></MenuButtons>:""
-                            
-                        }
-                    </CCol>
-                </CRow>
+                            }
+                        </CCol>
+                    </CRow>
 
-                <CRow>
+                    <CRow>
 
-                    <DynamicForm formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm> :
+                        <DynamicForm formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm> :
 
 
-                </CRow>
+                    </CRow>
 
-                <CRow>
-                    {
-                        saveError != null ?
-                            <CAlert color="warning">{saveError}</CAlert>
-                            : ""
-                    }
-                </CRow>
-
-                <CRow>
-                    <CCol>
+                    <CRow>
                         {
-                            formdefinationType!=0 ? <MenuButtons></MenuButtons>:""
-                            
+                            saveError != null ?
+                                <CAlert color="warning">{saveError}</CAlert>
+                                : ""
                         }
-                       
-                    </CCol>
-                </CRow>
+                    </CRow>
 
+                    <CRow>
+                        <CCol>
+                            {
+                                formdefinationType != 0 ? <MenuButtons></MenuButtons> : ""
+
+                            }
+
+                        </CCol>
+                    </CRow>
+                </CForm>
             </CCardBody>
         </CCard>
 

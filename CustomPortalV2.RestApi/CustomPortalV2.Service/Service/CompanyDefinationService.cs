@@ -94,6 +94,8 @@ namespace CustomPortalV2.Business.Service
         }
         private object GetPropValue(object src, string propName)
         {
+            if (string.IsNullOrEmpty(propName))
+                return null;
             return src.GetType().GetProperty(propName).GetValue(src, null);
         }
 
@@ -109,7 +111,7 @@ namespace CustomPortalV2.Business.Service
                 defaultReturn.Data = new List<ControlAutoFieldDTO>();
                 foreach (var autocomplete in autoComplateFieldMaps)
                 {
-                    var formDefinationField = _formdefinationRepository.GetDefinationField(defination.Id, autocomplete.TagName);
+                    var formDefinationField = _formdefinationRepository.GetDefinationField(formdefination.FormDefinationId, autocomplete.TagName);
                     if (formDefinationField == null)
                         continue;
                     var fieldValue = GetPropValue(defination, autocomplete.PropertyValue1);
@@ -118,7 +120,7 @@ namespace CustomPortalV2.Business.Service
                         string secondField = string.Empty;
                         if (!string.IsNullOrEmpty(autocomplete.PropertyValue2))
                         {
-                            var secondValue = GetPropValue(defination, autocomplete.PropertyValue3);
+                            var secondValue = GetPropValue(defination, autocomplete.PropertyValue2);
                             fieldValue += " " + (secondValue == null ? string.Empty : " " + secondValue.ToString());
                         }
                         if (!string.IsNullOrEmpty(autocomplete.PropertyValue3))

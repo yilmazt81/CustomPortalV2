@@ -16,7 +16,7 @@ function MenuButtons({ onClick }) {
                 <CCol sm={3}>
                 </CCol>
                 <CCol sm={3}>
-                    <CButton color="secondary"   ><CIcon icon={cilClearAll}/> {t("DigitalFormClear")}</CButton>
+                    <CButton color="secondary"  type='reset'  ><CIcon icon={cilClearAll}/> {t("DigitalFormClear")}</CButton>
                 </CCol>
 
                 <CCol sm={3}>

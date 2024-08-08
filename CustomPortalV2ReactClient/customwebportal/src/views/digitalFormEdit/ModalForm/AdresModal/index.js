@@ -29,13 +29,14 @@ import { useTranslation } from "react-i18next";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-import {FilterCompanyDefination} from 'src/lib/companyAdressDef';
+import {FilterCompanyDefination,GetAutoComplateAdress} from 'src/lib/companyAdressDef';
 
-const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => {
+const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
     const [filterAdressList,setFilterAdressList]=useState([]);
+    const [adressDefinationControlList,setadressDefinationControlList]=useState([]);
     const [filterCompany,setFilterCompany]=useState({formDefinationFieldId:formDefinationTypeIdp,filterValue:''});
     
     //const [user, setUser] = useState({ ...userp });
@@ -57,8 +58,7 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => 
     async function GetCompanyList() {
 
         try {
-            setsaveStart(true);
-            debugger;
+            setsaveStart(true);     
             var filterServiceReturn = await FilterCompanyDefination(filterCompany);
             if (filterServiceReturn.returnCode === 1) {
                 setFilterAdressList(filterServiceReturn.data);
@@ -76,11 +76,12 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => 
     }
     async function ClosedClick() {
         setvisible(false);
-        setFormData();
+        setClose();
     }
 
     useEffect(() => {
         setvisible(visiblep);
+        setSaveError(null);
         if (visiblep){
             filterCompany.formDefinationFieldId=formDefinationTypeIdp;
             setFilterCompany(filterCompany);
@@ -96,9 +97,34 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => 
         //    EditGroupDefination(option === 'Delete', id);
     }
 
-    const SelectedRowChanged=(e)=>{
-        console.log(e);
-        debugger;
+    async function GetAdressControlList(id) {
+        try {
+            setsaveStart(true);
+            
+            var filterServiceReturn = await GetAutoComplateAdress(filterCompany.formDefinationFieldId,id);
+        
+            if (filterServiceReturn.returnCode === 1) {
+                setadressDefinationControlList(filterServiceReturn.data);
+                setFormData(filterServiceReturn.data);   
+                setClose();
+                
+            } else {
+                setSaveError(filterServiceReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+            console.log(error);
+
+        }
+        setsaveStart(false);
+
+    }
+    const SelectedRowChanged=async (param)=>{
+        console.log(param);
+
+       await GetAdressControlList(param.id);
+       
+          
 
     }
 
@@ -126,7 +152,8 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => 
                         <CCol>
                             <DataGrid rows={filterAdressList}
                                 columns={gridColumns}
-                                onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
+                                //onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
+                                onRowClick={(param)=>SelectedRowChanged(param)}
                                 slotProps={{
                                     toolbar: {
                                         showQuickFilter: true,
@@ -139,7 +166,7 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp, setFormData }) => 
                         <CCol> </CCol>
                         <CCol>
                             {
-                                saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "80%", height: "80%" }} ></Lottie> : ""
+                                saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "40%", height: "40%" }} ></Lottie> : ""
                             }
                         </CCol>
                         <CCol> </CCol>
