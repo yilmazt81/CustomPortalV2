@@ -114,6 +114,10 @@ export const TRANSLATIONS_TR = {
     AutoComplateFielDefinationTitle:"Alan Tanımı",
     CountryDefination:"Ülke Tanımı",
     AutoComplateMapDeleteMessage:"Seçili Alan tanımını silmek istediğinizden emin misiniz?",
+    DigitalFormSave:"Kaydet (F4)",
+    DigitalFormClear:"Temizle (F2)",
+    DigitalFormSaveDefault:"Varsayılan olarak Kaydet",
+    AdressModalTitle:"Adres Seçim Penceresi",
 
     
     

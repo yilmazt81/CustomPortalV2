@@ -18,6 +18,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         CompanyDefination Update(CompanyDefination companyDefination);
 
         List<CompanyDefination> GetCompanyDefinations(Expression<Func<CompanyDefination, bool>> predicate);
+    
+        IQueryable<CompanyDefination> GetIQueryable();
 
     }
 }

@@ -41,6 +41,7 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
+ 
 
 
 import {
@@ -68,6 +69,7 @@ import { GetSector, GetFormDefinationBySector, GetFormGroup,GetFormGroupFormApp 
 import { GetFormMetaDataById } from 'src/lib/formMetaDataApi'
 import { useSearchParams } from 'react-router-dom';
 import DynamicForm from './dynamicForm';
+ import MenuButtons from './MenuButtons'
 
 const DigitalFormEdit = () => {
 
@@ -228,6 +230,15 @@ const DigitalFormEdit = () => {
                 </CRow>
 
                 <CRow>
+                    <CCol>
+                    {
+                            formdefinationType!=0 ? <MenuButtons></MenuButtons>:""
+                            
+                        }
+                    </CCol>
+                </CRow>
+
+                <CRow>
 
                     <DynamicForm formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm> :
 
@@ -241,6 +252,17 @@ const DigitalFormEdit = () => {
                             : ""
                     }
                 </CRow>
+
+                <CRow>
+                    <CCol>
+                        {
+                            formdefinationType!=0 ? <MenuButtons></MenuButtons>:""
+                            
+                        }
+                       
+                    </CCol>
+                </CRow>
+
             </CCardBody>
         </CCard>
 

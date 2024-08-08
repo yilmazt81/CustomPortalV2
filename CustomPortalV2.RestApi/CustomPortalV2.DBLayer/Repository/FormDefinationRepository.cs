@@ -148,6 +148,8 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbField.FontSize = definationField.FontSize;
             dbField.TranslateLanguage = definationField.TranslateLanguage;
             dbField.FontFamily = definationField.FontFamily;
+            dbField.AutoComlateType = definationField.AutoComlateType;
+
             _dbContext.SaveChanges();
 
             return dbField;

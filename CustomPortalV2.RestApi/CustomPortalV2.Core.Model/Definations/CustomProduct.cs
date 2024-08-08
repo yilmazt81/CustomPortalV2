@@ -13,11 +13,11 @@ namespace CustomPortalV2.Core.Model.Definations
         public int CompanyBranchId { get; set; }
         public string CreatedBy { get; set; }
         public int CreatedId { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public  System.DateTime  CreatedDate { get; set; }
         public Nullable<int> EditedId { get; set; }
         public string EditedBy { get; set; }
         public Nullable<System.DateTime> EditedDate { get; set; }
-        public Nullable<int> CustomSectorId { get; set; }
+        public int  CustomSectorId { get; set; }
         public bool Deleted { get; set; }
         public string ProductName { get; set; }
         public string ProductName_TRK { get; set; }

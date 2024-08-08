@@ -34,10 +34,16 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.CompanyDefination.Include(y => y.CompanyDefinationDefinationType).Where(predicate).ToList();
         }
 
+
         public IEnumerable<DefinationType> GetDefinationTypes()
         {
 
             return _dbContext.DefinationType.ToArray();
+        }
+
+        public IQueryable<CompanyDefination> GetIQueryable()
+        {
+            return _dbContext.CompanyDefination.AsQueryable();
         }
 
         public CompanyDefination Update(CompanyDefination companyDefination)

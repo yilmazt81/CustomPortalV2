@@ -113,6 +113,12 @@ export const TRANSLATIONS_EN = {
     ProperyValue3:"Source Field 3",
     AutoComplateFielDefinationTitle:"Field Defination",
     CountryDefination:"Country Defination",
+    DigitalFormSave:"Save (F4)",
+    DigitalFormClear:"Clear (F2)",
+    DigitalFormSaveDefault:"Save Default",
+    AdressModalTitle:"Address Selection",
+
+    
     
     
 

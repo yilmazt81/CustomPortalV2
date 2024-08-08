@@ -112,4 +112,10 @@ export const TRANSLATIONS_RU = {
     AutoComplateFielDefinationTitle:"Определение поля",
     CountryDefination:"Определение страны",
     
+    DigitalFormSave:"Сохранять (F4)",
+    DigitalFormClear:"Прозрачный (F2)",
+    DigitalFormSaveDefault:"Сохранить настройки по умолчанию",
+    DigitalFormSaveDefault:"Save Default",
+    AdressModalTitle:"Выбор адреса",
+    
 };

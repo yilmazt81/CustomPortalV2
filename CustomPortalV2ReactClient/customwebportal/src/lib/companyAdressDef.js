@@ -1,51 +1,46 @@
-import axios from "axios";  
+
+import { GetRequest,Post } from "./Apibase";
  
- 
-export async function  CreateDefinationTypes() {   
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination/GetDefinationTypes`);
+export async function  CreateDefinationTypes() {    
+  const { data } =  await GetRequest (`/api/CompanyDefination/GetDefinationTypes`);
   return data;
 };
  
 
 export async function  NewCompanyDefination() {   
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination/NewDefination`);
+  const { data } =  await GetRequest(`/api/CompanyDefination/NewDefination`);
   return data;
 };
 
-export async function  GetUserCompanyDefinations() {   
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination`);
+export async function  GetUserCompanyDefinations() {    
+  const { data } =  await GetRequest(`/api/CompanyDefination`);
   return data;
 };
  
  export async function SaveDefination(defination){
 
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-   
-  debugger;
-  const { data } =  await axios.post(process.env.REACT_APP_APIURL+(defination.id==0?"/api/CompanyDefination":"/api/CompanyDefination/UpdateAdress"),defination);
+
+  const { data } =  await Post((defination.id==0?"/api/CompanyDefination":"/api/CompanyDefination/UpdateAdress"),defination);
   return data;
  }
 
- export async function  GetCompanyDefination(id) {   
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['content-type']='application/json';
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination/${id}`);
+ export async function  GetCompanyDefination(id) {    
+  const { data } =  await  GetRequest(`/api/CompanyDefination/${id}`);
   return data;
 };
 
 export async function DeleteCompanyDefination(id){
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+`/api/CompanyDefination/DeleteCompanyDefination/${id}`);
+  
+  const { data } =  await GetRequest(`/api/CompanyDefination/DeleteCompanyDefination/${id}`);
   return data;
 
 }
+export async function FilterCompanyDefination(filterData){
+  
+  const { data } =  await Post(`/api/CompanyDefination/FilterCompanyDefination`,filterData);
+  return data;
+
+}
+
+
+

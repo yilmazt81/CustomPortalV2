@@ -1,4 +1,4 @@
-import React, { } from 'react'
+import React, { useState } from 'react'
 
 import {
     CCol,
@@ -13,21 +13,68 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import 'dayjs/locale/tr';
+import BrowserAdressModal from './ModalForm/AdresModal';
+import BrowserProductModal from './ModalForm/productModal';
 
-export default function CreateGroupField({ fieldList }) {
+import { cilMap,cilBarcode } from '@coreui/icons';
 
-    function CreateAutoComplateText( textField ) {
-        
+import CIcon from '@coreui/icons-react';
+
+
+
+const CreateGroupField = ({ fieldList }) => {
+    const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
+    const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
+    const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
+
+    function openModal(modalType, definationTypeid) {
+
+        setautocomplatemodalform(false);
+        setautoComplateModalFormProduct(false);
+        setformdefinationtypeid(definationTypeid);
+        if (modalType == 'CompanyDefination') {
+            setautocomplatemodalform(true);
+        } else if (modalType == "ProductDefination") {
+            setautoComplateModalFormProduct(true);
+        } else {
+
+        }
+    }
+
+    function GetIcon(modalType) {
+        if (modalType == 'CompanyDefination') {
+            {
+                return (
+                    <CIcon icon={cilMap}></CIcon>
+                )
+            }
+        } else if (modalType == "ProductDefination") {
+            return (
+                <CIcon icon={cilBarcode}></CIcon>
+            )
+
+        } else {
+            return (
+                <></>
+            )
+        }
+    }
+
+    function CreateAutoComplateText(textField) {
+
+
         return (
             <>
-       
+
                 <CCol sm={6} ><CFormInput key={textField.id} type="text" id={`txt=${textField.tagName}`} /></CCol>
-                <CCol sm={3}><CButton color="primary">...</CButton> </CCol>
+                <CCol sm={3}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
+                    {GetIcon(textField.autoComlateType)}
+                </CButton> </CCol>
             </>
         )
     }
-    function CreateText(textField ) {
-       
+    function CreateText(textField) {
+
         return (
             <CCol sm={9} ><CFormInput key={textField.id} type="text" id={`txt=${textField.tagName}`} /></CCol>
         )
@@ -102,11 +149,24 @@ export default function CreateGroupField({ fieldList }) {
                     return (
                         <CFormInput key={item.id} type="Hidden" id={`hdn=${item.tagName}`} />
                     )
+                } else {
+                    return (
+                        <></>
+                    )
                 }
             })}
 
+            <BrowserAdressModal visiblep={autocomplatemodalform}
+                setFormData={() => setautocomplatemodalform(false)} formDefinationTypeIdp={formdefinationtypeid} ></BrowserAdressModal>
+
+            <BrowserProductModal visiblep={autoComplateModalFormProduct}
+                setFormData={() => setautoComplateModalFormProduct(false)}
+            >
+            </BrowserProductModal>
         </>
 
 
     );
 }
+
+export default CreateGroupField;

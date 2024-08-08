@@ -1,10 +1,12 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Business.Helper;
 using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,12 +18,16 @@ namespace CustomPortalV2.Business.Service
     public class CompanyDefinationService : ICompanyDefinationService
     {
 
-        ICompanyAdresDefinationRepository _companyDefinationRepository = null;
-        IBranchRepository _branchRepository = null;
-        public CompanyDefinationService(ICompanyAdresDefinationRepository companyDefination, IBranchRepository branchRepository)
+        ICompanyAdresDefinationRepository _companyDefinationRepository ;
+        IBranchRepository _branchRepository;
+        IFormDefinationRepository _formdefinationRepository;
+        public CompanyDefinationService(ICompanyAdresDefinationRepository companyDefination, 
+            IBranchRepository branchRepository,
+            IFormDefinationRepository formDefinationRepository)
         {
             _companyDefinationRepository = companyDefination;
             _branchRepository = branchRepository;
+            _formdefinationRepository = formDefinationRepository;
         }
 
         public DefaultReturn<bool> DeleteCompany(int mainCompanyId, int id)
@@ -47,6 +53,95 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
 
+        }
+
+        public DefaultReturn<List<CompanyDefination>> Filter(CompanyDefinationFilterDTO companyDefinationFilterDTO, int branchId)
+        {
+            DefaultReturn<List<CompanyDefination>> defaultReturn = new DefaultReturn<List<CompanyDefination>>();
+
+            try
+            {
+                var branch = _branchRepository.Get(s => s.Id == branchId);
+                var query = _companyDefinationRepository.GetIQueryable();
+                var autoComplateField = _formdefinationRepository.GetAutoComplateField(companyDefinationFilterDTO.FormDefinationFieldId);
+
+                query = query.Where(s => s.MainCompanyId == branch.MainCompanyId && !s.Deleted);
+                if (!branch.CompanyAdmin)
+                {
+                    query = query.Where(s => s.CompanyBranchId == branch.Id);
+                }
+                if (!string.IsNullOrEmpty(companyDefinationFilterDTO.FilterValue))
+                {
+                    var filterValue=companyDefinationFilterDTO.FilterValue.ToUpperTrk();
+                    query = query.Where(s => s.FieldForSearch.Contains(filterValue));
+                }
+
+                if (autoComplateField != null)
+                {
+                    var formdefinationTypeid = int.Parse(autoComplateField.FilterValue);
+                    query = query.Where(s => s.CompanyDefinationDefinationType.Any(k => k.DefinationTypeId == formdefinationTypeid));
+                }
+                
+                var companyDefinationList = query.ToList();
+                defaultReturn.Data=companyDefinationList;
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+            return defaultReturn;
+        }
+        private object GetPropValue(object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src, null);
+        }
+
+        public DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int formdefinationTypeId, int addressId)
+        {
+            DefaultReturn<List<ControlAutoFieldDTO>> defaultReturn = new DefaultReturn<List<ControlAutoFieldDTO>>();
+            try
+            {
+                var formdefination=_formdefinationRepository.GetFormDefinationField(formdefinationTypeId);
+
+                var autoComplateFieldMaps = _formdefinationRepository.GetAutoComplateFieldMaps(formdefinationTypeId);
+                var defination = _companyDefinationRepository.GetCompanyDefinations(s => s.Id == addressId).FirstOrDefault();
+                defaultReturn.Data = new List<ControlAutoFieldDTO>();
+                foreach (var autocomplete in autoComplateFieldMaps)
+                {
+                    var formDefinationField = _formdefinationRepository.GetDefinationField(defination.Id, autocomplete.TagName);
+                    if (formDefinationField == null)
+                        continue;
+                    var fieldValue = GetPropValue(defination, autocomplete.PropertyValue1);
+                    if (!defaultReturn.Data.Any(s => s.FieldName == autocomplete.TagName))
+                    {
+                        string secondField = string.Empty;
+                        if (!string.IsNullOrEmpty(autocomplete.PropertyValue2))
+                        {
+                            var secondValue = GetPropValue(defination, autocomplete.PropertyValue3);
+                            fieldValue += " " + (secondValue == null ? string.Empty : " " + secondValue.ToString());
+                        }
+                        if (!string.IsNullOrEmpty(autocomplete.PropertyValue3))
+                        {
+                            var secondValue = GetPropValue(defination, autocomplete.PropertyValue3);
+                            fieldValue += " " + (secondValue == null ? string.Empty : " " + secondValue.ToString());
+                        }
+
+                        defaultReturn.Data.Add(new ControlAutoFieldDTO()
+                        {
+                            ControlName = formDefinationField.GetControlName(),
+                            FieldName= formDefinationField.TagName,
+                            ControlValue = fieldValue != null ? fieldValue.ToString() : string.Empty
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
         }
 
         public DefaultReturn<CompanyDefination> GetCompanyDefination(int companyId, int brachId, int id)
@@ -154,7 +249,7 @@ namespace CustomPortalV2.Business.Service
             }
 
             if (companyDefination.Id == 0)
-            { 
+            {
                 defaultReturn.Data = _companyDefinationRepository.Add(companyDefination);
 
             }

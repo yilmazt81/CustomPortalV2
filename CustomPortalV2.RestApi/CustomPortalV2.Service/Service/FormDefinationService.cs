@@ -368,6 +368,8 @@ namespace CustomPortalV2.Business.Service
             {
                 var mainFieldType = GetFormDefinationField(saveAutoComplate.Complate.FormDefinationFieldId);
                 saveAutoComplate.Complate.FieldName = mainFieldType.Data.TagName;
+                mainFieldType.Data.AutoComlateType = saveAutoComplate.Complate.ComplateObject;
+                _formDefinationService.UpdateDefinationField(mainFieldType.Data);
                 if (saveAutoComplate.Complate.Id == 0)
                 {
                     _formDefinationService.Add(saveAutoComplate.Complate);
@@ -427,6 +429,8 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+    
 
         public DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup)
         {
