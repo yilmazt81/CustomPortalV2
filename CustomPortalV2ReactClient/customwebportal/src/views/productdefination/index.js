@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   CAvatar,
@@ -17,6 +17,7 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CAlert
 } from '@coreui/react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
@@ -44,23 +45,71 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 
-  
-import { useDispatch, useSelector } from 'react-redux'; 
+ 
 import { useNavigate } from "react-router-dom";
+import { DataGrid } from '@mui/x-data-grid'
 
+import { useTranslation } from "react-i18next";
+
+import GridColumns from './GridColumns';
 
 
 const ProductDefination = () => {
-    const navigate = useNavigate();
-    //Bu sekilde redux tan okunacak
-    const userToken= useSelector(state=> state.userToken);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [productList,setProductList] = useState([]);
+  const [saveError,setsaveError]=useState(null);
   
+  const optionClick = (option, id) => {
+    //    EditGroupDefination(option === 'Delete', id);
+}
 
-    return (
-        <> 
+  const gridColumns=GridColumns(optionClick);
+
+  return (
+
+    <> <CCard className="mb-4">
+      <CCardBody>
+        <CRow>
+          <CCol>
+            <CButtonGroup role="group">
+
            
-        </>
-      )
+                <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton>
+
+            </CButtonGroup>
+          </CCol>
+        </CRow>
+     
+        <CRow>
+
+          <CCol>
+
+            <DataGrid rows={productList}
+              columns={gridColumns}
+              slotProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                },
+              }}
+            // onRowClick={handleSelectFormGroupClick}
+            // onRowSelectionModelChange={(e) => GridGroupRowChange(e)}
+            />
+
+          </CCol>
+        </CRow>
+        <CRow>
+          {
+            saveError != null ?
+              <CAlert color="warning">{saveError}</CAlert>
+              : ""
+          }
+        </CRow>
+      </CCardBody>
+    </CCard>
+
+    </>
+  )
 }
 
 export default ProductDefination;
