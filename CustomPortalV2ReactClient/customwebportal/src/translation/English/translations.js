@@ -116,9 +116,24 @@ export const TRANSLATIONS_EN = {
     DigitalFormSave:"Save (F4)",
     DigitalFormClear:"Clear (F2)",
     DigitalFormSaveDefault:"Save Default",
-    AdressModalTitle:"Address Selection",
-
-    
+    AdressModalTitle:"Address Selection",    
+    AdressModalTitle: "Address Selection",
+    ProductModalTitle: "Product information",
+    TransferCondationRoom: "Room temperature",
+    TransferCondationCold: "chilled",
+    TransferCondationFreeze: "Frozen",
+    TransferTemperature:"Transport Temperature",
+    IntendedUse:"usage",
+    IntendedUse1:"For Human Consumption",
+    IntendedUse2:"Canning Industry",
+    IntendedUse3:"additional processing",
+    IntendedUse4:"Live Aquatic Animal",
+    ProductName:"Product Name",
+    ProductName_TRK:"Product Name Turkish",
+    ProductCulture:"Product Culture",
+    GtipCode:"Gtip Code",
+    ScientificName:"Scientific Name",
+    Transfercondition:"Transport condition",
     
     
 
