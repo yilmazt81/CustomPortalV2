@@ -272,7 +272,7 @@ const FormdefinationsAutoComlate = () => {
 
 
                 <CRow>
-                    <CCol style={{ height: 350, width: '100%' }}>
+                    <CCol>
 
                         <CCard className="mb-4">
                             <CCardHeader>{t("DefinationFieldList")}</CCardHeader>

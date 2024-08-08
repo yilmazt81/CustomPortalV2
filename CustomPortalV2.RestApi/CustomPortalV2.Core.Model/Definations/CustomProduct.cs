@@ -27,5 +27,8 @@ namespace CustomPortalV2.Core.Model.Definations
         public string Transfercondition { get; set; }
         public string GtipCode { get; set; }
         public string ProductCulture { get; set; }
+
+        public string ScientificName { get; set; }
+
     }
 }

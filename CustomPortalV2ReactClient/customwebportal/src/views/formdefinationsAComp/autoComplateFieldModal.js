@@ -192,7 +192,7 @@ const AutoComplateFieldModal = ({ visiblep,
                     </CRow>
 
                     <CRow className="mb-12">
-                        <CFormLabel htmlFor="cmbPropertyName2" className="col-sm-4 col-form-label">{t("ProperyValue2")}</CFormLabel>
+                        <CFormLabel htmlFor="cmbPropertyName2" className="col-sm-4 col-form-label">{t("PropertyValue2")}</CFormLabel>
                         <CCol sm={8}>
                             <CFormSelect type="text"   name="propertyValue2"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.propertyValue2}    >
@@ -207,7 +207,7 @@ const AutoComplateFieldModal = ({ visiblep,
                     </CRow>
 
                     <CRow className="mb-12">
-                        <CFormLabel htmlFor="cmbPropertyName3" className="col-sm-4 col-form-label">{t("propertyValue3")}</CFormLabel>
+                        <CFormLabel htmlFor="cmbPropertyName3" className="col-sm-4 col-form-label">{t("PropertyValue3")}</CFormLabel>
                         <CCol sm={8}>
                             <CFormSelect type="text"   name="propertyValue3"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.propertyValue3}    >

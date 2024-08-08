@@ -66,8 +66,9 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFormMetaDataService, FormMetaDataService>();
             services.AddScoped<ICompanyDefinationService, CompanyDefinationService>();
             services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
+            services.AddScoped<ICustomProductService, CustomProductService>();
 
-
+            
 
 
             services.AddScoped<ICompanyDefinationRepository, CompanyRepository>();
@@ -82,9 +83,10 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFormDefinationRepository, FormDefinationRepository>();
             services.AddScoped<ICompanyAdresDefinationRepository, CompanyDefinationRepository>();
             services.AddScoped<IFormMetaDataRepository, FormMetaDataRepository>();
+            services.AddScoped<ICustomProductRepository, CustomProductRepository>(); 
 
 
-            
+
 
             services.AddMemoryCache();
 

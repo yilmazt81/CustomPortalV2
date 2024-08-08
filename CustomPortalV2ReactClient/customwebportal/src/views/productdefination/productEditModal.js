@@ -28,6 +28,8 @@ import ProcessAnimation from "../../content/animation/Process.json";
 
 import { useTranslation } from "react-i18next";
 
+import {GetCompanyProducts,Save} from 'src/lib/customProductapi';
+
 
 const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, setClose }) => {
 
@@ -68,16 +70,16 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
             try {
                 setSaveError(null);
-                /* debugger;
+                  debugger;
                  setsaveStart(true);
-                 var savedefinationResult = await SaveFormDefination(formdefination);
+                 var savedefinationResult = await Save(customProduct);
  
                  if (savedefinationResult.returnCode === 1) {
                      setFormData(savedefinationResult.data);
-                     setvisible(false);
+                     setClose();
                  } else {
                      setSaveError(savedefinationResult.returnMessage);
-                 }*/
+                 }
 
 
             } catch (error) {
@@ -167,9 +169,9 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
                         <CFormLabel htmlFor="txtTransfercondition" className="col-sm-3 col-form-label">{t("Transfercondition")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="1" label={t("TransferCondationRoom")} />
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="2" label={t("TransferCondationCold")} />
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="2" label={t("TransferCondationFreeze")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" value="OdaSicakligi" label={t("TransferCondationRoom")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" value="Sogutulmus" label={t("TransferCondationCold")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" value="Dondurulmus" label={t("TransferCondationFreeze")} />
                         </CCol>
 
                     </CRow>
@@ -187,14 +189,12 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
                     </CRow>
                     <CRow>
 
-                        <CCol>
+                        <CCol> 
 
-
-
-                            <CFormCheck inline id="chkTransferCon1" value="1" label={t("IntendedUse1")} />
-                            <CFormCheck inline id="chkTransferCon2" value="2" label={t("IntendedUse2")} />
-                            <CFormCheck inline id="chkTransferCon3" value="2" label={t("IntendedUse3")} />
-                            <CFormCheck inline id="chkTransferCon4" value="2" label={t("IntendedUse4")} />
+                            <CFormCheck inline id="chkTransferCon1" value="InsaniTuketim" label={t("IntendedUse1")} />
+                            <CFormCheck inline id="chkTransferCon2" value="Konserve" label={t("IntendedUse2")} />
+                            <CFormCheck inline id="chkTransferCon3" value="IlaveIslem" label={t("IntendedUse3")} />
+                            <CFormCheck inline id="chkTransferCon4" value="CanliSuHayvan" label={t("IntendedUse4")} />
 
                         </CCol>
                     </CRow>

@@ -18,17 +18,17 @@ const Gridcolumns = (OptionClick) => {
     },
     {
       field: 'propertyValue1',
-      headerName: i18.t('ProperyValue'),
+      headerName: i18.t('PropertyValue1'),
       width: 150, 
     },
     {
       field: 'propertyValue2',
-      headerName: i18.t('ProperyValue2'),
+      headerName: i18.t('PropertyValue2'),
       width: 150, 
     },
     {
-      field: i18.t('propertyValue3'),
-      headerName: i18.t('ProperyValue3'),
+      field:  'propertyValue3' ,
+      headerName: i18.t('PropertyValue3'),
       width: 150, 
 
     },

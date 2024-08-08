@@ -1,49 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
 import {
-  CAvatar,
   CButton,
   CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
-  CCardHeader,
   CCol,
-  CProgress,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
   CAlert
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from '@coreui/icons'
 
  
 import { useNavigate } from "react-router-dom";
@@ -54,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import GridColumns from './GridColumns';
 import ProductEditModal from './productEditModal'
 import {GetSector} from 'src/lib/formdef';
+import {CreateProduct,GetCompanyProducts} from 'src/lib/customProductapi';
 
 const ProductDefination = () => {
   const navigate = useNavigate();
@@ -69,6 +35,7 @@ const ProductDefination = () => {
 }
 
 function CreateNewProduct(){
+  newProduct();
   SetVisibleEdit(true);
 }
 
@@ -77,7 +44,7 @@ async function LoadCustomSectors() {
   try {
       var fSectorService = await GetSector();
       if (fSectorService.returnCode === 1) {
-          setCustomSectors(fSectorService.data);
+        setCustomSectors(fSectorService.data);
       } else {
         setsaveError(fSectorService.returnMessage);
       }
@@ -85,15 +52,37 @@ async function LoadCustomSectors() {
     setsaveError(error.message);
   }
 }
+async function newProduct() {
 
+  try {
+      var fcreateReturn = await CreateProduct();
+      if (fcreateReturn.returnCode === 1) {
+        setProductList(fcreateReturn.data);
+      } else {
+        setsaveError(fcreateReturn.returnMessage);
+      }
+  } catch (error) {
+    setsaveError(error.message);
+  }
+}
+async function getProductList() {
 
-
+  try {
+      var fcreateReturn = await GetCompanyProducts();
+      if (fcreateReturn.returnCode === 1) {
+        setProductList(fcreateReturn.data);
+      } else {
+        setsaveError(fcreateReturn.returnMessage);
+      }
+  } catch (error) {
+    setsaveError(error.message);
+  }
+}
 useEffect(() => {
-
  
-
   LoadCustomSectors();
- 
+  getProductList();
+
 
 }, []);
 
@@ -124,9 +113,7 @@ useEffect(() => {
                 toolbar: {
                   showQuickFilter: true,
                 },
-              }}
-            // onRowClick={handleSelectFormGroupClick}
-            // onRowSelectionModelChange={(e) => GridGroupRowChange(e)}
+              }} 
             />
 
           </CCol>
@@ -142,7 +129,7 @@ useEffect(() => {
     </CCard>
 
           <ProductEditModal visiblep={visibleEdit} 
-          customSectorList={customSectors} setClose={()=>SetVisibleEdit(false)}></ProductEditModal>
+          customSectorList={customSectors} setClose={()=>SetVisibleEdit(false)} setFormData={()=>getProductList()}></ProductEditModal>
     </>
   )
 }
