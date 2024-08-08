@@ -10,9 +10,7 @@ import {
   CRow, 
 
 } from '@coreui/react'
-
-import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+ 
 import { GetUserList, GetUser,CreateNewUser,DeleteUser } from '../../lib/userapi';
 
 import {
@@ -39,8 +37,7 @@ import { useTranslation } from "react-i18next";
 import  EditModal  from './editmodal';
 import  DeleteModal from 'src/components/DeleteModal'
 
-const UserDefination = () => {
-  const navigate = useNavigate();
+const UserDefination = () => { 
   const { t } = useTranslation();
 
   //Bu sekilde redux tan okunacak 

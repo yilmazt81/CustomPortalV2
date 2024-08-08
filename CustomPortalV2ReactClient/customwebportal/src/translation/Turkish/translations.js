@@ -135,16 +135,10 @@ export const TRANSLATIONS_TR = {
     GtipCode:"Gtip kodu",
     ScientificName:"Bilimsel Adı",
     Transfercondition:"Taşıma koşulu",
-    
-    
-    
-    
-    
+    ModalDeleteProductTitle:"Ürün Silme",
+    ProductDeleteMessage:"Ürünü Silmek istediğinizden emin misiniz ?",
 
 
-
-
-
-
+     
 
 };

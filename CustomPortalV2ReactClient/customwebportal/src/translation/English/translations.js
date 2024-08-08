@@ -134,6 +134,8 @@ export const TRANSLATIONS_EN = {
     GtipCode:"Gtip Code",
     ScientificName:"Scientific Name",
     Transfercondition:"Transport condition",
+    ModalDeleteProductTitle:"Product Delete",
+    ProductDeleteMessage:"Are you sure you want to Delete the Product ?",
     
     
 

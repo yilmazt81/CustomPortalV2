@@ -38,7 +38,7 @@ namespace CustomPortalV2.RestApi.Controllers
                 AbsoluteExpiration = DateTime.Now.AddMinutes(30),
                 Priority = CacheItemPriority.Normal
             });
-            return Ok();
+            return Ok(branchList);
         }
 
         [HttpGet("{id}")]
@@ -87,6 +87,18 @@ namespace CustomPortalV2.RestApi.Controllers
             var defaultReturn = _customProductService.Save(customProduct);
 
             return Ok(defaultReturn);
+        }
+
+        [HttpGet("DeleteProduct/{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            var key = $"CustomProduct{User.GetCompanyId()}_{User.GetBranchId()}";
+            _memoryCache.Remove(key);
+            var productReturn = _customProductService.Delete(User.GetCompanyId(),User.GetUserId() ,id);
+
+
+            return Ok(productReturn);
+
         }
     }
 }

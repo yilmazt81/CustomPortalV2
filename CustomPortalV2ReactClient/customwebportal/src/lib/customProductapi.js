@@ -13,10 +13,24 @@ export async function CreateProduct() {
     return data;
   };
 
+  export async function GetCompanyProduct(id) {
+ 
+    const { data } = await GetRequest(`/api/CustomProduct/${id}`);
+    return data;
+  };
+
   export async function Save(customProduct) {
  
     const { data } = await Post(`/api/CustomProduct`,customProduct);
-    
+
     return data;
 
   };
+
+  
+  export async function DeleteProduct(id) {
+ 
+    const { data } = await GetRequest(`/api/CustomProduct/DeleteProduct/${id}`);
+    return data;
+  };
+ 

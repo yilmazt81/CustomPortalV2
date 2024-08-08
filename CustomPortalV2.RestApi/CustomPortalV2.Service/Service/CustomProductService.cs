@@ -14,12 +14,30 @@ namespace CustomPortalV2.Business.Service
     {
         IBranchRepository _branchRepository;
         ICustomProductRepository _customProductRepository;
+        IFormDefinationRepository _formDefinationRepository;
 
-        public CustomProductService(ICustomProductRepository customProductRepository, IBranchRepository branchRepository)
+        public CustomProductService(ICustomProductRepository customProductRepository,
+            IBranchRepository branchRepository,
+            IFormDefinationRepository formDefinationRepository)
         {
             _customProductRepository = customProductRepository;
             _branchRepository = branchRepository;
+            _formDefinationRepository = formDefinationRepository;
         }
+
+        public DefaultReturn<bool> Delete(int mainCompanyId, int userId, int id)
+        {
+
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            var product = _customProductRepository.Get(id);
+            product.Deleted = true;
+            product.EditedId = userId;
+            product.EditedDate = DateTime.Now;
+            _customProductRepository.Update(product);
+
+            return defaultReturn;
+        }
+
         public DefaultReturn<List<CustomProduct>> GetCompanyProducts(int mainCompanyId, int branchId)
         {
             DefaultReturn<List<CustomProduct>> defaultReturn = new DefaultReturn<List<CustomProduct>>();
@@ -48,6 +66,9 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<CustomProduct> Save(CustomProduct customProduct)
         {
             DefaultReturn<CustomProduct> defaultReturn = new DefaultReturn<CustomProduct>();
+
+            var sector = _formDefinationRepository.GetCompanySector(customProduct.CustomSectorId);
+            customProduct.CustomSectorName = sector.Name;
             if (customProduct.Id == 0)
             {
                 defaultReturn.Data = _customProductRepository.Add(customProduct);

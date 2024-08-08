@@ -37,7 +37,7 @@ const GridColumns = (OptionClick) => {
         {
             field: 'gtipCode',
             headerName: i18.t('GtipCode'),
-            width: 200,
+            width: 100,
         },
 
         {

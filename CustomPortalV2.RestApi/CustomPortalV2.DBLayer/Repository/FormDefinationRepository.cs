@@ -81,7 +81,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return _dbContext.CustomSector.Where(s => s.MainCompanyId == companyId).ToList();
         }
+        public  CustomSector  GetCompanySector(int id)
+        {
 
+            return _dbContext.CustomSector.Single(s => s.Id==id);
+        }
         public IEnumerable<FieldType> GetDefaultFieldTypes()
         {
             return _dbContext.FieldType.ToList();

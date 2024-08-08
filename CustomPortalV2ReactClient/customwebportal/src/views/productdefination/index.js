@@ -19,24 +19,53 @@ import { useTranslation } from "react-i18next";
 import GridColumns from './GridColumns';
 import ProductEditModal from './productEditModal'
 import {GetSector} from 'src/lib/formdef';
-import {CreateProduct,GetCompanyProducts} from 'src/lib/customProductapi';
+import {CreateProduct,GetCompanyProducts,GetCompanyProduct,DeleteProduct} from 'src/lib/customProductapi';
+import DeleteModal from 'src/components/DeleteModal';
 
 const ProductDefination = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [productList,setProductList] = useState([]);
+  const [product,setProduct]=useState(null);
   const [saveError,setsaveError]=useState(null);
-  const [visibleEdit,SetVisibleEdit]=useState(false);
+  const [visibleEdit,setVisibleEdit]=useState(false);
+  const [visibleDelete,setVisibleDelete]=useState(false);
   const [customSectors,setCustomSectors]=useState([]);
   
   
   const optionClick = (option, id) => {
-    //    EditGroupDefination(option === 'Delete', id);
+      EditGroupDefination(option === 'Delete', id);
 }
 
 function CreateNewProduct(){
   newProduct();
-  SetVisibleEdit(true);
+  setVisibleEdit(true);
+}
+
+
+async function EditGroupDefination(forDelete, id) {
+  try {
+      setsaveError(null);
+      setVisibleDelete(false);
+      setVisibleEdit(false);
+      var editCompanyProduct = await GetCompanyProduct(id);
+ 
+      if (editCompanyProduct.returnCode === 1) {
+          setProduct(editCompanyProduct.data);
+          if (forDelete) {
+            setVisibleDelete(true);
+          } else {
+            setVisibleEdit(true);
+          }
+
+      } else {
+        setsaveError(editCompanyProduct.returnMessage);
+      }
+  } catch (error) {
+    setsaveError(error.message);
+  } finally {
+      // setdeleteStart(false);
+  }
 }
 
 async function LoadCustomSectors() {
@@ -57,7 +86,7 @@ async function newProduct() {
   try {
       var fcreateReturn = await CreateProduct();
       if (fcreateReturn.returnCode === 1) {
-        setProductList(fcreateReturn.data);
+        setProduct(fcreateReturn.data);
       } else {
         setsaveError(fcreateReturn.returnMessage);
       }
@@ -69,6 +98,7 @@ async function getProductList() {
 
   try {
       var fcreateReturn = await GetCompanyProducts();
+    
       if (fcreateReturn.returnCode === 1) {
         setProductList(fcreateReturn.data);
       } else {
@@ -78,6 +108,22 @@ async function getProductList() {
     setsaveError(error.message);
   }
 }
+
+async function DeleteProductDB() {
+  try {
+    var fcreateReturn = await DeleteProduct(product.id);
+   
+    if (fcreateReturn.returnCode === 1) {
+      setVisibleDelete(false);
+      getProductList();
+    } else {
+      setsaveError(fcreateReturn.returnMessage);
+    }
+} catch (error) {
+  setsaveError(error.message);
+} 
+}
+
 useEffect(() => {
  
   LoadCustomSectors();
@@ -129,7 +175,23 @@ useEffect(() => {
     </CCard>
 
           <ProductEditModal visiblep={visibleEdit} 
-          customSectorList={customSectors} setClose={()=>SetVisibleEdit(false)} setFormData={()=>getProductList()}></ProductEditModal>
+          customSectorList={customSectors} 
+          setClose={()=>setVisibleEdit(false)}
+          productp={product}
+          setFormData={()=>getProductList()}></ProductEditModal>
+
+          
+          <DeleteModal 
+          setClose={()=>setVisibleDelete(false)}
+          message={product?.productName}
+          title={t("ModalDeleteProductTitle")}
+          visiblep={visibleDelete}
+          message2={t("AutoComplateMapDeleteMessage")}
+          OnClickOk={()=>DeleteProductDB()}
+          >
+
+
+          </DeleteModal>
     </>
   )
 }

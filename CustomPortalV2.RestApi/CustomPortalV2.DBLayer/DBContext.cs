@@ -124,6 +124,12 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<SalePackage>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackage>().Property(k => k.Id).HasColumnName("Id");
 
+            modelBuilder.Entity<CustomProduct>().ToTable("CustomProduct");
+            modelBuilder.Entity<CustomProduct>().HasKey(k => k.Id);
+            modelBuilder.Entity<CustomProduct>().Property(k => k.Id).HasColumnName("Id");
+
+            
+
             modelBuilder.Entity<FormAttachmentExcelMap>().ToTable("FormAttachmentExcelMap");
             modelBuilder.Entity<FormAttachmentExcelMap>().HasKey(k => k.Id);
             modelBuilder.Entity<FormAttachmentExcelMap>().Property(k => k.Id).HasColumnName("Id");

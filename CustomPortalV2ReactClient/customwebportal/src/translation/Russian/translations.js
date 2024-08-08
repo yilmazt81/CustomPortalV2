@@ -134,5 +134,7 @@ export const TRANSLATIONS_RU = {
     ScientificName:"Научное название",
     Transfercondition:"Транспортное состояние",
     
+    ModalDeleteProductTitle:"Удаление продукта",
+    ProductDeleteMessage:"Вы уверены, что хотите удалить продукт ?",
     
 };

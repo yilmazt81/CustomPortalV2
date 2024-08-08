@@ -18,7 +18,6 @@ import {
 
 } from '@coreui/react'
 
-import { SaveFormDefination } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -28,7 +27,7 @@ import ProcessAnimation from "../../content/animation/Process.json";
 
 import { useTranslation } from "react-i18next";
 
-import {GetCompanyProducts,Save} from 'src/lib/customProductapi';
+import { Save } from 'src/lib/customProductapi';
 
 
 const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, setClose }) => {
@@ -70,16 +69,16 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
             try {
                 setSaveError(null);
-                  debugger;
-                 setsaveStart(true);
-                 var savedefinationResult = await Save(customProduct);
- 
-                 if (savedefinationResult.returnCode === 1) {
-                     setFormData(savedefinationResult.data);
-                     setClose();
-                 } else {
-                     setSaveError(savedefinationResult.returnMessage);
-                 }
+
+                setsaveStart(true);
+                var savedefinationResult = await Save(customProduct);
+
+                if (savedefinationResult.returnCode === 1) {
+                    setFormData(savedefinationResult.data);
+                    setClose();
+                } else {
+                    setSaveError(savedefinationResult.returnMessage);
+                }
 
 
             } catch (error) {
@@ -131,7 +130,7 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
                         <CFormLabel htmlFor="txtProductName" className="col-sm-3 col-form-label">{t("ProductName")}</CFormLabel>
                         <CCol sm={9}>
                             <CFormInput type="text" id='txtProductName' name="productName"
-                                onChange={e => handleChange(e)} value={customProduct?.ProductName} />
+                                onChange={e => handleChange(e)} value={customProduct?.productName} />
                         </CCol>
                     </CRow>
 
@@ -189,7 +188,7 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
                     </CRow>
                     <CRow>
 
-                        <CCol> 
+                        <CCol>
 
                             <CFormCheck inline id="chkTransferCon1" value="InsaniTuketim" label={t("IntendedUse1")} />
                             <CFormCheck inline id="chkTransferCon2" value="Konserve" label={t("IntendedUse2")} />
