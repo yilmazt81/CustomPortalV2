@@ -10,9 +10,6 @@ import {
     CModalTitle,
     CModalFooter,
     CModalBody,
-    CFormLabel,
-    CFormInput,
-    CFormSelect,
 
 
 } from '@coreui/react'
@@ -29,12 +26,16 @@ import { useTranslation } from "react-i18next";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-const BrowserProductModal = ({ visiblep, setFormData }) => {
+import { FilterProduct,GetAutoComplateProduct } from 'src/lib/customProductapi';
+
+const BrowserProductModal = ({ visiblep, formDefinationTypeIdp, setFormData, setClose }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [filterAdressList,setFilterAdressList]=useState([]);
-    //const [user, setUser] = useState({ ...userp });
+    const [filterproductList, setfilterproductList] = useState([]);
+    const [filterCompany, setFilterCompany] = useState({ formDefinationFieldId: formDefinationTypeIdp, filterValue: '' });
+
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
     const [saveError, setSaveError] = useState(null);
     // const[branchList,setbranchList] =useState([]);
@@ -50,24 +51,85 @@ const BrowserProductModal = ({ visiblep, setFormData }) => {
     }
     async function ClosedClick() {
         setvisible(false);
-        setFormData();
+        setClose();
+
+    }
+
+
+    async function GetCompanyProductList() {
+
+        try {
+            setsaveStart(true);
+            var filterServiceReturn = await FilterProduct(filterCompany);
+            if (filterServiceReturn.returnCode === 1) {
+                setfilterproductList(filterServiceReturn.data);
+            } else {
+                setSaveError(filterServiceReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+            console.log(error);
+
+        }
+
+
+        setsaveStart(false);
     }
 
     useEffect(() => {
         setvisible(visiblep);
+
         //  setUser(userp);//set if you change value inside
+        setSaveError(null);
+        setRowSelectionModel([]);
+      
+        if (visiblep) {
+            filterCompany.formDefinationFieldId = formDefinationTypeIdp;
+            setFilterCompany(filterCompany);
+            //  setUser(userp);//set if you change value inside
+            GetCompanyProductList();
+        }
 
 
     }, [visiblep])
 
-  
+    const SelectedRowChanged = async (param) => {
+        console.log(param);
+
+        // await GetAdressControlList(param.id);
+
+    }
+
     const optionClick = (option, id) => {
         //    EditGroupDefination(option === 'Delete', id);
     }
-
-
     const gridColumns = Gridcolumns(optionClick);
 
+
+    async function LoadSelectedItemsToForm() {
+        var selecteidlist=rowSelectionModel.join(',');
+        debugger;
+        try {
+            setsaveStart(true);
+
+            var filterServiceReturn = await GetAutoComplateProduct(filterCompany.formDefinationFieldId, selecteidlist);
+
+            if (filterServiceReturn.returnCode === 1) {
+                //setadressDefinationControlList(filterServiceReturn.data);
+                setFormData(filterServiceReturn.data);
+                setClose();
+
+            } else {
+                setSaveError(filterServiceReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+            console.log(error);
+
+        }
+        setsaveStart(false);
+        
+    }
 
     return (
 
@@ -75,7 +137,7 @@ const BrowserProductModal = ({ visiblep, setFormData }) => {
             <CModal
                 backdrop="static"
                 visible={visible}
-                 size="xl"
+                size="xl"
                 onClose={() => ClosedClick()}
 
             >
@@ -84,17 +146,23 @@ const BrowserProductModal = ({ visiblep, setFormData }) => {
                 </CModalHeader>
                 <CModalBody>
 
-                  
+
                     <CRow>
 
                         <CCol>
-                            <DataGrid rows={filterAdressList}
-                                columns={gridColumns}
-                                slotProps={{
-                                    toolbar: {
-                                        showQuickFilter: true,
-                                    },
-                                }} />
+                            <div style={{ height: 300, width: '100%' }}>
+                                <DataGrid rows={filterproductList}
+                                    columns={gridColumns}
+                                    checkboxSelection
+                                    onRowSelectionModelChange={(newRowSelectionModel) => {
+                                        setRowSelectionModel(newRowSelectionModel);
+                                    }}
+                                    rowSelectionModel={rowSelectionModel}
+                                    slotProps={{
+                                        toolbar: {
+                                            showQuickFilter: true,
+                                        },
+                                    }} /></div>
                         </CCol>
                     </CRow>
 
@@ -102,7 +170,7 @@ const BrowserProductModal = ({ visiblep, setFormData }) => {
                         <CCol> </CCol>
                         <CCol>
                             {
-                                saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "80%", height: "80%" }} ></Lottie> : ""
+                                saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "40%", height: "40%" }} ></Lottie> : ""
                             }
                         </CCol>
                         <CCol> </CCol>
@@ -121,7 +189,7 @@ const BrowserProductModal = ({ visiblep, setFormData }) => {
 
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
-                    <CButton color="primary" onClick={()=>setFormData()} >{t("Save")}</CButton>
+                    <CButton color="primary" onClick={() => LoadSelectedItemsToForm()} >{t("Save")}</CButton>
                 </CModalFooter>
             </CModal>
 
@@ -136,5 +204,6 @@ export default BrowserProductModal;
 
 
 BrowserProductModal.propTypes = {
-    visiblep: PropTypes.bool
+    visiblep: PropTypes.bool,
+    formDefinationTypeIdp: PropTypes.number,
 };

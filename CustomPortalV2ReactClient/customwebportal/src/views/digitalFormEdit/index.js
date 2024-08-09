@@ -1,72 +1,28 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
-    CAvatar,
-    CButton,
-    CButtonGroup,
     CCard,
     CCardBody,
-    CCardFooter,
-    CCardHeader,
     CCol,
     CAlert,
-    CProgress,
     CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-    CModal,
-    CModalHeader,
-    CModalTitle,
-    CModalFooter,
-    CModalBody,
     CFormLabel,
-    CFormInput,
     CFormSelect,
-    CCardText,
     CForm
 
 
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import { cilNoteAdd } from '@coreui/icons'
-import Lottie from 'lottie-react';
-
-import ProcessAnimation from "../../content/animation/Process.json";
-
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
 
 
 
 
-import {
-    Box,
-    Button,
-    ListItemIcon,
-    MenuItem,
-    Typography,
-    lighten,
-    IconButton
 
 
-} from '@mui/material';
-import {
-    Edit as EditIcon,
-    Delete as DeleteIcon,
-    Email as EmailIcon,
-    AlignHorizontalCenter,
-} from '@mui/icons-material';
 
 
 import { useTranslation } from "react-i18next";
 
-import { GetSector, GetFormDefinationBySector, GetFormGroup, GetFormGroupFormApp, GetFormGroupFields } from 'src/lib/formdef'
+import { GetSector, GetFormDefinationBySector, GetFormGroupFormApp } from 'src/lib/formdef'
 import { GetFormMetaDataById } from 'src/lib/formMetaDataApi'
 import { useSearchParams } from 'react-router-dom';
 import DynamicForm from './dynamicForm';

@@ -4,11 +4,6 @@ import {
     CCard,
     CCardBody,
     CRow,
-    CCardTitle,
-    CCardText,
-    CFormLabel,
-    CCol,
-    CFormInput,
     CCardHeader
 
 } from '@coreui/react'
@@ -20,10 +15,8 @@ import {
 import PropTypes from 'prop-types';
 
 
-import { GetFormGroupFields } from 'src/lib/formdef'
 import { useSearchParams } from 'react-router-dom'; 
 import CreateGroupField from './CreateGroupField';
-import { Padding } from '@mui/icons-material';
 
 const DynamicForm = ({ formdefinationTypeIdp, formgroups }) => {
 

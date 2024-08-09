@@ -34,3 +34,17 @@ export async function CreateProduct() {
     return data;
   };
  
+
+  export async function FilterProduct(filterReq) {
+ 
+    const { data } = await Post(`/api/CustomProduct/FilterProduct`,filterReq);
+    return data;
+  };
+ 
+  export async function GetAutoComplateProduct(formdefinationid,productidlist) {
+ 
+    const { data } = await GetRequest(`/api/CustomProduct/GetAutoComplateProduct/${formdefinationid}/${productidlist}`);
+    return data;
+  };
+ 
+  

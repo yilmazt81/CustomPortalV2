@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-
+import dayjs from 'dayjs';
 
 const GridColumsDigitalForm = (OptionClick) => {
     return [
@@ -48,6 +48,7 @@ const GridColumsDigitalForm = (OptionClick) => {
             field: 'createdDate',
             headerName: i18.t('CreatedDate'),
             width: 100,
+            valueFormatter: (params) => (params===null ?"" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
         },
         
         {
@@ -60,6 +61,7 @@ const GridColumsDigitalForm = (OptionClick) => {
             field: 'editedDate',
             headerName: i18.t('EditedDate'),
             width: 100,
+            valueFormatter: (params) => (params===null ?"" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
         },
         {
             field: 'actions',

@@ -100,5 +100,25 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(productReturn);
 
         }
+
+        [HttpPost("FilterProduct")]
+        public IActionResult FilterProduct(DefinationFilterDTO definationFilterDTO)
+        {
+            var filterReturn = _customProductService.Filter(definationFilterDTO,User.GetBranchId());
+
+            return Ok(filterReturn);
+
+        }
+
+
+        [HttpGet("GetAutoComplateProduct/{formdefinationId}/{productIdlist}")]
+        public IActionResult GetAutoComplateProduct(int formdefinationId, string productIdlist)
+        {
+            string key = $"CompanyDefination{formdefinationId}_{productIdlist}";
+
+            var autoComplateDefinationFieldlist = _customProductService.GetAutoComplateDefinationValues(formdefinationId, productIdlist);
+            return Ok(autoComplateDefinationFieldlist);
+        }
+
     }
 }

@@ -17,7 +17,7 @@ import {
 
 } from '@coreui/react'
 
-import { GetFormGroupFields,GetFormGroups ,SaveAutoComplateField} from '../../lib/formdef';
+import { GetFormGroupFields, GetFormGroups, SaveAutoComplateField } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -28,17 +28,17 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const AutoComplateFieldModal = ({ visiblep, 
-    fieldListp, 
+const AutoComplateFieldModal = ({ visiblep,
+    fieldListp,
     autoComplateFieldMapp,
-    formdefinationFieldp, 
+    formdefinationFieldp,
     autoComplateFieldp,
     setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [formGroups, setformGroups] = useState([]); 
-    const [formGroupFields,setFormGroupFields]=useState([]);
+    const [formGroups, setformGroups] = useState([]);
+    const [formGroupFields, setFormGroupFields] = useState([]);
 
     const [autoComplateFieldMap, setautoComplateFieldMap] = useState({ ...autoComplateFieldMapp });
 
@@ -53,7 +53,7 @@ const AutoComplateFieldModal = ({ visiblep,
         const { name, value } = event.target;
         setautoComplateFieldMap({ ...autoComplateFieldMap, [name]: value });
         debugger;
-        if (name=='formGroupId'){
+        if (name == 'formGroupId') {
             loadGroupFields(value);
         }
 
@@ -65,21 +65,21 @@ const AutoComplateFieldModal = ({ visiblep,
 
     useEffect(() => {
         setSaveError(null);
-        setvisible(visiblep); 
+        setvisible(visiblep);
         setautoComplateFieldMap(autoComplateFieldMapp);
-     
+
         loadGroup();
         //LoadBranchList();
 
     }, [visiblep, autoComplateFieldMapp])
 
-   
+
     async function loadGroup() {
-        if (formdefinationFieldp==null)
+        if (formdefinationFieldp == null)
             return;
-      
+
         var formGroupReturn = await GetFormGroups(formdefinationFieldp?.formDefinationId);
-       
+
         if (formGroupReturn.returnCode === 1) {
             setformGroups(formGroupReturn.data);
         } else {
@@ -87,12 +87,12 @@ const AutoComplateFieldModal = ({ visiblep,
         }
     }
 
-    async function loadGroupFields(  groupId) {
-        if (formdefinationFieldp==null)
+    async function loadGroupFields(groupId) {
+        if (formdefinationFieldp == null)
             return;
-      
+
         var formGroupReturn = await GetFormGroupFields(groupId);
-       
+
         if (formGroupReturn.returnCode === 1) {
             setFormGroupFields(formGroupReturn.data);
         } else {
@@ -100,16 +100,16 @@ const AutoComplateFieldModal = ({ visiblep,
         }
     }
 
-    
+
 
     async function SaveData() {
 
         try {
 
             try {
-                setSaveError(null); 
+                setSaveError(null);
                 setsaveStart(true);
-                 var savedefinationResult = await SaveAutoComplateField({complate:autoComplateFieldp,map:autoComplateFieldMap});
+                var savedefinationResult = await SaveAutoComplateField({ complate: autoComplateFieldp, map: autoComplateFieldMap });
 
                 if (savedefinationResult.returnCode === 1) {
                     setFormData(savedefinationResult.data);
@@ -117,7 +117,7 @@ const AutoComplateFieldModal = ({ visiblep,
                 } else {
                     setSaveError(savedefinationResult.returnMessage);
                 }
- 
+
             } catch (error) {
                 setSaveError(error.message);
             } finally {
@@ -152,11 +152,11 @@ const AutoComplateFieldModal = ({ visiblep,
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="selectGroupName" className="col-sm-4 col-form-label">{t("GroupName")}</CFormLabel>
                         <CCol sm={8}>
-                            <CFormSelect   id='selectGroupName' name="formGroupId"
+                            <CFormSelect id='selectGroupName' name="formGroupId"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.formGroupId}    >
- 
+                                <option></option>
                                 {formGroups.map(item => {
-                                    return (<option key={item.id} value={item.id}  >{item.name}</option>);
+                                    return (<option key={item.id} value={item.id}  >{item.formNumber} {item.name}</option>);
                                 })}
                             </CFormSelect>
                         </CCol>
@@ -166,8 +166,9 @@ const AutoComplateFieldModal = ({ visiblep,
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbFieldName" className="col-sm-4 col-form-label">{t("TagName")}</CFormLabel>
                         <CCol sm={8}>
-                            <CFormSelect type="text"  name="tagName"
-                                onChange={e => handleChange(e)} value={autoComplateFieldMap?.tagName}    > 
+                            <CFormSelect type="text" name="tagName"
+                                onChange={e => handleChange(e)} value={autoComplateFieldMap?.tagName}    >
+                                <option></option>
                                 {formGroupFields.map(item => {
                                     return (<option key={item.id} value={item.tagName}  >{item.fieldCaption}</option>);
                                 })}
@@ -176,15 +177,15 @@ const AutoComplateFieldModal = ({ visiblep,
                         </CCol>
                     </CRow>
 
-                
+
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbPropertyName1" className="col-sm-4 col-form-label">{t("PropertyValue1")}</CFormLabel>
                         <CCol sm={8}>
-                            <CFormSelect type="text"   name="propertyValue1"
+                            <CFormSelect type="text" name="propertyValue1"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.propertyValue1}    >
- 
+
                                 {fieldListp.map(item => {
-                                     return (<option key={item.name} value={item.name}  >{item.caption}</option>);
+                                    return (<option key={item.name} value={item.name}  >{item.caption}</option>);
                                 })}
                             </CFormSelect>
 
@@ -194,12 +195,12 @@ const AutoComplateFieldModal = ({ visiblep,
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbPropertyName2" className="col-sm-4 col-form-label">{t("PropertyValue2")}</CFormLabel>
                         <CCol sm={8}>
-                            <CFormSelect type="text"   name="propertyValue2"
+                            <CFormSelect type="text" name="propertyValue2"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.propertyValue2}    >
 
                                 <option value=""></option>
                                 {fieldListp.map(item => {
-                                        return (<option key={item.name} value={item.name}  >{item.caption}</option>);
+                                    return (<option key={item.name} value={item.name}  >{item.caption}</option>);
                                 })}
                             </CFormSelect>
 
@@ -209,7 +210,7 @@ const AutoComplateFieldModal = ({ visiblep,
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbPropertyName3" className="col-sm-4 col-form-label">{t("PropertyValue3")}</CFormLabel>
                         <CCol sm={8}>
-                            <CFormSelect type="text"   name="propertyValue3"
+                            <CFormSelect type="text" name="propertyValue3"
                                 onChange={e => handleChange(e)} value={autoComplateFieldMap?.propertyValue3}    >
 
                                 <option value=""></option>
@@ -259,8 +260,8 @@ export default AutoComplateFieldModal;
 
 
 AutoComplateFieldModal.propTypes = {
-    visiblep: PropTypes.bool, 
+    visiblep: PropTypes.bool,
     fieldListp: PropTypes.array,
     autoComplateFieldMapp: PropTypes.object,
-    formdefinationFieldp:PropTypes.object,
+    formdefinationFieldp: PropTypes.object,
 };

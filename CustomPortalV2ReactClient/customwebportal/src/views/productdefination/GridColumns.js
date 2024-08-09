@@ -5,11 +5,12 @@ import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
-
+ 
+import dayjs from 'dayjs';
 
 const GridColumns = (OptionClick) => {
 
+ 
 
     return [
         {
@@ -49,7 +50,8 @@ const GridColumns = (OptionClick) => {
         {
             field: 'createdDate',
             headerName: i18.t('CreatedDate'),
-            width: 100,
+            width: 100, 
+            valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY HH:mm')
         },
 
         {
@@ -62,6 +64,9 @@ const GridColumns = (OptionClick) => {
             field: 'editedDate',
             headerName: i18.t('EditedDate'),
             width: 100,
+             
+            valueFormatter: (params) => (params===null ?"" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
+
         },
         {
             field: 'actions',

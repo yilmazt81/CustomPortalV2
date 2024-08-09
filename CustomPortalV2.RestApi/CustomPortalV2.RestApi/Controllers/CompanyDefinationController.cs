@@ -166,7 +166,7 @@ namespace CustomPortalV2.RestApi.Controllers
         }
 
         [HttpPost("FilterCompanyDefination")]
-        public IActionResult FilterCompanyDefination(CompanyDefinationFilterDTO companyDefinationFilter)
+        public IActionResult FilterCompanyDefination(DefinationFilterDTO companyDefinationFilter)
         {
            var filterReturn= _companyDefinationService.Filter(companyDefinationFilter,User.GetBranchId());
 

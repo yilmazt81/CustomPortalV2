@@ -33,6 +33,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.CustomProduct.Where(predicate);
         }
 
+        public IQueryable<CustomProduct> GetIQueryable()
+        {
+            return _dbContext.CustomProduct.AsQueryable();
+        }
+
         public CustomProduct Update(CustomProduct customProduct)
         {
             var dbProduct = _dbContext.CustomProduct.Single(s => s.Id == customProduct.Id);

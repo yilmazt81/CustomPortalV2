@@ -55,7 +55,7 @@ namespace CustomPortalV2.Business.Service
 
         }
 
-        public DefaultReturn<List<CompanyDefination>> Filter(CompanyDefinationFilterDTO companyDefinationFilterDTO, int branchId)
+        public DefaultReturn<List<CompanyDefination>> Filter(DefinationFilterDTO companyDefinationFilterDTO, int branchId)
         {
             DefaultReturn<List<CompanyDefination>> defaultReturn = new DefaultReturn<List<CompanyDefination>>();
 

@@ -13,11 +13,11 @@ import {
     CFormLabel,
     CFormInput,
     CFormSelect,
-
+    CFormSwitch,
 
 } from '@coreui/react'
 
-import { SaveFormDefination } from '../../lib/formdef'; 
+import { SaveFormDefination } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -28,14 +28,14 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const EditModal = ({ visiblep, formdefinationp,customSectorList, setFormData }) => {
+const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
     const [formdefination, setFormdefination] = useState({ ...formdefinationp });
 
     const [saveError, setSaveError] = useState(null);
-    const[sectorList,setSectorList] =useState([]);
+    const [sectorList, setSectorList] = useState([]);
 
     const [saveStart, setsaveStart] = useState(false);
 
@@ -46,53 +46,64 @@ const EditModal = ({ visiblep, formdefinationp,customSectorList, setFormData }) 
         setFormdefination({ ...formdefination, [name]: value });
 
     }
-    async function ClosedClick(){
+    async function ClosedClick() {
         setvisible(false);
     }
-  
+
 
     useEffect(() => {
         setSaveError(null);
         setvisible(visiblep);
         setFormdefination(formdefinationp);
         setSectorList(customSectorList);
-       //LoadBranchList();
+        //LoadBranchList();
 
-    }, [visiblep, formdefinationp,customSectorList])
+    }, [visiblep, formdefinationp, customSectorList])
 
     async function SaveData() {
 
         try {
-            
-            try { 
+
+            try {
                 setSaveError(null);
-                  debugger;
-                setsaveStart(true); 
+                debugger;
+                setsaveStart(true);
                 var savedefinationResult = await SaveFormDefination(formdefination);
-               
-                if (savedefinationResult.returnCode === 1) {  
+
+                if (savedefinationResult.returnCode === 1) {
                     setFormData(savedefinationResult.data);
                     setvisible(false);
                 } else {
-                  setSaveError(savedefinationResult.returnMessage);
+                    setSaveError(savedefinationResult.returnMessage);
                 }
-                 
-              
+
+
             } catch (error) {
                 setSaveError(error.message);
-            }finally{
-                
+            } finally {
+
                 setsaveStart(false);
-            }       
-          
+            }
+
         } catch (error) {
             setSaveError(error.message);
-        }finally{
-            
+        } finally {
+
             setsaveStart(false);
         }
 
     }
+
+    function handleChangeSwich(event) {
+        const { name, value } = event.target;
+
+        var newValue = formdefination[name];
+        newValue = !newValue;
+
+        setFormdefination({ ...formdefination, [name]: newValue });
+
+    }
+
     return (
 
         <>
@@ -115,7 +126,7 @@ const EditModal = ({ visiblep, formdefinationp,customSectorList, setFormData }) 
                         </CCol>
                     </CRow>
 
-               
+
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="cmbCustomSector" className="col-sm-3 col-form-label">{t("CustomSectorName")}</CFormLabel>
                         <CCol sm={9}>
@@ -134,11 +145,29 @@ const EditModal = ({ visiblep, formdefinationp,customSectorList, setFormData }) 
                     <CRow className="mb-12">
                         <CFormLabel htmlFor="frmTemplatePath" className="col-sm-3 col-form-label">{t("TemplatePath")}</CFormLabel>
                         <CCol sm={9}>
-                                    <CFormInput type="file" id="frmTemplatePath"/>
+                            <CFormInput type="file" id="frmTemplatePath" />
 
                         </CCol>
                     </CRow>
-                  
+
+                    <CRow>
+
+                        <CCol sm={6}>
+                            <CFormSwitch label={t("UseTemplate")} name='desingTemplate' size='lg'
+                                onChange={e => handleChangeSwich(e)}
+                                checked={formdefination?.desingTemplate} ></CFormSwitch>
+
+                        </CCol>
+
+                        <CCol sm={6}>
+                            <CFormSwitch label={t("Deployed")} name='deployed' size='lg'
+                                onChange={e => handleChangeSwich(e)}
+                                checked={formdefination?.deployed} ></CFormSwitch>
+
+                        </CCol>
+
+                    </CRow>
+
 
                     <CRow xs={{ cols: 4 }}>
                         <CCol> </CCol>
@@ -162,7 +191,7 @@ const EditModal = ({ visiblep, formdefinationp,customSectorList, setFormData }) 
                 </CModalBody>
 
                 <CModalFooter>
-                    <CButton color="secondary" onClick={() =>ClosedClick()}  >{t("Close")}</CButton>
+                    <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
                     <CButton color="primary" onClick={() => SaveData()}>{t("Save")}</CButton>
                 </CModalFooter>
             </CModal>

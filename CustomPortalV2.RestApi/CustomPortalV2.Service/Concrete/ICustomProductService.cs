@@ -17,5 +17,9 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<bool> Delete(int mainCompanyId,int userId, int id);
 
 
+        DefaultReturn<List<CustomProduct>> Filter(DefinationFilterDTO companyDefinationFilterDTO, int branchId);
+        DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int formdefinationId, string productIdlist);
+
+         
     }
 }

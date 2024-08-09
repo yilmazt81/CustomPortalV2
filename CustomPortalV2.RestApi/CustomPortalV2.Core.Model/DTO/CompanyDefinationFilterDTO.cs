@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.DTO
 {
-    public class CompanyDefinationFilterDTO
+    public class DefinationFilterDTO
     {
 
         public string FilterValue { get; set; }

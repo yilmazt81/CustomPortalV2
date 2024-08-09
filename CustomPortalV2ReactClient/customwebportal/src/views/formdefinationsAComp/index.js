@@ -150,9 +150,10 @@ const FormdefinationsAutoComlate = () => {
 
     function handleChange(event) {
         const { name, value } = event.target;
+        debugger;
         setautoComplateField({ ...autoComplateField, [name]: value });
-        if (name == 'selectDefinationType') {
-
+        if (name == 'complateObject') {
+         
             setfilterSelectVisible(value == 'Adress');
 
         } 

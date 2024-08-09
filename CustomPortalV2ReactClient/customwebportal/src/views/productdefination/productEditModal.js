@@ -96,6 +96,8 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
         }
 
     }
+
+  
     return (
 
         <>
@@ -168,9 +170,9 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
                         <CFormLabel htmlFor="txtTransfercondition" className="col-sm-3 col-form-label">{t("Transfercondition")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="OdaSicakligi" label={t("TransferCondationRoom")} />
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="Sogutulmus" label={t("TransferCondationCold")} />
-                            <CFormCheck type="radio" inline id="chkTransferCon" value="Dondurulmus" label={t("TransferCondationFreeze")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" name='transfercondition' value="OdaSicakligi" onChange={(e)=>handleChange(e)} checked={customProduct?.transfercondition==='OdaSicakligi'} label={t("TransferCondationRoom")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" name='transfercondition'  value="Sogutulmus" onChange={(e)=>handleChange(e)}  checked={customProduct?.transfercondition==='Sogutulmus'}  label={t("TransferCondationCold")} />
+                            <CFormCheck type="radio" inline id="chkTransferCon" name='transfercondition'  value="Dondurulmus"  onChange={(e)=>handleChange(e)} checked={customProduct?.transfercondition==='Dondurulmus'} label={t("TransferCondationFreeze")} />
                         </CCol>
 
                     </CRow>
@@ -190,10 +192,10 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
                         <CCol>
 
-                            <CFormCheck inline id="chkTransferCon1" value="InsaniTuketim" label={t("IntendedUse1")} />
-                            <CFormCheck inline id="chkTransferCon2" value="Konserve" label={t("IntendedUse2")} />
-                            <CFormCheck inline id="chkTransferCon3" value="IlaveIslem" label={t("IntendedUse3")} />
-                            <CFormCheck inline id="chkTransferCon4" value="CanliSuHayvan" label={t("IntendedUse4")} />
+                            <CFormCheck inline name='intendedUse' id="chkTransferCon1" type='radio' checked={customProduct?.intendedUse==='InsaniTuketim'}  value="InsaniTuketim"  onChange={(e)=>handleChange(e)} label={t("IntendedUse1")} />
+                            <CFormCheck inline  name='intendedUse' id="chkTransferCon2" type='radio'  checked={customProduct?.intendedUse==='Konserve'} value="Konserve"  onChange={(e)=>handleChange(e)} label={t("IntendedUse2")} />
+                            <CFormCheck inline  name='intendedUse' id="chkTransferCon3" type='radio'  checked={customProduct?.intendedUse==='IlaveIslem'} value="IlaveIslem"  onChange={(e)=>handleChange(e)} label={t("IntendedUse3")} />
+                            <CFormCheck inline  name='intendedUse' id="chkTransferCon4"type='radio'  checked={customProduct?.intendedUse==='CanliSuHayvan'}  value="CanliSuHayvan"  onChange={(e)=>handleChange(e)} label={t("IntendedUse4")} />
 
                         </CCol>
                     </CRow>

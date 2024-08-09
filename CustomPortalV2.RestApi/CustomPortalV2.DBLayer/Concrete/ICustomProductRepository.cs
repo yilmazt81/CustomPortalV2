@@ -17,6 +17,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         CustomProduct Add(CustomProduct customProduct);
         CustomProduct Update(CustomProduct customProduct);
 
+        IQueryable<CustomProduct> GetIQueryable();
+
 
     }
 }

@@ -10,9 +10,6 @@ import {
     CModalTitle,
     CModalFooter,
     CModalBody,
-    CFormLabel,
-    CFormInput,
-    CFormSelect,
 
 
 } from '@coreui/react'
@@ -29,16 +26,16 @@ import { useTranslation } from "react-i18next";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-import {FilterCompanyDefination,GetAutoComplateAdress} from 'src/lib/companyAdressDef';
+import { FilterCompanyDefination, GetAutoComplateAdress } from 'src/lib/companyAdressDef';
 
-const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormData }) => {
+const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [filterAdressList,setFilterAdressList]=useState([]);
-    const [adressDefinationControlList,setadressDefinationControlList]=useState([]);
-    const [filterCompany,setFilterCompany]=useState({formDefinationFieldId:formDefinationTypeIdp,filterValue:''});
-    
+    const [filterAdressList, setFilterAdressList] = useState([]);
+    const [adressDefinationControlList, setadressDefinationControlList] = useState([]);
+    const [filterCompany, setFilterCompany] = useState({ formDefinationFieldId: formDefinationTypeIdp, filterValue: '' });
+
     //const [user, setUser] = useState({ ...userp });
 
     const [saveError, setSaveError] = useState(null);
@@ -48,17 +45,13 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
 
     const { t } = useTranslation();
 
-    function handleChange(event) {
-        const { name, value } = event.target;
-        // setUser({ ...user, [name]: value });
 
-    }
 
-    
+
     async function GetCompanyList() {
 
         try {
-            setsaveStart(true);     
+            setsaveStart(true);
             var filterServiceReturn = await FilterCompanyDefination(filterCompany);
             if (filterServiceReturn.returnCode === 1) {
                 setFilterAdressList(filterServiceReturn.data);
@@ -71,7 +64,7 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
 
         }
 
-        
+
         setsaveStart(false);
     }
     async function ClosedClick() {
@@ -82,17 +75,17 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
     useEffect(() => {
         setvisible(visiblep);
         setSaveError(null);
-        if (visiblep){
-            filterCompany.formDefinationFieldId=formDefinationTypeIdp;
+        if (visiblep) {
+            filterCompany.formDefinationFieldId = formDefinationTypeIdp;
             setFilterCompany(filterCompany);
             //  setUser(userp);//set if you change value inside
             GetCompanyList();
         }
-        
+
 
     }, [visiblep])
 
-  
+
     const optionClick = (option, id) => {
         //    EditGroupDefination(option === 'Delete', id);
     }
@@ -100,14 +93,14 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
     async function GetAdressControlList(id) {
         try {
             setsaveStart(true);
-            
-            var filterServiceReturn = await GetAutoComplateAdress(filterCompany.formDefinationFieldId,id);
-        
+
+            var filterServiceReturn = await GetAutoComplateAdress(filterCompany.formDefinationFieldId, id);
+
             if (filterServiceReturn.returnCode === 1) {
                 setadressDefinationControlList(filterServiceReturn.data);
-                setFormData(filterServiceReturn.data);   
+                setFormData(filterServiceReturn.data);
                 setClose();
-                
+
             } else {
                 setSaveError(filterServiceReturn.returnMessage);
             }
@@ -119,12 +112,12 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
         setsaveStart(false);
 
     }
-    const SelectedRowChanged=async (param)=>{
+    const SelectedRowChanged = async (param) => {
         console.log(param);
 
-       await GetAdressControlList(param.id);
-       
-          
+        await GetAdressControlList(param.id);
+
+
 
     }
 
@@ -137,7 +130,7 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
             <CModal
                 backdrop="static"
                 visible={visible}
-                 size="xl"
+                size="xl"
                 onClose={() => ClosedClick()}
 
             >
@@ -146,19 +139,22 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
                 </CModalHeader>
                 <CModalBody>
 
-                  
+
                     <CRow>
 
                         <CCol>
-                            <DataGrid rows={filterAdressList}
-                                columns={gridColumns}
-                                //onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
-                                onRowClick={(param)=>SelectedRowChanged(param)}
-                                slotProps={{
-                                    toolbar: {
-                                        showQuickFilter: true,
-                                    },
-                                }} />
+
+                            <div style={{ height: 300, width: '100%' }}>
+                                <DataGrid rows={adressDefinationControlList}
+                                    columns={gridColumns}
+                                    //onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
+                                    onRowClick={(param) => SelectedRowChanged(param)}
+                                    slotProps={{
+                                        toolbar: {
+                                            showQuickFilter: true,
+                                        },
+                                    }} />
+                            </div>
                         </CCol>
                     </CRow>
 
@@ -185,7 +181,7 @@ const BrowserAdressModal = ({ visiblep,formDefinationTypeIdp,setClose, setFormDa
 
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
-                    <CButton color="primary" onClick={()=>setFormData()} >{t("Ok")}</CButton>
+                    <CButton color="primary" onClick={() => setFormData()} >{t("Ok")}</CButton>
                 </CModalFooter>
             </CModal>
 
@@ -201,5 +197,5 @@ export default BrowserAdressModal;
 
 BrowserAdressModal.propTypes = {
     visiblep: PropTypes.bool,
-    formDefinationTypeIdp:PropTypes.number,
+    formDefinationTypeIdp: PropTypes.number,
 };

@@ -24,7 +24,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<List<DefinationType>> GetDefinationTypes();
 
-        DefaultReturn<List<CompanyDefination>> Filter(CompanyDefinationFilterDTO companyDefinationFilterDTO, int branchId);
+        DefaultReturn<List<CompanyDefination>> Filter(DefinationFilterDTO companyDefinationFilterDTO, int branchId);
 
         DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int formdefinationTypeId, int addressId);
 

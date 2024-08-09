@@ -195,7 +195,8 @@ namespace CustomPortalV2.RestApi.Controllers
                 Italic = false,
                 FormDefinationId = formDefinationId,
                 FontFamily = "Times New Roman",
-
+                AutoComlateType="",
+               
             };
             return Ok(defaultReturn);
         }

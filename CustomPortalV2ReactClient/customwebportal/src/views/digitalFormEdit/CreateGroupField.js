@@ -16,7 +16,7 @@ import 'dayjs/locale/tr';
 import BrowserAdressModal from './ModalForm/AdresModal';
 import BrowserProductModal from './ModalForm/productModal';
 
-import { cilMap,cilBarcode } from '@coreui/icons';
+import { cilMap, cilBarcode } from '@coreui/icons';
 
 import CIcon from '@coreui/icons-react';
 
@@ -80,20 +80,19 @@ const CreateGroupField = ({ fieldList }) => {
         )
     }
 
-    function LoadControlData(controlDataList){
-        if (controlDataList==null)
+    function LoadControlData(controlDataList) {
+        if (controlDataList == null)
             return;
-        for(var i=0;i<controlDataList.length;i++)
-        {
-            var item=controlDataList[i];
-            
-            const inputElement = document.getElementById(item.controlName); 
-            if (inputElement==null)
+        for (var i = 0; i < controlDataList.length; i++) {
+            var item = controlDataList[i];
+
+            const inputElement = document.getElementById(item.controlName);
+            if (inputElement == null)
                 continue;
-         
-            inputElement.value =item.controlValue;
-        
-        } 
+
+            inputElement.value = item.controlValue;
+
+        }
     }
 
     return (
@@ -142,8 +141,9 @@ const CreateGroupField = ({ fieldList }) => {
                         <CCol sm={9} >
 
                             {item.comboBoxItems.map((combo, t) => {
+                                 
                                 return (
-                                    <CFormCheck inline key={t} id={`chk${item.tagName}_${combo.TagName}`} value={combo.TagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
@@ -156,7 +156,7 @@ const CreateGroupField = ({ fieldList }) => {
 
                             {item.comboBoxItems.map((combo, t) => {
                                 return (
-                                    <CFormCheck inline key={t} type='radio' id={`chk${item.tagName}_${combo.TagName}`} value={combo.TagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
@@ -173,10 +173,14 @@ const CreateGroupField = ({ fieldList }) => {
             })}
 
             <BrowserAdressModal visiblep={autocomplatemodalform}
-                setClose={() => setautocomplatemodalform(false)} setFormData={(e)=>LoadControlData(e) } formDefinationTypeIdp={formdefinationtypeid} ></BrowserAdressModal>
+                setClose={() => setautocomplatemodalform(false)}
+                setFormData={(e) => LoadControlData(e)}
+                formDefinationTypeIdp={formdefinationtypeid} ></BrowserAdressModal>
 
             <BrowserProductModal visiblep={autoComplateModalFormProduct}
-                setFormData={() => setautoComplateModalFormProduct(false)}
+                setFormData={(e) => LoadControlData(e)}
+                formDefinationTypeIdp={formdefinationtypeid}
+                setClose={() => setautoComplateModalFormProduct(false)}
             >
             </BrowserProductModal>
         </>

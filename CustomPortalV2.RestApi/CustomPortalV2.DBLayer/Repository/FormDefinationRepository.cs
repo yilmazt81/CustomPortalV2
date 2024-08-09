@@ -41,7 +41,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public bool IsExistComboboxItem(ComboBoxItem comboBoxItem)
         {
 
-            return _dbContext.ComboBoxItem.Any(s => s.MainCompanyId == comboBoxItem.MainCompanyId && s.ItemType == s.ItemType && s.TagName == comboBoxItem.TagName);
+            return _dbContext.ComboBoxItem.Any(s => s.MainCompanyId == comboBoxItem.MainCompanyId && s.ItemType == comboBoxItem.ItemType && s.TagName == comboBoxItem.TagName);
 
         }
 
@@ -81,10 +81,10 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return _dbContext.CustomSector.Where(s => s.MainCompanyId == companyId).ToList();
         }
-        public  CustomSector  GetCompanySector(int id)
+        public CustomSector GetCompanySector(int id)
         {
 
-            return _dbContext.CustomSector.Single(s => s.Id==id);
+            return _dbContext.CustomSector.Single(s => s.Id == id);
         }
         public IEnumerable<FieldType> GetDefaultFieldTypes()
         {
@@ -130,6 +130,8 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbDefination.CustomSectorId = formDefination.CustomSectorId;
             dbDefination.CustomSectorName = formDefination.CustomSectorName;
             dbDefination.Deleted = formDefination.Deleted;
+            dbDefination.Deployed = formDefination.Deployed;
+
             _dbContext.SaveChanges();
 
             return dbDefination;
