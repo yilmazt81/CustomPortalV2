@@ -192,7 +192,7 @@ const ProductEditModal = ({ visiblep, productp, customSectorList, setFormData, s
 
                         <CCol>
 
-                            <CFormCheck inline name='intendedUse' id="chkTransferCon1" type='radio' checked={customProduct?.intendedUse==='InsaniTuketim'}  value="InsaniTuketim"  onChange={(e)=>handleChange(e)} label={t("IntendedUse1")} />
+                            <CFormCheck inline name='intendedUse' id="chkTransferCon1" type='radio' checked={customProduct?.intendedUse==='InsanTuketimi'}  value="InsanTuketimi"  onChange={(e)=>handleChange(e)} label={t("IntendedUse1")} />
                             <CFormCheck inline  name='intendedUse' id="chkTransferCon2" type='radio'  checked={customProduct?.intendedUse==='Konserve'} value="Konserve"  onChange={(e)=>handleChange(e)} label={t("IntendedUse2")} />
                             <CFormCheck inline  name='intendedUse' id="chkTransferCon3" type='radio'  checked={customProduct?.intendedUse==='IlaveIslem'} value="IlaveIslem"  onChange={(e)=>handleChange(e)} label={t("IntendedUse3")} />
                             <CFormCheck inline  name='intendedUse' id="chkTransferCon4"type='radio'  checked={customProduct?.intendedUse==='CanliSuHayvan'}  value="CanliSuHayvan"  onChange={(e)=>handleChange(e)} label={t("IntendedUse4")} />

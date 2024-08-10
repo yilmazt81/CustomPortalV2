@@ -116,7 +116,7 @@ namespace CustomPortalV2.RestApi.Controllers
         {
             string key = $"CompanyDefination{formdefinationId}_{productIdlist}";
 
-            var autoComplateDefinationFieldlist = _customProductService.GetAutoComplateDefinationValues(formdefinationId, productIdlist);
+            var autoComplateDefinationFieldlist = _customProductService.GetAutoComplateDefinationValues(User.GetCompanyId(), formdefinationId, productIdlist);
             return Ok(autoComplateDefinationFieldlist);
         }
 

@@ -79,12 +79,13 @@ namespace CustomPortalV2.Business.Service
                 return null;
             return src.GetType().GetProperty(propName).GetValue(src, null);
         }
-        public DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int formdefinationId, string productIdlist)
+        public DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int mainCompanyId, int formdefinationId, string productIdlist)
         {
             DefaultReturn<List<ControlAutoFieldDTO>> defaultReturn = new DefaultReturn<List<ControlAutoFieldDTO>>();
             try
             {
                 var formdefination = _formDefinationRepository.GetFormDefinationField(formdefinationId);
+
 
                 var autoComplateFieldMaps = _formDefinationRepository.GetAutoComplateFieldMaps(formdefinationId);
                 defaultReturn.Data = new List<ControlAutoFieldDTO>();
@@ -132,14 +133,14 @@ namespace CustomPortalV2.Business.Service
                             }
                             else if (formDefinationField.ControlType == "RadioBox" || formDefinationField.ControlType == "CheckBox")
                             {
-                                var checkItems = _formDefinationRepository.GetComboBoxItems(1, formDefinationField.TagName);
+                                var checkItems = _formDefinationRepository.GetComboBoxItems(mainCompanyId, formDefinationField.TagName);
                                 var fieldvalue = (fieldValue == null ? String.Empty : fieldValue.ToString());
                                 var fieldValues = fieldvalue.Split(',');
 
                                 foreach (var checkItem in checkItems)
                                 {
                                     var tagCheckBox = $"{formDefinationField.GetControlName()}_{checkItem.TagName}";
-                                    if (autoComplateFieldMaps.Any(s => fieldValues.Contains(checkItem.TagName)))
+                                    if (fieldValues.Contains(checkItem.TagName))
                                     {
                                         defaultReturn.Data.Add(new ControlAutoFieldDTO()
                                         {
@@ -158,11 +159,26 @@ namespace CustomPortalV2.Business.Service
                             {
                                 var oldValue = defaultReturn.Data.First(s => s.FieldName == autocomplete.TagName);
                                 oldValue.ControlValue += "," + (fieldValue != null ? fieldValue.ToString() : string.Empty);
-                            } 
+                            }
                         }
                     }
                 }
 
+                foreach (var item in defaultReturn.Data)
+                {
+                    if (string.IsNullOrEmpty(item.ControlValue))
+                        continue;
+                    var fields = item.ControlValue.Split(",").Distinct();
+                    string newvalue = string.Empty;
+                    item.ControlValue = string.Empty;
+                    foreach (var field in fields)
+                    {
+                        if (string.IsNullOrEmpty(field))
+                            continue;
+                        item.ControlValue += field + ",";
+                    }
+                    item.ControlValue = item.ControlValue.Substring(0, item.ControlValue.Length - 1);
+                }
 
             }
             catch (Exception ex)

@@ -137,6 +137,8 @@ export const TRANSLATIONS_TR = {
     Transfercondition:"Taşıma koşulu",
     ModalDeleteProductTitle:"Ürün Silme",
     ProductDeleteMessage:"Ürünü Silmek istediğinizden emin misiniz ?",
+    CreatePrivateType:"Özel Tip oluştur",
+    
 
 
      

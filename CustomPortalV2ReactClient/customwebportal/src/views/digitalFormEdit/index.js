@@ -168,7 +168,7 @@ const DigitalFormEdit = () => {
                 </CRow>
                 <CRow>
                     <CCol sm={3}>
-                        <CFormLabel htmlFor="cmbFormDefinationType" className="form-label">{t("CustomSectorName")}</CFormLabel>
+                        <CFormLabel htmlFor="cmbFormDefinationType" className="form-label">{t("FormDefinationName")}</CFormLabel>
                     </CCol>
                     <CCol sm={3}>
                         <CFormSelect type="text" id='cmbFormDefinationType' name="formDefinationTypeId"

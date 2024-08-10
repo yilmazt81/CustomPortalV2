@@ -67,9 +67,13 @@ const CreateGroupField = ({ fieldList }) => {
             <>
 
                 <CCol sm={6} ><CFormInput key={textField.id} type="text" id={`txt${textField.tagName}`} /></CCol>
+
+
                 <CCol sm={3}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
                     {GetIcon(textField.autoComlateType)}
                 </CButton> </CCol>
+
+
             </>
         )
     }
@@ -141,7 +145,7 @@ const CreateGroupField = ({ fieldList }) => {
                         <CCol sm={9} >
 
                             {item.comboBoxItems.map((combo, t) => {
-                                 
+
                                 return (
                                     <CFormCheck inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )

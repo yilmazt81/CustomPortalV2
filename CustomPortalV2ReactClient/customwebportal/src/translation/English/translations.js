@@ -136,6 +136,8 @@ export const TRANSLATIONS_EN = {
     Transfercondition:"Transport condition",
     ModalDeleteProductTitle:"Product Delete",
     ProductDeleteMessage:"Are you sure you want to Delete the Product ?",
+    CreatePrivateType:"Create Private Types",
+    
     
     
 

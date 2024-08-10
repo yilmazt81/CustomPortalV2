@@ -50,7 +50,7 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups }) => {
             <>
                 <CRow xs={{ gutterX: 1,gutterY: 1 }}>
                     <CCard >
-                        <CCardHeader>{item.name}</CCardHeader>
+                        <CCardHeader>{item.formNumber} {item.name}</CCardHeader>
                         <CCardBody>
 
                             <CreateGroupField fieldList={item.formFields}></CreateGroupField>

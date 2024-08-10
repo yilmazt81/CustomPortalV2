@@ -18,7 +18,7 @@ namespace CustomPortalV2.Business.Concrete
 
 
         DefaultReturn<List<CustomProduct>> Filter(DefinationFilterDTO companyDefinationFilterDTO, int branchId);
-        DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int formdefinationId, string productIdlist);
+        DefaultReturn<List<ControlAutoFieldDTO>> GetAutoComplateDefinationValues(int mainCompanyId, int formdefinationId, string productIdlist);
 
          
     }

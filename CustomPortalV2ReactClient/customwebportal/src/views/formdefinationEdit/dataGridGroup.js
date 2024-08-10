@@ -15,16 +15,17 @@ const GridcolumnsGroups = (OptionClick) => {
             headerName: i18.t('OrderNumber'),
             width: 70,
         },
+        
+        {
+            field: 'formNumber',
+            headerName: i18.t('GroupFormNumber'),
+            width: 100,
+        },
         {
             field: 'name',
             headerName: i18.t('Name'),
             width: 200,
-        },
-        {
-            field: 'allowEditCustomer',
-            headerName: i18.t('CustomerCanChange'),
-            width: 200,
-        },
+        }, 
 
         {
             field: 'actions',

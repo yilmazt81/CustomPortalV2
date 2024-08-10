@@ -29,8 +29,11 @@ import {
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  DynamicForm
-} from '@mui/icons-material';
+  DynamicForm,
+  FileDownloadDoneOutlined,
+  FileDownloadSharp,
+  AttachFile
+} from '@mui/icons-material'; 
 import { useTranslation } from "react-i18next";
 
 import DeleteModal from '../../components/DeleteModal';
@@ -216,6 +219,13 @@ const FormDefination = () => {
         }} >   <DynamicForm></DynamicForm></Link>
      
       </IconButton>
+
+      <IconButton>
+          <FileDownloadSharp></FileDownloadSharp>
+      </IconButton>
+      <IconButton>
+        <AttachFile></AttachFile>
+      </IconButton>
       </Box>
 
     ),
@@ -232,6 +242,7 @@ const FormDefination = () => {
                 <CButton color="primary" shape='rounded-3' onClick={() => NewDefination()} > {t("AddNewFormDefination")}</CButton>
                 <CButton color="primary" shape='rounded-3' onClick={() => ImportDefinationFromFile()} > {t("ImportFormDefinations")}</CButton>
                 <CButton color="primary" shape='rounded-3' onClick={() => ImportBaseDefination()} > {t("ImportBaseDefination")}</CButton>
+                <CButton color="primary" shape='rounded-3' onClick={() => ImportBaseDefination()} > {t("CreatePrivateType")}</CButton>
 
               </CButtonGroup>
             </CCol>

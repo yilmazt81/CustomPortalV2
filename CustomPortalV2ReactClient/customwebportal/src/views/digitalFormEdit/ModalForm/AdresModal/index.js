@@ -53,6 +53,7 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
         try {
             setsaveStart(true);
             var filterServiceReturn = await FilterCompanyDefination(filterCompany);
+            debugger;
             if (filterServiceReturn.returnCode === 1) {
                 setFilterAdressList(filterServiceReturn.data);
             } else {
@@ -145,7 +146,7 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
                         <CCol>
 
                             <div style={{ height: 300, width: '100%' }}>
-                                <DataGrid rows={adressDefinationControlList}
+                                <DataGrid rows={filterAdressList}
                                     columns={gridColumns}
                                     //onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
                                     onRowClick={(param) => SelectedRowChanged(param)}
