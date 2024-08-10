@@ -11,6 +11,8 @@ const FormDefinationEdit=  React.lazy(() => import('./views/formdefinationEdit')
 const DigitalForms=React.lazy(() => import('./views/digitalForms'))
 const DigitalFormEdit=React.lazy(() => import('./views/digitalFormEdit'))
 const FormDefinationAutoComplate=React.lazy(() => import('./views/formdefinationsAComp'))
+const FormDefinationVersion=React.lazy(()=>import('./views/formdefinationversion') );
+const FormDefinationAttachments=React.lazy(()=>import('./views/definationattachments') );
 
 const routes = [
 
@@ -27,6 +29,10 @@ const routes = [
   { path: '/digitalForms', name: 'DigitalForms', element: DigitalForms }, 
   { path: '/digitalFormEdit', name: 'DigitalForms/digitalFormEdit', element: DigitalFormEdit }, 
   { path: '/formdefinationsAComp', name: 'FormDefinationEdit/AutoComplate', element: FormDefinationAutoComplate }, 
+  { path: '/FormDefinationVersion', name: 'FormDefinationEdit/FormDefinationVersion', element: FormDefinationVersion }, 
+  { path: '/definationattachments', name: 'FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
+
+  
   
   
 ]

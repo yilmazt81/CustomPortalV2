@@ -10,36 +10,19 @@ import {
   CAlert,
 
 } from '@coreui/react'
-import { Link } from 'react-router-dom';
 
 import { useNavigate } from "react-router-dom";
-import { Gridcolumns } from './DataGrid'
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  MRT_ActionMenuItem
-} from 'material-react-table';
+import { DataGrid } from '@mui/x-data-grid'
 
-import {
-  Box,
-  IconButton
+import Gridcolumns from './DataGrid'
 
 
-} from '@mui/material';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  DynamicForm,
-  FileDownloadDoneOutlined,
-  FileDownloadSharp,
-  AttachFile
-} from '@mui/icons-material'; 
 import { useTranslation } from "react-i18next";
 
 import DeleteModal from '../../components/DeleteModal';
 import EditModal from './editmodal';
 
-import { CreateNewFormDefination, GetFormDefinations, GetSector,GetFormDefination } from '../../lib/formdef';
+import { CreateNewFormDefination, GetFormDefinations, GetSector, GetFormDefination } from '../../lib/formdef';
 
 const FormDefination = () => {
   const navigate = useNavigate();
@@ -96,15 +79,15 @@ const FormDefination = () => {
 
   }, []);
 
-  async function EditData(row) {
-    var id = row.original["id"];
-   
+  async function EditData(id) {
+
+
     try {
       setDeleteStart(false);
       setVisible(false);
       setSaveError(null);
       var getdefinationReturn = await GetFormDefination(id);
-      
+
       if (getdefinationReturn.returnCode === 1) {
         setFormDefinationEdit(getdefinationReturn.data);
         setVisible(true);
@@ -114,29 +97,12 @@ const FormDefination = () => {
     } catch (error) {
       setSaveError(error.message);
     } finally {
-     // setdeleteStart(false);
-    }  
+      // setdeleteStart(false);
+    }
   }
   async function DeleteAccepted(data) {
     setDeleteStart(true);
-    /*
-        try{
-          if (data==null)
-            return;
-            var deleteUserReturn = await DeleteUser(useredit.id);
-          
-          if (deleteUserReturn.returnCode === 1) {
-            LoadUserList();
-            setVisibleDelete(false);
-          } else {
-            setSaveError(deleteUserReturn.returnMessage);
-          }
-        } catch (error) {
-          setVisibleDelete(error.message);
-        } finally {
-          setDeleteStart(false);
-        }
-    */
+
     setDeleteStart(false);
   }
 
@@ -161,76 +127,76 @@ const FormDefination = () => {
   async function SaveComplated() {
     LoadFormDefinations();
   }
-
-  async function DeleteData(row) {
-    var id = row.original["id"];
-    navigate(`FormDefinationEdit/${id}`);
-    /*
-     try {
-       setVisibleDelete(false);
-       setVisible(false);
-       var editUser = await GetUser(id);
-       
-       if (editUser.returnCode === 1) {
-         setuseredit(editUser.data);
-         setVisibleDelete(true);
-       } else {
-         setSaveError(editUser.returnMessage);
-       }
-     } catch (error) {
-       setVisibleDelete(error.message);
-     } finally {
-       setDeleteStart(false);
-     }
- */
-  }
-
-  async function NavigateFormEdit(row) {
-    var id = row.original["id"];
-    navigate(`/FormDefinationTypeEdit`,{formdefinationId:id});
-
-  }
-
+  /*
+    async function DeleteData(row) {
+      var id = row.original["id"];
+      navigate(`FormDefinationEdit/${id}`);
+      
   
-  async function ImportDefinationFromFile(){
+    }*/
+  /*
+    async function NavigateFormEdit(row) {
+      var id = row.original["id"];
+      navigate(`/FormDefinationTypeEdit`, { formdefinationId: id });
+  
+    }*/
+
+
+  async function ImportDefinationFromFile() {
 
   }
 
-  async function ImportBaseDefination(){
-    
+  async function ImportBaseDefination() {
+
   }
-  const table = useMaterialReactTable({
-    columns: Gridcolumns,
-    data: formDefinations,
-    enableRowActions: true,
-    layoutMode: "grid",
-    
-    positionActionsColumn: 'last',
-    renderRowActions: ({ row }) => (
-      <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '0rem' }}>
-      <IconButton onClick={() => EditData(row)} >
-        <EditIcon />
-      </IconButton>
- 
-      <IconButton>
-        <Link to={{
-        pathname: '/FormDefinationTypeEdit',
-        search: '?formdefinationId='+row.original["id"],
-        }} >   <DynamicForm></DynamicForm></Link>
-     
-      </IconButton>
+  /*
+    const table = useMaterialReactTable({
+      columns: Gridcolumns,
+      data: formDefinations,
+      enableRowActions: true,
+      layoutMode: "grid",
+  
+      positionActionsColumn: 'last',
+      renderRowActions: ({ row }) => (
+        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '0rem' }}>
+          <IconButton onClick={() => EditData(row)} >
+            <EditIcon />
+          </IconButton>
+  
+          <IconButton>
+            <Link to={{
+              pathname: '/FormDefinationTypeEdit',
+              search: '?formdefinationId=' + row.original["id"],
+            }} >   <DynamicForm></DynamicForm></Link>
+  
+          </IconButton>
+  
+          <IconButton>
+            <FileDownloadSharp></FileDownloadSharp>
+          </IconButton>
+          <IconButton>
+            <AttachFile></AttachFile>
+          </IconButton>
+        </Box>
+  
+      ),
+  
+    });
+    */
 
-      <IconButton>
-          <FileDownloadSharp></FileDownloadSharp>
-      </IconButton>
-      <IconButton>
-        <AttachFile></AttachFile>
-      </IconButton>
-      </Box>
+  const optionClick = (option, id) => {
+    if (option == 'Edit') {
+      EditData(id);
+    } else if (option == 'Delete') {
 
-    ),
+    }
+    //EditGroupDefination(option === 'Delete', id);
+  }
 
-  });
+
+  const gridColumns = Gridcolumns(optionClick);
+
+
 
   return (
     <>
@@ -250,7 +216,17 @@ const FormDefination = () => {
           <CRow>
             <CCol>
 
-              <MaterialReactTable table={table} />
+
+              <div style={{ height: 450, width: '100%' }}>
+                <DataGrid rows={formDefinations}
+                  columns={gridColumns}
+                  slotProps={{
+                    toolbar: {
+                      showQuickFilter: true,
+                    },
+                  }}
+                />
+              </div>
             </CCol>
           </CRow>
           <CRow>
