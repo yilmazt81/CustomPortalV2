@@ -24,13 +24,13 @@ const routes = [
   { path: '/FormDefinationType', name: 'FormDefinationType', element: FormDefinationType }, 
   { path: '/productdefination', name: 'productdefination', element: ProductDefination }, 
   { path: '/userdefination', name: 'Userdefination', element: UserDefination }, 
-  { path: '/FormDefinationTypeEdit', name: 'FormDefinationEdit', element: FormDefinationEdit }, 
+  { path: '/FormDefinationTypeEdit', name: 'FormDefinationType/FormDefinationEdit', element: FormDefinationEdit }, 
   
   { path: '/digitalForms', name: 'DigitalForms', element: DigitalForms }, 
   { path: '/digitalFormEdit', name: 'DigitalForms/digitalFormEdit', element: DigitalFormEdit }, 
-  { path: '/formdefinationsAComp', name: 'FormDefinationEdit/AutoComplate', element: FormDefinationAutoComplate }, 
-  { path: '/FormDefinationVersion', name: 'FormDefinationEdit/FormDefinationVersion', element: FormDefinationVersion }, 
-  { path: '/definationattachments', name: 'FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
+  { path: '/formdefinationsAComp', name: 'FormDefinationType/FormDefinationEdit/AutoComplate', element: FormDefinationAutoComplate }, 
+  { path: '/FormDefinationVersion', name: 'FormDefinationType/FormDefinationEdit/FormDefinationVersion', element: FormDefinationVersion }, 
+  { path: '/definationattachments', name: 'FormDefinationType/FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
 
   
   

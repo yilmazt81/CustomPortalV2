@@ -50,9 +50,7 @@ import avatar3 from 'src/assets/images/avatars/3.jpg'
 import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
-
-import WidgetsBrand from '../base/widgets/WidgetsBrand'
-import WidgetsDropdown from '../base/widgets/WidgetsDropdown'
+  
 
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useNavigate } from "react-router-dom";
@@ -190,7 +188,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <WidgetsDropdown />
+    
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -317,8 +315,7 @@ const Dashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-
-      <WidgetsBrand withCharts />
+ 
 
       <CRow>
         <CCol xs>

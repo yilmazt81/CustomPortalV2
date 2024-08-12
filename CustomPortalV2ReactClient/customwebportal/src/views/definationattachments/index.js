@@ -7,3 +7,5 @@ const FormDefinationAttachments = () => {
         <></>
     )
 }
+
+export default FormDefinationAttachments;
