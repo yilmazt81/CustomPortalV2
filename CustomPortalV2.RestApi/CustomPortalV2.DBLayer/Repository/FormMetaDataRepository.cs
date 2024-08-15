@@ -19,7 +19,14 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public IEnumerable<FormMetaData> Get(Expression<Func<FormMetaData, bool>> predicate, int maxCount)
         {
-            return _dbContext.FormMetaData.Take(maxCount).Where(predicate).OrderByDescending(s=>s.Id).ToList();
+            return _dbContext.FormMetaData.Take(maxCount).Where(predicate).OrderByDescending(s => s.Id).ToList();
+        }
+
+        public FormMetaData Save(FormMetaData formMetaData)
+        {
+            _dbContext.FormMetaData.Add(formMetaData);
+            _dbContext.SaveChanges();
+            return formMetaData;
         }
     }
 }

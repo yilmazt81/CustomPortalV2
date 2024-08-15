@@ -21,6 +21,7 @@ using CustomPortalV2.Business.Service;
 using CustomPortalV2.Business.Concrete;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using MySqlConnector;
+using FirebaseAdmin; 
 
 namespace CustomPortalV2.RestApi
 {
@@ -53,8 +54,7 @@ namespace CustomPortalV2.RestApi
             //5.7.27
             services.AddDbContextPool<DBContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("DBConnection"), ServerVersion.Parse("5.7.27", ServerType.MySql), null));
-
-
+             
             services.AddScoped<ISalePackageService, SalePackageService>();
             services.AddScoped<IAppLangService, AppLangService>();
             services.AddScoped<ICompanyService, CompanyService>();
@@ -67,8 +67,10 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICompanyDefinationService, CompanyDefinationService>();
             services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
             services.AddScoped<ICustomProductService, CustomProductService>();
+            services.AddSingleton<IFirebaseStorage, FireStorage>();
 
-            
+            services.AddSingleton<FirebaseService>();
+ 
 
 
             services.AddScoped<ICompanyDefinationRepository, CompanyRepository>();

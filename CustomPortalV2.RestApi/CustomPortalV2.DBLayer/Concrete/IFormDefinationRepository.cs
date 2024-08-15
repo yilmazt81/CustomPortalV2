@@ -24,8 +24,9 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormGroup UpdateGroup(FormGroup formGroup);
 
         IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId);
+        IEnumerable<FormDefinationField> GetAllFields(int formdefinationTypeid);
 
-        FormDefinationField GetDefinationField(int definationTypeId, string tagName);
+       FormDefinationField GetDefinationField(int definationTypeId, string tagName);
 
         FormGroup GetFormGroup(int id);
 

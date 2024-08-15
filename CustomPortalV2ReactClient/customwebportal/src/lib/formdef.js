@@ -18,10 +18,12 @@ export async function GetSector() {
 };
 
 export async function SaveFormDefination(formdefination) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination`, formdefination);
+  var lastToken = localStorage.getItem("LastToken"); 
+  
+  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination`, formdefination,  {headers: {
+    'Content-Type':'multipart/form-data',
+    'Authorization':`Bearer ${lastToken}`
+  }});
   return data;
 };
 
@@ -187,5 +189,11 @@ export async function SaveAutoComplateField(complateObject) {
 export async function DeleteAutoComplateFieldMap(formdefinationId,autcomplatefieldmapid) {
   
   const { data } = await GetRequest(`/api/FormDefination/DeleteAutoComplateFieldMap?formdefinationId=${formdefinationId}&autoComplateMapid=${autcomplatefieldmapid}`);
+  return data;
+}
+
+export async function GetFormDefinationTemplate(formdefinationId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationTemplate/${formdefinationId}`);
   return data;
 }

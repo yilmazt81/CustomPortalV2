@@ -5,10 +5,13 @@ using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 
 namespace CustomPortalV2.RestApi.Controllers
 {
@@ -19,11 +22,14 @@ namespace CustomPortalV2.RestApi.Controllers
     {
         IFormDefinationService _formDefinationService = null;
         IMemoryCache _memoryCache;
+        IFirebaseStorage _firebaseStorage;
         public FormDefinationController(IFormDefinationService formDefinationService,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IFirebaseStorage firebaseStorage)
         {
             _formDefinationService = formDefinationService;
             _memoryCache = memoryCache;
+            _firebaseStorage = firebaseStorage;
         }
         [HttpGet]
         public IActionResult Get()
@@ -195,8 +201,8 @@ namespace CustomPortalV2.RestApi.Controllers
                 Italic = false,
                 FormDefinationId = formDefinationId,
                 FontFamily = "Times New Roman",
-                AutoComlateType="",
-               
+                AutoComlateType = "",
+
             };
             return Ok(defaultReturn);
         }
@@ -292,13 +298,30 @@ namespace CustomPortalV2.RestApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(FormDefination formDefination)
+        public async Task<IActionResult> Post(IFormCollection data)
         {
             string key = $"FormDefinationCompany{User.GetCompanyId()}";
             _memoryCache.Remove(key);
+            FormDefination formDefination = new FormDefination()
+            {
+                Id = Convert.ToInt32(data["Id"]),
+                FormName = data["FormName"].ToString(),
+                CustomSectorId = Convert.ToInt32(data["customSectorId"]),
+                Deployed = Convert.ToBoolean(data["Deployed"]),
+                MainCompanyId = User.GetCompanyId(),
+                DesingTemplate = Convert.ToBoolean(data["DesingTemplate"])
 
+            };
             key = $"FormDefination{formDefination.Id}";
             _memoryCache.Remove(key);
+
+            if (HttpContext.Request.Form.Files.Count != 0)
+            {
+                var file = HttpContext.Request.Form.Files[0];
+                var fileStream = file.OpenReadStream();
+                formDefination.TemplatePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + ".html", fileStream);
+            }
+
 
             var formDefinationReturn = _formDefinationService.Save(formDefination);
             key = $"FormDefinationBySector_{User.GetCompanyId()}_{formDefination.CustomSectorId}";
@@ -307,6 +330,20 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formDefinationReturn);
         }
+        /*
+        [HttpGet("SaveFileStorageTest")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SaveFileStorageTestAsync()
+        {
+            var stream = System.IO.File.OpenRead("FormTemlate/OnSaglik.html");
+
+            //var fff = await _firebaseStorage.Save();
+
+            var sss = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + ".html", stream);
+
+
+            return  Ok(sss);
+        }*/
 
         [HttpPost("SaveGroup")]
         public IActionResult SaveGroup(FormGroup formGroup)
@@ -519,15 +556,24 @@ namespace CustomPortalV2.RestApi.Controllers
         }
 
         [HttpGet("DeleteAutoComplateFieldMap")]
-        public IActionResult DeleteAutoComplateFieldMap(int formdefinationId,int autoComplateMapid)
+        public IActionResult DeleteAutoComplateFieldMap(int formdefinationId, int autoComplateMapid)
         {
-           var deleteReturn= _formDefinationService.DeleteAutoComplate(autoComplateMapid);
+            var deleteReturn = _formDefinationService.DeleteAutoComplate(autoComplateMapid);
 
             string key = $"GetAutoComlateFieldMaps{formdefinationId}";
             _memoryCache.Remove(key);
 
             return Ok(deleteReturn);
 
+        }
+        [HttpGet("GetFormDefinationTemplate/{formdefinationid}")]
+        public IActionResult GetFormDefinationTemplate(int formdefinationid)
+        {
+
+            var formTemplate = _formDefinationService.GetTemplateForm(formdefinationid,User.GetCompanyId());
+
+
+            return Ok(formTemplate);
         }
 
     }

@@ -173,6 +173,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbGroup.FormNumber = formGroup.FormNumber;
             dbGroup.AllowEditCustomer = formGroup.AllowEditCustomer;
             dbGroup.Name = formGroup.Name;
+            dbGroup.GroupTag = formGroup.GroupTag;
 
             _dbContext.SaveChanges();
 
@@ -253,6 +254,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             _dbContext.SaveChanges();
             return true;
 
+        }
+
+        public IEnumerable<FormDefinationField> GetAllFields(int formdefinationTypeid)
+        {
+            return _dbContext.FormDefinationField.Where(s => s.FormDefinationId == formdefinationTypeid && !s.Deleted);
         }
     }
 }

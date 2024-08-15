@@ -32,8 +32,7 @@ import {
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
-import { cilNoteAdd } from '@coreui/icons'
-import Lottie from 'lottie-react';
+import { cilNoteAdd } from '@coreui/icons' 
 
 import ProcessAnimation from "../../content/animation/Process.json";
 
@@ -45,6 +44,7 @@ import { Link } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 
 
+import LoadingAnimation from 'src/components/LoadingAnimation';
 
 
 
@@ -83,10 +83,13 @@ const DigitalForms = () => {
     const [filterItem, setfilterItem] = useState({ customSectorId: 0, formDefinationTypeId: 0, companyName: "" });
     const [searchParams, setSearchParams] = useSearchParams();
     const [formDefinationTypes, setFormDefinationTypes] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     async function LoadCustomSectors() {
 
         try {
+            setSaveError(null);
+            setLoading(true);
             var fSectorService = await GetSector();
             if (fSectorService.returnCode === 1) {
                 setCustomSectors(fSectorService.data);
@@ -95,11 +98,16 @@ const DigitalForms = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+        } finally {
+
+            setLoading(false);
         }
     }
     async function GetformDefinationTypes(sectorid) {
 
         try {
+            setSaveError(null);
+            setLoading(true);
             var fSectorService = await GetFormDefinationBySector(sectorid);
             if (fSectorService.returnCode === 1) {
                 setFormDefinationTypes(fSectorService.data);
@@ -108,11 +116,16 @@ const DigitalForms = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
     async function GetBranchFormMetaData() {
         try {
+            setSaveError(null);
+            setLoading(true);
+
             var formmetaDataReturn = await GetBrachData();
             if (formmetaDataReturn.returnCode === 1) {
                 setBranchFormMetaData(formmetaDataReturn.data);
@@ -121,6 +134,8 @@ const DigitalForms = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -136,9 +151,6 @@ const DigitalForms = () => {
     useEffect(() => {
 
         const id = searchParams.get('id');
-
-
-        // LoadFormDefinations();
 
         LoadCustomSectors();
 
@@ -165,7 +177,8 @@ const DigitalForms = () => {
                                 pathname: '/digitalFormEdit',
                                 search: '?id=0',
                             }} >
-                                <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton></Link>
+                                <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton>
+                            </Link>
 
                         </CButtonGroup>
                     </CCol>
@@ -217,6 +230,9 @@ const DigitalForms = () => {
                         <CButton color="primary" shape='rounded-3'   > {t("Filter")}</CButton>
 
                     </CCol>
+                </CRow>
+                <CRow>
+                    <LoadingAnimation loading={loading} size={"%50"}></LoadingAnimation>
                 </CRow>
                 <CRow>
 

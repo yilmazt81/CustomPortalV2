@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Firebase.Auth" Version="1.0.0" />
+    <PackageReference Include="FirebaseAdmin" Version="3.0.0" />
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj" />
     <ProjectReference Include="..\CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj" />
   </ItemGroup>

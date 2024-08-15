@@ -27,13 +27,13 @@ namespace CustomPortalV2.Core.Model.Form
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<int> EditedId { get; set; }
-        public string EditedBy { get; set; }
+        public string? EditedBy { get; set; }
         public Nullable<System.DateTime> EditedDate { get; set; }
         public int CustomSectorId { get; set; }
         public string FormDefinationName { get; set; }
         public string BrancName { get; set; }
-        public string SenderCompanyName { get; set; }
-        public string RecrivedCompanyName { get; set; }
+        public string? SenderCompanyName { get; set; }
+        public string? RecrivedCompanyName { get; set; }
         public bool Deleted { get; set; }
         public bool CopyDocument { get; set; }
         public bool DefaultForm { get; set; }

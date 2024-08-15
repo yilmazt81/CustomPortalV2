@@ -19,6 +19,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<List<FormMetaData>> FilterForms(FormMetaDataFilterPost formMetaData);
 
+        DefaultReturn<FormMetaData> Save(FormMetaDataDTO formMetaDataDTO);
 
     }
 }

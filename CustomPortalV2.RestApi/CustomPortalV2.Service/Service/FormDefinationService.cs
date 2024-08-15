@@ -5,10 +5,12 @@ using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
+using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -430,7 +432,7 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-    
+
 
         public DefaultReturn<FormGroup> SaveGroup(FormGroup formGroup)
         {
@@ -454,6 +456,92 @@ namespace CustomPortalV2.Business.Service
             defaultReturn.Data = _formDefinationService.DeleteAutoComplateFieldMap(autoComplateFieldId);
 
 
+            return defaultReturn;
+        }
+
+        public DefaultReturn<string> GetTemplateForm(int formdefinationId, int companyId)
+        {
+            DefaultReturn<string> defaultReturn = new DefaultReturn<string>();
+
+            try
+            {
+                var formDefination = _formDefinationService.Get(s => s.Id == formdefinationId && s.MainCompanyId == companyId).FirstOrDefault();
+                if (formDefination == null)
+                {
+                    throw new Exception("FormDefinationNotFount");
+                }
+
+                var formGroups = _formDefinationService.GetFormGroups(formdefinationId);
+                string templateFile = string.Empty;
+                using (WebClient webClient = new())
+                {
+                    var templateArray = webClient.DownloadData(formDefination.TemplatePath);
+                    templateFile = System.Text.Encoding.Default.GetString(templateArray);
+                }
+                defaultReturn.Data = templateFile;
+                foreach (var oneGroup in formGroups)
+                {
+                    defaultReturn.Data = defaultReturn.Data.Replace($"@Group_{oneGroup.GroupTag}@", oneGroup.FormNumber + " " + oneGroup.Name);
+
+                    var formFields = _formDefinationService.GetFormGroupFields(oneGroup.Id);
+
+                    foreach (var oneField in formFields)
+                    {
+                        string labelTag = $"@Label_{oneField.TagName.Trim()}@";
+                        defaultReturn.Data = defaultReturn.Data.Replace(labelTag, oneField.FieldCaption);
+
+                        if (oneField.ControlType == "Text")
+                        {
+                            string controlHtml = $"<input type=\"text\"  class='form-control' id=\"{oneField.GetControlName()}\" />";
+                            defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", controlHtml);
+
+
+                        }
+                        else if (oneField.ControlType == "DateTime")
+                        {
+                            string controlHtml = $"<input  id=\"{oneField.GetControlName()}\" />";
+                            defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", controlHtml);
+                        }
+                        else if (oneField.ControlType == "ComboBox")
+                        {
+                            var checkItems = _formDefinationService.GetComboBoxItems(companyId, oneField.TagName).ToList();
+
+                            string justControl = $"<select  class='form-control'  name='{oneField.GetControlName()}' id='{oneField.GetControlName()}'>";
+                            foreach (var oneItem in checkItems)
+                            {
+                                var option = $"<option value={oneItem.TagName}>{oneItem.Name}</option>";
+
+                            }
+                            justControl += "</select></div>";
+
+                            defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", justControl);
+
+                        }
+                        else if (oneField.ControlType == "RadioBox" || oneField.ControlType == "CheckBox")
+                        {
+                            var checkItems = _formDefinationService.GetComboBoxItems(companyId, oneField.TagName).ToList();
+                            string ControlType = oneField.ControlType == "CheckBox" ? "checkbox" : "radio";
+                            string justControl = "";
+                            foreach (var boxItem in checkItems)
+                            {
+                                justControl += $"<input class='form-check-input'   name='{oneField.GetControlName()}' type='" + ControlType + $"' id='{oneField.GetControlName()}_{oneField.TagName}' value='{oneField.TagName}_{boxItem.TagName}'  caption=\"{boxItem.Name}\"  >"; 
+                            }
+
+                            defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", justControl);
+                        }
+
+                        if (oneField.AutoComplate)
+                        {
+                            string htmlButton = $"<div class=\"btn btn-info\"  datacontent=\"{oneField.AutoComlateType}\" id=\"{oneField.Id}\" data=\"{oneField.Id}\"  type=\"button\">...</div>";
+                            defaultReturn.Data = defaultReturn.Data.Replace($"@autoComplate_{oneField.TagName}@", htmlButton);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
             return defaultReturn;
         }
     }

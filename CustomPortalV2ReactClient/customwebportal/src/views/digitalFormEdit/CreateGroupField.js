@@ -19,10 +19,11 @@ import BrowserProductModal from './ModalForm/productModal';
 import { cilMap, cilBarcode } from '@coreui/icons';
 
 import CIcon from '@coreui/icons-react';
+import moment from 'moment';
 
 
 
-const CreateGroupField = ({ fieldList }) => {
+const CreateGroupField = ({ fieldList, onChangeData }) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
@@ -60,13 +61,37 @@ const CreateGroupField = ({ fieldList }) => {
         }
     }
 
+    function handleChange(e) {
+        const { name, value } = e.target;
+    
+        onChangeData(name, value);
+    }
+
+    function handleChangeChecked(e) {
+        const { name, value } = e.target;
+        
+        let checkbox = (e.target.checked?"true":"false");
+
+        onChangeData(name, checkbox);
+    }
+
+    function handleChangeDatetime(field, date) {
+        
+        var dateStr = moment(date.$d).format('DD-MM-YYYY');
+        onChangeData(field, dateStr);
+    }
+
     function CreateAutoComplateText(textField) {
 
 
         return (
             <>
 
-                <CCol sm={6} ><CFormInput key={textField.id} type="text" id={`txt${textField.tagName}`} /></CCol>
+                <CCol sm={6} ><CFormInput key={textField.id}
+                    type="text"
+                    name={textField.tagName}
+                    id={`txt${textField.tagName}`}
+                    onChange={(e) => handleChange(e)} /></CCol>
 
 
                 <CCol sm={3}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
@@ -80,7 +105,7 @@ const CreateGroupField = ({ fieldList }) => {
     function CreateText(textField) {
 
         return (
-            <CCol sm={9} ><CFormInput key={textField.id} type="text" id={`txt${textField.tagName}`} /></CCol>
+            <CCol sm={9} ><CFormInput key={textField.id} name={textField.tagName} onChange={(e) => handleChange(e)} type="text" id={`txt${textField.tagName}`} /></CCol>
         )
     }
 
@@ -95,7 +120,7 @@ const CreateGroupField = ({ fieldList }) => {
                 continue;
 
             inputElement.value = item.controlValue;
-
+            onChangeData(item.fieldName,  inputElement.value);
         }
     }
 
@@ -121,7 +146,7 @@ const CreateGroupField = ({ fieldList }) => {
                             <CFormLabel htmlFor={`txt${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
                             <CCol sm={9} >
                                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="tr">
-                                    <DatePicker key={item.id} id={`txt${item.tagName}`} />
+                                    <DatePicker key={item.id} id={`txt${item.tagName}`} name={item.tagName} onChange={date => handleChangeDatetime(item.tagName, date)} />
                                 </LocalizationProvider>
                             </CCol>
                         </CRow>)
@@ -130,7 +155,7 @@ const CreateGroupField = ({ fieldList }) => {
                     return <CRow key={item.id} className="mb-12">
                         <CFormLabel htmlFor={`cmb${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
                         <CCol sm={9} >
-                            <CFormSelect key={item.id} id={`cmb${item.tagName}`}>
+                            <CFormSelect key={item.id} id={`cmb${item.tagName}`} onChange={(e)=>handleChange(e)} name={item.tagName}>
                                 <option value="" ></option>
                                 {item.comboBoxItems.map((combo, t) => {
                                     return (
@@ -147,7 +172,7 @@ const CreateGroupField = ({ fieldList }) => {
                             {item.comboBoxItems.map((combo, t) => {
 
                                 return (
-                                    <CFormCheck inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck onChange={(e) => handleChangeChecked(e)} name={`${item.tagName}_${combo.tagName}`} inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
@@ -160,14 +185,14 @@ const CreateGroupField = ({ fieldList }) => {
 
                             {item.comboBoxItems.map((combo, t) => {
                                 return (
-                                    <CFormCheck inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck onChange={(e) => handleChangeChecked(e)} name={`${item.tagName}_${combo.tagName}`} inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
                     </CRow>
                 } else if (item.controlType == "Hidden") {
                     return (
-                        <CFormInput key={item.id} type="Hidden" id={`hdn${item.tagName}`} />
+                        <CFormInput key={item.id} onChange={(e) => handleChange(e)} name={item.tagName} type="Hidden" id={`hdn${item.tagName}`} />
                     )
                 } else {
                     return (

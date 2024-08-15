@@ -53,7 +53,9 @@ const Login = () => {
  
   setloginStart(true);
   try {
-    var loginresult= await  LoginUser(userInfo);
+      setLoginError(null);
+
+     var loginresult= await  LoginUser(userInfo);
   
       if (loginresult.isLogin)
       {  
@@ -71,6 +73,7 @@ const Login = () => {
       setLoginError(error.message);
     }finally{
       setloginStart(false);
+      setLoginError(null);
     }   
 
   }

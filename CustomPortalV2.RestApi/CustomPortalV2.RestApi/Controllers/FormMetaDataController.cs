@@ -15,10 +15,11 @@ namespace CustomPortalV2.RestApi.Controllers
     public class FormMetaDataController : ControllerBase
     {
 
-        IFormMetaDataService    _formMetaDataService;
+        IFormMetaDataService _formMetaDataService;
         IFormDefinationService _formDefinationService;
         IMemoryCache _memoryCache;
-        public FormMetaDataController(IFormMetaDataService formMetaDataService, IFormDefinationService formDefinationService,IMemoryCache memoryCache) { 
+        public FormMetaDataController(IFormMetaDataService formMetaDataService, IFormDefinationService formDefinationService, IMemoryCache memoryCache)
+        {
             _formMetaDataService = formMetaDataService;
             _formDefinationService = formDefinationService;
             _memoryCache = memoryCache;
@@ -27,22 +28,35 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            
-           var formMetaList= _formMetaDataService.GetBranchFormMetaData(User.GetCompanyId(), User.GetBranchId());
 
-            
+            var formMetaList = _formMetaDataService.GetBranchFormMetaData(User.GetCompanyId(), User.GetBranchId());
+
+
             return Ok(formMetaList);
         }
 
-       
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
 
-            var formmetaData = _formMetaDataService.GetCompanyFormMetaData(User.GetCompanyId(), User.GetBranchId(),id);
+            var formmetaData = _formMetaDataService.GetCompanyFormMetaData(User.GetCompanyId(), User.GetBranchId(), id);
 
 
             return Ok(formmetaData);
+        }
+
+        [HttpPost]
+        public IActionResult Post(FormMetaDataDTO formMetaDataDTO)
+        {
+            formMetaDataDTO.UserId = User.GetUserId();
+            formMetaDataDTO.CompanyId = User.GetCompanyId();
+            formMetaDataDTO.UserName = User.GetUserFullName();
+            formMetaDataDTO.BrachId = User.GetBranchId();
+
+            var returnV = _formMetaDataService.Save(formMetaDataDTO);
+
+            return Ok(returnV);
         }
 
 

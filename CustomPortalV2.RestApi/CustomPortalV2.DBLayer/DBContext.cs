@@ -118,6 +118,7 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CustomProduct> CustomProduct { get; set; }
 
         public virtual DbSet<FontType> FontTypes { get; set; }
+         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -134,6 +135,12 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FormAttachmentExcelMap>().HasKey(k => k.Id);
             modelBuilder.Entity<FormAttachmentExcelMap>().Property(k => k.Id).HasColumnName("Id");
 
+
+            modelBuilder.Entity<FormMetaDataCounter>().ToTable("FormMetaDataCounter");
+            modelBuilder.Entity<FormMetaDataCounter>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormMetaDataCounter>().Property(k => k.Id).HasColumnName("Id");
+
+            
             modelBuilder.Entity<SalePackageItem>().ToTable("SalePackageItem");
             modelBuilder.Entity<SalePackageItem>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackageItem>().Property(k => k.Id).HasColumnName("Id");
