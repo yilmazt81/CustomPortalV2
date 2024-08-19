@@ -33,7 +33,7 @@ const ProductDefination = () => {
   const [customSectors,setCustomSectors]=useState([]);
   
   
-  const optionClick = (option, id) => {
+const optionClick = (option, id) => {
       EditGroupDefination(option === 'Delete', id);
 }
 

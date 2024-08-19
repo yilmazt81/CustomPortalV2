@@ -1,6 +1,7 @@
 import React from "react"; 
 import * as Icons from "react-icons/fa";
 import PropTypes from 'prop-types' 
+
 const DynamicFaIcon = ({ name }) => {
     const IconComponent = Icons[name];
   

@@ -38,32 +38,7 @@ namespace CustomPortalV2.Business.Service
                     }
            }
             );
-        }
-
-        /*
-        public async Task<List<string>> GetFileListAsync(string folderPath)
-        {
-            try
-            {
-                // Klasördeki dosyaları alın
-                var list =   _storage.Child(folderPath).ToEnumString();
-
-                var fileList = new List<string>();
-
-                foreach (var item in list.Items)
-                {
-                    var fileUrl = await item.GetDownloadUrlAsync();
-                    fileList.Add(fileUrl); // İndirme URL'sini listeye ekleyin
-                }
-
-                return fileList;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error getting file list: {ex.Message}");
-                return null;
-            }
-        }*/
+        } 
         public async Task<string> SaveFileToStorageAsync(string folder, string fileName, Stream fileStream)
         {
             try
@@ -80,6 +55,7 @@ namespace CustomPortalV2.Business.Service
                 throw ex;
             }
         }
+
 
         async Task<FirebaseAuthLink> IFirebaseStorage.Save()
         {
