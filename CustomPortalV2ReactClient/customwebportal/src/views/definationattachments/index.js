@@ -31,7 +31,7 @@ const FormDefinationAttachments = () => {
 
     const [formdefinationTypeId, setFormDefinationTypeId] = useState(0);
     const [formdefination, setformdefination] = useState(null);
-    const [formVersion,setFormVersion]=useState({active:true,id:0,formLanguage:"",fileName:""});
+    const [formAttachment,setformAttachment]=useState();
     const [formversionEdit, setFormVersionEdit] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -102,7 +102,7 @@ const FormDefinationAttachments = () => {
 
             if (formVersionRequest.returnCode === 1) {
                 
-                setFormVersion(formVersionRequest.data);
+                setformAttachment(formVersionRequest.data);
                 setFormVersionEdit(true);
             } else {
 
@@ -121,7 +121,7 @@ const FormDefinationAttachments = () => {
 
     function CreateNewFormVersion() {
 
-        setFormVersion({active:true,id:0,formLanguage:"",fileName:""});
+        setformAttachment({active:true,id:0,formName:"",fileName:"",fontSize:0,bold:false,italic:false,fontFamily:""});
         setFormVersionEdit(true);
 
     }
@@ -167,7 +167,7 @@ const FormDefinationAttachments = () => {
             <FormAttachmentModal
                 visiblep={formversionEdit}
                 formdefinationp={formdefination}
-                formdefinationVersionp={formVersion}
+                formAttachmentp={formAttachment}
                 OnCloseModal={() => setFormVersionEdit(false)}
                 setFormData={() => LoadFormAttachments(formdefinationTypeId)}
             ></FormAttachmentModal>
