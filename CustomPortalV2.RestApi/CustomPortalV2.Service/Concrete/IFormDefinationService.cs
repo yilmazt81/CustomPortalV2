@@ -15,10 +15,15 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<FormDefination>> GetCompanyDefination(int mainCompanyId, int sectorId);
 
         DefaultReturn<FormDefination> GetFormDefination(int id);
-        DefaultReturn<FormDefination> Save(FormDefination formDefination); 
+        DefaultReturn<FormDefination> Save(FormDefination formDefination);
+        DefaultReturn<FormVersion> Save(FormVersion formDefination);
         DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem);
         DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId);
         DefaultReturn<FormDefinationField> GetFormDefinationField(int id);
+
+        DefaultReturn<List<FormVersion>> GetDefinationFormVersions(int formdefinationId);
+
+        DefaultReturn<FormVersion> GetFormDefinationVersion(int id);
 
         DefaultReturn<string> GetTemplateForm(int formdefinationId, int companyId);
           

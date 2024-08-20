@@ -551,5 +551,39 @@ namespace CustomPortalV2.Business.Service
             }
             return defaultReturn;
         }
+
+        public DefaultReturn<List<FormVersion>> GetDefinationFormVersions(int formdefinationId)
+        {
+            DefaultReturn<List<FormVersion>> defaultReturn = new DefaultReturn<List<FormVersion>>();
+
+            defaultReturn.Data = _formDefinationService.GetDefinationVersions(formdefinationId).ToList();
+
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<FormVersion> Save(FormVersion formDefination)
+        {
+            DefaultReturn<FormVersion> defaultReturn = new DefaultReturn<FormVersion>();
+
+            if (formDefination.Id == 0)
+            {
+                defaultReturn.Data = _formDefinationService.Add(formDefination);
+            }
+            else
+            {
+                defaultReturn.Data = _formDefinationService.Update(formDefination);
+            } 
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<FormVersion> GetFormDefinationVersion(int id)
+        {
+            DefaultReturn<FormVersion> defaultReturn = new DefaultReturn<FormVersion>();
+
+            defaultReturn.Data = _formDefinationService.GetFormDefinationVersion(id);
+            return defaultReturn;
+        }
     }
 }

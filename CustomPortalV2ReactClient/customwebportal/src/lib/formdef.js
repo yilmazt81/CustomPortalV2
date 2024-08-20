@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GetRequest,Post,PostFile } from "./Apibase";
 
 
 export async function CreateNewFormDefination() { 
@@ -18,12 +19,8 @@ export async function GetSector() {
 };
 
 export async function SaveFormDefination(formdefination) {
-  var lastToken = localStorage.getItem("LastToken"); 
-  
-  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination`, formdefination,  {headers: {
-    'Content-Type':'multipart/form-data',
-    'Authorization':`Bearer ${lastToken}`
-  }});
+   
+  const { data } = await  PostFile(`/api/FormDefination`, formdefination);
   return data;
 };
 
@@ -44,30 +41,20 @@ export async function CreateNewFormDefinationGroup(formdefinationId) {
   return data;
 };
 
-export async function SaveFormGroup(formGroup) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveGroup`, formGroup);
+export async function SaveFormGroup(formGroup) { 
+  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveGroup`, formGroup);
   return data;
 };
 
 export async function SaveFormDefinationField(formdefinationField) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
  
-  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveFormDefinationField`, formdefinationField);
+  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveFormDefinationField`, formdefinationField);
   return data;
 };
 
 
-export async function SaveComboBoxItem(comboboxItem) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
- 
-  const { data } = await axios.post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveComboBoxItem`, comboboxItem);
+export async function SaveComboBoxItem(comboboxItem) { 
+  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveComboBoxItem`, comboboxItem);
   return data;
 };
 
@@ -79,21 +66,9 @@ export async function GetFormGroupFields(formgroupid) {
   return data;
 };
 
-async function GetRequest(apiAdress) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  const  data   = await axios.get(process.env.REACT_APP_APIURL + apiAdress);
-  return data;
-}
+ 
 
-async function Post(apiAdress,postData) {
-  var lastToken = localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-  axios.defaults.headers.common['Content-Type'] = 'application/json';
-  const  data   = await axios.post(process.env.REACT_APP_APIURL + apiAdress,postData);
-  return data;
-}
+ 
 export async function GetFormGroup(id) {
 
   const { data } = await GetRequest(`/api/FormDefination/GetFormGroup/${id}`);
@@ -197,3 +172,23 @@ export async function GetFormDefinationTemplate(formdefinationId) {
   const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationTemplate/${formdefinationId}`);
   return data;
 }
+
+export async function GetFormDefinationVersions(formdefinationId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationVersions/${formdefinationId}`);
+  return data;
+}
+
+ 
+export async function GetFormDefinationVersion(id) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationVersion/${id}`);
+  return data;
+}
+
+export async function SaveFormVersion(formData) {
+   
+  
+  const { data } = await PostFile(`/api/FormDefination/SaveFormVersion`, formData);
+  return data;
+};

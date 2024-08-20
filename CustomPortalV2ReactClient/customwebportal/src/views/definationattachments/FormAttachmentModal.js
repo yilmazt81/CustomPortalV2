@@ -18,7 +18,7 @@ import {
 
 } from '@coreui/react'
 
-import { SaveFormDefination } from '../../lib/formdef';
+import { SaveFormVersion } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes, { func } from 'prop-types';
 
@@ -29,14 +29,13 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData }) => {
+const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, setFormData,OnCloseModal }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [formdefination, setFormdefination] = useState({ ...formdefinationp });
+    const [formdefinationVersion, setformdefinationVersion] = useState({ ...formdefinationVersionp });
 
-    const [saveError, setSaveError] = useState(null);
-    const [sectorList, setSectorList] = useState([]);
+    const [saveError, setSaveError] = useState(null); 
 
     const [saveStart, setsaveStart] = useState(false);
     const [templateFile, settemplateFile] = useState(null);
@@ -46,7 +45,7 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
     function handleChange(event) {
         const { name, value } = event.target;
 
-        setFormdefination({ ...formdefination, [name]: value });
+        setformdefinationVersion({ ...formdefinationVersion, [name]: value });
 
     }
     function handleFileChange(event) {
@@ -60,45 +59,44 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
 
     async function ClosedClick() {
         setvisible(false);
+        OnCloseModal();
     }
 
 
     useEffect(() => {
         setSaveError(null);
         setvisible(visiblep);
-        settemplateFile(null);
-        setFormdefination(formdefinationp);
-        setSectorList(customSectorList);
-        //LoadBranchList();
+        settemplateFile(null); 
+        setformdefinationVersion(formdefinationVersionp);
+     
 
-    }, [visiblep, formdefinationp, customSectorList])
+    }, [visiblep,  formdefinationVersionp])
 
     async function SaveData() {
-
+       
         try {
 
             try {
                 setSaveError(null);
-
+           
                 const formData = new FormData();
-                formData.append("Id", formdefination.id);
-                formData.append("FormName", formdefination.formName);
-                formData.append("CustomSectorId", formdefination.customSectorId);
-                formData.append("Deployed", formdefination.deployed);
+                formData.append("Id", formdefinationVersion.id);
+                formData.append("FormLanguage", formdefinationVersion.formLanguage);
+                formData.append("Active", formdefinationVersion.active); 
                 formData.append("Templatefile", templateFile);
-                formData.append("MainCompanyId",formdefination.mainCompanyId);
-                formData.append("DesingTemplate",formdefination.desingTemplate);
-                 
+                formData.append("FormDefinationId", formdefinationp.id);
+                
+              
                 setsaveStart(true);
-                var savedefinationResult = await SaveFormDefination(formData);
-
+                
+                var savedefinationResult = await SaveFormVersion(formData);
+         
                 if (savedefinationResult.returnCode === 1) {
                     setFormData(savedefinationResult.data);
                     setvisible(false);
                 } else {
                     setSaveError(savedefinationResult.returnMessage);
-                }
-
+                } 
 
             } catch (error) {
                 setSaveError(error.message);
@@ -119,10 +117,10 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
     function handleChangeSwich(event) {
         const { name, value } = event.target;
 
-        var newValue = formdefination[name];
+        var newValue = formdefinationVersion[name];
         newValue = !newValue;
 
-        setFormdefination({ ...formdefination, [name]: newValue });
+        setformdefinationVersion({ ...formdefinationVersion, [name]: newValue });
 
     }
 
@@ -136,59 +134,41 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
 
             >
                 <CModalHeader>
-                    <CModalTitle>{t("FormDefinationModalTitle")}</CModalTitle>
+                    <CModalTitle>{t("FormDefinationVersionModalTitle")}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
 
-
-                        <CRow className="mb-12">
+                    <CRow className="mb-12">
                             <CFormLabel htmlFor="txtFormName" className="col-sm-3 col-form-label">{t("FormName")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="text" id='txtFormName' name="formName"
-                                    onChange={e => handleChange(e)} value={formdefination.formName} />
+                                <CFormInput type="text" id='txtFormName' readOnly={true} name="formName" value={formdefinationp?.formName} />
                             </CCol>
                         </CRow>
-
-
                         <CRow className="mb-12">
-                            <CFormLabel htmlFor="cmbCustomSector" className="col-sm-3 col-form-label">{t("CustomSectorName")}</CFormLabel>
+                            <CFormLabel htmlFor="txtLanguage" className="col-sm-3 col-form-label">{t("FormLanguage")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormSelect type="text" id='cmbCustomSector' name="customSectorId"
-                                    onChange={e => handleChange(e)} value={formdefination?.customSectorId}    >
-
-                                    <option value="0">Seçiniz</option>
-                                    {sectorList.map(item => {
-                                        return (<option key={item.id} value={item.id}  >{item.name}</option>);
-                                    })}
-                                </CFormSelect>
-
+                                <CFormInput type="text" id='txtLanguage' name="formLanguage"
+                                    onChange={e => handleChange(e)} value={formdefinationVersion?.formLanguage} />
                             </CCol>
                         </CRow>
-
+                         
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="frmTemplatePath" className="col-sm-3 col-form-label">{t("TemplatePath")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="file" accept='.html,.htm' id="frmTemplatePath" onChange={(e) => handleFileChange(e)} />
+                                <CFormInput type="file" id="frmTemplatePath"  accept='.docx,.xlsx,.pdf,.xml' onChange={(e) => handleFileChange(e)} />
                             </CCol>
                         </CRow>
 
                         <CRow>
 
-                            <CCol sm={6}>
-                                <CFormSwitch label={t("UseTemplate")} name='desingTemplate' size='lg'
+                            <CCol sm={9}>
+                                <CFormSwitch label={t("Active")} name='active' size='lg'
                                     onChange={e => handleChangeSwich(e)}
-                                    checked={formdefination?.desingTemplate} ></CFormSwitch>
+                                    checked={formdefinationVersion?.active} ></CFormSwitch>
 
                             </CCol>
-
-                            <CCol sm={6}>
-                                <CFormSwitch label={t("Deployed")} name='deployed' size='lg'
-                                    onChange={e => handleChangeSwich(e)}
-                                    checked={formdefination?.deployed} ></CFormSwitch>
-
-                            </CCol>
-
+ 
                         </CRow>   
 
                     </CForm>
@@ -226,10 +206,11 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
 }
 
 
-export default EditModal;
+export default FormVersionModal;
 
 
-EditModal.propTypes = {
+FormVersionModal.propTypes = {
     visiblep: PropTypes.bool,
-    userp: PropTypes.object,
+    formdefinationVersionp: PropTypes.object,
+    formdefinationp: PropTypes.object
 };

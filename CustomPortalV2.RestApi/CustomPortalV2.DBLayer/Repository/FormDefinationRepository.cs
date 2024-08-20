@@ -134,6 +134,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             if (!string.IsNullOrEmpty(formDefination.TemplatePath))
             {
                 dbDefination.TemplatePath = formDefination.TemplatePath;
+                dbDefination.TemplateFileName = formDefination.TemplateFileName;
             }
             dbDefination.DesingTemplate = formDefination.DesingTemplate;
             _dbContext.SaveChanges();
@@ -259,6 +260,39 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<FormDefinationField> GetAllFields(int formdefinationTypeid)
         {
             return _dbContext.FormDefinationField.Where(s => s.FormDefinationId == formdefinationTypeid && !s.Deleted);
+        }
+
+        public IEnumerable<FormVersion> GetDefinationVersions(int formDefinationId)
+        {
+            return _dbContext.FormVersion.Where(s => s.FormDefinationId == formDefinationId).ToArray();
+        }
+
+        public FormVersion Add(FormVersion formVersion)
+        {
+            _dbContext.FormVersion.Add(formVersion);
+
+            _dbContext.SaveChanges();
+
+            return formVersion;
+        }
+
+        public FormVersion Update(FormVersion formVersion)
+        {
+            var dbVersion = _dbContext.FormVersion.Single(s => s.FormDefinationId == formVersion.Id);
+            dbVersion.FormLanguage = formVersion.FormLanguage;
+            dbVersion.FileName = formVersion.FilePath;
+            dbVersion.EditedBy = formVersion.EditedBy;
+            dbVersion.EditedDate = formVersion.EditedDate;
+            dbVersion.EditedId = formVersion.EditedId;
+
+            _dbContext.SaveChanges();
+
+            return dbVersion;
+        }
+
+        public FormVersion GetFormDefinationVersion(int id)
+        {
+            return _dbContext.FormVersion.Single(s => s.Id == id);
         }
     }
 }

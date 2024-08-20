@@ -138,6 +138,13 @@ export const TRANSLATIONS_TR = {
     ModalDeleteProductTitle:"Ürün Silme",
     ProductDeleteMessage:"Ürünü Silmek istediğinizden emin misiniz ?",
     CreatePrivateType:"Özel Tip oluştur",
+    FileName:"Dosya Adı",
+    FormLanguage:"Form Dili",
+    FormVersionTitle:"Form Çıktıları",
+    FormDefinationVersionModalTitle:"Form Versiyon Düzenle",
+    Active:"Aktif",
+    FormAttachmentTitle:"Ek Form Listesi"
+
     
 
 

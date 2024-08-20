@@ -129,19 +129,7 @@ const FormDefination = () => {
   async function SaveComplated() {
     LoadFormDefinations();
   }
-  /*
-    async function DeleteData(row) {
-      var id = row.original["id"];
-      navigate(`FormDefinationEdit/${id}`);
-      
   
-    }*/
-  /*
-    async function NavigateFormEdit(row) {
-      var id = row.original["id"];
-      navigate(`/FormDefinationTypeEdit`, { formdefinationId: id });
-  
-    }*/
 
 
   async function ImportDefinationFromFile() {
@@ -151,40 +139,7 @@ const FormDefination = () => {
   async function ImportBaseDefination() {
 
   }
-  /*
-    const table = useMaterialReactTable({
-      columns: Gridcolumns,
-      data: formDefinations,
-      enableRowActions: true,
-      layoutMode: "grid",
   
-      positionActionsColumn: 'last',
-      renderRowActions: ({ row }) => (
-        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '0rem' }}>
-          <IconButton onClick={() => EditData(row)} >
-            <EditIcon />
-          </IconButton>
-  
-          <IconButton>
-            <Link to={{
-              pathname: '/FormDefinationTypeEdit',
-              search: '?formdefinationId=' + row.original["id"],
-            }} >   <DynamicForm></DynamicForm></Link>
-  
-          </IconButton>
-  
-          <IconButton>
-            <FileDownloadSharp></FileDownloadSharp>
-          </IconButton>
-          <IconButton>
-            <AttachFile></AttachFile>
-          </IconButton>
-        </Box>
-  
-      ),
-  
-    });
-    */
 
   const optionClick = (option, id) => {
     if (option == 'Edit') {

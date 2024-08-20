@@ -7,6 +7,7 @@ using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace CustomPortalV2.RestApi.Controllers
             string key = $"FormDefination{id}";
             if (_memoryCache.TryGetValue(key, out DefaultReturn<FormDefination> list))
                 return Ok(list);
-             
+
 
             var companyDefination = _formDefinationService.GetFormDefination(id);
             _memoryCache.Set(key, companyDefination, new MemoryCacheEntryOptions
@@ -291,9 +292,87 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetGroupFields/{formGroupId}")]
         public IActionResult GetGroupFields(int formGroupId)
         {
-
-
             return Ok(GetGroupFieldsReturnList(formGroupId));
+        }
+
+        [HttpGet("GetFormDefinationVersions/{formdefinationid}")]
+
+        public IActionResult GetFormDefinationVersions(int formdefinationid)
+        {
+            string key = $"FormDefinationVersions{formdefinationid}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormVersion>> list))
+                return Ok(list);
+
+            var defaultReturn = _formDefinationService.GetDefinationFormVersions(formdefinationid);
+
+
+            _memoryCache.Set(key, defaultReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(defaultReturn);
+        }
+
+        [HttpGet("GetFormDefinationVersion/{id}")]
+
+        public IActionResult GetFormDefinationVersion(int id)
+        {
+            string key = $"FormDefinationVersion{id}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<FormVersion> list))
+                return Ok(list);
+
+            var defaultReturn = _formDefinationService.GetFormDefinationVersion(id);
+
+
+            _memoryCache.Set(key, defaultReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(defaultReturn);
+        }
+
+        [HttpPost("SaveFormVersion")]
+        public async Task<IActionResult> SaveFormVersion(IFormCollection data)
+        {
+            FormVersion formVersion = new FormVersion()
+            {
+                Id = Convert.ToInt32(data["Id"]),
+                Active = Convert.ToBoolean(data["Active"]),
+                FormLanguage = data["FormLanguage"].ToString(),
+                FormDefinationId = Convert.ToInt32(data["FormDefinationId"]),
+                CreatedBy = User.GetUserFullName(),
+                CreatedDate = DateTime.Now,
+                CreatedId = User.GetUserId()
+            };
+            if (formVersion.Id != 0)
+            {
+                formVersion.EditedBy = User.GetUserFullName();
+                formVersion.EditedDate = DateTime.Now;
+                formVersion.EditedId = User.GetUserId();
+            }
+
+            if (HttpContext.Request.Form.Files.Count != 0)
+            {
+                var file = HttpContext.Request.Form.Files[0];
+                formVersion.FileName = file.FileName;
+                var fileStream = file.OpenReadStream();
+                formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+            }
+
+            var formDefinationReturn = _formDefinationService.Save(formVersion);
+
+            string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
+            _memoryCache.Remove(key);
+        
+
+            key = $"FormDefinationVersion{formVersion.Id}";
+            _memoryCache.Remove(key);
+
+            return Ok(formDefinationReturn);
         }
 
         [HttpPost]
@@ -308,7 +387,9 @@ namespace CustomPortalV2.RestApi.Controllers
                 CustomSectorId = Convert.ToInt32(data["customSectorId"]),
                 Deployed = Convert.ToBoolean(data["Deployed"]),
                 MainCompanyId = User.GetCompanyId(),
-                DesingTemplate = Convert.ToBoolean(data["DesingTemplate"])
+                DesingTemplate = Convert.ToBoolean(data["DesingTemplate"]),
+                TemplateFileName = "",
+
 
             };
             key = $"FormDefination{formDefination.Id}";
@@ -317,10 +398,10 @@ namespace CustomPortalV2.RestApi.Controllers
             if (HttpContext.Request.Form.Files.Count != 0)
             {
                 var file = HttpContext.Request.Form.Files[0];
+                formDefination.TemplateFileName = file.FileName;
                 var fileStream = file.OpenReadStream();
                 formDefination.TemplatePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + ".html", fileStream);
             }
-
 
             var formDefinationReturn = _formDefinationService.Save(formDefination);
             key = $"FormDefinationBySector_{User.GetCompanyId()}_{formDefination.CustomSectorId}";
@@ -329,6 +410,8 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formDefinationReturn);
         }
+
+
         /*
         [HttpGet("SaveFileStorageTest")]
         [AllowAnonymous]
@@ -569,7 +652,7 @@ namespace CustomPortalV2.RestApi.Controllers
         public IActionResult GetFormDefinationTemplate(int formdefinationid)
         {
 
-            var formTemplate = _formDefinationService.GetTemplateForm(formdefinationid,User.GetCompanyId());
+            var formTemplate = _formDefinationService.GetTemplateForm(formdefinationid, User.GetCompanyId());
 
 
             return Ok(formTemplate);

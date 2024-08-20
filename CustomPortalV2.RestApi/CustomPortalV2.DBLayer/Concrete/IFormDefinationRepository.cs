@@ -59,5 +59,12 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
 
         bool DeleteAutoComplateFieldMap(int autocomplateFieldMapid);
+
+        IEnumerable<FormVersion> GetDefinationVersions(int formDefinationId);
+
+        FormVersion Add(FormVersion formVersion);
+        FormVersion Update(FormVersion formVersion);
+
+        FormVersion GetFormDefinationVersion(int id);
     }
 }

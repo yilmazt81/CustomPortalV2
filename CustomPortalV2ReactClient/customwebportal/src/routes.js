@@ -29,7 +29,7 @@ const routes = [
   { path: '/digitalForms', name: 'DigitalForms', element: DigitalForms }, 
   { path: '/digitalFormEdit', name: 'DigitalForms/digitalFormEdit', element: DigitalFormEdit }, 
   { path: '/formdefinationsAComp', name: 'FormDefinationType/FormDefinationEdit/AutoComplate', element: FormDefinationAutoComplate }, 
-  { path: '/FormDefinationVersion', name: 'FormDefinationType/FormDefinationEdit/FormDefinationVersion', element: FormDefinationVersion }, 
+  { path: '/FormDefinationVersion', name: 'FormDefinationType/FormDefinationVersion', element: FormDefinationVersion }, 
   { path: '/definationattachments', name: 'FormDefinationType/FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
 
   

@@ -60,7 +60,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                     {
                         TagName = oldAttribute.TagName,
                         EditedBy = formMetaData.EditedBy,
-                        EditedDate = formMetaData.EditedDate,
+                        EditedDate = formMetaData.EditedDate.Value,
                         EditedId = formMetaData.EditedId.Value,
                         FormMetaDataId = dbFormData.Id,
                         NewValue = "",

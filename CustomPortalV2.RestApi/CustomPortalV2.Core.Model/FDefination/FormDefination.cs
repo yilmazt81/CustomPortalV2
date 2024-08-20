@@ -25,5 +25,7 @@ namespace CustomPortalV2.Core.Model.FDefination
 
         public bool Deployed { get; set; }
 
+        public string TemplateFileName { get; set; }
+
     }
 }
