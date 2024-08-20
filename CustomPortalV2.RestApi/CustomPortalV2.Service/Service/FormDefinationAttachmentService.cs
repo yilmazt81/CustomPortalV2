@@ -26,10 +26,7 @@ namespace CustomPortalV2.Business.Service
             throw new NotImplementedException();
         }
 
-        public DefaultReturn<FormAttachmentType> Save(FormAttachmentType formAttachmentType)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment)
         {

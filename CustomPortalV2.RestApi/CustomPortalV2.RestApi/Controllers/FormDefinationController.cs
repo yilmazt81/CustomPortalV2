@@ -315,6 +315,47 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(defaultReturn);
         }
 
+        [HttpGet("GetFormDefinationAttachments/{formdefinationid}")]
+
+        public IActionResult GetFormDefinationAttachments(int formdefinationid)
+        {
+            string key = $"GetFormDefinationAttachments{formdefinationid}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<FormDefinationAttachment>> list))
+                return Ok(list);
+
+            var defaultReturn = _formDefinationService.GetDefinationFormAttachments(formdefinationid);
+
+
+            _memoryCache.Set(key, defaultReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(defaultReturn);
+        }
+
+
+        [HttpGet("GetFormDefinationAttachment/{id}")]
+
+        public IActionResult GetFormDefinationAttachment(int id)
+        {
+            string key = $"GetFormDefinationAttachment{id}";
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<FormDefinationAttachment> list))
+                return Ok(list);
+
+            var defaultReturn = _formDefinationService.GetFormDefinationAttachment(id);
+
+
+            _memoryCache.Set(key, defaultReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(defaultReturn);
+        }
+
         [HttpGet("GetFormDefinationVersion/{id}")]
 
         public IActionResult GetFormDefinationVersion(int id)
@@ -367,7 +408,7 @@ namespace CustomPortalV2.RestApi.Controllers
 
             string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
             _memoryCache.Remove(key);
-        
+
 
             key = $"FormDefinationVersion{formVersion.Id}";
             _memoryCache.Remove(key);
@@ -375,6 +416,51 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(formDefinationReturn);
         }
 
+
+        [HttpPost("SaveFormAttachment")]
+        public async Task<IActionResult> SaveFormAttachment(IFormCollection data)
+        {
+            FormDefinationAttachment formVersion = new FormDefinationAttachment()
+            {
+                Id = Convert.ToInt32(data["Id"]),
+                Active = Convert.ToBoolean(data["Active"]),
+                Bold = Convert.ToBoolean(data["Bold"]),
+                Italic = Convert.ToBoolean(data["Italic"]),
+                FontFamily =  data["FontFamily"].ToString() ,
+                FontSize= Convert.ToInt32(data["FontSize"]),
+
+                FormName = data["FormName"].ToString(),
+                FormDefinationId = Convert.ToInt32(data["FormDefinationId"]),
+                CreatedBy = User.GetUserFullName(),
+                CreatedDate = DateTime.Now,
+                CreatedId = User.GetUserId()
+            };
+            if (formVersion.Id != 0)
+            {
+                formVersion.EditedBy = User.GetUserFullName();
+                formVersion.EditedDate = DateTime.Now;
+                formVersion.EditedId = User.GetUserId();
+            }
+
+            if (HttpContext.Request.Form.Files.Count != 0)
+            {
+                var file = HttpContext.Request.Form.Files[0];
+                formVersion.FileName = file.FileName;
+                var fileStream = file.OpenReadStream();
+                formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+            }
+
+            var formDefinationReturn = _formDefinationService.Save(formVersion);
+
+            string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
+            _memoryCache.Remove(key);
+
+
+            key = $"FormDefinationVersion{formVersion.Id}";
+            _memoryCache.Remove(key);
+
+            return Ok(formDefinationReturn);
+        }
         [HttpPost]
         public async Task<IActionResult> Post(IFormCollection data)
         {

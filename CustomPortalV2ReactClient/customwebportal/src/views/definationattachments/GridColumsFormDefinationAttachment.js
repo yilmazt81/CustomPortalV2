@@ -13,11 +13,11 @@ import dayjs from 'dayjs';
 
 import { Link } from 'react-router-dom';
 
-const GridColumsFormDefinationVersion = (OptionClick) => {
+const GridColumsFormDefinationAttachment = (OptionClick) => {
     return [      
         {
-            field: 'formLanguage',
-            headerName: i18.t('FormLanguage'),
+            field: 'formName',
+            headerName: i18.t('FormName'),
             width: 100,
         },
         {
@@ -88,5 +88,5 @@ const GridColumsFormDefinationVersion = (OptionClick) => {
 
 };
 
-export default GridColumsFormDefinationVersion;
+export default GridColumsFormDefinationAttachment;
 

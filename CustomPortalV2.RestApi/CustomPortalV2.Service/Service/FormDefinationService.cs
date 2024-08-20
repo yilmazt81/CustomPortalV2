@@ -573,7 +573,7 @@ namespace CustomPortalV2.Business.Service
             else
             {
                 defaultReturn.Data = _formDefinationService.Update(formDefination);
-            } 
+            }
 
             return defaultReturn;
         }
@@ -584,6 +584,40 @@ namespace CustomPortalV2.Business.Service
 
             defaultReturn.Data = _formDefinationService.GetFormDefinationVersion(id);
             return defaultReturn;
+        }
+
+        public DefaultReturn<List<FormDefinationAttachment>> GetDefinationFormAttachments(int formdefinationId)
+        {
+            DefaultReturn<List<FormDefinationAttachment>> defaultReturn = new DefaultReturn<List<FormDefinationAttachment>>();
+
+            defaultReturn.Data = _formDefinationService.GetFormDefinationAttachments(formdefinationId).ToList();
+            return defaultReturn;
+        }
+
+        public DefaultReturn<FormDefinationAttachment> GetFormDefinationAttachment(int id)
+        {
+            DefaultReturn<FormDefinationAttachment> defaultReturn = new DefaultReturn<FormDefinationAttachment>();
+
+            defaultReturn.Data = _formDefinationService.GetFormDefinationAttachment(id);
+            return defaultReturn;
+        }
+
+        public DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment)
+        {
+            DefaultReturn<FormDefinationAttachment> defaultReturn= new DefaultReturn<FormDefinationAttachment>();
+            if (formDefinationAttachment.Id == 0)
+            { 
+                defaultReturn.Data = _formDefinationService.Add(formDefinationAttachment);
+
+            }
+            else
+            {
+                defaultReturn.Data = _formDefinationService.Update(formDefinationAttachment);
+            }
+            return defaultReturn;
+
+
+
         }
     }
 }

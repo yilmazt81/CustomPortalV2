@@ -294,5 +294,41 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         {
             return _dbContext.FormVersion.Single(s => s.Id == id);
         }
+
+        public IEnumerable<FormDefinationAttachment> GetFormDefinationAttachments(int formDefinationId)
+        {
+            return _dbContext.FormDefinationAttachment.Where(s => s.FormDefinationId == formDefinationId).ToList();
+        }
+
+        public FormDefinationAttachment GetFormDefinationAttachment(int id)
+        {
+            return _dbContext.FormDefinationAttachment.Single(s => s.Id == id);
+        }
+
+        public FormDefinationAttachment Add(FormDefinationAttachment formDefinationAttachment)
+        {
+            _dbContext.FormDefinationAttachment.Add(formDefinationAttachment);
+            _dbContext.SaveChanges();
+
+            return formDefinationAttachment;
+        }
+
+        public FormDefinationAttachment Update(FormDefinationAttachment formDefinationAttachment)
+        {
+            var dbDefination = _dbContext.FormDefinationAttachment.Single(s => s.Id == formDefinationAttachment.Id);
+            dbDefination.FontSize = formDefinationAttachment.FontSize;
+            dbDefination.FontFamily = formDefinationAttachment.FontFamily;
+            dbDefination.Italic = formDefinationAttachment.Italic;
+            dbDefination.Bold = formDefinationAttachment.Bold;
+            dbDefination.FilePath = formDefinationAttachment.FilePath;
+            dbDefination.FileName = formDefinationAttachment.FileName;
+            dbDefination.EditedBy = formDefinationAttachment.EditedBy;
+            dbDefination.EditedDate = formDefinationAttachment.EditedDate;
+            dbDefination.EditedId = formDefinationAttachment.EditedId;
+
+            _dbContext.SaveChanges();
+
+            return dbDefination;
+        }
     }
 }

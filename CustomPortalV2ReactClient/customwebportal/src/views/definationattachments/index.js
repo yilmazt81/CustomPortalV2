@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { useTranslation } from "react-i18next";
-import { GetFormDefination, GetFormDefinationVersions, GetFormDefinationVersion } from 'src/lib/formdef';
+import { GetFormDefination, GetFormDefinationAttachments, GetFormDefinationAttachment } from 'src/lib/formdef';
 import GridColumsFormDefinationAttachment from './GridColumsFormDefinationAttachment';
 import { DataGrid } from '@mui/x-data-grid';
 import FormAttachmentModal from './FormAttachmentModal';
@@ -60,13 +60,13 @@ const FormDefinationAttachments = () => {
 
     }
 
-    async function LoadFormVersions(id) {
+    async function LoadFormAttachments(id) {
         setLoading(true);
         setErrorMessage(null);
         setFormVersionEdit(false);
         try {
 
-            var versionDataReturn = await GetFormDefinationVersions(id);
+            var versionDataReturn = await GetFormDefinationAttachments(id);
             if (versionDataReturn.returnCode === 1) {
            
                 setFormVersionList(versionDataReturn.data);
@@ -88,7 +88,7 @@ const FormDefinationAttachments = () => {
         const id = searchParams.get('formdefinationId');
         setFormDefinationTypeId(id);
         GetDefination(id);
-        LoadFormVersions(id);
+        LoadFormAttachments(id);
 
     }, []);
 
@@ -97,7 +97,7 @@ const FormDefinationAttachments = () => {
     const optionClick = async (option, id) => {
         if (option == 'Edit') {
 
-            var formVersionRequest = await GetFormDefinationVersion(id);
+            var formVersionRequest = await GetFormDefinationAttachment(id);
 
 
             if (formVersionRequest.returnCode === 1) {
@@ -169,7 +169,7 @@ const FormDefinationAttachments = () => {
                 formdefinationp={formdefination}
                 formdefinationVersionp={formVersion}
                 OnCloseModal={() => setFormVersionEdit(false)}
-                setFormData={() => LoadFormVersions(formdefinationTypeId)}
+                setFormData={() => LoadFormAttachments(formdefinationTypeId)}
             ></FormAttachmentModal>
         </>
     )

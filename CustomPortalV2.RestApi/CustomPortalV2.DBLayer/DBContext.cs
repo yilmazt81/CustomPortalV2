@@ -84,8 +84,7 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CustomeFieldItem> CustomeFieldItem { get; set; }
         public virtual DbSet<FormMetaDataAttribute_CustomeField> FormMetaDataAttribute_CustomeField { get; set; }
         public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; } 
-        public virtual DbSet<FieldType> FieldType { get; set; }
-        public virtual DbSet<FormAttachmentType> FormAttachmentType { get; set; }
+        public virtual DbSet<FieldType> FieldType { get; set; } 
         public virtual DbSet<FormDefinationAttachment> FormDefinationAttachment { get; set; }
         public virtual DbSet<SoftImageChangeFormatRule> SoftImageChangeFormatRule { get; set; }
         public virtual DbSet<AutoComplateOldValue> AutoComplateOldValue { get; set; }

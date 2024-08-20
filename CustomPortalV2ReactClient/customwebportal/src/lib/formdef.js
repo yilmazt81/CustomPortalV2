@@ -192,3 +192,22 @@ export async function SaveFormVersion(formData) {
   const { data } = await PostFile(`/api/FormDefination/SaveFormVersion`, formData);
   return data;
 };
+
+export async function GetFormDefinationAttachments(formdefinationId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationAttachments/${formdefinationId}`);
+  return data;
+}
+
+export async function GetFormDefinationAttachment(id) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationAttachment/${id}`);
+  return data;
+}
+
+export async function SaveFormAttachment(formData) {
+   
+  
+  const { data } = await PostFile(`/api/FormDefination/SaveFormAttachment`, formData);
+  return data;
+};

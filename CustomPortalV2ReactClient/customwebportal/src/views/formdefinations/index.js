@@ -179,11 +179,7 @@ const FormDefination = () => {
               <div style={{ height: 450, width: '100%' }}>
                 <DataGrid rows={formDefinations}
                   columns={gridColumns}
-                  slotProps={{
-                    toolbar: {
-                      showQuickFilter: true,
-                    },
-                  }}
+                
                 />
               </div>
             </CCol>

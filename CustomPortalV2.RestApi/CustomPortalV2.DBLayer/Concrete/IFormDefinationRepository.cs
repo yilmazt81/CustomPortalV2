@@ -66,5 +66,11 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormVersion Update(FormVersion formVersion);
 
         FormVersion GetFormDefinationVersion(int id);
+
+        IEnumerable<FormDefinationAttachment> GetFormDefinationAttachments(int formDefinationId);
+        FormDefinationAttachment GetFormDefinationAttachment(int id);
+
+        FormDefinationAttachment Add(FormDefinationAttachment formDefinationAttachment);
+        FormDefinationAttachment Update(FormDefinationAttachment formDefinationAttachment);
     }
 }

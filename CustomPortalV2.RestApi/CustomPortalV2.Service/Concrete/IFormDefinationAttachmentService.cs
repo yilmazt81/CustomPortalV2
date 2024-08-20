@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace CustomPortalV2.Business.Concrete
 {
     public interface IFormDefinationAttachmentService
-    {
-        DefaultReturn<FormAttachmentType> Save(FormAttachmentType formAttachmentType);
+    { 
 
         DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment);
 

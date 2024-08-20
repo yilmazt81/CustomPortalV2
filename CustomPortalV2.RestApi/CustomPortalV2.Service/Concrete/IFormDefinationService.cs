@@ -22,8 +22,9 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<FormDefinationField> GetFormDefinationField(int id);
 
         DefaultReturn<List<FormVersion>> GetDefinationFormVersions(int formdefinationId);
-
+        DefaultReturn<List<FormDefinationAttachment>> GetDefinationFormAttachments(int formdefinationId);
         DefaultReturn<FormVersion> GetFormDefinationVersion(int id);
+        DefaultReturn<FormDefinationAttachment> GetFormDefinationAttachment(int id);
 
         DefaultReturn<string> GetTemplateForm(int formdefinationId, int companyId);
           
@@ -54,6 +55,9 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<AutocompleteFieldMap> SaveAutoComplate(SaveAutoComplateDTO saveAutoComplate);
 
         DefaultReturn<bool> DeleteAutoComplate(int autoComplateFieldId);
+
+        DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment);
+
          
     }
 }
