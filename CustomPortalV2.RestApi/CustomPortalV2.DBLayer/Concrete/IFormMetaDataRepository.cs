@@ -12,7 +12,10 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
     public interface IFormMetaDataRepository
     {
         IEnumerable<FormMetaData> Get(Expression<Func<FormMetaData, bool>> predicate,int maxCount);
+        FormMetaData? Get(int id);
         FormMetaData Save(FormMetaData formMetaData);
+
+        FormMetaData Update(FormMetaData formMetaData);
 
     }
 }

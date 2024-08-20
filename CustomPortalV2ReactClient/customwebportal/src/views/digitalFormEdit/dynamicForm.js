@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import { useSearchParams } from 'react-router-dom'; 
 import CreateGroupField from './CreateGroupField';
 
-const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged }) => {
+const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged,controlValues }) => {
 
 
     const [formgroup, setformGroup] = useState(null);
@@ -78,4 +78,5 @@ export default DynamicForm;
 DynamicForm.propTypes = {
     formdefinationTypeIdp: PropTypes.number,
     formgroups: PropTypes.array,
+    controlValues:PropTypes.array,
 }

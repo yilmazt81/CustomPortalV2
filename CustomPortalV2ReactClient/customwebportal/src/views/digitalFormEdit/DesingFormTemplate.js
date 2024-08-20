@@ -8,13 +8,13 @@ import {
     CCardHeader,
     CFormInput,
     CButton,
-    CFormCheck
-
+    CFormCheck,
+    CFormSelect
 
 } from '@coreui/react'
 
 
-import PropTypes from 'prop-types';
+import PropTypes, { bool, func } from 'prop-types';
 
 
 import { useSearchParams } from 'react-router-dom';
@@ -29,10 +29,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import 'dayjs/locale/tr';
+import dayjs from 'dayjs';
 import moment from 'moment';
 import CIcon from '@coreui/icons-react';
 
-const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
+const DesingFormTemplate = ({ formdefinationTypeIdp, onChangeData, controlValuesp }) => {
 
     const [formDesingTemplate, setformDesingTemplate] = useState("");
 
@@ -40,6 +41,7 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
+
 
 
     function GetIcon(modalType) {
@@ -61,24 +63,23 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
         }
     }
 
-    
+
     function handleChange(e) {
         const { name, value } = e.target;
-    
+
         onChangeData(name, value);
     }
 
     function handleChangeChecked(e) {
         const { name, value } = e.target;
-        
- 
-        let checkbox = (e.target.checked?"true":"false");
 
-        onChangeData(name, checkbox);
+        let checkbox = (e.target.checked ? "true" : "false");
+
+        onChangeData(value, checkbox);
     }
 
     function handleChangeDatetime(field, date) {
-      
+
         var dateStr = moment(date.$d).format('DD-MM-YYYY');
         onChangeData(field, dateStr);
     }
@@ -87,29 +88,56 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
 
         replace: (domNode) => {
 
-            console.log(domNode);
             if (domNode.name === 'input') {
                 if (domNode.attribs.type === "checkbox" || domNode.attribs.type === "radio") {
-                   
+
                     return (
-                        <CFormCheck  onChange={(e)=>handleChangeChecked(e)}  inline id={domNode.attribs.id} name={domNode.attribs.name} type={domNode.attribs.type} value={domNode.attribs.value} label={domNode.attribs.caption} ></CFormCheck>
+                        <CFormCheck onChange={(e) => handleChangeChecked(e)} 
+                        inline
+                        id={domNode.attribs.id} 
+                        name={domNode.attribs.name} 
+                        type={domNode.attribs.type} 
+                        label={domNode.attribs.caption} 
+                        value={domNode.attribs.value}
+                        checked={GetControlCheckedValue(domNode.attribs.value)}
+                        
+                        ></CFormCheck>
                     )
                 } else if (domNode.attribs.type === "date") {
-                    
+
                     return (
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="tr">
-                            <DatePicker name={domNode.attribs.id} id={domNode.attribs.id} onChange={(e)=>handleChangeDatetime(domNode.attribs.id,e)} />
+                            <DatePicker name={domNode.attribs.name}
+                                id={domNode.attribs.id}
+                                onChange={(e) => handleChangeDatetime(domNode.attribs.name, e)}
+
+                                value={GetDateValue(domNode.attribs.name)} />
                         </LocalizationProvider>
                     );
 
+                } else if (domNode.attribs.type === "hidden") {
+
+                    return (
+                        <input type="hidden"
+                            name={domNode.attribs.name}
+                            id={domNode.attribs.id}
+                            onChange={(e) => handleChange(e)}
+                            value={GetControlValue(domNode.attribs.name)}
+                        />
+                    );
+
                 } else {
+
+                    console.log(domNode);
+
                     return (
 
                         <CFormInput
                             type={domNode.attribs.type}
-                            name={domNode.attribs.id}
+                            name={domNode.attribs.name}
                             id={domNode.attribs.id}
-                            onChange={e=>handleChange(e)}
+                            onChange={(e) => handleChange(e)}
+                            value={GetControlValue(domNode.attribs.name)}
                         />
                     )
                 }
@@ -122,17 +150,22 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
                         {GetIcon(domNode.attribs.datacontent)}
                     </CButton>
                 )
-            } else if (domNode.name === "span") {
-
+            } else if (domNode.name === "select") {
+ 
                 return (
-                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="tr">
-                        <DatePicker name={domNode.attribs.id} id={domNode.attribs.id} onChange={(e)=>onChangeData(e)}/>
-                    </LocalizationProvider>
-                );
-            } else if (domNode.type === "checkbox") {
-                debugger;
-                console.log("dddd");
-            }            
+                    <CFormSelect id={domNode.attribs.id} 
+                        onChange={(e) => handleChange(e)} 
+                        name={domNode.attribs.name}
+                        value={GetControlValue(domNode.attribs.name)}
+                        >
+                        <option value="" ></option>
+                        {domNode.children.map((combo, t) => {
+                            return (
+                                <option key={t} value={combo.attribs.value}>{combo.children[0].data}</option>
+                            )
+                        })}</CFormSelect>
+                )
+            }
         },
     };
 
@@ -165,6 +198,25 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
 
     }
 
+    function GetControlValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+        return (fieldValue === undefined ? "" : fieldValue.fieldValue);
+    }
+
+    function GetControlCheckedValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+    
+        return (fieldValue === undefined ? false :  fieldValue.fieldValue==='true');
+    }
+
+    function GetDateValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+
+        return (fieldValue === undefined ? null : dayjs(fieldValue.fieldValue));
+    }
     useEffect(() => {
 
         getformTemplate();
@@ -183,7 +235,7 @@ const DesingFormTemplate = ({ formdefinationTypeIdp,onChangeData }) => {
                 continue;
 
             inputElement.value = item.controlValue;
-            onChangeData(item.fieldName,  inputElement.value);
+            onChangeData(item.fieldName, inputElement.value);
         }
     }
 
@@ -215,4 +267,5 @@ export default DesingFormTemplate;
 
 DesingFormTemplate.propTypes = {
     formdefinationTypeIdp: PropTypes.number,
+    controlValuesp: PropTypes.array,
 }

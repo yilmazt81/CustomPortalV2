@@ -22,7 +22,7 @@ import {
 
 import { useTranslation } from "react-i18next";
 
-import { GetSector, GetFormDefinationBySector, GetFormGroupFormApp } from 'src/lib/formdef'
+import { GetSector, GetFormDefinationBySector, GetFormGroupFormApp, GetFormDefination } from 'src/lib/formdef'
 import DesingFormTemplate from './DesingFormTemplate'
 import { GetFormMetaDataById, SaveMetaData } from 'src/lib/formMetaDataApi'
 import { useSearchParams } from 'react-router-dom';
@@ -87,6 +87,8 @@ const DigitalFormEdit = () => {
         } finally {
             setLoading(false);
         }
+
+
     }
 
 
@@ -102,14 +104,22 @@ const DigitalFormEdit = () => {
                 setformMetaData(fSectorService.data);
                 if (fSectorService.data.id != 0) {
                     await LoadCustomSectors();
-                    await GetformDefinationTypes(fSectorService.data.customSectorId);
-
-                    var formDef = formDefinationTypes.find(s => s.id === fSectorService.data.formDefinationId);
-
+                    await GetformDefinationTypes(fSectorService.data.customSectorId); 
                     setformdefinationType(fSectorService.data.formDefinationId);
-                   // setuseTemplate(formDef.desingTemplate)
+                    var getFormDefination = await GetFormDefination(fSectorService.data.formDefinationId);                  
+                    if (getFormDefination.returnCode === 1) {
+                        setuseTemplate(getFormDefination.data.desingTemplate);
+                    }
                     GetGroupList(fSectorService.data.formDefinationId);
-
+                  
+                    if (fSectorService.data.formMetaDataAttribute!=null){
+                      
+                        for(var i=0;i<fSectorService.data.formMetaDataAttribute.length;i++){
+                           var attribute= fSectorService.data.formMetaDataAttribute[i];
+                            controlValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue })
+                        }                       
+                        setControlValues(controlValues);
+                    }
                 }
             } else {
                 setSaveError(fSectorService.returnMessage);
@@ -181,6 +191,8 @@ const DigitalFormEdit = () => {
 
 
                 var formDef = formDefinationTypes.find(s => s.id == value);
+
+                
                 setLoading(true);
                 setformdefinationType(formDef.id);
                 setuseTemplate(formDef.desingTemplate)
@@ -201,7 +213,7 @@ const DigitalFormEdit = () => {
         } else {
             findField.fieldValue = value;
         }
-        setControlValues(controlValues);
+        setControlValues([...controlValues]);
     }
 
 
@@ -273,7 +285,7 @@ const DigitalFormEdit = () => {
                     }
                 </CRow>
                 <CRow>
-                    <LoadingAnimation loading={loading} size={"%40"}></LoadingAnimation>
+                    <LoadingAnimation loading={loading} size={"%10"}></LoadingAnimation>
                 </CRow>
                 <CForm>
                     <CRow>
@@ -288,8 +300,8 @@ const DigitalFormEdit = () => {
                     <CRow>
                         {
 
-                            useTemplate ? <DesingFormTemplate onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)} formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
-                                <DynamicForm OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)} formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm>
+                            useTemplate ? <DesingFormTemplate onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)}  controlValuesp={controlValues} formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
+                                <DynamicForm OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)} controlValues={controlValues} formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm>
 
                         }
 
@@ -312,9 +324,7 @@ const DigitalFormEdit = () => {
 
                         </CCol>
                     </CRow>
-                    <CRow>
-                        <LoadingAnimation loading={loading} size={"%50"}></LoadingAnimation>
-                    </CRow>
+                 
                 </CForm>
             </CCardBody>
         </CCard>

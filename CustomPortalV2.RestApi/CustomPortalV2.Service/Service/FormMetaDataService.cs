@@ -56,37 +56,29 @@ namespace CustomPortalV2.Business.Service
         {
 
             DefaultReturn<FormMetaData> defaultReturn = new DefaultReturn<FormMetaData>();
-
             try
             {
-                if (id == 0)
-                {
-                    defaultReturn.Data = new FormMetaData()
-                    {
-                        MainCompanyId = companyId,
-                        CompanyBranchId = branchId,
-                        CreatedDate = DateTime.Now,
-                    };
 
-                }
-                else
+                var branch = _branchRepository.Get(s => s.Id == branchId);
+                var formMetaData = _formMetaDataRepository.Get(id);
+                if (formMetaData == null)
                 {
-                    var branch = _branchRepository.Get(s => s.Id == branchId);
-                    var formMetaData = _formMetaDataRepository.Get(s => s.Id == id, 1).FirstOrDefault();
-                    if (formMetaData.MainCompanyId != companyId)
-                    {
-                        throw new Exception("DocumentISNotInYourCompany");
-                    }
-                    if (!branch.CompanyAdmin)
-                    {
-                        if (branch.Id != formMetaData.CompanyBranchId)
-                        {
-                            throw new Exception("DocumentISNotBelongToyou");
-                        }
-                    }
-
-                    defaultReturn.Data = formMetaData;
+                    throw new Exception("FormNotFound");
                 }
+                if (formMetaData.MainCompanyId != companyId)
+                {
+                    throw new Exception("DocumentISNotInYourCompany");
+                }
+                if (!branch.CompanyAdmin)
+                {
+                    if (branch.Id != formMetaData.CompanyBranchId)
+                    {
+                        throw new Exception("DocumentISNotBelongToyou");
+                    }
+                }
+
+                defaultReturn.Data = formMetaData;
+
             }
             catch (Exception ex)
             {
@@ -270,8 +262,16 @@ namespace CustomPortalV2.Business.Service
                     FormDefinationName = definationType.FormName,
                     Deleted = false,
                     DefaultForm = formMetaDataDTO.isDefault,
-                    CustomWorkId = formMetaDataDTO.workid
+                    CustomWorkId = formMetaDataDTO.workid,
+                    Id = formMetaDataDTO.id,
                 };
+                if (formmetaData.Id != 0)
+                {
+                    formmetaData.EditedBy = formMetaDataDTO.UserName;
+                    formmetaData.EditedId = formMetaDataDTO.UserId;
+                    formmetaData.EditedDate = DateTime.Now; 
+
+                }
                 formmetaData.FormMetaDataAttribute = new List<FormMetaDataAttribute>();
                 foreach (var formDefinationField in definationFields)
                 {
@@ -279,25 +279,28 @@ namespace CustomPortalV2.Business.Service
                     var fieldValues = GetFieldValue(formDefinationField, formMetaDataDTO);
                     foreach (var field in fieldValues.Keys)
                     {
+                        var formdefinationField = definationFields.FirstOrDefault(s => s.TagName == field);
                         formmetaData.FormMetaDataAttribute.Add(new FormMetaDataAttribute()
                         {
                             FieldValue = fieldValues[field],
                             TagName = field,
-
+                            FormDefinationFieldId = formDefinationField.Id,
                         });
                     }
                 }
                 SetMetaObjectField(formmetaData);
                 if (formmetaData.Id == 0)
                 {
-                    _formMetaDataRepository.Save(formmetaData);
+                    defaultReturn.Data = _formMetaDataRepository.Save(formmetaData);
+
                 }
                 else
                 {
-                    //
+                    defaultReturn.Data = _formMetaDataRepository.Update(formmetaData);
+
                 }
 
-                defaultReturn.Data = formmetaData;
+
             }
             catch (Exception ex)
             {

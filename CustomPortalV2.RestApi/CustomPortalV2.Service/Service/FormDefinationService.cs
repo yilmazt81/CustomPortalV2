@@ -485,31 +485,38 @@ namespace CustomPortalV2.Business.Service
 
                     var formFields = _formDefinationService.GetFormGroupFields(oneGroup.Id);
 
-                    foreach (var oneField in formFields)
+                    foreach (var oneField in formFields.Where(s => !s.Deleted))
                     {
                         string labelTag = $"@Label_{oneField.TagName.Trim()}@";
                         defaultReturn.Data = defaultReturn.Data.Replace(labelTag, oneField.FieldCaption);
 
                         if (oneField.ControlType == "Text")
                         {
-                            string controlHtml = $"<input type=\"text\"  class='form-control' id=\"{oneField.GetControlName()}\" />";
+                            string controlHtml = $"<input type=\"text\"   id=\"{oneField.GetControlName()}\"  name=\"{oneField.TagName}\" />";
                             defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", controlHtml);
 
 
                         }
+                        if (oneField.ControlType == "Hidden")
+                        {
+                            string controlHtml = $"<input type=\"hidden\"   id=\"{oneField.GetControlName()}\"  name=\"{oneField.TagName}\" />";
+                            defaultReturn.Data = defaultReturn.Data + controlHtml;
+
+                        }
                         else if (oneField.ControlType == "DateTime")
                         {
-                            string controlHtml = $"<input  id=\"{oneField.GetControlName()}\" />";
+                            string controlHtml = $"<input  type=\"date\" id=\"{oneField.GetControlName()}\"   name=\"{oneField.TagName}\" />";
                             defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", controlHtml);
                         }
                         else if (oneField.ControlType == "ComboBox")
                         {
                             var checkItems = _formDefinationService.GetComboBoxItems(companyId, oneField.TagName).ToList();
 
-                            string justControl = $"<select  class='form-control'  name='{oneField.GetControlName()}' id='{oneField.GetControlName()}'>";
+                            string justControl = $"<select   name='{oneField.TagName}' id='{oneField.GetControlName()}'>";
                             foreach (var oneItem in checkItems)
                             {
-                                var option = $"<option value={oneItem.TagName}>{oneItem.Name}</option>";
+                                var option = $"<option value=\"{oneItem.TagName}\">{oneItem.Name}</option>";
+                                justControl += option;
 
                             }
                             justControl += "</select></div>";
@@ -524,7 +531,7 @@ namespace CustomPortalV2.Business.Service
                             string justControl = "";
                             foreach (var boxItem in checkItems)
                             {
-                                justControl += $"<input class='form-check-input'   name='{oneField.GetControlName()}' type='" + ControlType + $"' id='{oneField.GetControlName()}_{oneField.TagName}' value='{oneField.TagName}_{boxItem.TagName}'  caption=\"{boxItem.Name}\"  >"; 
+                                justControl += $"<input  name='{oneField.TagName}' type='" + ControlType + $"' id='{oneField.GetControlName()}_{oneField.TagName}' value='{oneField.TagName}_{boxItem.TagName}'  caption=\"{boxItem.Name}\"  >";
                             }
 
                             defaultReturn.Data = defaultReturn.Data.Replace($"@input_{oneField.TagName}@", justControl);
@@ -532,7 +539,7 @@ namespace CustomPortalV2.Business.Service
 
                         if (oneField.AutoComplate)
                         {
-                            string htmlButton = $"<div class=\"btn btn-info\"  datacontent=\"{oneField.AutoComlateType}\" id=\"{oneField.Id}\" data=\"{oneField.Id}\"  type=\"button\">...</div>";
+                            string htmlButton = $"<div  datacontent=\"{oneField.AutoComlateType}\" id=\"{oneField.Id}\" data=\"{oneField.Id}\"  type=\"button\">...</div>";
                             defaultReturn.Data = defaultReturn.Data.Replace($"@autoComplate_{oneField.TagName}@", htmlButton);
                         }
                     }

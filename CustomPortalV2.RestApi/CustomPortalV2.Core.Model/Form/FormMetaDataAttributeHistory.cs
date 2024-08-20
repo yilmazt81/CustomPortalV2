@@ -15,8 +15,8 @@ namespace CustomPortalV2.Core.Model.Form
         public string NewValue { get; set; }
         public int EditedId { get; set; }
         public string EditedBy { get; set; }
-        public Nullable<System.DateTime> EditedDate { get; set; }
+        public  System.DateTime EditedDate { get; set; }
         public int FormMetaDataAttributeId { get; set; }
-        public Nullable<bool> ModifyByPartner { get; set; }
+        public  bool ModifyByPartner { get; set; }
     }
 }

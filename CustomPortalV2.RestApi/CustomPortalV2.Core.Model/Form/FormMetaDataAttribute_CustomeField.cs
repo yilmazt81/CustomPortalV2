@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.Form
@@ -14,8 +15,8 @@ namespace CustomPortalV2.Core.Model.Form
         public int DataOrder { get; set; }
         public string TagName { get; set; }
         public string FieldValue { get; set; }
-        public Nullable<bool> Attachment { get; set; }
-
+        public  bool  Attachment { get; set; }
+        [JsonIgnore]
         public virtual FormMetaData FormMetaData { get; set; }
     }
 }

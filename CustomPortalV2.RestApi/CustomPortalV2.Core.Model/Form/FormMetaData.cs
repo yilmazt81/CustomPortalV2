@@ -41,9 +41,9 @@ namespace CustomPortalV2.Core.Model.Form
 
         [JsonIgnore]
         public virtual FormDefination? FormDefination { get; set; }
-        [JsonIgnore]
+   
         public virtual ICollection<FormMetaDataAttribute>? FormMetaDataAttribute { get; set; }
-        [JsonIgnore]
+    
         public virtual ICollection<FormMetaDataAttribute_CustomeField>? FormMetaDataAttribute_CustomeField { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.Core.Model.Form;
@@ -39,11 +41,41 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
+            if (id == 0)
+            {
+                var defaultReturn = new DefaultReturn<FormMetaData>();
+                defaultReturn.Data = new FormMetaData()
+                {
+                    MainCompanyId = User.GetCompanyId(),
+                    CompanyBranchId = User.GetBranchId(),
+                    CreatedDate = DateTime.Now,
+                };
 
-            var formmetaData = _formMetaDataService.GetCompanyFormMetaData(User.GetCompanyId(), User.GetBranchId(), id);
+                return Ok(defaultReturn);
+            }
+            else
+            {
+                var key = $"FormMetaData{id}";
+
+                if (_memoryCache.TryGetValue(key, out DefaultReturn<FormMetaData> formData))
+                {
+                    return Ok(formData);
+                }
 
 
-            return Ok(formmetaData);
+                var formmetaData = _formMetaDataService.GetCompanyFormMetaData(User.GetCompanyId(), User.GetBranchId(), id);
+
+                _memoryCache.Set(key, formmetaData, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                    Priority = CacheItemPriority.Normal
+                });
+
+                return Ok(formmetaData);
+
+            }
+
+
         }
 
         [HttpPost]
@@ -55,6 +87,10 @@ namespace CustomPortalV2.RestApi.Controllers
             formMetaDataDTO.BrachId = User.GetBranchId();
 
             var returnV = _formMetaDataService.Save(formMetaDataDTO);
+
+            var key = $"FormMetaData{returnV.Data.Id}";
+
+            _memoryCache.Remove(key);
 
             return Ok(returnV);
         }

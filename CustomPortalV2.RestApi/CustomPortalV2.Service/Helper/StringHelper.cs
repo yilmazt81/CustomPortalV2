@@ -103,6 +103,10 @@ namespace CustomPortalV2.Business.Helper
             {
                 return $"txt{formDefination.TagName}";
             }
+            else if (formDefination.ControlType == "ComboBox")
+            {
+                return $"select{formDefination.TagName}";
+            }
             else
             {
                 return $"cstmG{formDefination.TagName}";

@@ -232,7 +232,7 @@ const DigitalForms = () => {
                     </CCol>
                 </CRow>
                 <CRow>
-                    <LoadingAnimation loading={loading} size={"%50"}></LoadingAnimation>
+                    <LoadingAnimation loading={loading} size={"%10"}></LoadingAnimation>
                 </CRow>
                 <CRow>
 
