@@ -18,7 +18,7 @@ import {
 
 } from '@coreui/react'
 
-import { SaveFormVersion } from '../../lib/formdef';
+import { SaveFormAttachment } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes, { func } from 'prop-types';
 
@@ -29,13 +29,13 @@ import ProcessAnimation from "../../content/animation/Process.json";
 import { useTranslation } from "react-i18next";
 
 
-const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, setFormData,OnCloseModal }) => {
+const FormAttachmentModal = ({ visiblep, formdefinationp, formAttachmentp, fontTypesp,setFormData, OnCloseModal }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [formdefinationVersion, setformdefinationVersion] = useState({ ...formdefinationVersionp });
+    const [formdefinationAttachment, setformdefinationAttachment] = useState({ ...formAttachmentp });
 
-    const [saveError, setSaveError] = useState(null); 
+    const [saveError, setSaveError] = useState(null);
 
     const [saveStart, setsaveStart] = useState(false);
     const [templateFile, settemplateFile] = useState(null);
@@ -45,12 +45,12 @@ const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, se
     function handleChange(event) {
         const { name, value } = event.target;
 
-        setformdefinationVersion({ ...formdefinationVersion, [name]: value });
+        setformdefinationAttachment({ ...formdefinationAttachment, [name]: value });
 
     }
     function handleFileChange(event) {
         const { files } = event.target;
-
+ 
         if (files) {
 
             settemplateFile(files[0]);
@@ -58,45 +58,47 @@ const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, se
     };
 
     async function ClosedClick() {
-        setvisible(false);
-        OnCloseModal();
+        OnCloseModal(false); 
     }
 
 
     useEffect(() => {
         setSaveError(null);
         setvisible(visiblep);
-        settemplateFile(null); 
-        setformdefinationVersion(formdefinationVersionp);
-     
+        settemplateFile(null);
+        setformdefinationAttachment(formAttachmentp);
 
-    }, [visiblep,  formdefinationVersionp])
+
+    }, [visiblep, formdefinationp, formAttachmentp, fontTypesp])
 
     async function SaveData() {
-       
+
         try {
 
             try {
                 setSaveError(null);
-           
+
                 const formData = new FormData();
-                formData.append("Id", formdefinationVersion.id);
-                formData.append("FormLanguage", formdefinationVersion.formLanguage);
-                formData.append("Active", formdefinationVersion.active); 
+                formData.append("Id", formdefinationAttachment.id);
+                formData.append("FormName", formdefinationAttachment.formName);
+                formData.append("FontSize", formdefinationAttachment.fontSize);
                 formData.append("Templatefile", templateFile);
                 formData.append("FormDefinationId", formdefinationp.id);
-                
-              
+                formData.append("Bold", formdefinationAttachment.bold);
+                formData.append("Italic", formdefinationAttachment.italic);
+                formData.append("FontFamily", formdefinationAttachment.fontFamily);
+                formData.append("Active", formdefinationAttachment.active);
+ 
                 setsaveStart(true);
-                
-                var savedefinationResult = await SaveFormVersion(formData);
-         
+
+                var savedefinationResult = await SaveFormAttachment(formData);
+                debugger;
                 if (savedefinationResult.returnCode === 1) {
                     setFormData(savedefinationResult.data);
-                    setvisible(false);
+                    OnCloseModal();
                 } else {
                     setSaveError(savedefinationResult.returnMessage);
-                } 
+                }
 
             } catch (error) {
                 setSaveError(error.message);
@@ -117,10 +119,10 @@ const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, se
     function handleChangeSwich(event) {
         const { name, value } = event.target;
 
-        var newValue = formdefinationVersion[name];
+        var newValue = formdefinationAttachment[name];
         newValue = !newValue;
 
-        setformdefinationVersion({ ...formdefinationVersion, [name]: newValue });
+        setformdefinationAttachment({ ...formdefinationAttachment, [name]: newValue });
 
     }
 
@@ -134,42 +136,73 @@ const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, se
 
             >
                 <CModalHeader>
-                    <CModalTitle>{t("FormDefinationVersionModalTitle")}</CModalTitle>
+                    <CModalTitle>{t("FormDefinationAttachmentModalTitle")}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CForm>
 
-                    <CRow className="mb-12">
+                        <CRow className="mb-12">
                             <CFormLabel htmlFor="txtFormName" className="col-sm-3 col-form-label">{t("FormName")}</CFormLabel>
                             <CCol sm={9}>
                                 <CFormInput type="text" id='txtFormName' readOnly={true} name="formName" value={formdefinationp?.formName} />
                             </CCol>
                         </CRow>
                         <CRow className="mb-12">
-                            <CFormLabel htmlFor="txtLanguage" className="col-sm-3 col-form-label">{t("FormLanguage")}</CFormLabel>
+                            <CFormLabel htmlFor="txtformName" className="col-sm-3 col-form-label">{t("FormName")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="text" id='txtLanguage' name="formLanguage"
-                                    onChange={e => handleChange(e)} value={formdefinationVersion?.formLanguage} />
+                                <CFormInput type="text" id='txtformName' name="formName"
+                                    onChange={e => handleChange(e)} value={formdefinationAttachment?.formName} />
                             </CCol>
                         </CRow>
-                         
+
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="frmTemplatePath" className="col-sm-3 col-form-label">{t("TemplatePath")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="file" id="frmTemplatePath"  accept='.docx,.xlsx,.pdf,.xml' onChange={(e) => handleFileChange(e)} />
+                                <CFormInput type="file" id="frmTemplatePath" accept='.docx,.xlsx,.pdf,.xml' onChange={(e) => handleFileChange(e)} />
+                            </CCol>
+                        </CRow>
+                        <CRow className="mb-12">
+                            <CFormLabel htmlFor="txtfontSize" className="col-sm-3 col-form-label">{t("FontSize")}</CFormLabel>
+                            <CCol sm={9}>
+                                <CFormInput type="number" id='txtfontSize' name="fontSize"
+                                    onChange={e => handleChange(e)} value={formdefinationAttachment?.fontSize} />
+                            </CCol>
+                        </CRow>
+
+                        <CRow className="mb-12">
+                            <CFormLabel htmlFor="selectFont" className="col-sm-3 col-form-label">{t("FontFamily")}</CFormLabel>
+                            <CCol sm={9}>
+                                <CFormSelect id='selectFont' name="fontFamily"
+                                    onChange={e => handleChange(e)} value={formdefinationAttachment?.fontFamily}>
+                                    <option value=""></option>
+                                    {fontTypesp.map(item => {
+                                        return (<option key={item.id} value={item.fontName} >{item.fontName}</option>);
+                                    })}
+                                </CFormSelect>
                             </CCol>
                         </CRow>
 
                         <CRow>
 
-                            <CCol sm={9}>
-                                <CFormSwitch label={t("Active")} name='active' size='lg'
+                            <CCol sm={4}>
+                                <CFormSwitch label={t("Bold")} name='bold' size='lg'
                                     onChange={e => handleChangeSwich(e)}
-                                    checked={formdefinationVersion?.active} ></CFormSwitch>
+                                    checked={formdefinationAttachment?.bold} ></CFormSwitch>
 
                             </CCol>
- 
-                        </CRow>   
+                            <CCol sm={4}>
+                                <CFormSwitch label={t("Italic")} name='italic' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={formdefinationAttachment?.italic} ></CFormSwitch>
+
+                            </CCol>
+                            <CCol sm={4}>
+                                <CFormSwitch label={t("Active")} name='active' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={formdefinationAttachment?.active} ></CFormSwitch>
+
+                            </CCol>
+                        </CRow>
 
                     </CForm>
                     <CRow xs={{ cols: 4 }}>
@@ -206,11 +239,12 @@ const FormVersionModal = ({ visiblep, formdefinationp,formdefinationVersionp, se
 }
 
 
-export default FormVersionModal;
+export default FormAttachmentModal;
 
 
-FormVersionModal.propTypes = {
+FormAttachmentModal.propTypes = {
     visiblep: PropTypes.bool,
-    formdefinationVersionp: PropTypes.object,
-    formdefinationp: PropTypes.object
+    formAttachmentp: PropTypes.object,
+    formdefinationp: PropTypes.object,
+    fontTypesp:PropTypes.array,
 };

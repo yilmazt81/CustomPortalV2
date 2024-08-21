@@ -602,18 +602,53 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment)
+        public DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment, string[] fielTags)
         {
-            DefaultReturn<FormDefinationAttachment> defaultReturn= new DefaultReturn<FormDefinationAttachment>();
+            DefaultReturn<FormDefinationAttachment> defaultReturn = new DefaultReturn<FormDefinationAttachment>();
+
+            var fieldList = _formDefinationService.GetAllFields(formDefinationAttachment.FormDefinationId);
+
             if (formDefinationAttachment.Id == 0)
-            { 
+            {
                 defaultReturn.Data = _formDefinationService.Add(formDefinationAttachment);
+                foreach (var oneTag in fielTags)
+                {
+                    var field = fieldList.FirstOrDefault(s => s.TagName == oneTag);
+                    _formDefinationService.Add(new FormAttachmentFontStyle()
+                    {
+                        Bold = formDefinationAttachment.Bold,
+                        FontSize = formDefinationAttachment.FontSize,
+                        Italic = formDefinationAttachment.Italic,
+                        TagName = oneTag,
+                        FieldCaption = (field == null ? oneTag : field.FieldCaption),
+                        FontFamily = formDefinationAttachment.FontFamily,
+                        
+                    });
+                }
 
             }
             else
             {
                 defaultReturn.Data = _formDefinationService.Update(formDefinationAttachment);
+
+                foreach(var oneTag in fielTags)
+                {
+                    if (!_formDefinationService.IsExistAttachmentFontStype(formDefinationAttachment.Id, oneTag))
+                    {
+                        var field = fieldList.FirstOrDefault(s => s.TagName == oneTag);
+                        _formDefinationService.Add(new FormAttachmentFontStyle()
+                        {
+                            Bold = formDefinationAttachment.Bold,
+                            FontSize = formDefinationAttachment.FontSize,
+                            Italic = formDefinationAttachment.Italic,
+                            TagName = oneTag,
+                            FieldCaption = (field == null ? oneTag : field.FieldCaption),
+                            FontFamily = formDefinationAttachment.FontFamily,                            
+                        });
+                    }
+                }
             }
+
             return defaultReturn;
 
 

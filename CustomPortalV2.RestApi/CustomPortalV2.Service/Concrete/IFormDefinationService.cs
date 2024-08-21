@@ -56,7 +56,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<bool> DeleteAutoComplate(int autoComplateFieldId);
 
-        DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment);
+        DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment, string[] taglist);
 
          
     }

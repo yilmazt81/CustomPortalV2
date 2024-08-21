@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj" />
     <ProjectReference Include="..\CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\CustomPortalV2.TemplateProcess\CustomPortalV2.TemplateProcess.csproj" />
   </ItemGroup>
 
 </Project>

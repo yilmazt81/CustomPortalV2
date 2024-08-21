@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.Business", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.DataAccessLayer", "CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj", "{85B5720B-B0D7-4F0D-9D18-ADB15BC8FD71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.Core.Model", "CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj", "{17ADCDA2-D63C-46F1-858A-02B272B84351}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomPortalV2.Core.Model", "CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj", "{17ADCDA2-D63C-46F1-858A-02B272B84351}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPortalV2.TemplateProcess", "CustomPortalV2.TemplateProcess\CustomPortalV2.TemplateProcess.csproj", "{CBB41B3D-6418-4A6C-9B24-5D32B9AB9D2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17ADCDA2-D63C-46F1-858A-02B272B84351}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB41B3D-6418-4A6C-9B24-5D32B9AB9D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB41B3D-6418-4A6C-9B24-5D32B9AB9D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB41B3D-6418-4A6C-9B24-5D32B9AB9D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB41B3D-6418-4A6C-9B24-5D32B9AB9D2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

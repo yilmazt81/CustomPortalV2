@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { useTranslation } from "react-i18next";
-import { GetFormDefination, GetFormDefinationAttachments, GetFormDefinationAttachment } from 'src/lib/formdef';
+import { GetFormDefination, GetFormDefinationAttachments, GetFormDefinationAttachment,GetFonts } from 'src/lib/formdef';
 import GridColumsFormDefinationAttachment from './GridColumsFormDefinationAttachment';
 import { DataGrid } from '@mui/x-data-grid';
 import FormAttachmentModal from './FormAttachmentModal';
@@ -22,6 +22,7 @@ import {
 
 
 } from '@coreui/react'
+import { func } from 'prop-types';
 
 
 
@@ -33,9 +34,11 @@ const FormDefinationAttachments = () => {
     const [formdefination, setformdefination] = useState(null);
     const [formAttachment,setformAttachment]=useState();
     const [formversionEdit, setFormVersionEdit] = useState(false);
+    const [formAttachmentDelete,setFormAttachmentDelete]=useState(false);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [formversionList, setFormVersionList] = useState([]);
+    const [fontTypes,setFontTypes]=useState([]);
 
 
     async function GetDefination(id) {
@@ -60,10 +63,35 @@ const FormDefinationAttachments = () => {
 
     }
 
+
+    async function LoadFonts() {
+     
+
+        setLoading(true);
+        setErrorMessage(null);
+        setFormVersionEdit(false);
+        try {
+
+            var fontsReturn = await GetFonts();
+            if (fontsReturn.returnCode === 1) {
+           
+                setFontTypes(fontsReturn.data);
+            } else {
+
+                setErrorMessage(fontsReturn.returnMessage);
+            }
+        } catch (error) {
+            setErrorMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function LoadFormAttachments(id) {
         setLoading(true);
         setErrorMessage(null);
         setFormVersionEdit(false);
+        debugger;
         try {
 
             var versionDataReturn = await GetFormDefinationAttachments(id);
@@ -89,6 +117,7 @@ const FormDefinationAttachments = () => {
         setFormDefinationTypeId(id);
         GetDefination(id);
         LoadFormAttachments(id);
+        LoadFonts();
 
     }, []);
 
@@ -109,7 +138,7 @@ const FormDefinationAttachments = () => {
                 setErrorMessage(formVersionRequest.returnMessage);
             }
 
-        } else if (option == 'Delete') {
+        }else if (option == 'Delete') {
 
         }else if (option==="Download")
         {
@@ -121,11 +150,27 @@ const FormDefinationAttachments = () => {
 
     function CreateNewFormVersion() {
 
-        setformAttachment({active:true,id:0,formName:"",fileName:"",fontSize:0,bold:false,italic:false,fontFamily:""});
+        debugger;
+        setformAttachment({active:true,
+                            id:0,formName:"",
+                            fileName:"",
+                            fontSize:16,
+                            bold:false,
+                            italic:false,
+                            fontFamily:"",
+                            active:true,
+                        });
         setFormVersionEdit(true);
 
     }
 
+    function ModalClosed(){
+        debugger;
+        setFormVersionEdit(false);
+        
+        LoadFormAttachments(formdefinationTypeId)
+        
+    }
     const gridColumns = GridColumsFormDefinationAttachment(optionClick);
 
     return (
@@ -168,8 +213,9 @@ const FormDefinationAttachments = () => {
                 visiblep={formversionEdit}
                 formdefinationp={formdefination}
                 formAttachmentp={formAttachment}
+                fontTypesp={fontTypes}
                 OnCloseModal={() => setFormVersionEdit(false)}
-                setFormData={() => LoadFormAttachments(formdefinationTypeId)}
+                setFormData={() => ModalClosed()}
             ></FormAttachmentModal>
         </>
     )

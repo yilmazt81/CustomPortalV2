@@ -15,7 +15,10 @@ namespace CustomPortalV2.Core.Model.FDefination
         public bool Italic { get; set; }
         public int FontSize { get; set; }
         public string FieldCaption { get; set; }
-        public Nullable<bool> CustomeField { get; set; }
+        public bool CustomeField { get; set; }
         public string TranslateLanguage { get; set; }
+
+        public string FontFamily { get; set; }
+
     }
 }

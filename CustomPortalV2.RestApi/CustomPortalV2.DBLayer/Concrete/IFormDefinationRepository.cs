@@ -72,5 +72,11 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         FormDefinationAttachment Add(FormDefinationAttachment formDefinationAttachment);
         FormDefinationAttachment Update(FormDefinationAttachment formDefinationAttachment);
+
+        bool IsExistAttachmentFontStype(int formAttachmentId, string tagName);
+
+        FormAttachmentFontStyle Add(FormAttachmentFontStyle formAttachmentFontStyle);
+        FormAttachmentFontStyle Update(FormAttachmentFontStyle formAttachmentFontStyle);
+
     }
 }

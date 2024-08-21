@@ -143,8 +143,8 @@ export const TRANSLATIONS_TR = {
     FormVersionTitle:"Form Çıktıları",
     FormDefinationVersionModalTitle:"Form Versiyon Düzenle",
     Active:"Aktif",
-    FormAttachmentTitle:"Ek Form Listesi"
-
+    FormAttachmentTitle:"Ek Form Listesi",
+    FormDefinationAttachmentModalTitle:"Ek Form Düzenle"
     
 
 

@@ -27,6 +27,11 @@
     <ProjectReference Include="..\CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj" />
     <ProjectReference Include="..\CustomPortalV2.DBLayer\CustomPortalV2.DataAccessLayer.csproj" />
     <ProjectReference Include="..\CustomPortalV2.Service\CustomPortalV2.Business.csproj" />
+    <ProjectReference Include="..\CustomPortalV2.TemplateProcess\CustomPortalV2.TemplateProcess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TempFolder\" />
   </ItemGroup>
 
 </Project>

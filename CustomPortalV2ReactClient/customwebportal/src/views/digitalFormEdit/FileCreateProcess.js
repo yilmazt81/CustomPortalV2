@@ -28,28 +28,15 @@ import { useTranslation } from "react-i18next";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-const FormActionModal = ({visiblep,formidp,}) => {
+const FileCreateProcess = ({formidp}) => {
 
     const [visible,setvisible] = useState(false);
 
     return (
         <>
-            <CModal
-                backdrop="static"
-                visible={visible}
-                size="xl"
-                onClose={() => ClosedClick()}
-
-            >
-                <CModalHeader>
-                    <CModalTitle>{t("EditUserName")}</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-
-                </CModalBody>
-            </CModal>
+           
         </>
     )
 }
 
-export default FormActionModal;
+export default FileCreateProcess;

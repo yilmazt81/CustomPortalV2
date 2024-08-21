@@ -11,7 +11,7 @@ export async function Post(apiAdress, postData) {
 
 export async function PostFile(apiAdress, postData) {
     var lastToken = localStorage.getItem("LastToken");
-    const { data } = await axios.post(process.env.REACT_APP_APIURL + apiAdress, postData, {
+    var  data   = await axios.post(process.env.REACT_APP_APIURL + apiAdress, postData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${lastToken}`

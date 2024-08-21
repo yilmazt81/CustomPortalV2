@@ -5,6 +5,7 @@ using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
+using CustomPortalV2.TemplateProcess;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -24,13 +25,16 @@ namespace CustomPortalV2.RestApi.Controllers
         IFormDefinationService _formDefinationService = null;
         IMemoryCache _memoryCache;
         IFirebaseStorage _firebaseStorage;
+        [Obsolete]
+        Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
         public FormDefinationController(IFormDefinationService formDefinationService,
             IMemoryCache memoryCache,
-            IFirebaseStorage firebaseStorage)
+            IFirebaseStorage firebaseStorage, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
             _formDefinationService = formDefinationService;
             _memoryCache = memoryCache;
             _firebaseStorage = firebaseStorage;
+            _hostingEnvironment = hostingEnvironment;
         }
         [HttpGet]
         public IActionResult Get()
@@ -395,13 +399,21 @@ namespace CustomPortalV2.RestApi.Controllers
                 formVersion.EditedDate = DateTime.Now;
                 formVersion.EditedId = User.GetUserId();
             }
-
             if (HttpContext.Request.Form.Files.Count != 0)
             {
                 var file = HttpContext.Request.Form.Files[0];
                 formVersion.FileName = file.FileName;
+                string[] allowExtention = new string[] { ".docx", ".xlsx", ".xml", ".pdf" };
+                var extention = Path.GetExtension(file.FileName);
+                if (!allowExtention.Any(s => s == extention))
+                {
+                    throw new Exception("FileFormantNotSupported");
+                }
+
                 var fileStream = file.OpenReadStream();
-                formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+
+
+                formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("FormVersion", Guid.NewGuid().ToString("N") + extention, fileStream);
             }
 
             var formDefinationReturn = _formDefinationService.Save(formVersion);
@@ -426,9 +438,8 @@ namespace CustomPortalV2.RestApi.Controllers
                 Active = Convert.ToBoolean(data["Active"]),
                 Bold = Convert.ToBoolean(data["Bold"]),
                 Italic = Convert.ToBoolean(data["Italic"]),
-                FontFamily =  data["FontFamily"].ToString() ,
-                FontSize= Convert.ToInt32(data["FontSize"]),
-
+                FontFamily = data["FontFamily"].ToString(),
+                FontSize = Convert.ToInt32(data["FontSize"]),
                 FormName = data["FormName"].ToString(),
                 FormDefinationId = Convert.ToInt32(data["FormDefinationId"]),
                 CreatedBy = User.GetUserFullName(),
@@ -442,24 +453,62 @@ namespace CustomPortalV2.RestApi.Controllers
                 formVersion.EditedId = User.GetUserId();
             }
 
-            if (HttpContext.Request.Form.Files.Count != 0)
+            string[] tagList = new string[0];
+            try
             {
-                var file = HttpContext.Request.Form.Files[0];
-                formVersion.FileName = file.FileName;
-                var fileStream = file.OpenReadStream();
-                formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Template", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+ 
+                if (HttpContext.Request.Form.Files.Count != 0)
+                {
+                    var file = HttpContext.Request.Form.Files[0];
+                    formVersion.FileName = file.FileName;
+                    var extention = Path.GetExtension(file.FileName);
+
+                    string[] allowExtention = new string[] { ".docx", ".xlsx", ".xml", ".pdf" };
+                    if (!allowExtention.Any(s => s == extention))
+                    {
+                        throw new Exception("FileFormantNotSupported");
+                    }
+
+                    var fileStream = file.OpenReadStream();
+                    if (extention == ".docx")
+                    {
+                        string destPath = _hostingEnvironment.ContentRootPath+ @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
+                        using (var fileStreamLocal = new FileStream(destPath, FileMode.Create, FileAccess.Write))
+                        {
+                            fileStream.CopyTo(fileStreamLocal);
+                        }
+
+                        using (SoftCreatorWord softCreatorWord = new SoftCreatorWord())
+                        {
+                            tagList = softCreatorWord.GetTagList(destPath);
+                        } 
+                    }
+
+                    formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+
+                }
+                else if (formVersion.Id==0)
+                {
+                    throw new Exception("YouShouldAddFile");
+                }
+
+                var formDefinationReturn = _formDefinationService.Save(formVersion, tagList);
+
+                string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
+                _memoryCache.Remove(key);
+
+
+                key = $"FormDefinationVersion{formVersion.Id}";
+                _memoryCache.Remove(key);
+                return Ok(formDefinationReturn);
             }
-
-            var formDefinationReturn = _formDefinationService.Save(formVersion);
-
-            string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
-            _memoryCache.Remove(key);
-
-
-            key = $"FormDefinationVersion{formVersion.Id}";
-            _memoryCache.Remove(key);
-
-            return Ok(formDefinationReturn);
+            catch (Exception ex)
+            {
+                DefaultReturn<FormDefinationAttachment> defaultReturn = new DefaultReturn<FormDefinationAttachment>();
+                defaultReturn.SetException(ex);
+                return Ok(defaultReturn);
+            }
+         
         }
         [HttpPost]
         public async Task<IActionResult> Post(IFormCollection data)

@@ -1,43 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
-    CAvatar,
     CButton,
     CButtonGroup,
     CCard,
     CCardBody,
-    CCardFooter,
-    CCardHeader,
     CCol,
     CAlert,
-    CProgress,
     CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-    CModal,
-    CModalHeader,
-    CModalTitle,
-    CModalFooter,
-    CModalBody,
     CFormLabel,
     CFormInput,
-    CFormSelect,
-    CCardText
-
+    CFormSelect
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import { cilNoteAdd } from '@coreui/icons' 
 
-import ProcessAnimation from "../../content/animation/Process.json";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid';
 
 import { Link } from 'react-router-dom';
@@ -48,23 +24,6 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 
 
 
-import {
-    Box,
-    Button,
-    ListItemIcon,
-    MenuItem,
-    Typography,
-    lighten,
-    IconButton
-
-
-} from '@mui/material';
-import {
-    Edit as EditIcon,
-    Delete as DeleteIcon,
-    Email as EmailIcon,
-    AlignHorizontalCenter,
-} from '@mui/icons-material';
 
 
 import { useTranslation } from "react-i18next";

@@ -70,15 +70,7 @@ const GridColumsFormDefinationVersion = (OptionClick) => {
                     >
                         <Download />
                     </IconButton>
-                      
-                    <IconButton
-                        onClick={() => OptionClick('Delete', params.row.id)}
-                        aria-label="delete"
-                        color="secondary"
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-
+                       
 
                 </div>
             ),

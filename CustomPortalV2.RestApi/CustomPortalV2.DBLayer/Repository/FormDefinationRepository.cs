@@ -320,15 +320,46 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbDefination.FontFamily = formDefinationAttachment.FontFamily;
             dbDefination.Italic = formDefinationAttachment.Italic;
             dbDefination.Bold = formDefinationAttachment.Bold;
-            dbDefination.FilePath = formDefinationAttachment.FilePath;
-            dbDefination.FileName = formDefinationAttachment.FileName;
             dbDefination.EditedBy = formDefinationAttachment.EditedBy;
             dbDefination.EditedDate = formDefinationAttachment.EditedDate;
             dbDefination.EditedId = formDefinationAttachment.EditedId;
+            if (!string.IsNullOrEmpty(formDefinationAttachment.FilePath))
+            {
+                dbDefination.FilePath = formDefinationAttachment.FilePath;
+                dbDefination.FileName = formDefinationAttachment.FileName;
+
+            }
 
             _dbContext.SaveChanges();
 
             return dbDefination;
+        }
+
+        public bool IsExistAttachmentFontStype(int formAttachmentId, string tagName)
+        {
+
+            return _dbContext.FormAttachmentFontStyle.Any(s => s.FormDefinationAttachmentId == formAttachmentId && s.TagName == tagName);
+        }
+
+        public FormAttachmentFontStyle Add(FormAttachmentFontStyle formAttachmentFontStyle)
+        {
+            _dbContext.FormAttachmentFontStyle.Add(formAttachmentFontStyle);
+
+            _dbContext.SaveChanges();
+            return formAttachmentFontStyle;
+        }
+
+        public FormAttachmentFontStyle Update(FormAttachmentFontStyle formAttachmentFontStyle)
+        {
+            var dbFontStyle = _dbContext.FormAttachmentFontStyle.Single(s => s.Id == formAttachmentFontStyle.Id) ;
+            dbFontStyle.FieldCaption = formAttachmentFontStyle.FieldCaption;
+            dbFontStyle.TagName = formAttachmentFontStyle.TagName;
+            dbFontStyle.Italic = formAttachmentFontStyle.Italic;
+            dbFontStyle.FontSize = formAttachmentFontStyle.FontSize;
+            dbFontStyle.Bold = formAttachmentFontStyle.Bold;
+           
+
+            return dbFontStyle;
         }
     }
 }
