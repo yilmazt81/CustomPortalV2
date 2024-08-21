@@ -269,7 +269,7 @@ namespace CustomPortalV2.Business.Service
                 {
                     formmetaData.EditedBy = formMetaDataDTO.UserName;
                     formmetaData.EditedId = formMetaDataDTO.UserId;
-                    formmetaData.EditedDate = DateTime.Now; 
+                    formmetaData.EditedDate = DateTime.Now;
 
                 }
                 formmetaData.FormMetaDataAttribute = new List<FormMetaDataAttribute>();
@@ -316,17 +316,47 @@ namespace CustomPortalV2.Business.Service
 
             try
             {
-                var formData=_formMetaDataRepository.Get(id);
-                
+                var formData = _formMetaDataRepository.Get(id);
+
                 if (formData.MainCompanyId != mainCompanyId)
                 {
                     throw new Exception("CompanyNameIsNotSame");
                 }
 
-               var definationList= _formDefinationRepository.GetDefinationVersions(formData.FormDefinationId);
+                var definationList = _formDefinationRepository.GetDefinationVersions(formData.FormDefinationId);
 
-                defaultReturn.Data = new FormConvertContainerDTO();
+                var formDefinationFilters = _formDefinationRepository.GetFormDefinationFilters(formData.FormDefinationId);
+                var formAttachmentTypes = _formDefinationRepository.GetFormDefinationAttachments(formData.FormDefinationId);
+
+                defaultReturn.Data = new FormConvertContainerDTO() { FormDefinationTypeName = formData.FormDefinationName };
                 defaultReturn.Data.FormVersions = definationList.ToArray();
+                if (formAttachmentTypes.Count() == 0)
+                {
+                    defaultReturn.Data.AttachmentNotPrivateForForm = formAttachmentTypes.ToList();
+                }
+                else
+                {
+                    foreach (var attachment in formAttachmentTypes)
+                    {
+                        foreach (var filteritem in formDefinationFilters)
+                        {
+                            if (formData.FormMetaDataAttribute == null)
+                            {
+                                continue;
+                            }
+
+                            if (formData.FormMetaDataAttribute.Any(s => s.TagName == filteritem.TagName && s.FieldValue == filteritem.FilterValue) && filteritem.FormDefinationAttachmentId == attachment.Id)
+                            {
+                                defaultReturn.Data.AttachmentPrivateForForm.Add(attachment);
+                            }
+                            else
+                            {
+                                defaultReturn.Data.AttachmentNotPrivateForForm.Add(attachment);
+                            }
+                        }
+                    }
+
+                }
 
 
 

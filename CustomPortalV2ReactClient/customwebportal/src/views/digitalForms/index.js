@@ -33,6 +33,8 @@ import { GetBrachData } from '../../lib/formMetaDataApi';
 
 import GridColumsDigitalForm from './GridColumsDigitalForm';
 
+import FormActionModal from './FormActionModal';
+
 const DigitalForms = () => {
     const { t } = useTranslation();
 
@@ -43,6 +45,8 @@ const DigitalForms = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [formDefinationTypes, setFormDefinationTypes] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [formActionModal,setFormActionModal]=useState(false);
+    const [selectedFormId,setSelectedFormId]=useState(0);
 
     async function LoadCustomSectors() {
 
@@ -118,6 +122,12 @@ const DigitalForms = () => {
     }, []);
 
     const optionClick = (option, id) => {
+        debugger;
+        if (option==="Download")
+        {
+            setSelectedFormId(id);
+            setFormActionModal(true);
+        }
         //    EditGroupDefination(option === 'Delete', id);
     }
 
@@ -220,6 +230,7 @@ const DigitalForms = () => {
             </CCardBody>
         </CCard>
 
+                <FormActionModal visiblep={formActionModal} formidp={selectedFormId} ></FormActionModal>
 
         </>
     )

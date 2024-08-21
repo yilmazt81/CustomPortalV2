@@ -361,5 +361,10 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return dbFontStyle;
         }
+
+        public IEnumerable<FormMetaDataAttachmentFilter> GetFormDefinationFilters(int formDefinationId)
+        {
+            return _dbContext.FormMetaDataAttachmentFilters.Where(s=>s.FormDefinationId==formDefinationId).ToArray();
+        }
     }
 }

@@ -78,5 +78,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormAttachmentFontStyle Add(FormAttachmentFontStyle formAttachmentFontStyle);
         FormAttachmentFontStyle Update(FormAttachmentFontStyle formAttachmentFontStyle);
 
+        IEnumerable<FormMetaDataAttachmentFilter> GetFormDefinationFilters(int formDefinationId);
+
     }
 }

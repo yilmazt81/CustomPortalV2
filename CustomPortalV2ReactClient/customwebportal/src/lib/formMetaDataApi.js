@@ -18,6 +18,13 @@ export async function  GetFormMetaDataById(id) {
   return data;
 };
 
+export async function  GetConvertFileList(id) {   
+  
+  const { data } =  await GetRequest (`/api/FormMetaData/GetConvertFileList/${id}`);
+  return data;
+};
+ 
+
 export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,woid) {
     debugger;
   var postobj=  {id:formid,
