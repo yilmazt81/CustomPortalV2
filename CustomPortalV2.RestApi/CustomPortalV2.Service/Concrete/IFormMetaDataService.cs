@@ -21,5 +21,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<FormMetaData> Save(FormMetaDataDTO formMetaDataDTO);
 
+        DefaultReturn<FormConvertContainerDTO> GetFormConvertList(int id, int mainCompanyId);
+
     }
 }

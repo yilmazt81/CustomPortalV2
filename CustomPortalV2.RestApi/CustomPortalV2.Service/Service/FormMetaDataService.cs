@@ -309,5 +309,34 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+        public DefaultReturn<FormConvertContainerDTO> GetFormConvertList(int id, int mainCompanyId)
+        {
+            DefaultReturn<FormConvertContainerDTO> defaultReturn = new DefaultReturn<FormConvertContainerDTO>();
+
+            try
+            {
+                var formData=_formMetaDataRepository.Get(id);
+                
+                if (formData.MainCompanyId != mainCompanyId)
+                {
+                    throw new Exception("CompanyNameIsNotSame");
+                }
+
+               var definationList= _formDefinationRepository.GetDefinationVersions(formData.FormDefinationId);
+
+                defaultReturn.Data = new FormConvertContainerDTO();
+                defaultReturn.Data.FormVersions = definationList.ToArray();
+
+
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
     }
 }

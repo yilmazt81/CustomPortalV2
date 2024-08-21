@@ -74,8 +74,26 @@ namespace CustomPortalV2.RestApi.Controllers
                 return Ok(formmetaData);
 
             }
+        }
 
+        [HttpGet("GetConvertFileList/{id}")]
+        public IActionResult GetConvertFileList(int id)
+        {
+            var key = $"GetConvertFileList{id}";
 
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<FormConvertContainerDTO> formData))
+            {
+                return Ok(formData);
+            }
+            var formmetaData = _formMetaDataService.GetFormConvertList(id, User.GetCompanyId());
+             
+            _memoryCache.Set(key, formmetaData, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(formmetaData);
         }
 
         [HttpPost]
