@@ -103,6 +103,15 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                 setFormVersionList(convertTypeReturn.data.formVersions)
                 setformAttachmentPrivate(convertTypeReturn.data.attachmentPrivateForForm);
                 setformAttachmentNotPrivate(convertTypeReturn.data.attachmentNotPrivateForForm);
+                if (convertTypeReturn.data.attachmentPrivateForForm.length===0) 
+                {
+                    setValue(1);
+                }
+                if (convertTypeReturn.data.formVersions.length!=0)
+                {
+                    setformdefinationVersion(convertTypeReturn.data.formVersions[0].id);
+                }
+                
             } else {
                 onError(convertTypeReturn.returnMessage)
             }
@@ -134,10 +143,10 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                     <CFormLabel className="form-label">{formdefinationName}</CFormLabel>
                 </CCol>
                 <CCol sm={6}>
-                    <CFormSelect id='selectFormVersion' name="formVersion"
-                        onChange={e => handleChange(e)}>
-                        <option value={0}></option>
+                    <CFormSelect id='selectFormVersion' name="formVersion" value={formdefinationVersion}
+                        onChange={e => handleChange(e)}> 
                         {formVersionList.map(item => {
+                            
                             return (<option key={item.id} value={item.id} >{item.formLanguage}</option>);
                         })}
                     </CFormSelect>

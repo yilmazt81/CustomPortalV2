@@ -148,7 +148,8 @@ export const TRANSLATIONS_TR = {
     PrivateAttachment:"Evrağa Özel Ekler",
     NotPrivateAttachment:"Diğer Ekler",
     FormModalProcessTitle:"Dokuman Tipi Dosya Oluştur",
-    
+    SendMail:"Mail Olarak Gönder",
+
     
 
 
