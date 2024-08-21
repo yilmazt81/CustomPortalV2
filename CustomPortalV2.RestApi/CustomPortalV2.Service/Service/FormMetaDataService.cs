@@ -330,7 +330,7 @@ namespace CustomPortalV2.Business.Service
 
                 defaultReturn.Data = new FormConvertContainerDTO() { FormDefinationTypeName = formData.FormDefinationName };
                 defaultReturn.Data.FormVersions = definationList.ToArray();
-                if (formAttachmentTypes.Count() == 0)
+                if (formDefinationFilters.Count() == 0)
                 {
                     defaultReturn.Data.AttachmentNotPrivateForForm = formAttachmentTypes.ToList();
                 }
