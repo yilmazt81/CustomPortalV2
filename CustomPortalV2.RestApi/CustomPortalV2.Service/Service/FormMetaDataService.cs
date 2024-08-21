@@ -326,10 +326,10 @@ namespace CustomPortalV2.Business.Service
                 var definationList = _formDefinationRepository.GetDefinationVersions(formData.FormDefinationId);
 
                 var formDefinationFilters = _formDefinationRepository.GetFormDefinationFilters(formData.FormDefinationId);
-                var formAttachmentTypes = _formDefinationRepository.GetFormDefinationAttachments(formData.FormDefinationId);
+                var formAttachmentTypes = _formDefinationRepository.GetFormDefinationAttachments(formData.FormDefinationId).Where(s => s.Active);
 
                 defaultReturn.Data = new FormConvertContainerDTO() { FormDefinationTypeName = formData.FormDefinationName };
-                defaultReturn.Data.FormVersions = definationList.ToArray();
+                defaultReturn.Data.FormVersions = definationList.Where(s => s.Active).ToArray();
                 if (formDefinationFilters.Count() == 0)
                 {
                     defaultReturn.Data.AttachmentNotPrivateForForm = formAttachmentTypes.ToList();

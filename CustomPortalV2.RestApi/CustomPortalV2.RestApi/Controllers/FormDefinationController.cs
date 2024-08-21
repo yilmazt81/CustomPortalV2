@@ -6,6 +6,7 @@ using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
 using CustomPortalV2.TemplateProcess;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -456,7 +457,7 @@ namespace CustomPortalV2.RestApi.Controllers
             string[] tagList = new string[0];
             try
             {
- 
+
                 if (HttpContext.Request.Form.Files.Count != 0)
                 {
                     var file = HttpContext.Request.Form.Files[0];
@@ -472,7 +473,7 @@ namespace CustomPortalV2.RestApi.Controllers
                     var fileStream = file.OpenReadStream();
                     if (extention == ".docx")
                     {
-                        string destPath = _hostingEnvironment.ContentRootPath+ @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
+                        string destPath = _hostingEnvironment.ContentRootPath + @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
                         using (var fileStreamLocal = new FileStream(destPath, FileMode.Create, FileAccess.Write))
                         {
                             fileStream.CopyTo(fileStreamLocal);
@@ -481,24 +482,22 @@ namespace CustomPortalV2.RestApi.Controllers
                         using (SoftCreatorWord softCreatorWord = new SoftCreatorWord())
                         {
                             tagList = softCreatorWord.GetTagList(destPath);
-                        } 
+                        }
                     }
 
                     formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
 
                 }
-                else if (formVersion.Id==0)
+                else if (formVersion.Id == 0)
                 {
                     throw new Exception("YouShouldAddFile");
                 }
 
                 var formDefinationReturn = _formDefinationService.Save(formVersion, tagList);
 
-                string key = $"FormDefinationVersions{formVersion.FormDefinationId}";
+                string key = $"GetFormDefinationAttachments{formVersion.FormDefinationId}";
                 _memoryCache.Remove(key);
-
-
-                key = $"FormDefinationVersion{formVersion.Id}";
+                key = $"GetFormDefinationAttachment{formVersion.Id}";
                 _memoryCache.Remove(key);
                 return Ok(formDefinationReturn);
             }
@@ -508,7 +507,7 @@ namespace CustomPortalV2.RestApi.Controllers
                 defaultReturn.SetException(ex);
                 return Ok(defaultReturn);
             }
-         
+
         }
         [HttpPost]
         public async Task<IActionResult> Post(IFormCollection data)
