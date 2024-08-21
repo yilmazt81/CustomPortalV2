@@ -122,7 +122,7 @@ const DigitalForms = () => {
     }, []);
 
     const optionClick = (option, id) => {
-        debugger;
+ 
         if (option==="Download")
         {
             setSelectedFormId(id);

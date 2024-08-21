@@ -42,6 +42,7 @@ import {
 } from '../../lib/companyAdressDef';
 import EditModal from './editmodal';
 import DeleteModal from 'src/components/DeleteModal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 const AdresDefination = () => {
   const navigate = useNavigate();
   //Bu sekilde redux tan okunacak 
@@ -56,13 +57,13 @@ const AdresDefination = () => {
   const [adressDefinationTypes, setadressDefinationTypes] = useState([]);
   const [updateAdressDefination, setupdateAdressDefination] = useState(null);
   const [deleteStart, setDeleteStart] = useState(false);
-
+  const [loading,setLoading]=useState(false);
 
 
   async function NewDefination() {
     try {
       setSaveError(null);
-
+      setLoading(true);
       LoadDefinationTypes();
       var adresDefinationService = await NewCompanyDefination();
       if (adresDefinationService.returnCode === 1) {
@@ -74,6 +75,8 @@ const AdresDefination = () => {
       }
     } catch (error) {
       setSaveError(error.message);
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -93,7 +96,7 @@ const AdresDefination = () => {
   }
 
   async function LoadUserAdressDefinations() {
-
+    setLoading(true);
     try {
       var AdresDefinationService = await GetUserCompanyDefinations();
       if (AdresDefinationService.returnCode === 1) {
@@ -103,6 +106,8 @@ const AdresDefination = () => {
       }
     } catch (error) {
       setSaveError(error.message);
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -128,6 +133,7 @@ const AdresDefination = () => {
 
       setSaveError(null);
       setVisibleEdit(false);
+      setLoading(true);
       var getcompanyDefinationReturn = await GetCompanyDefination(id);
 
       if (getcompanyDefinationReturn.returnCode === 1) {
@@ -138,8 +144,8 @@ const AdresDefination = () => {
       }
     } catch (error) {
       setSaveError(error.message);
-    } finally {
-      // setdeleteStart(false);
+    } finally{
+      setLoading(false);
     }
 
   }
@@ -221,6 +227,11 @@ const AdresDefination = () => {
               <CButtonGroup role="group">
                 <CButton color="primary" shape='rounded-3' onClick={() => NewDefination()} > {t("AddNewFormDefination")}</CButton>
               </CButtonGroup>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+              <LoadingAnimation loading={loading} size={"%20"}></LoadingAnimation>
             </CCol>
           </CRow>
           <CRow>

@@ -27,9 +27,11 @@ import { useTranslation } from "react-i18next";
 
 import { GetConvertFileList } from 'src/lib/formMetaDataApi';
 
-import { cibCmake } from '@coreui/icons';
+import { cilChevronCircleRightAlt } from '@coreui/icons';
 
 import { CIcon } from '@coreui/icons-react';
+
+import { CreateFormAttachment } from 'src/lib/CreateFileApi';
 
 function a11yProps(index) {
     return {
@@ -74,6 +76,8 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
     const [versionConvertFileUrl, setversionConvertFileUrl] = useState(null);
     const [formdefinationName, setformdefinationName] = useState("");
 
+    const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '' }]);
+
 
     const [value, setValue] = useState(0);
 
@@ -96,22 +100,20 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
         try {
             var convertTypeReturn = await GetConvertFileList(formidp);
-            debugger;
+
             if (convertTypeReturn.returnCode === 1) {
-                debugger;
+
                 setformdefinationName(convertTypeReturn.data.formDefinationTypeName);
                 setFormVersionList(convertTypeReturn.data.formVersions)
                 setformAttachmentPrivate(convertTypeReturn.data.attachmentPrivateForForm);
                 setformAttachmentNotPrivate(convertTypeReturn.data.attachmentNotPrivateForForm);
-                if (convertTypeReturn.data.attachmentPrivateForForm.length===0) 
-                {
+                if (convertTypeReturn.data.attachmentPrivateForForm.length === 0) {
                     setValue(1);
                 }
-                if (convertTypeReturn.data.formVersions.length!=0)
-                {
+                if (convertTypeReturn.data.formVersions.length != 0) {
                     setformdefinationVersion(convertTypeReturn.data.formVersions[0].id);
                 }
-                
+
             } else {
                 onError(convertTypeReturn.returnMessage)
             }
@@ -135,6 +137,45 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
     }
 
+    async function CreateAttacment(attachmentid) {
+
+        var itemold = processAttachmentList.find(s => s.attachmentid === attachmentid);
+        if (itemold === undefined) {
+            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '' });
+        } else {
+            itemold.process = true;
+        }
+
+        setprocessAttachmentList([...processAttachmentList]);
+        var createFileReturn = await CreateFormAttachment(formidp, attachmentid);
+
+        var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+
+        itemold1.process = false;
+        itemold1.downloadUrl="ttttt";
+        setprocessAttachmentList([...processAttachmentList]);
+
+    }
+
+    function GetProcessStatus(attachmentid) {
+
+        var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+
+        if (item === undefined)
+            return false;
+        else
+            return item.process;
+
+    }
+    function GetFilePath(attachmentid) {
+        var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+
+        if (item === undefined)
+            return '';
+        else
+            return item.downloadUrl;
+    }
+
     return (
         <>
             <CRow>
@@ -144,9 +185,9 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                 </CCol>
                 <CCol sm={6}>
                     <CFormSelect id='selectFormVersion' name="formVersion" value={formdefinationVersion}
-                        onChange={e => handleChange(e)}> 
+                        onChange={e => handleChange(e)}>
                         {formVersionList.map(item => {
-                            
+
                             return (<option key={item.id} value={item.id} >{item.formLanguage}</option>);
                         })}
                     </CFormSelect>
@@ -154,8 +195,8 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                 </CCol>
                 <CCol sm={2}>
 
-                    <CButton color="primary"  >
-                        <CIcon icon={cibCmake} onClick={() => CreateVersionFile()} />
+                    <CButton color="primary" variant="outline" shape="rounded-pill">
+                        <CIcon icon={cilChevronCircleRightAlt} onClick={() => CreateVersionFile()} />
                     </CButton>
 
                 </CCol>
@@ -171,7 +212,13 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                     <CRow>
                         <CCol sm={12}>
                             {formAttachmentPrivate.map(item => {
-                                return (<AttachmentProcessItem key={item.id} data={item}></AttachmentProcessItem>);
+                                return (<AttachmentProcessItem
+                                    OnProcessAttachment={() => CreateAttacment(item.id)}
+                                    key={item.id} data={item}
+                                    processp={GetProcessStatus(item.id)}
+
+                                    downloadFilePathp={GetFilePath(item.id)}
+                                ></AttachmentProcessItem>);
                             })}
                         </CCol>
                     </CRow>
@@ -183,7 +230,13 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
 
                             {formAttachmentNotPrivate.map(item => {
-                                return (<AttachmentProcessItem key={item.id} data={item}></AttachmentProcessItem>);
+                                return (<AttachmentProcessItem
+                                    key={item.id}
+                                    data={item}
+                                    OnProcessAttachment={() => CreateAttacment(item.id)}
+                                    processp={GetProcessStatus(item.id)}
+                                    downloadFilePathp={GetFilePath(item.id)}
+                                ></AttachmentProcessItem>);
                             })}
 
                         </CCol>

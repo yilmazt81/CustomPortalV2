@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 
 import DeleteModal from '../../components/DeleteModal';
 import EditModal from './editmodal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
  
 import { CreateNewFormDefination, GetFormDefinations, GetSector, GetFormDefination } from '../../lib/formdef';
 
@@ -38,9 +39,10 @@ const FormDefination = () => {
   const [Error, setError] = useState(null);
 
   const [visible, setVisible] = useState(false);
+  const [loading,setLoading]=useState(false);
 
   async function LoadFormDefinations() {
-
+    setLoading(true);
     try {
       var fdefinationService = await GetFormDefinations();
       if (fdefinationService.returnCode === 1) {
@@ -50,11 +52,13 @@ const FormDefination = () => {
       }
     } catch (error) {
       setError(error.message);
+    }finally{
+      setLoading(false);
     }
   }
 
   async function LoadCustomSectors() {
-
+    setLoading(true);
     try {
       var fSectorService = await GetSector();
       if (fSectorService.returnCode === 1) {
@@ -64,6 +68,8 @@ const FormDefination = () => {
       }
     } catch (error) {
       setError(error.message);
+    }finally{
+      setLoading(false);
     }
   }
 
@@ -79,8 +85,7 @@ const FormDefination = () => {
   }, []);
 
   async function EditData(id) {
-
-
+ 
     try {
       setDeleteStart(false);
       setVisible(false);
@@ -171,6 +176,11 @@ const FormDefination = () => {
           </CRow>
           <CRow>
             <CCol>
+              <LoadingAnimation loading={loading} size={"%20"}></LoadingAnimation>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
 
 
               <div style={{ height: 450, width: '100%' }}>
@@ -199,7 +209,9 @@ const FormDefination = () => {
         OnClickOk={(data) => DeleteAccepted(data)}
         title={t("UserDelete")}
         message={formdefinationEdit.FormName}
-        message2={t("UserDeleteMessage")} saveError={deleteError} saveStart={deleteStart}></DeleteModal>
+        message2={t("UserDeleteMessage")} 
+        saveError={deleteError} 
+        saveStart={deleteStart}></DeleteModal>
 
 
 

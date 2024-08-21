@@ -18,6 +18,8 @@ bin-release/
 *.apk
 *.exe
 *.dll
+*.docx
+*.xlsx
 
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
