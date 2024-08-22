@@ -18,7 +18,7 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("CreateFormAttachment/{id}/{attachmentId}")]
         public IActionResult CreateFormAttachment(int id,int attachmentId)
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(1000);
             return Ok("");
         }
     }
