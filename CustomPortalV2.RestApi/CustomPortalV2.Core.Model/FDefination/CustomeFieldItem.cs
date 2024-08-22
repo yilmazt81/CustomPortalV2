@@ -32,5 +32,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int? HeaderHeight { get; set; }
         public int? RowHeightRuleValue { get; set; }
         public int? RowHeight { get; set; }
+
+        public int MainCompanyId { get; set; }
     }
 }

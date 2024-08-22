@@ -288,7 +288,7 @@ namespace CustomPortalV2.TemplateProcess
             int formAttachmentId,
             int formVersionId,
             CustomeFieldItem[] customeFieldItemList,
-            IQueryable<CustomeField_VirtualTable> queryVirtualTable,
+             CustomeField_VirtualTable[] queryVirtualTable,
             CustomeField_VirtualTableField[] customeField_VirtualTableFields,
             ComboBoxItem[] comboBoxItems)
         {
@@ -296,24 +296,22 @@ namespace CustomPortalV2.TemplateProcess
             var customeFieldItems = customeFieldItemList.Where(s => s.CustomeFieldId == customeFieldTypeId).ToList();
             var customeFiel = customeFieldItemList.Single(s => s.Id == customeFieldTypeId);
 
-
-            queryVirtualTable = queryVirtualTable.Where(a => a.CustomeFieldId == customeFieldTypeId);
+            CustomeField_VirtualTable? virtualTable = null;
             if (formAttachmentId != 0)
             {
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormDefinationAttachmentId == formAttachmentId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormDefinationAttachmentId == formAttachmentId && a.CustomeFieldId == customeFieldTypeId);
 
             }
             else if (formVersionId != 0)
             {
 
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormVersionId == formVersionId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormVersionId == formVersionId && a.CustomeFieldId == customeFieldTypeId);
             }
             else if (formDefinationTypeId != 0)
             {
 
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormDefinationId == formDefinationTypeId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormDefinationId == formDefinationTypeId && a.CustomeFieldId == customeFieldTypeId);
             }
-            var virtualTable = queryVirtualTable.FirstOrDefault();
 
             List<TableHeader> tableHeaders = new List<TableHeader>();
             if (virtualTable != null)
@@ -715,8 +713,9 @@ namespace CustomPortalV2.TemplateProcess
             ComboBoxItem[] comboBoxItems,
             CustomeField[] customeFields,
               CustomeFieldItem[] customeFieldItemList,
-        IQueryable<CustomeField_VirtualTable> queryVirtualTable,
-        CustomeField_VirtualTableField[] customeField_VirtualTableFields, TranslateDictionary[] translateDictionaries)
+         CustomeField_VirtualTable[] queryVirtualTable,
+        CustomeField_VirtualTableField[] customeField_VirtualTableFields,
+        TranslateDictionary[] translateDictionaries)
         {
             OpenSettings os = new OpenSettings
             {
@@ -886,11 +885,11 @@ namespace CustomPortalV2.TemplateProcess
                                         formMetaDataAttribute_Customes.Where(s => s.FormDefinationFieldId == formDefination.Id).ToArray(),
                                         formDefinationFields, formDefinationTypeId,
                                         formAttachmentId,
-                                        formVersionId,customeFieldItemList,queryVirtualTable,customeField_VirtualTableFields,comboBoxItems);
+                                        formVersionId, customeFieldItemList, queryVirtualTable, customeField_VirtualTableFields, comboBoxItems);
                                 }
                                 else if (customeControlType.ElementType == "Text")
                                 {
-                                    AddTextToForm(formDefination, tableMark.Value, customeControlType.Id, formMetaDataAttribute_Customes.Where(s => s.FormDefinationFieldId == formDefination.Id).ToArray(),customeFieldItemList);
+                                    AddTextToForm(formDefination, tableMark.Value, customeControlType.Id, formMetaDataAttribute_Customes.Where(s => s.FormDefinationFieldId == formDefination.Id).ToArray(), customeFieldItemList);
                                 }
                                 else if (customeControlType.ElementType == "TableText")
                                 {
@@ -899,7 +898,7 @@ namespace CustomPortalV2.TemplateProcess
                                        formMetaDataAttribute_Customes.Where(s => s.FormDefinationFieldId == formDefination.Id).ToArray(),
                                        formDefinationFields, formDefinationTypeId,
                                        formAttachmentId,
-                                       formVersionId,customeFieldItemList,customeFields,queryVirtualTable,customeField_VirtualTableFields,comboBoxItems);
+                                       formVersionId, customeFieldItemList, customeFields, queryVirtualTable, customeField_VirtualTableFields, comboBoxItems);
                                 }
                             }
                         }
@@ -1055,7 +1054,7 @@ namespace CustomPortalV2.TemplateProcess
 
         public void Dispose()
         {
-            
+
         }
     }
 }

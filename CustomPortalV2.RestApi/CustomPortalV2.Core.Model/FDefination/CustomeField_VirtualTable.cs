@@ -33,6 +33,8 @@ namespace CustomPortalV2.Core.Model.FDefination
         public Nullable<bool> Italic { get; set; }
         public Nullable<int> FormVersionId { get; set; }
 
+        public int MainCompanyId { get; set; }
+
         public virtual CustomeField CustomeField { get; set; } 
         public virtual ICollection<CustomeField_VirtualTableField> CustomeField_VirtualTableField { get; set; }
     }

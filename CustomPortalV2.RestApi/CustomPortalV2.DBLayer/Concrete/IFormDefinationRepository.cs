@@ -42,7 +42,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormDefinationField GetFormDefinationField(int id);
 
         IEnumerable<ComboBoxItem>   GetComboBoxItems(int mainCompanyId,string fieldTag);
-
+        IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId);
         ComboBoxItem AddComboboxItem(ComboBoxItem comboBoxItem);
 
         bool IsExistComboboxItem(ComboBoxItem comboBoxItem);
@@ -75,10 +75,21 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         bool IsExistAttachmentFontStype(int formAttachmentId, string tagName);
 
+        IEnumerable<FormAttachmentFontStyle> GetFormAttachmentFontStyles(int formAttachmentId);
         FormAttachmentFontStyle Add(FormAttachmentFontStyle formAttachmentFontStyle);
         FormAttachmentFontStyle Update(FormAttachmentFontStyle formAttachmentFontStyle);
 
         IEnumerable<FormMetaDataAttachmentFilter> GetFormDefinationFilters(int formDefinationId);
+
+        IEnumerable<CustomeField> GetCustomeFields(int mainCompanyId);
+
+        IEnumerable<CustomeFieldItem> GetCustomeFielList(int mainCompanyId);
+
+
+        IEnumerable<CustomeField_VirtualTable> GetCustomeVirtualTables(int mainCompanyId);
+        IEnumerable<CustomeField_VirtualTableField> GetCustomeVirtualTableFields(int mainCompanyId);
+
+        IEnumerable<TranslateDictionary> GetTranslateDictionaries();
 
     }
 }

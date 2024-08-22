@@ -351,20 +351,56 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormAttachmentFontStyle Update(FormAttachmentFontStyle formAttachmentFontStyle)
         {
-            var dbFontStyle = _dbContext.FormAttachmentFontStyle.Single(s => s.Id == formAttachmentFontStyle.Id) ;
+            var dbFontStyle = _dbContext.FormAttachmentFontStyle.Single(s => s.Id == formAttachmentFontStyle.Id);
             dbFontStyle.FieldCaption = formAttachmentFontStyle.FieldCaption;
             dbFontStyle.TagName = formAttachmentFontStyle.TagName;
             dbFontStyle.Italic = formAttachmentFontStyle.Italic;
             dbFontStyle.FontSize = formAttachmentFontStyle.FontSize;
             dbFontStyle.Bold = formAttachmentFontStyle.Bold;
-           
+
 
             return dbFontStyle;
         }
 
         public IEnumerable<FormMetaDataAttachmentFilter> GetFormDefinationFilters(int formDefinationId)
         {
-            return _dbContext.FormMetaDataAttachmentFilters.Where(s=>s.FormDefinationId==formDefinationId).ToArray();
+            return _dbContext.FormMetaDataAttachmentFilters.Where(s => s.FormDefinationId == formDefinationId).ToArray();
+        }
+
+        public IEnumerable<FormAttachmentFontStyle> GetFormAttachmentFontStyles(int formAttachmentId)
+        {
+            return _dbContext.FormAttachmentFontStyle.Where(s => s.FormDefinationAttachmentId == formAttachmentId).ToArray();
+        }
+
+        public IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId)
+        {
+            return _dbContext.ComboBoxItem.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+        }
+
+        public IEnumerable<CustomeField> GetCustomeFields(int mainCompanyId)
+        {
+
+            return _dbContext.CustomeField.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+        }
+
+        public IEnumerable<CustomeFieldItem> GetCustomeFielList(int mainCompanyId)
+        {
+            return _dbContext.CustomeFieldItem.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+        }
+
+        public IEnumerable<CustomeField_VirtualTable> GetCustomeVirtualTables(int mainCompanyId)
+        {
+            return _dbContext.CustomeField_VirtualTable.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+        }
+
+        public IEnumerable<CustomeField_VirtualTableField> GetCustomeVirtualTableFields(int mainCompanyId)
+        {
+            return _dbContext.CustomeField_VirtualTableField.Where(s => s.MainCompanyId == mainCompanyId).ToArray(); throw new NotImplementedException();
+        }
+
+        public IEnumerable<TranslateDictionary> GetTranslateDictionaries()
+        {
+           return _dbContext.TranslateDictionary.ToArray();
         }
     }
 }

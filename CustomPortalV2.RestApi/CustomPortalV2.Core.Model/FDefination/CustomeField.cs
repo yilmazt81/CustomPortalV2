@@ -22,7 +22,10 @@ namespace CustomPortalV2.Core.Model.FDefination
         public Nullable<int> HeaderHeightRuleValue { get; set; }
         public Nullable<int> RowHeightRuleValue { get; set; }
         public Nullable<int> RowHeight { get; set; }
-        public Nullable<int> HeaderHeight { get; set; } 
+        public Nullable<int> HeaderHeight { get; set; }
+
+        public int MainCompanyId { get; set; }
+
         public virtual ICollection<CustomeField_VirtualTable> CustomeField_VirtualTable { get; set; } 
         public virtual ICollection<CustomeFieldItem> CustomeFieldItem { get; set; }
 

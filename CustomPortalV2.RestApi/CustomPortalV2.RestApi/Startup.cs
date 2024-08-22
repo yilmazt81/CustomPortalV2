@@ -21,7 +21,7 @@ using CustomPortalV2.Business.Service;
 using CustomPortalV2.Business.Concrete;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using MySqlConnector;
-using FirebaseAdmin; 
+using FirebaseAdmin;
 
 namespace CustomPortalV2.RestApi
 {
@@ -46,7 +46,7 @@ namespace CustomPortalV2.RestApi
             // }));
 
 
- 
+
             /*
             services.AddDbContextPool<DBContext>(options =>
              options.UseMySql(ServerVersion.AutoDetect(connection), options => options.EnableRetryOnFailure()));
@@ -54,7 +54,7 @@ namespace CustomPortalV2.RestApi
             //5.7.27
             services.AddDbContextPool<DBContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("DBConnection"), ServerVersion.Parse("5.7.27", ServerType.MySql), null));
-             
+
             services.AddScoped<ISalePackageService, SalePackageService>();
             services.AddScoped<IAppLangService, AppLangService>();
             services.AddScoped<ICompanyService, CompanyService>();
@@ -67,10 +67,11 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICompanyDefinationService, CompanyDefinationService>();
             services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
             services.AddScoped<ICustomProductService, CustomProductService>();
+            services.AddScoped<IFileCreateService, FileCreateService>();
             services.AddSingleton<IFirebaseStorage, FireStorage>();
 
             services.AddSingleton<FirebaseService>();
- 
+
 
 
             services.AddScoped<ICompanyDefinationRepository, CompanyRepository>();
@@ -85,7 +86,7 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFormDefinationRepository, FormDefinationRepository>();
             services.AddScoped<ICompanyAdresDefinationRepository, CompanyDefinationRepository>();
             services.AddScoped<IFormMetaDataRepository, FormMetaDataRepository>();
-            services.AddScoped<ICustomProductRepository, CustomProductRepository>(); 
+            services.AddScoped<ICustomProductRepository, CustomProductRepository>();
 
 
 
