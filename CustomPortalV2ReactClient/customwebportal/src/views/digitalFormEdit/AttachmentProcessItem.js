@@ -13,23 +13,49 @@ import {
     CRow,
     CFormInput,
     CFormCheck,
-    CFormSelect
+    CFormSelect,
+    CPopover
 } from '@coreui/react'
 import { CIcon } from '@coreui/icons-react';
-import PropTypes, { bool, func } from 'prop-types';
-
+import PropTypes from 'prop-types';
 import { ThreeDot } from 'react-loading-indicators';
 
 
-import { cilChevronCircleRightAlt, cilCloudDownload } from '@coreui/icons';
+import { cilChevronCircleRightAlt, cilCloudDownload, cilX,cilReload } from '@coreui/icons';
 
 
-function AttachmentProcessItem({ data, processp, downloadFilePathp, OnProcessAttachment, OnSelecteAttachment }) {
+function AttachmentProcessItem({ data, processp, OnProcessAttachment, OnSelecteAttachment }) {
+
+    function DownloadFile(fileUrl){
+        window.open(fileUrl) ;
+    }
 
     function GetControl() {
 
-        if (!processp) {
-            if (downloadFilePathp === '') {
+        if (!processp.process) {
+            if (processp.error != '') {
+                return (
+
+                    <>
+                        <CPopover
+                            title="Error"
+                            content={processp.error}
+                            placement="right"
+                        >
+                            <CButton color="danger" variant="outline" shape="rounded-pill"  >
+                                <CIcon icon={cilX} />
+                            </CButton>
+                        </CPopover>
+
+                        <CButton color="primary" variant="outline" shape="rounded-pill"  >
+
+                            <CIcon icon={cilReload} onClick={() => OnProcessAttachment(data.id)} />
+
+                        </CButton>
+                    </>
+                )
+
+            } else if (processp.downloadUrl === '') {
 
                 return (
                     <CButton color="primary" variant="outline" shape="rounded-pill"  >
@@ -38,11 +64,17 @@ function AttachmentProcessItem({ data, processp, downloadFilePathp, OnProcessAtt
 
                     </CButton>
                 )
-            } else {
+            } else if (processp.downloadUrl != '') {
                 return (
-                    <CButton color="success" variant="outline" shape="rounded-pill" >
+                    <CButton color="success" variant="outline" shape="rounded-pill" onClick={()=>DownloadFile(processp.downloadUrl )} >
                         <CIcon icon={cilCloudDownload} ></CIcon>
                     </CButton>
+                )
+            } else {
+                return (
+                    <>
+
+                    </>
                 )
             }
         } else {
@@ -75,7 +107,6 @@ function AttachmentProcessItem({ data, processp, downloadFilePathp, OnProcessAtt
 export default AttachmentProcessItem;
 
 AttachmentProcessItem.propTypes = {
-    processp: PropTypes.bool,
+    processp: PropTypes.object,
     data: PropTypes.object,
-    downloadFilePathp: PropTypes.string,
 }

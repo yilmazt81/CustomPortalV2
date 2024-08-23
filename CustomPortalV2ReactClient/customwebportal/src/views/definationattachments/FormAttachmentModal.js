@@ -148,7 +148,7 @@ const FormAttachmentModal = ({ visiblep, formdefinationp, formAttachmentp, fontT
                             </CCol>
                         </CRow>
                         <CRow className="mb-12">
-                            <CFormLabel htmlFor="txtformName" className="col-sm-3 col-form-label">{t("FormName")}</CFormLabel>
+                            <CFormLabel htmlFor="txtformName" className="col-sm-3 col-form-label">{t("AttachmentFormName")}</CFormLabel>
                             <CCol sm={9}>
                                 <CFormInput type="text" id='txtformName' name="formName"
                                     onChange={e => handleChange(e)} value={formdefinationAttachment?.formName} />

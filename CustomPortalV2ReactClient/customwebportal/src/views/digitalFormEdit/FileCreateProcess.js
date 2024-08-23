@@ -76,7 +76,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
     const [versionConvertFileUrl, setversionConvertFileUrl] = useState(null);
     const [formdefinationName, setformdefinationName] = useState("");
 
-    const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '' }]);
+    const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '' ,error:''}]);
 
 
     const [value, setValue] = useState(0);
@@ -141,19 +141,41 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
         var itemold = processAttachmentList.find(s => s.attachmentid === attachmentid);
         if (itemold === undefined) {
-            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '' });
+            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '' ,error:''});
         } else {
             itemold.process = true;
         }
 
-        setprocessAttachmentList([...processAttachmentList]);
-        var createFileReturn = await CreateFormAttachment(formidp, attachmentid);
+        try {
+            setprocessAttachmentList([...processAttachmentList]);
+            var createFileReturn = await CreateFormAttachment(formidp, attachmentid);
+            if (createFileReturn.returnCode === 1) {
+                var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+                itemold1.process = false;
+                itemold1.downloadUrl = createFileReturn.data;
+                itemold1.error='';
+                debugger;
+                setprocessAttachmentList([...processAttachmentList]);
+            } else {
 
-        var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+                var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+                itemold1.process = false; 
+                itemold1.error=createFileReturn.returnMessage;
+                setprocessAttachmentList([...processAttachmentList]);
+            }
 
-        itemold1.process = false;
-        itemold1.downloadUrl="ttttt";
-        setprocessAttachmentList([...processAttachmentList]);
+        } catch (error) {
+            var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+                itemold1.process = false; 
+                itemold1.error=error.message;
+                setprocessAttachmentList([...processAttachmentList]);
+        }finally{
+            var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
+            itemold1.process = false; 
+            
+            setprocessAttachmentList([...processAttachmentList]);
+        }
+
 
     }
 
@@ -162,20 +184,12 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
         var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
 
         if (item === undefined)
-            return false;
+            return {attachmentid: attachmentid, process: false, downloadUrl: '',error:'' };
         else
-            return item.process;
+            return item;
 
     }
-    function GetFilePath(attachmentid) {
-        var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
-
-        if (item === undefined)
-            return '';
-        else
-            return item.downloadUrl;
-    }
-
+ 
     return (
         <>
             <CRow>
@@ -216,8 +230,8 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
                                     key={item.id} data={item}
                                     processp={GetProcessStatus(item.id)}
-
-                                    downloadFilePathp={GetFilePath(item.id)}
+                                
+ 
                                 ></AttachmentProcessItem>);
                             })}
                         </CCol>
@@ -234,8 +248,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                     key={item.id}
                                     data={item}
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
-                                    processp={GetProcessStatus(item.id)}
-                                    downloadFilePathp={GetFilePath(item.id)}
+                                    processp={GetProcessStatus(item.id)} 
                                 ></AttachmentProcessItem>);
                             })}
 

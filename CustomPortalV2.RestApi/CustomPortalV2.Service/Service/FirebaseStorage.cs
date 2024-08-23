@@ -38,15 +38,19 @@ namespace CustomPortalV2.Business.Service
                     }
            }
             );
-        } 
+        }
+
+       
+
         public async Task<string> SaveFileToStorageAsync(string folder, string fileName, Stream fileStream)
         {
             try
-            { 
+            {
 
                 var storageReference = _storage.Child(folder).Child(fileName);
                 var downloadUrl = await storageReference.PutAsync(fileStream);
-                
+
+
                 return downloadUrl;
             }
             catch (Exception ex)
@@ -56,6 +60,14 @@ namespace CustomPortalV2.Business.Service
             }
         }
 
+       
+        async Task<string> IFirebaseStorage.DeleteFileToStorageAsync(string folder, string fileName)
+        {
+            var storageReference = _storage.Child(folder).Child(fileName);
+            await storageReference.DeleteAsync();
+
+            return "ok";
+        }
 
         async Task<FirebaseAuthLink> IFirebaseStorage.Save()
         {

@@ -19,7 +19,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int CustomeFieldId { get; set; }
         public Nullable<int> TableBorder { get; set; }
         public string ElementType { get; set; }
-        public Nullable<bool> Deleted { get; set; }
+        public  bool Deleted { get; set; }
         public string FormDefinationName { get; set; }
         public string FormAttachmentName { get; set; }
         public Nullable<int> FormDefinationAttachmentId { get; set; }

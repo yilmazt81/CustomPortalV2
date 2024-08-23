@@ -413,7 +413,7 @@ namespace CustomPortalV2.TemplateProcess
         int formVersionId,
         CustomeFieldItem[] customeFieldItemList,
         CustomeField[] customeFields,
-        IQueryable<CustomeField_VirtualTable> queryVirtualTable,
+        CustomeField_VirtualTable[] queryVirtualTable,
         CustomeField_VirtualTableField[] customeField_VirtualTableFields,
         ComboBoxItem[] comboBoxItems)
         {
@@ -422,23 +422,23 @@ namespace CustomPortalV2.TemplateProcess
             var customeFiel = customeFields.Single(s => s.Id == customeFieldTypeId);
 
 
-            queryVirtualTable = queryVirtualTable.Where(a => a.CustomeFieldId == customeFieldTypeId && !a.Deleted.Value);
+            CustomeField_VirtualTable? virtualTable = null;
+
             if (formAttachmentId != 0)
             {
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormDefinationAttachmentId == formAttachmentId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormDefinationAttachmentId == formAttachmentId && a.CustomeFieldId == customeFieldTypeId && !a.Deleted);
 
             }
             else if (formVersionId != 0)
             {
 
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormVersionId == formVersionId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormVersionId == formVersionId && a.CustomeFieldId == customeFieldTypeId && !a.Deleted);
             }
             else if (formDefinationTypeId != 0)
             {
 
-                queryVirtualTable = queryVirtualTable.Where(a => a.FormDefinationId == formDefinationTypeId);
+                virtualTable = queryVirtualTable.FirstOrDefault(a => a.FormDefinationId == formDefinationTypeId && a.CustomeFieldId == customeFieldTypeId && !a.Deleted);
             }
-            var virtualTable = queryVirtualTable.FirstOrDefault();
 
             List<TableHeader> tableHeaders = new List<TableHeader>();
             if (virtualTable != null)
@@ -715,7 +715,8 @@ namespace CustomPortalV2.TemplateProcess
               CustomeFieldItem[] customeFieldItemList,
          CustomeField_VirtualTable[] queryVirtualTable,
         CustomeField_VirtualTableField[] customeField_VirtualTableFields,
-        TranslateDictionary[] translateDictionaries)
+        TranslateDictionary[] translateDictionaries,
+        FormDefinationAttachment formDefinationAttachment = null)
         {
             OpenSettings os = new OpenSettings
             {
@@ -724,7 +725,7 @@ namespace CustomPortalV2.TemplateProcess
 
             // customEntities = pcustomEntities;
 
-            using (WordprocessingDocument wordprocessingDocument = WordprocessingDocument.Open(formName, true, os))
+            using (var wordprocessingDocument = WordprocessingDocument.Open(formName, true))
             {
 
                 var findBook = FindBookmarks(wordprocessingDocument.MainDocumentPart.Document.Body);
@@ -732,6 +733,7 @@ namespace CustomPortalV2.TemplateProcess
                 int? fontSize = null;
                 bool? bold = null;
                 bool? italic = null;
+                string fontFamily = "Times New Roman";
 
                 foreach (var formDefination in formDefinationFields)
                 {
@@ -750,13 +752,18 @@ namespace CustomPortalV2.TemplateProcess
                             fontSize = formDefinationFieldCustomeStyle.FontSize;
                             bold = formDefinationFieldCustomeStyle.Bold;
                             italic = formDefinationFieldCustomeStyle.Italic;
+                            fontFamily = formDefinationFieldCustomeStyle.FontFamily;
                         }
                         else
                         {
-                            var fromAttachment = formAttachmentFontStyles.FirstOrDefault(s => s.Id == formAttachmentId);
-                            fontSize = fromAttachment.FontSize;
-                            bold = fromAttachment.Bold;
-                            italic = fromAttachment.Italic;
+                            if (formDefinationAttachment != null)
+                            {
+                                fontSize = formDefinationAttachment.FontSize;
+                                bold = formDefinationAttachment.Bold;
+                                italic = formDefinationAttachment.Italic;
+                                fontFamily= formDefinationAttachment.FontFamily;
+
+                            }
                         }
                     }
 
@@ -774,7 +781,7 @@ namespace CustomPortalV2.TemplateProcess
                             continue;
                         }
 
-                        AddTextFieldToForm(currentBookMark.Value, TranslateText(translateText, fieldValue.FieldValue, translateDictionaries), fontSize, bold, italic);
+                        AddTextFieldToForm(currentBookMark.Value, TranslateText(translateText, fieldValue.FieldValue, translateDictionaries), fontSize, bold, italic, fontFamily);
 
                         var upperStr = fieldValue.FieldValue.ToUpperTrk();
                         foreach (var oneRule in softImageChangeFormatRules.Where(s => s.FieldName == formDefination.TagName && s.FieldValue == upperStr && s.Operation == "inLine"))
@@ -809,7 +816,7 @@ namespace CustomPortalV2.TemplateProcess
                                     }
                                     if (checboxTextBookMark.Key != null)
                                     {
-                                        AddTextFieldToForm(checboxTextBookMark.Value, oneItem.Name, formDefination.FontSize, formDefination.Bold, formDefination.Italic);
+                                        AddTextFieldToForm(checboxTextBookMark.Value, oneItem.Name, formDefination.FontSize, formDefination.Bold, formDefination.Italic, fontFamily);
                                     }
                                 }
                                 else
@@ -854,7 +861,7 @@ namespace CustomPortalV2.TemplateProcess
                         {
                             if (checkBookMark.Key != null)
                             {
-                                AddTextFieldToForm(checkBookMark.Value, checkItem.Name, fontSize, bold, italic);
+                                AddTextFieldToForm(checkBookMark.Value, checkItem.Name, fontSize, bold, italic, fontFamily);
                             }
 
 
@@ -865,9 +872,7 @@ namespace CustomPortalV2.TemplateProcess
                                 findEnd = false;
                                 CheckFormatOnLine(wordprocessingDocument.MainDocumentPart.Document.Body, oneRule.StartTag, oneRule.EndTag, oneRule);
                             }
-                        }
-
-
+                        } 
                     }
                     else
                     {

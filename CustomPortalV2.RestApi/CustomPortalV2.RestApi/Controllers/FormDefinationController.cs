@@ -5,8 +5,7 @@ using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
-using CustomPortalV2.TemplateProcess;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using CustomPortalV2.TemplateProcess; 
 using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -471,6 +470,10 @@ namespace CustomPortalV2.RestApi.Controllers
                     }
 
                     var fileStream = file.OpenReadStream();
+               
+
+                
+
                     if (extention == ".docx")
                     {
                         string destPath = _hostingEnvironment.ContentRootPath + @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
@@ -483,9 +486,16 @@ namespace CustomPortalV2.RestApi.Controllers
                         {
                             tagList = softCreatorWord.GetTagList(destPath);
                         }
-                    }
 
-                    formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+                        var newStream=System.IO.File.OpenRead(destPath);
+
+                        formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), newStream);
+                    }
+                    else
+                    {
+                        formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
+
+                    } 
 
                 }
                 else if (formVersion.Id == 0)

@@ -12,6 +12,7 @@ namespace CustomPortalV2.Business.Concrete
     {
 
         Task<string> SaveFileToStorageAsync(string folder, string fileName, Stream fileStream);
+        Task<string> DeleteFileToStorageAsync(string folder, string fileName);
 
         Task<FirebaseAuthLink> Save();
     }

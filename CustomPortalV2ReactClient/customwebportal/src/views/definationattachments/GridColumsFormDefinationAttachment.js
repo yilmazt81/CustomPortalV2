@@ -70,6 +70,14 @@ const GridColumsFormDefinationAttachment = (OptionClick) => {
                     >
                         <Download />
                     </IconButton>
+
+                    <IconButton
+                        onClick={() => OptionClick('Delete', params.row.id)}
+                        aria-label="Download"
+                        color="secondary"
+                    >
+                        <DeleteIcon />
+                    </IconButton>
                        
 
                 </div>

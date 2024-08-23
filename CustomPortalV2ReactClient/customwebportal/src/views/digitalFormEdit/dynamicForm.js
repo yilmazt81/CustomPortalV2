@@ -17,6 +17,8 @@ import PropTypes from 'prop-types';
 
 import { useSearchParams } from 'react-router-dom'; 
 import CreateGroupField from './CreateGroupField';
+import 'dayjs/locale/tr';
+import dayjs from 'dayjs';
 
 const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged,controlValues }) => {
 
@@ -27,9 +29,8 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged,controlV
     const [formdefinationGroups, setformdefinationGroups] = useState([]);
     const [saveError, setSaveError] = useState(null);
 
-
-
-
+ 
+  
 
     useEffect(() => {
 
@@ -53,7 +54,7 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged,controlV
                         <CCardHeader>{item.formNumber} {item.name}</CCardHeader>
                         <CCardBody>
 
-                            <CreateGroupField onChangeData={(fieldName,value)=>OnValueChanged(fieldName,value)} fieldList={item.formFields}></CreateGroupField>
+                            <CreateGroupField onChangeData={(fieldName,value)=>OnValueChanged(fieldName,value)} controlValuesp={controlValues} fieldList={item.formFields}></CreateGroupField>
                         </CCardBody>
                     </CCard>
                 </CRow>
@@ -78,5 +79,5 @@ export default DynamicForm;
 DynamicForm.propTypes = {
     formdefinationTypeIdp: PropTypes.number,
     formgroups: PropTypes.array,
-    controlValues:PropTypes.array,
+    controlValues:PropTypes.array, 
 }

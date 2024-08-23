@@ -149,6 +149,7 @@ export const TRANSLATIONS_TR = {
     NotPrivateAttachment:"Diğer Ekler",
     FormModalProcessTitle:"Dokuman Tipi Dosya Oluştur",
     SendMail:"Mail Olarak Gönder",
+    AttachmentFormName :"Ek Adı",
 
     
 

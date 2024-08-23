@@ -149,15 +149,14 @@ const FormDefinationAttachments = () => {
     }
 
     function CreateNewFormVersion() {
-
-        debugger;
+ 
         setformAttachment({active:true,
                             id:0,formName:"",
                             fileName:"",
-                            fontSize:16,
+                            fontSize:20,
                             bold:false,
                             italic:false,
-                            fontFamily:"",
+                            fontFamily:"Times New Roman",
                             active:true,
                         });
         setFormVersionEdit(true);

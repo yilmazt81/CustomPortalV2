@@ -12,6 +12,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
     public class CustomProductRepository : ICustomProductRepository
     {
         DBContext _dbContext;
+
+        public CustomProductRepository()
+        {
+        }
+
         public CustomProductRepository(DBContext dbContext)
         {
             _dbContext = dbContext;

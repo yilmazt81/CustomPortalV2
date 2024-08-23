@@ -622,7 +622,7 @@ namespace CustomPortalV2.Business.Service
                         TagName = oneTag,
                         FieldCaption = (field == null ? oneTag : field.FieldCaption),
                         FontFamily = formDefinationAttachment.FontFamily,
-                        
+                        FormDefinationAttachmentId= defaultReturn.Data.Id
                     });
                 }
 
@@ -643,7 +643,8 @@ namespace CustomPortalV2.Business.Service
                             Italic = formDefinationAttachment.Italic,
                             TagName = oneTag,
                             FieldCaption = (field == null ? oneTag : field.FieldCaption),
-                            FontFamily = formDefinationAttachment.FontFamily,                            
+                            FontFamily = formDefinationAttachment.FontFamily, 
+                            FormDefinationAttachmentId = defaultReturn.Data.Id
                         });
                     }
                 }

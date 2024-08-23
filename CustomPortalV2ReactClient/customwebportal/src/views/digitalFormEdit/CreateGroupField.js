@@ -20,10 +20,13 @@ import { cilMap, cilBarcode } from '@coreui/icons';
 
 import CIcon from '@coreui/icons-react';
 import moment from 'moment';
+import 'dayjs/locale/tr';
+import dayjs from 'dayjs';
 
 
+import PropTypes from 'prop-types';
 
-const CreateGroupField = ({ fieldList, onChangeData }) => {
+const CreateGroupField = ({ fieldList, onChangeData ,controlValuesp}) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
@@ -61,6 +64,28 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
         }
     }
 
+    function GetControlValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+        return (fieldValue === undefined ? "" : fieldValue.fieldValue);
+    }
+
+    function GetControlCheckedValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+    
+        return (fieldValue === undefined ? false :  fieldValue.fieldValue==='true');
+    }
+
+    function GetDateValue(fieldName) {
+
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+
+        return (fieldValue === undefined ? null : dayjs(fieldValue.fieldValue));
+    }
+    
+
+
     function handleChange(e) {
         const { name, value } = e.target;
     
@@ -91,7 +116,7 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
                     type="text"
                     name={textField.tagName}
                     id={`txt${textField.tagName}`}
-                    onChange={(e) => handleChange(e)} /></CCol>
+                    onChange={(e) => handleChange(e)}  value={GetControlValue(textField.tagName)} /></CCol>
 
 
                 <CCol sm={3}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
@@ -105,7 +130,7 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
     function CreateText(textField) {
 
         return (
-            <CCol sm={9} ><CFormInput key={textField.id} name={textField.tagName} onChange={(e) => handleChange(e)} type="text" id={`txt${textField.tagName}`} /></CCol>
+            <CCol sm={9} ><CFormInput  value={GetControlValue(textField.tagName)} key={textField.id} name={textField.tagName} onChange={(e) => handleChange(e)} type="text" id={`txt${textField.tagName}`} /></CCol>
         )
     }
 
@@ -146,7 +171,11 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
                             <CFormLabel htmlFor={`txt${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
                             <CCol sm={9} >
                                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="tr">
-                                    <DatePicker key={item.id} id={`txt${item.tagName}`} name={item.tagName} onChange={date => handleChangeDatetime(item.tagName, date)} />
+                                    <DatePicker key={item.id} id={`txt${item.tagName}`}
+                                    
+                                    name={item.tagName}
+                                    value={GetDateValue(item.tagName)}
+                                     onChange={date => handleChangeDatetime(item.tagName, date)} />
                                 </LocalizationProvider>
                             </CCol>
                         </CRow>)
@@ -155,7 +184,7 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
                     return <CRow key={item.id} className="mb-12">
                         <CFormLabel htmlFor={`cmb${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
                         <CCol sm={9} >
-                            <CFormSelect key={item.id} id={`cmb${item.tagName}`} onChange={(e)=>handleChange(e)} name={item.tagName}>
+                            <CFormSelect   id={`cmb${item.tagName}`} value={GetControlValue(item.tagName)} onChange={(e)=>handleChange(e)} name={item.tagName}>
                                 <option value="" ></option>
                                 {item.comboBoxItems.map((combo, t) => {
                                     return (
@@ -172,7 +201,12 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
                             {item.comboBoxItems.map((combo, t) => {
 
                                 return (
-                                    <CFormCheck onChange={(e) => handleChangeChecked(e)} name={`${item.tagName}_${combo.tagName}`} inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck onChange={(e) => handleChangeChecked(e)}
+                                     name={`${item.tagName}_${combo.tagName}`}
+
+                                     checked={GetControlCheckedValue(`${item.tagName}_${combo.tagName}`)}
+                                     
+                                     inline key={t} id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
@@ -185,7 +219,7 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
 
                             {item.comboBoxItems.map((combo, t) => {
                                 return (
-                                    <CFormCheck onChange={(e) => handleChangeChecked(e)} name={`${item.tagName}_${combo.tagName}`} inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
+                                    <CFormCheck   onChange={(e) => handleChangeChecked(e)} name={`${item.tagName}_${combo.tagName}`} inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                                 )
                             })}
                         </CCol>
@@ -219,3 +253,8 @@ const CreateGroupField = ({ fieldList, onChangeData }) => {
 }
 
 export default CreateGroupField;
+
+
+CreateGroupField.propTypes = { 
+    controlValuesp: PropTypes.array,
+}

@@ -402,5 +402,10 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         {
            return _dbContext.TranslateDictionary.ToArray();
         }
+
+        public IEnumerable<SoftImageChangeFormatRule> GetSoftImageChangeFormatRules(int formDefinationId)
+        {
+            return _dbContext.SoftImageChangeFormatRule.Where(s=>s.FormDefinationId==formDefinationId).ToArray();
+        }
     }
 }

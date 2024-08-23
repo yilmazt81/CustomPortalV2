@@ -91,5 +91,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<TranslateDictionary> GetTranslateDictionaries();
 
+        public IEnumerable<SoftImageChangeFormatRule> GetSoftImageChangeFormatRules(int formDefinationId);
+
     }
 }
