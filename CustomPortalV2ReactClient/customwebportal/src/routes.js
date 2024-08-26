@@ -13,6 +13,7 @@ const DigitalFormEdit=React.lazy(() => import('./views/digitalFormEdit'))
 const FormDefinationAutoComplate=React.lazy(() => import('./views/formdefinationsAComp'))
 const FormDefinationVersion=React.lazy(()=>import('./views/formdefinationversion') );
 const FormDefinationAttachments=React.lazy(()=>import('./views/definationattachments') );
+const WorkFlowDefination = React.lazy(()=>import('./views/workflowDefination'));
 
 const routes = [
 
@@ -32,7 +33,8 @@ const routes = [
   { path: '/FormDefinationVersion', name: 'FormDefinationType/FormDefinationVersion', element: FormDefinationVersion }, 
   { path: '/definationattachments', name: 'FormDefinationType/FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
 
-  
+  { path: '/workflowDefination', name: 'workflowDefination', element: WorkFlowDefination }, 
+
   
   
 ]
