@@ -12,6 +12,7 @@ using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.Core.Model.Custom;
+using CustomPortalV2.Core.Model.Work;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -120,7 +121,11 @@ namespace CustomPortalV2.DataAccessLayer
 
         public virtual DbSet<FormMetaDataAttachmentFilter> FormMetaDataAttachmentFilters { get; set; }  
 
+        public virtual DbSet<WorkFlowDocument> FreeWorkFlowDocuments { get; set; }
 
+        public virtual DbSet<WorkFlowNode> WorkFlowNodes { get; set; }
+
+        public virtual DbSet<WorkFlowEdge> WorkFlowEdges { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -130,6 +135,20 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<CustomProduct>().ToTable("CustomProduct");
             modelBuilder.Entity<CustomProduct>().HasKey(k => k.Id);
             modelBuilder.Entity<CustomProduct>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<WorkFlowDocument>().ToTable("WorkFlowDocument");
+            modelBuilder.Entity<WorkFlowDocument>().HasKey(k => k.Id);
+            modelBuilder.Entity<WorkFlowDocument>().Property(k => k.Id).HasColumnName("Id");
+
+
+            modelBuilder.Entity<WorkFlowEdge>().ToTable("WorkFlowEdge");
+            modelBuilder.Entity<WorkFlowEdge>().HasKey(k => k.Id);
+            modelBuilder.Entity<WorkFlowEdge>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<WorkFlowNode>().ToTable("WorkFlowNode");
+            modelBuilder.Entity<WorkFlowNode>().HasKey(k => k.Id);
+            modelBuilder.Entity<WorkFlowNode>().Property(k => k.Id).HasColumnName("Id");
+
 
             modelBuilder.Entity<FormMetaDataAttachmentFilter>().ToTable("FormMetaDataAttachmentFilter");
             modelBuilder.Entity<FormMetaDataAttachmentFilter>().HasKey(k => k.Id);

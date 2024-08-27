@@ -68,6 +68,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFormDefinationAttachmentService, FormDefinationAttachmentService>();
             services.AddScoped<ICustomProductService, CustomProductService>();
             services.AddScoped<IFileCreateService, FileCreateService>();
+            services.AddScoped<IWorkFlowService, WorkFlowService>();
+
             services.AddSingleton<IFirebaseStorage, FireStorage>();
 
             services.AddSingleton<FirebaseService>();
@@ -87,6 +89,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICompanyAdresDefinationRepository, CompanyDefinationRepository>();
             services.AddScoped<IFormMetaDataRepository, FormMetaDataRepository>();
             services.AddScoped<ICustomProductRepository, CustomProductRepository>();
+
+            services.AddScoped<IWorkFlowRepository, WorkFlowRepository>();
 
 
 

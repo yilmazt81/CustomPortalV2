@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.Work
 {
-    public class FreeWorkFlowDocument
+    public class WorkFlowDocument
     {
         public int Id { get; set; }
 

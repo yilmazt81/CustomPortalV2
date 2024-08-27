@@ -20,8 +20,13 @@ namespace CustomPortalV2.Model.Work
 
         public int? EditedId { get; set; }
 
-        public string EditedBy { get; set; }
+        public string? EditedBy { get; set; }
 
         public DateTime? EditedDate { get; set; }
+
+        public int CompanyBranchId { get; set; }
+
+        public string FlowType { get; set; }
+
     }
 }
