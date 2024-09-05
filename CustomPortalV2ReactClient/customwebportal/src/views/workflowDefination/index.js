@@ -6,8 +6,7 @@ import {
   Controls,
   Background,
   applyEdgeChanges,
-  applyNodeChanges,
-  
+  applyNodeChanges,  
   addEdge
 } from '@xyflow/react';
 
@@ -36,6 +35,7 @@ import EmailNode from "./Email/index.js";
 import CustomEdge from './CustomEdge';
 import OCRProcessNode from "./OCRProcess/index.js";
 import BarcodeProcessNode from "./BarcodeReadProcess/index.js";
+import ClassificationProcessNode from './ClassificationProcess/index.js';
 
 
 import {
@@ -63,7 +63,8 @@ const WorkflowDefination = () => {
     whatsappNode: WhatsappNode,
     emailNode: EmailNode,
     ocrProcess: OCRProcessNode,
-    barcodeReadProcess: BarcodeProcessNode
+    barcodeReadProcess: BarcodeProcessNode,
+    documentClassificationProcess:ClassificationProcessNode
   };
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState([]);
@@ -132,7 +133,7 @@ const WorkflowDefination = () => {
             <FaBarcode />
             {t("WFBarcodeReader")}</CButton>
 
-          <CButton color="primary" variant="outline" onClick={() => AddNode("barcodeReadProcess")}>
+          <CButton color="primary" variant="outline" onClick={() => AddNode("documentClassificationProcess")}>
             <FaRandom />
             {t("WFClassification")}</CButton>
 
