@@ -150,10 +150,26 @@ export const TRANSLATIONS_TR = {
     FormModalProcessTitle:"Dokuman Tipi Dosya Oluştur",
     SendMail:"Mail Olarak Gönder",
     AttachmentFormName :"Ek Adı",
-
-    
-
-
+    ModalWorkFlowEdit:"iş Akışı Düzenle",
+    WFAddFTP:"FTPProcess",
+    WFTitle:"İş Akışı Tanım",
+    WorkFlowType:"İş Akışı Türü",
+    WFProcess:"Evrak Akışlari",
+    WFBusiness:"İş Onay / Red Süreçleri",
+    WorkFlowName:"İş Akışı Adı",
+    WFFTP:"FTP",
+    WFMail:"Mail",
+    WFWhatsapp:"Whatsapp",
+    WFAcceptUser:"Onay",
+    WFRejectUser:"Red",
+    FTPPort:"FTP Port",
+    FTPModalSettingTitle:"FTP Özellikleri",
+    WFOCR:"Karakter Okuma",
+    WFBarcodeReader:"Barkod okuman",
+    FTPTest:"FTP Test",
+    FTPListenFolder:"Kontrol Edilecek Klasör",
+    WFClassification:"Belge Sınıflama",
+ 
      
 
 };

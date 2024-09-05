@@ -17,5 +17,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<WorkFlow> GetWorkFlow(int id,int mainCompanyId);
 
+        DefaultReturn<WorkFlow> Save(WorkFlow workFlow);
+
     }
 }

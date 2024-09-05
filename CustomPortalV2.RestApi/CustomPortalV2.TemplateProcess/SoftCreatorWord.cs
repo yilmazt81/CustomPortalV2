@@ -53,6 +53,32 @@ namespace CustomPortalV2.TemplateProcess
             // run.RunProperties.Underline = new Underline();
             // run.RunProperties.Underline.Val = UnderlineValues.Single;
         }
+
+        public void MergeInNewFile(string resultFile, IList<string> filenames)
+        {
+            using (WordprocessingDocument document = WordprocessingDocument.Create(resultFile, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document(new Body());
+
+                foreach (string filename in filenames)
+                {
+                    AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML);
+                    string altChunkId = mainPart.GetIdOfPart(chunk);
+
+                    using (FileStream fileStream = File.Open(filename, FileMode.Open))
+                    {
+                        chunk.FeedData(fileStream);
+                    }
+
+                    AltChunk altChunk = new AltChunk { Id = altChunkId };
+                    mainPart.Document.Body.AppendChild(altChunk);
+                }
+
+                mainPart.Document.Save();
+            }
+        }
+
         private Run GetTextElement(string value, int fontSize = 16, bool bold = false, bool italic = false, string fontFamiliy = "Times New Roman")
         {
             var textElement = new Text();
@@ -761,7 +787,7 @@ namespace CustomPortalV2.TemplateProcess
                                 fontSize = formDefinationAttachment.FontSize;
                                 bold = formDefinationAttachment.Bold;
                                 italic = formDefinationAttachment.Italic;
-                                fontFamily= formDefinationAttachment.FontFamily;
+                                fontFamily = formDefinationAttachment.FontFamily;
 
                             }
                         }
@@ -872,7 +898,7 @@ namespace CustomPortalV2.TemplateProcess
                                 findEnd = false;
                                 CheckFormatOnLine(wordprocessingDocument.MainDocumentPart.Document.Body, oneRule.StartTag, oneRule.EndTag, oneRule);
                             }
-                        } 
+                        }
                     }
                     else
                     {

@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.Work;
+using CustomPortalV2.Model.Work;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 {
     public interface IWorkFlowRepository
     {
-        FreeWorkFlowDocument AddDocument(FreeWorkFlowDocument freeWorkFlowDocument);
+        WorkFlowDocument AddDocument(WorkFlowDocument freeWorkFlowDocument);
+
+        WorkFlow Add(WorkFlow workFlow);
+        WorkFlow Update(WorkFlow workFlow);
+
+
     }
 }
