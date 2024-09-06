@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 
 import {
     CButton,
-    CCol,
     CAlert,
     CRow,
     CModal,
@@ -12,12 +11,10 @@ import {
     CModalTitle,
     CModalFooter,
     CModalBody,
-    CFormLabel,
 
 
 } from '@coreui/react'
  
-import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 

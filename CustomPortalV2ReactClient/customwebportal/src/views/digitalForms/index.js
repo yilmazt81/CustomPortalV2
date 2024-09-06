@@ -34,6 +34,7 @@ import { GetBrachData } from '../../lib/formMetaDataApi';
 import GridColumsDigitalForm from './GridColumsDigitalForm';
 
 import FormActionModal from './FormActionModal';
+import FormCopyModal from './FormCopyModal';
 
 const DigitalForms = () => {
     const { t } = useTranslation();
@@ -45,8 +46,9 @@ const DigitalForms = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [formDefinationTypes, setFormDefinationTypes] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [formActionModal,setFormActionModal]=useState(false);
-    const [selectedFormId,setSelectedFormId]=useState(0);
+    const [formActionModal, setFormActionModal] = useState(false);
+    const [formCopyModal, setformCopyModal] = useState(false);
+    const [selectedFormId, setSelectedFormId] = useState(0);
 
     async function LoadCustomSectors() {
 
@@ -122,13 +124,12 @@ const DigitalForms = () => {
     }, []);
 
     const optionClick = (option, id) => {
- 
-        if (option==="Download")
-        {
-            setSelectedFormId(id);
+        setSelectedFormId(id);
+        if (option === "Download") {
             setFormActionModal(true);
-        }
-        //    EditGroupDefination(option === 'Delete', id);
+        } else if (option === "Copy") {
+            setformCopyModal(true);
+        } 
     }
 
 
@@ -230,8 +231,8 @@ const DigitalForms = () => {
             </CCardBody>
         </CCard>
 
-                <FormActionModal foreditForm={false} visiblep={formActionModal} OnClose={()=>setFormActionModal(false)} formidp={selectedFormId} ></FormActionModal>
-
+            <FormActionModal foreditForm={false} visiblep={formActionModal} OnClose={() => setFormActionModal(false)} formidp={selectedFormId} ></FormActionModal>
+            <FormCopyModal visiblep={formCopyModal} OnClose={() => setformCopyModal(false)} formidp={selectedFormId}></FormCopyModal>
         </>
     )
 

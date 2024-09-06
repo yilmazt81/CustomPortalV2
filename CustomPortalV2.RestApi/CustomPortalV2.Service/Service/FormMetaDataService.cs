@@ -399,20 +399,22 @@ namespace CustomPortalV2.Business.Service
 
 
                 };
+                 
+                defaultReturn = Save(formMetaDataDTO);
 
-
-                defaultReturn.Data = Save(formMetaDataDTO).Data;
-
-                _formMetaDataRepository.AddCopyDocumentLog(new Core.Model.Log.CopyDocumentLog()
+                if (defaultReturn.ReturnCode == 1)
                 {
-                    CompanyBranchId = branchId,
-                    CopyUser = username,
-                    CopyUserId = userId,
-                    CreateDate = DateTime.Now,
-                    MainCompanyId = mainCompanyId,
-                    FormMetaDataId = sourceformId,
-                    NewMetaDataId = defaultReturn.Data.Id
-                });
+                    _formMetaDataRepository.AddCopyDocumentLog(new Core.Model.Log.CopyDocumentLog()
+                    {
+                        CompanyBranchId = branchId,
+                        CopyUser = username,
+                        CopyUserId = userId,
+                        CreateDate = DateTime.Now,
+                        MainCompanyId = mainCompanyId,
+                        FormMetaDataId = sourceformId,
+                        NewMetaDataId = defaultReturn.Data.Id
+                    });
+                } 
             }
             catch (Exception ex)
             {
