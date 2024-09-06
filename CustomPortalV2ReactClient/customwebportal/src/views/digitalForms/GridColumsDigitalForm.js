@@ -14,12 +14,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
 const GridColumsDigitalForm = (OptionClick) => {
-    return [
-        {
-            field: 'id',
-            headerName: 'Id',
-            width: 70,
-        },
+    return [ 
         {
             field: 'formDefinationName',
             headerName: i18.t('FormDefinationName'),
@@ -101,13 +96,7 @@ const GridColumsDigitalForm = (OptionClick) => {
                         <CopyAll />
                     </IconButton>
 
-                    <IconButton
-                        onClick={() => OptionClick('Send', params.row.id)}
-                        aria-label="Send"
-                        color="secondary"
-                    >
-                        <SendToMobile />
-                    </IconButton>
+                
                     <IconButton
                         onClick={() => OptionClick('Delete', params.row.id)}
                         aria-label="delete"

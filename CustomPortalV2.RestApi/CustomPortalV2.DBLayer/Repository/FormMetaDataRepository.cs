@@ -55,7 +55,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbFormData.FormDefinationId = formMetaData.FormDefinationId;
             dbFormData.FormDefinationName = formMetaData.FormDefinationName;
             dbFormData.CustomSectorId = formMetaData.CustomSectorId;
-
+            dbFormData.Deleted=formMetaData.Deleted;
 
             var oldAttributes = dbFormData.FormMetaDataAttribute;
             foreach (var oldAttribute in dbFormData.FormMetaDataAttribute)

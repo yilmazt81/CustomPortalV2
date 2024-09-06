@@ -177,6 +177,15 @@ export const TRANSLATIONS_TR = {
     CopyDocumentModalTitle: "Dokuman Kopyala",
     CopyDocumentLabelDescription: "Mevcut dokumanın bir kopyası oluşturulur.",
     OpenCloneDocument: "Oluşturulan dokumanı açın",
+    DeleteFormModalTitle:"Dokuman Sil",
+    DeleteQuestionLabel:"Dokuman Silmek istediğinizden emin misiniz ?",
+    SendMailModalTitle:"Mail Gönderim Formu",
+    SendMailDescription:"Gönderilecek Mailin bilgilerini giriniz.",
+    ToMail:"To Mail",
+    CCMail:"CC Mail",
+    MailSubject:"Konu",
+    MailAttachment:"Ekler"
+
 
 
 

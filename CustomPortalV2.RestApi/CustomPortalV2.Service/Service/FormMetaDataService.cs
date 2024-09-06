@@ -423,5 +423,32 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+        public DefaultReturn<bool> DeleteForm(int mainCompanyId, int brachId, int id)
+        {
+            DefaultReturn<bool> defaultReturn = new DefaultReturn<bool>();
+            try
+            {
+                var formData = _formMetaDataRepository.Get(id);
+                if (formData == null)
+                {
+                    throw new Exception("FormNotFound");
+                }
+                if (formData.MainCompanyId != mainCompanyId)
+                {
+                    throw new Exception("CompanyNameIsNotSame");
+                }
+
+                formData.Deleted = true;
+                _formMetaDataRepository.Update(formData);
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
     }
 }

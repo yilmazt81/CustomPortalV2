@@ -106,6 +106,15 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(formmetaData);
         }
 
+        [HttpGet("DeleteForm/{formid}")]
+        public IActionResult DeleteForm(int formid)
+        {
+            var deleteReturn = _formMetaDataService.DeleteForm(User.GetCompanyId(), User.GetBranchId(), formid);
+
+
+            return Ok(deleteReturn);
+        }
+
         [HttpPost]
         public IActionResult Post(FormMetaDataDTO formMetaDataDTO)
         {

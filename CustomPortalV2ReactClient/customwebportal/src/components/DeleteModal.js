@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import ProcessAnimation from "../content/animation/Process.json";
 
 
-const DeleteModal = ({ visiblep, title, message,message2, saveStart, deleteError,OnClickOk }) => {
+const DeleteModal = ({ visiblep, title, message,message2, saveStart, deleteError,OnClickOk,OnClickCancel }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
@@ -33,11 +33,12 @@ const DeleteModal = ({ visiblep, title, message,message2, saveStart, deleteError
 
     async function DeleteAccepted() {
 
-        OnClickOk({return:"ok"});
-        //setvisible(false);
+        OnClickOk({return:"ok"}); 
     }
 
- 
+    function Cancel(){
+        OnClickCancel();
+    }
 
     useEffect(() => {
         setvisible(visiblep);
@@ -51,7 +52,7 @@ const DeleteModal = ({ visiblep, title, message,message2, saveStart, deleteError
             <CModal
                 backdrop="static"
                 visible={visible}
-                onClose={() => setvisible(false)}
+                onClose={() => Cancel()}
 
             >
                 <CModalHeader>

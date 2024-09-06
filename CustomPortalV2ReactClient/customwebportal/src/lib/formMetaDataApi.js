@@ -29,6 +29,13 @@ export async function  CloneForm(sourceformid) {
   const { data } =  await GetRequest (`/api/FormMetaData/CloneForm/${sourceformid}`);
   return data;
 };
+export async function  DeleteForm(formid) {   
+  
+  const { data } =  await GetRequest (`/api/FormMetaData/DeleteForm/${formid}`);
+  return data;
+};
+
+
 
 export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,woid) {
     debugger;

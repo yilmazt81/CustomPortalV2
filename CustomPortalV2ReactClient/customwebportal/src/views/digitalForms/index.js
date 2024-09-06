@@ -23,18 +23,16 @@ import { useSearchParams } from 'react-router-dom';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 
 
-
-
-
 import { useTranslation } from "react-i18next";
 
 import { GetSector, GetFormDefinationBySector } from 'src/lib/formdef'
-import { GetBrachData } from '../../lib/formMetaDataApi';
+import { GetBrachData,DeleteForm } from '../../lib/formMetaDataApi';
 
 import GridColumsDigitalForm from './GridColumsDigitalForm';
 
 import FormActionModal from './FormActionModal';
 import FormCopyModal from './FormCopyModal';
+import DeleteModal from 'src/components/DeleteModal';
 
 const DigitalForms = () => {
     const { t } = useTranslation();
@@ -48,6 +46,7 @@ const DigitalForms = () => {
     const [loading, setLoading] = useState(false);
     const [formActionModal, setFormActionModal] = useState(false);
     const [formCopyModal, setformCopyModal] = useState(false);
+    const [formDeleteModal, setformDeleteModal] = useState(false);
     const [selectedFormId, setSelectedFormId] = useState(0);
 
     async function LoadCustomSectors() {
@@ -123,13 +122,36 @@ const DigitalForms = () => {
 
     }, []);
 
+    async function DeleDocumentAccept(data){
+   
+
+        try {
+            setSaveError(null);
+            setLoading(true);
+            var formmetaDataReturn = await DeleteForm(selectedFormId);
+            if (formmetaDataReturn.returnCode === 1) {
+                GetBranchFormMetaData(); 
+                setformDeleteModal(false);
+
+            } else {
+                setSaveError(formmetaDataReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const optionClick = (option, id) => {
         setSelectedFormId(id);
         if (option === "Download") {
             setFormActionModal(true);
         } else if (option === "Copy") {
             setformCopyModal(true);
-        } 
+        } else if (option === "Delete") {
+            setformDeleteModal(true);
+        }
     }
 
 
@@ -233,6 +255,22 @@ const DigitalForms = () => {
 
             <FormActionModal foreditForm={false} visiblep={formActionModal} OnClose={() => setFormActionModal(false)} formidp={selectedFormId} ></FormActionModal>
             <FormCopyModal visiblep={formCopyModal} OnClose={() => setformCopyModal(false)} formidp={selectedFormId}></FormCopyModal>
+
+            <DeleteModal
+
+                visiblep={formDeleteModal}
+                title={t("DeleteFormModalTitle")}
+                message={t("DeleteQuestionLabel")} 
+                OnClickOk={(data)=>DeleDocumentAccept(data)}
+                OnClickCancel={()=>setformDeleteModal(false)}
+                saveStart={loading}
+                deleteError={saveError}
+                message2=''
+
+                >
+
+
+            </DeleteModal>
         </>
     )
 

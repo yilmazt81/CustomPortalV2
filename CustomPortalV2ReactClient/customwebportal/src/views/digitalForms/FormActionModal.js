@@ -33,6 +33,7 @@ const FormActionModal = ({ visiblep, formidp, OnClose, foreditForm }) => {
     }
 
     const [visible, setvisible] = useState(false);
+    const [visibleSendMail, setvisibleSendMail] = useState(false)
     const [processLoading, setprocessLoading] = useState(false);
     const { t } = useTranslation();
 
