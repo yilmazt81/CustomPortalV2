@@ -13,7 +13,8 @@ import {
     CModalFooter,
     CModalBody,
     CFormLabel,
-
+    CFormTextarea ,
+    CFormInput
 
 } from '@coreui/react'
 
@@ -52,23 +53,15 @@ const FormSendMailModal = ({ visiblep, formidp, OnClose }) => {
     }, [visiblep]);
 
 
-    async function CloneDocument() {
+  
+    function handleChange(event) {
+        const { name, value } = event.target;
 
-        try {
-            setSaveError(null);
-            setprocessLoading(true);
+        //var newValue = formdefination[name];
+       // newValue = !newValue;
 
-            var formmetaDataReturn = await CloneForm(formidp);
-            if (formmetaDataReturn.returnCode === 1) {
-                setnewFormmetadata(formmetaDataReturn.data);
-            } else {
-                setSaveError(formmetaDataReturn.returnMessage);
-            }
-        } catch (error) {
-            setSaveError(error.message);
-        } finally {
-            setprocessLoading(false);
-        }
+       // setFormdefination({ ...formdefination, [name]: newValue });
+
     }
 
 
@@ -126,14 +119,14 @@ const FormSendMailModal = ({ visiblep, formidp, OnClose }) => {
                     <CRow>
                         <CFormLabel htmlFor="txtMailBody" className="col-sm-3 col-form-label">{t("MailBody")}</CFormLabel>
                         <CCol sm={9}>
-                            <CFormInput type="text" id='txtMailBody' name="CCMail"
+                            <CFormTextarea  type="text" id='txtMailBody' name="MailBody"
                                 onChange={e => handleChange(e)}  />
                         </CCol>
 
                     </CRow>
                 </CModalBody>
                 <CModalFooter>
-                    <CButton color='primary' disabled={newFormmetadata != null} onClick={() => CloneDocument()}>{t("Ok")}</CButton>
+                    <CButton color='primary'  >{t("Ok")}</CButton>
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
 
                 </CModalFooter>

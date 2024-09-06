@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import FileCreateProcess from '../digitalFormEdit/FileCreateProcess';
 
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import FormSendMailModal from './FormSendMailModal';
 
 
 const FormActionModal = ({ visiblep, formidp, OnClose, foreditForm }) => {
@@ -43,6 +44,11 @@ const FormActionModal = ({ visiblep, formidp, OnClose, foreditForm }) => {
         setvisible(visiblep);
 
     }, [visiblep]);
+
+    function ShowMailForm(show){
+        setvisibleSendMail(show);
+        setvisible(!show);
+    }
     return (
         <>
             <CModal
@@ -70,12 +76,14 @@ const FormActionModal = ({ visiblep, formidp, OnClose, foreditForm }) => {
                     </CRow>
                 </CModalBody>
                 <CModalFooter>
-                    <CButton color="success"  >{t("SendMail")}</CButton>
+                    <CButton color="success" onClick={()=>ShowMailForm(true)}  >{t("SendMail")}</CButton>
                     {foreditForm ? <Link to={{pathname:"/digitalForms"}}> <CButton color="secondary">{t("ReturnDigitalForms")} </CButton></Link> : ""}
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
 
                 </CModalFooter>
             </CModal>
+
+            <FormSendMailModal visiblep={visibleSendMail} OnClose={()=>ShowMailForm(false)} formidp={formidp} ></FormSendMailModal>
         </>
     )
 }
