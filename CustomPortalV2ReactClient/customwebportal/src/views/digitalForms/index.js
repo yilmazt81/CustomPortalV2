@@ -230,7 +230,7 @@ const DigitalForms = () => {
             </CCardBody>
         </CCard>
 
-                <FormActionModal visiblep={formActionModal} OnClose={()=>setFormActionModal(false)} formidp={selectedFormId} ></FormActionModal>
+                <FormActionModal foreditForm={false} visiblep={formActionModal} OnClose={()=>setFormActionModal(false)} formidp={selectedFormId} ></FormActionModal>
 
         </>
     )

@@ -169,7 +169,11 @@ export const TRANSLATIONS_TR = {
     FTPTest:"FTP Test",
     FTPListenFolder:"Kontrol Edilecek Klasör",
     WFClassification:"Belge Sınıflama",
- 
+    WFSendMail:"Mail Gönder",
+    ReturnDigitalForms:"Ana Akrana Dön",
+    SaveFormMessage:"Kaydetme işlemi başarılı Yapmak istediğiniz işlemi seçiniz.",
+    SaveFormProcessTitle:"Kayıt sonrası işlem",
+    FormProcessActionDescription:"Oluşturmak istediğiniz dokumanın yanında tıklayınız.",
      
 
 };

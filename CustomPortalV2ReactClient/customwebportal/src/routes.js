@@ -14,7 +14,7 @@ const FormDefinationAutoComplate=React.lazy(() => import('./views/formdefination
 const FormDefinationVersion=React.lazy(()=>import('./views/formdefinationversion') );
 const FormDefinationAttachments=React.lazy(()=>import('./views/definationattachments') );
 const WorkFlowDefination = React.lazy(()=>import('./views/workflowDefination'));
-
+const workflow = React.lazy(()=>import('./views/workflow'));
 const routes = [
 
   
@@ -34,6 +34,7 @@ const routes = [
   { path: '/definationattachments', name: 'FormDefinationType/FormDefinationEdit/definationattachments', element: FormDefinationAttachments }, 
 
   { path: '/workflowDefination', name: 'workflowDefination', element: WorkFlowDefination }, 
+  { path: '/workflow', name: 'workflow', element: workflow }, 
 
   
   

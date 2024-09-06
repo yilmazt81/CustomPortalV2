@@ -78,6 +78,14 @@ namespace CustomPortalV2.RestApi.Controllers
             }
         }
 
+        [HttpGet("CloneForm/{sourceFormid}")]
+        public IActionResult CloneForm(int sourceFormid)
+        {
+            var cloneResult = _formMetaDataService.CloneForm(User.GetCompanyId(), User.GetBranchId(), User.GetUserId(), User.GetUserFullName(), sourceFormid);
+
+            return Ok(cloneResult);
+        }
+
         [HttpGet("GetConvertFileList/{id}")]
         public IActionResult GetConvertFileList(int id)
         {

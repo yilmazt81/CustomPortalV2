@@ -22,8 +22,7 @@ import {GetSector} from 'src/lib/formdef';
 import {CreateProduct,GetCompanyProducts,GetCompanyProduct,DeleteProduct} from 'src/lib/customProductapi';
 import DeleteModal from 'src/components/DeleteModal';
 
-const ProductDefination = () => {
-  const navigate = useNavigate();
+const ProductDefination = () => { 
   const { t } = useTranslation();
   const [productList,setProductList] = useState([]);
   const [product,setProduct]=useState(null);

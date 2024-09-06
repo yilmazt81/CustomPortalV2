@@ -138,7 +138,7 @@ export const TRANSLATIONS_EN = {
     ProductDeleteMessage:"Are you sure you want to Delete the Product ?",
     CreatePrivateType:"Create Private Types",
     
-    
+    WFClassification:"Belge Sınıflddddama",
     
 
 

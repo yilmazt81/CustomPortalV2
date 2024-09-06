@@ -1,5 +1,6 @@
 ﻿using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.Form;
+using CustomPortalV2.Core.Model.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormMetaData Save(FormMetaData formMetaData);
 
         FormMetaData Update(FormMetaData formMetaData);
+
+        void AddCopyDocumentLog(CopyDocumentLog copyDocumentLog);
 
     }
 }

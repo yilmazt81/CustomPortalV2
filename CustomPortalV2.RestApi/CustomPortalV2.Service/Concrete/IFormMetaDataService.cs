@@ -23,5 +23,7 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<FormConvertContainerDTO> GetFormConvertList(int id, int mainCompanyId);
 
+        DefaultReturn<FormMetaData> CloneForm(int mainCompanyId, int branchId, int userId, string username, int sourceformId);
+
     }
 }

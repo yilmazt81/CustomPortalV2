@@ -368,5 +368,58 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+        public DefaultReturn<FormMetaData> CloneForm(int mainCompanyId, int branchId, int userId, string username, int sourceformId)
+        {
+            DefaultReturn<FormMetaData> defaultReturn = new DefaultReturn<FormMetaData>();
+
+            try
+            {
+                var formData = _formMetaDataRepository.Get(sourceformId);
+                if (formData == null)
+                {
+                    throw new Exception("FormNotFound");
+                }
+                if (formData.MainCompanyId != mainCompanyId)
+                {
+                    throw new Exception("CompanyNameIsNotSame");
+                }
+
+                ICollection<FormMetaDataAttribute>? formMetaDataAttribute = formData.FormMetaDataAttribute;
+                FormMetaDataDTO formMetaDataDTO = new FormMetaDataDTO()
+                {
+                    BrachId = branchId,
+                    CompanyId = mainCompanyId,
+                    formDefinationTypeid = formData.FormDefinationId,
+                    UserId = userId,
+                    UserName = username,
+                    workid = (formData.CustomWorkId == null ? 0 : formData.CustomWorkId.Value),
+                    fieldValues = formMetaDataAttribute.Select(s => new FieldValueDTO() { fieldName = s.TagName, fieldValue = s.FieldValue }).ToArray(),
+                    isDefault = false,
+
+
+                };
+
+
+                defaultReturn.Data = Save(formMetaDataDTO).Data;
+
+                _formMetaDataRepository.AddCopyDocumentLog(new Core.Model.Log.CopyDocumentLog()
+                {
+                    CompanyBranchId = branchId,
+                    CopyUser = username,
+                    CopyUserId = userId,
+                    CreateDate = DateTime.Now,
+                    MainCompanyId = mainCompanyId,
+                    FormMetaDataId = sourceformId,
+                    NewMetaDataId = defaultReturn.Data.Id
+                });
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
     }
 }

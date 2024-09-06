@@ -137,6 +137,5 @@ export const TRANSLATIONS_RU = {
     ModalDeleteProductTitle:"Удаление продукта",
     ProductDeleteMessage:"Вы уверены, что хотите удалить продукт ?",
     CreatePrivateType:"Создание частных типов",
-    
-    
+     
 };

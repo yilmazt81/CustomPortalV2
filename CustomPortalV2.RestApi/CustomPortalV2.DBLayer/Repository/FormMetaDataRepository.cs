@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.Form;
+using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,6 +17,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public FormMetaDataRepository(DBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public void AddCopyDocumentLog(CopyDocumentLog copyDocumentLog)
+        {
+            _dbContext.CopyDocumentLog.Add(copyDocumentLog);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<FormMetaData> Get(Expression<Func<FormMetaData, bool>> predicate, int maxCount)

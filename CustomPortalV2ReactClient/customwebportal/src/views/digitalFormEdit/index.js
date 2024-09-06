@@ -25,6 +25,7 @@ import { useSearchParams } from 'react-router-dom';
 import DynamicForm from './dynamicForm';
 import MenuButtons from './MenuButtons'
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import FormActionModal from '../digitalForms/FormActionModal';
 
 
 const DigitalFormEdit = () => {
@@ -41,6 +42,7 @@ const DigitalFormEdit = () => {
     const [loading, setLoading] = useState(false);
     const [formdefinationType, setformdefinationType] = useState(0);
     const [controlValues, setControlValues] = useState([{ fieldName: '', fieldValue: '' }]);
+    const [formProcessAfterSave,setFormProcessAfterSave]=useState(false);
 
     async function LoadCustomSectors() {
 
@@ -222,7 +224,9 @@ const DigitalFormEdit = () => {
 
                 var fsaveReturn = await SaveMetaData((formMetaData == null ? 0 : formMetaData.id), formdefinationType, controlValues);
                 if (fsaveReturn.returnCode === 1) {
+                    
                     setformMetaData(fsaveReturn.data);
+                    setFormProcessAfterSave(true);
                 } else {
                     setSaveError(fsaveReturn.returnMessage);
                 }
@@ -325,7 +329,7 @@ const DigitalFormEdit = () => {
             </CCardBody>
         </CCard>
 
-
+          <FormActionModal visiblep={formProcessAfterSave} formidp={formMetaData?.id} OnClose={()=>setFormProcessAfterSave(false)} foreditForm={true} ></FormActionModal>                      
         </>
     )
 

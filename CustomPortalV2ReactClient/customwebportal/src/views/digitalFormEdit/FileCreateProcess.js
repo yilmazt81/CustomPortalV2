@@ -76,7 +76,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
     const [versionConvertFileUrl, setversionConvertFileUrl] = useState(null);
     const [formdefinationName, setformdefinationName] = useState("");
 
-    const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '' ,error:''}]);
+    const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '', error: '' }]);
 
 
     const [value, setValue] = useState(0);
@@ -141,7 +141,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
         var itemold = processAttachmentList.find(s => s.attachmentid === attachmentid);
         if (itemold === undefined) {
-            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '' ,error:''});
+            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '', error: '' });
         } else {
             itemold.process = true;
         }
@@ -153,26 +153,26 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                 var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
                 itemold1.process = false;
                 itemold1.downloadUrl = createFileReturn.data;
-                itemold1.error='';
+                itemold1.error = '';
                 debugger;
                 setprocessAttachmentList([...processAttachmentList]);
             } else {
 
                 var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-                itemold1.process = false; 
-                itemold1.error=createFileReturn.returnMessage;
+                itemold1.process = false;
+                itemold1.error = createFileReturn.returnMessage;
                 setprocessAttachmentList([...processAttachmentList]);
             }
 
         } catch (error) {
             var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-                itemold1.process = false; 
-                itemold1.error=error.message;
-                setprocessAttachmentList([...processAttachmentList]);
-        }finally{
+            itemold1.process = false;
+            itemold1.error = error.message;
+            setprocessAttachmentList([...processAttachmentList]);
+        } finally {
             var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-            itemold1.process = false; 
-            
+            itemold1.process = false;
+
             setprocessAttachmentList([...processAttachmentList]);
         }
 
@@ -184,14 +184,17 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
         var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
 
         if (item === undefined)
-            return {attachmentid: attachmentid, process: false, downloadUrl: '',error:'' };
+            return { attachmentid: attachmentid, process: false, downloadUrl: '', error: '' };
         else
             return item;
 
     }
- 
+
     return (
         <>
+            <CRow>
+                <CFormLabel>{t("FormProcessActionDescription")}</CFormLabel>
+            </CRow>
             <CRow>
                 <CCol sm={4}>
 
@@ -230,8 +233,8 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
                                     key={item.id} data={item}
                                     processp={GetProcessStatus(item.id)}
-                                
- 
+
+
                                 ></AttachmentProcessItem>);
                             })}
                         </CCol>
@@ -248,7 +251,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                     key={item.id}
                                     data={item}
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
-                                    processp={GetProcessStatus(item.id)} 
+                                    processp={GetProcessStatus(item.id)}
                                 ></AttachmentProcessItem>);
                             })}
 

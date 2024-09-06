@@ -6,7 +6,7 @@ import {
   Controls,
   Background,
   applyEdgeChanges,
-  applyNodeChanges,  
+  applyNodeChanges,
   addEdge
 } from '@xyflow/react';
 
@@ -45,12 +45,13 @@ import {
   FaCheck,
   FaExclamationCircle,
   FaTextWidth,
-  FaBarcode, 
-  FaRandom
+  FaBarcode,
+  FaRandom,
+  FaMailBulk,
 } from "react-icons/fa";
 
 import { useTranslation } from "react-i18next";
-const initialNodes = [ ];
+const initialNodes = [];
 
 const WorkflowDefination = () => {
 
@@ -64,7 +65,7 @@ const WorkflowDefination = () => {
     emailNode: EmailNode,
     ocrProcess: OCRProcessNode,
     barcodeReadProcess: BarcodeProcessNode,
-    documentClassificationProcess:ClassificationProcessNode
+    documentClassificationProcess: ClassificationProcessNode
   };
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState([]);
@@ -116,33 +117,49 @@ const WorkflowDefination = () => {
 
   function GetForkFlowTypeOptions() {
 
-    return (
-      <>
-        <CButtonGroup role="group">
-          <CButton color="primary" variant="outline" onClick={() => AddNode("ftpNode")}> <FaCloudDownloadAlt></FaCloudDownloadAlt> {t("WFFTP")}</CButton>
+    if (workFlow.flowType === "Business") {
 
-          <CButton color="primary" variant="outline" onClick={() => AddNode("whatsappNode")}> <FaWhatsapp />   {t("WFWhatsapp")}</CButton>
+      return (
+        <>
+          <CButtonGroup role="group">
+            <CButton color="primary" variant="outline"> <FaCheck />{t("WFAcceptUser")}</CButton>
+            <CButton color="primary" variant="outline"><FaExclamationCircle /> {t("WFRejectUser")}</CButton>
+            <CButton color="primary" variant="outline"><FaMailBulk /> {t("WFSendMail")}</CButton>
+          </CButtonGroup>
+        </>
+      )
 
-          <CButton color="primary" variant="outline" onClick={() => AddNode("emailNode")}>
-            <FaInbox />
-            {t("WFMail")}</CButton>
-          <CButton color="primary" variant="outline" onClick={() => AddNode('ocrProcess')}>
-            <FaTextWidth />
-            {t("WFOCR")}</CButton>
-          <CButton color="primary" variant="outline" onClick={() => AddNode("barcodeReadProcess")}>
-            <FaBarcode />
-            {t("WFBarcodeReader")}</CButton>
-
-          <CButton color="primary" variant="outline" onClick={() => AddNode("documentClassificationProcess")}>
-            <FaRandom />
-            {t("WFClassification")}</CButton>
+    } else {
 
 
-          <CButton color="primary" variant="outline"> <FaCheck />{t("WFAcceptUser")}</CButton>
-          <CButton color="primary" variant="outline"><FaExclamationCircle /> {t("WFRejectUser")}</CButton>
-        </CButtonGroup>
-      </>
-    )
+      return (
+        <>
+          <CButtonGroup role="group">
+            <CButton color="primary" variant="outline" onClick={() => AddNode("ftpNode")}>
+              <FaCloudDownloadAlt></FaCloudDownloadAlt> {t("WFFTP")}</CButton>
+
+            <CButton color="primary" variant="outline" onClick={() => AddNode("whatsappNode")}> <FaWhatsapp />   {t("WFWhatsapp")}</CButton>
+
+            <CButton color="primary" variant="outline" onClick={() => AddNode("emailNode")}>
+              <FaInbox />
+              {t("WFMail")}</CButton>
+            <CButton color="primary" variant="outline" onClick={() => AddNode('ocrProcess')}>
+              <FaTextWidth />
+              {t("WFOCR")}</CButton>
+            <CButton color="primary" variant="outline" onClick={() => AddNode("barcodeReadProcess")}>
+              <FaBarcode />
+              {t("WFBarcodeReader")}</CButton>
+
+            <CButton color="primary" variant="outline" onClick={() => AddNode("documentClassificationProcess")}>
+              <FaRandom />
+              {t("WFClassification")}</CButton>
+
+            <CButton color="primary" variant="outline"> <FaCheck />{t("WFAcceptUser")}</CButton>
+            <CButton color="primary" variant="outline"><FaExclamationCircle /> {t("WFRejectUser")}</CButton>
+          </CButtonGroup>
+        </>
+      )
+    }
 
   }
 

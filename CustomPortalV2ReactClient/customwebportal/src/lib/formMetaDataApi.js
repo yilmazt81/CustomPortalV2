@@ -24,6 +24,11 @@ export async function  GetConvertFileList(id) {
   return data;
 };
  
+export async function  CloneForm(sourceformid) {   
+  
+  const { data } =  await GetRequest (`/api/FormMetaData/CloneForm/${sourceformid}`);
+  return data;
+};
 
 export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,woid) {
     debugger;

@@ -12,23 +12,23 @@ import {
     CModalTitle,
     CModalFooter,
     CModalBody,
+    CFormLabel,
 
 
 } from '@coreui/react'
-
-import Lottie from 'lottie-react';
+ 
 import PropTypes from 'prop-types';
 
+import { Link } from 'react-router-dom';
 
 import { useTranslation } from "react-i18next";
-
-import { DataGrid } from '@mui/x-data-grid';
+ 
 import FileCreateProcess from '../digitalFormEdit/FileCreateProcess';
 
 import LoadingAnimation from 'src/components/LoadingAnimation';
 
 
-const FormActionModal = ({ visiblep, formidp, OnClose }) => {
+const FormActionModal = ({ visiblep, formidp, OnClose, foreditForm }) => {
 
     function ClosedClick() {
         OnClose(true);
@@ -55,10 +55,13 @@ const FormActionModal = ({ visiblep, formidp, OnClose }) => {
 
             >
                 <CModalHeader>
-                    <CModalTitle>{t("FormModalProcessTitle")}</CModalTitle>
+                    <CModalTitle> { foreditForm? t("SaveFormProcessTitle"): t("FormModalProcessTitle") }</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
+                    <CRow>
+                        {foreditForm ? <CAlert color="success" >{t("SaveFormMessage")}</CAlert> : ""}
 
+                    </CRow>
                     <CRow>
 
                         <FileCreateProcess formidp={formidp} loading={(e) => setprocessLoading(e)}></FileCreateProcess>
@@ -70,6 +73,7 @@ const FormActionModal = ({ visiblep, formidp, OnClose }) => {
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="success"  >{t("SendMail")}</CButton>
+                    {foreditForm ? <Link to={{pathname:"/digitalForms"}}> <CButton color="secondary">{t("ReturnDigitalForms")} </CButton></Link> : ""}
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
 
                 </CModalFooter>
