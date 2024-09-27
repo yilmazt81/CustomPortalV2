@@ -21,14 +21,20 @@ import PropTypes from 'prop-types';
 import { ThreeDot } from 'react-loading-indicators';
 
 
-import { cilChevronCircleRightAlt, cilCloudDownload, cilX,cilReload } from '@coreui/icons';
+import { cilChevronCircleRightAlt, cilCloudDownload, cilX, cilReload } from '@coreui/icons';
 
 
-function AttachmentProcessItem({ data, processp, OnProcessAttachment, OnSelecteAttachment }) {
+function AttachmentProcessItem({ data, processp, OnProcessAttachment, itemCheckedp, OnSelecteAttachment }) {
 
-    function DownloadFile(fileUrl){
-        window.open(fileUrl) ;
+    //const [itemChecked, setItemCheck] = useState(false);
+    function DownloadFile(fileUrl) {
+        window.open(fileUrl);
     }
+
+    useEffect(() => {
+  
+
+    }, []);
 
     function GetControl() {
 
@@ -66,7 +72,7 @@ function AttachmentProcessItem({ data, processp, OnProcessAttachment, OnSelecteA
                 )
             } else if (processp.downloadUrl != '') {
                 return (
-                    <CButton color="success" variant="outline" shape="rounded-pill" onClick={()=>DownloadFile(processp.downloadUrl )} >
+                    <CButton color="success" variant="outline" shape="rounded-pill" onClick={() => DownloadFile(processp.downloadUrl)} >
                         <CIcon icon={cilCloudDownload} ></CIcon>
                     </CButton>
                 )
@@ -87,12 +93,20 @@ function AttachmentProcessItem({ data, processp, OnProcessAttachment, OnSelecteA
         }
     }
 
+    function CheckedChanged(e, data) {
+       
+        //setItemCheck(!e.target.checked);
+
+        OnSelecteAttachment({ id: data.id, selected: e.target.checked, formName: data.formName });
+
+    }
+
     return (
         <>
             <CRow>
 
                 <CCol sm={10}>
-                    <CFormCheck type='CheckBox' label={data.formName} ></CFormCheck >
+                    <CFormCheck   checked={itemCheckedp} type='checkbox' label={data.formName} onChange={(e) => CheckedChanged(e, data)} ></CFormCheck >
                 </CCol>
                 <CCol sm={2}>
 
@@ -109,4 +123,5 @@ export default AttachmentProcessItem;
 AttachmentProcessItem.propTypes = {
     processp: PropTypes.object,
     data: PropTypes.object,
+    itemCheckedp:PropTypes.bool,
 }

@@ -64,7 +64,7 @@ CustomTabPanel.propTypes = {
 
 
 
-const FileCreateProcess = ({ formidp, loading, onError }) => {
+const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLoadFormAttachment,listAttachmentSelectionp}) => {
 
     const { t } = useTranslation();
 
@@ -95,9 +95,7 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
     }
 
     async function LoadFormConvertTypes() {
-
-        //loading(true);
-
+  
         try {
             var convertTypeReturn = await GetConvertFileList(formidp);
 
@@ -107,6 +105,9 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                 setFormVersionList(convertTypeReturn.data.formVersions)
                 setformAttachmentPrivate(convertTypeReturn.data.attachmentPrivateForForm);
                 setformAttachmentNotPrivate(convertTypeReturn.data.attachmentNotPrivateForForm);
+
+                OnLoadFormAttachment(convertTypeReturn.data.attachmentPrivateForForm);
+                OnLoadFormAttachment(convertTypeReturn.data.attachmentNotPrivateForForm);
                 if (convertTypeReturn.data.attachmentPrivateForForm.length === 0) {
                     setValue(1);
                 }
@@ -190,6 +191,22 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
 
     }
 
+    function selecteAttachment(data)
+    {       
+        onSelecteAttachment(data);
+    }
+
+    function getAttachmentCheckedValue(id){
+
+        var item= listAttachmentSelectionp.find(s=>s.id===id.toString());
+ 
+        if (item===undefined){
+            return false;
+        }else{ 
+            return item.selected;
+        }
+    }
+
     return (
         <>
             <CRow>
@@ -233,7 +250,8 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
                                     key={item.id} data={item}
                                     processp={GetProcessStatus(item.id)}
-
+                                    OnSelecteAttachment={(data)=> selecteAttachment(data) }
+                                    itemCheckedp={getAttachmentCheckedValue(item.id)}
 
                                 ></AttachmentProcessItem>);
                             })}
@@ -250,8 +268,10 @@ const FileCreateProcess = ({ formidp, loading, onError }) => {
                                 return (<AttachmentProcessItem
                                     key={item.id}
                                     data={item}
+                                    itemCheckedp={getAttachmentCheckedValue(item.id)}
                                     OnProcessAttachment={() => CreateAttacment(item.id)}
                                     processp={GetProcessStatus(item.id)}
+                                    OnSelecteAttachment={(data)=> selecteAttachment(data) }
                                 ></AttachmentProcessItem>);
                             })}
 

@@ -6,13 +6,14 @@ using CustomPortalV2.Core.Model.Lang;
 using CustomPortalV2.Model.Company;
 using CustomPortalV2.Core.Model.App;
 using CustomPortalV2.Core.Model.Company;
-using CustomPortalV2.Core.Model.Autocomplete; 
+using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.Core.Model.Custom;
 using CustomPortalV2.Core.Model.Work;
+using CustomPortalV2.Core.Model.Setting;
 
 namespace CustomPortalV2.DataAccessLayer
 {
@@ -58,13 +59,13 @@ namespace CustomPortalV2.DataAccessLayer
 
 
 
-        public virtual DbSet<AppMenu> AppMenu { get; set; }  
+        public virtual DbSet<AppMenu> AppMenu { get; set; }
         public virtual DbSet<AutocompleteFieldMap> AutocompleteFieldMap { get; set; }
         public virtual DbSet<BranchPackage> BranchPackage { get; set; }
-        public virtual DbSet<ComboBoxItem> ComboBoxItem { get; set; } 
+        public virtual DbSet<ComboBoxItem> ComboBoxItem { get; set; }
         public virtual DbSet<CompanyDefination> CompanyDefination { get; set; }
         public virtual DbSet<CopyDocumentLog> CopyDocumentLog { get; set; }
-        
+
         public virtual DbSet<CustomeParam> CustomeParam { get; set; }
         public virtual DbSet<CustomSector> CustomSector { get; set; }
         public virtual DbSet<DefinationType> DefinationType { get; set; }
@@ -76,7 +77,7 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<FormMetaDataAttributeHistory> FormMetaDataAttributeHistory { get; set; }
         public virtual DbSet<FormMetaDataCounter> FormMetaDataCounter { get; set; }
         public virtual DbSet<FormRule> FormRule { get; set; }
-        public virtual DbSet<FormVersion> FormVersion { get; set; } 
+        public virtual DbSet<FormVersion> FormVersion { get; set; }
         public virtual DbSet<RuleFormDefination> RuleFormDefination { get; set; }
         public virtual DbSet<SoftDocumentShare> SoftDocumentShare { get; set; }
         public virtual DbSet<UserRule> UserRule { get; set; }
@@ -84,8 +85,8 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CustomeField> CustomeField { get; set; }
         public virtual DbSet<CustomeFieldItem> CustomeFieldItem { get; set; }
         public virtual DbSet<FormMetaDataAttribute_CustomeField> FormMetaDataAttribute_CustomeField { get; set; }
-        public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; } 
-        public virtual DbSet<FieldType> FieldType { get; set; } 
+        public virtual DbSet<LoginRequestLog> LoginRequestLog { get; set; }
+        public virtual DbSet<FieldType> FieldType { get; set; }
         public virtual DbSet<FormDefinationAttachment> FormDefinationAttachment { get; set; }
         public virtual DbSet<SoftImageChangeFormatRule> SoftImageChangeFormatRule { get; set; }
         public virtual DbSet<AutoComplateOldValue> AutoComplateOldValue { get; set; }
@@ -119,13 +120,19 @@ namespace CustomPortalV2.DataAccessLayer
 
         public virtual DbSet<FontType> FontTypes { get; set; }
 
-        public virtual DbSet<FormMetaDataAttachmentFilter> FormMetaDataAttachmentFilters { get; set; }  
+        public virtual DbSet<FormMetaDataAttachmentFilter> FormMetaDataAttachmentFilters { get; set; }
 
         public virtual DbSet<WorkFlowDocument> FreeWorkFlowDocuments { get; set; }
 
         public virtual DbSet<WorkFlowNode> WorkFlowNodes { get; set; }
 
         public virtual DbSet<WorkFlowEdge> WorkFlowEdges { get; set; }
+
+        public virtual DbSet<CompanyMailList> CompanyMailLists { get; set; }
+
+        public virtual DbSet<CompanySmtpSetting> CompanySmtpSettings { get; set; }
+
+        public virtual DbSet<FormSendMailLog> FormSendMailLogs { get;set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -139,6 +146,21 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<WorkFlowDocument>().ToTable("WorkFlowDocument");
             modelBuilder.Entity<WorkFlowDocument>().HasKey(k => k.Id);
             modelBuilder.Entity<WorkFlowDocument>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<FormSendMailLog>().ToTable("FormSendMailLog");
+            modelBuilder.Entity<FormSendMailLog>().HasKey(k => k.Id);
+            modelBuilder.Entity<FormSendMailLog>().Property(k => k.Id).HasColumnName("Id");
+
+
+            modelBuilder.Entity<CompanySmtpSetting>().ToTable("CompanySmtpSetting");
+            modelBuilder.Entity<CompanySmtpSetting>().HasKey(k => k.Id);
+            modelBuilder.Entity<CompanySmtpSetting>().Property(k => k.Id).HasColumnName("Id");
+
+
+
+            modelBuilder.Entity<CompanyMailList>().ToTable("CompanyMailList");
+            modelBuilder.Entity<CompanyMailList>().HasKey(k => k.Id);
+            modelBuilder.Entity<CompanyMailList>().Property(k => k.Id).HasColumnName("Id");
 
 
             modelBuilder.Entity<WorkFlowEdge>().ToTable("WorkFlowEdge");
@@ -165,7 +187,7 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FormMetaDataCounter>().HasKey(k => k.Id);
             modelBuilder.Entity<FormMetaDataCounter>().Property(k => k.Id).HasColumnName("Id");
 
-            
+
             modelBuilder.Entity<SalePackageItem>().ToTable("SalePackageItem");
             modelBuilder.Entity<SalePackageItem>().HasKey(k => k.Id);
             modelBuilder.Entity<SalePackageItem>().Property(k => k.Id).HasColumnName("Id");
@@ -183,7 +205,7 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FontType>().HasKey(k => k.Id);
             modelBuilder.Entity<FontType>().Property(k => k.Id).HasColumnName("Id");
 
-            
+
 
             modelBuilder.Entity<CustomWork>().ToTable("CustomWork");
             modelBuilder.Entity<CustomWork>().HasKey(k => k.Id);
@@ -210,7 +232,7 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<AppMenu>().ToTable("AppMenu");
             modelBuilder.Entity<AppMenu>().HasKey(k => k.Id);
             modelBuilder.Entity<AppMenu>().Property(k => k.Id).HasColumnName("Id");
-             
+
 
             modelBuilder.Entity<User>().ToTable("AppUser");
             modelBuilder.Entity<User>().HasKey(k => k.Id);

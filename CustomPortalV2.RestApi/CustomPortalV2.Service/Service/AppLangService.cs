@@ -51,7 +51,7 @@ namespace CustomPortalV2.Business.Service
                 result = await response.Content.ReadAsStringAsync();
 
             }
-
+            result = result.Substring(1, result.Length - 2);
             return JsonConvert.DeserializeObject<TranslateTextReturn>(result);
         }
     }
