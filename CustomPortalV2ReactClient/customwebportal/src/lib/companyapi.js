@@ -1,22 +1,26 @@
 import axios from "axios"; 
+import {GetRequest,Post} from './Apibase'
 
 async function   CreateCompany(company)
 { 
-  var result= await axios.post(process.env.REACT_APP_APIURL+"/api/Company",company);
+  var result= await  Post("/api/Company",company);
    
   return result;
 
 }
 
 async function GetBranchList(){
-  var lastToken=localStorage.getItem("LastToken");
-  axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-
-  const { data } =  await axios.get(process.env.REACT_APP_APIURL+'/api/Branch');
+ 
+  const { data } =  await GetRequest('/api/Branch');
   return data;
 
 }
 
+
+async function CreateNewBranch() {
+  const { data } =  await GetRequest('/api/Branch/CreateNewBranch');
+  return data;
+}
 async function GetBranch(id){
   var lastToken=localStorage.getItem("LastToken");
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
@@ -44,4 +48,4 @@ async function SaveBranch(savedata)
 
 }
 
-export {CreateCompany,GetBranchList,GetBranch,SaveBranch,DeleteBranch};
+export {CreateCompany,GetBranchList,GetBranch,SaveBranch,DeleteBranch,CreateNewBranch};

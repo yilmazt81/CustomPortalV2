@@ -7,7 +7,7 @@ bin-release/
 # Other files and folders
 .settings/
 .packages/
-.node_modules/
+.node_modules/ 
 .vs/
 
 

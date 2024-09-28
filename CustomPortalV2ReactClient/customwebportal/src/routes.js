@@ -15,6 +15,9 @@ const FormDefinationVersion=React.lazy(()=>import('./views/formdefinationversion
 const FormDefinationAttachments=React.lazy(()=>import('./views/definationattachments') );
 const WorkFlowDefination = React.lazy(()=>import('./views/workflowDefination'));
 const workflow = React.lazy(()=>import('./views/workflow'));
+const Settings = React.lazy(()=>import('./views/settings'));
+const UserProfile = React.lazy(()=>import('./views/Profile'));
+
 const routes = [
 
   
@@ -35,6 +38,8 @@ const routes = [
 
   { path: '/workflowDefination', name: 'workflowDefination', element: WorkFlowDefination }, 
   { path: '/workflow', name: 'workflow', element: workflow }, 
+  { path: '/Settings', name: 'Settings', element: Settings }, 
+  { path: '/UserProfile', name: 'UserProfile', element: UserProfile }, 
 
   
   

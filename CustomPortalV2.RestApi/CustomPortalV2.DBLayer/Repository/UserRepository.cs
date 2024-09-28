@@ -51,6 +51,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         }
 
+        public UserRule GetUserRole(int id)
+        {
+            return _dbContext.UserRule.Single(s => s.Id == id);
+        }
+
         public IEnumerable<UserRuleMenu> GetUserRuleMenus(int userRuleId)
         {
             return _dbContext.UserRuleMenu.Where(s => s.UserRuleId == userRuleId).ToArray();

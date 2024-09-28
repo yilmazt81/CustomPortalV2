@@ -2,6 +2,7 @@
 using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.DataAccessLayer.Concrete;
+using CustomPortalV2.DataAccessLayer.Repository;
 using CustomPortalV2.Model;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ namespace CustomPortalV2.Business.Service
     public class BranchService : IBranchService
     {
         IBranchRepository _branchRepository;
-        Encryption encryption = null;
-        public BranchService(IBranchRepository branchRepository)
+        Encryption encryption;
+        IUserRepository _userRepository;
+        public BranchService(IBranchRepository branchRepository, IUserRepository userRepository)
         {
 
             _branchRepository = branchRepository;
+            _userRepository = userRepository;
             encryption = new Encryption("brnc_9178d95v59d");
         }
         private DefaultReturn<Branch> ChecFields(Branch branchDefination)
@@ -60,7 +63,8 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<Branch> returnBranch = new DefaultReturn<Branch>();
 
-
+            branch.UserRuleName = _userRepository.GetUserRole(branch.UserRuleId).Name;
+            
             returnBranch = ChecFields(branch);
             if (returnBranch.ReturnCode != 1)
             {
@@ -133,7 +137,7 @@ namespace CustomPortalV2.Business.Service
             try
             {
                 var userBranch = _branchRepository.Get(s => s.Id == branchId);
-                if(userBranch == null)
+                if (userBranch == null)
                 {
                     throw new Exception("Branchisnull");
                 }

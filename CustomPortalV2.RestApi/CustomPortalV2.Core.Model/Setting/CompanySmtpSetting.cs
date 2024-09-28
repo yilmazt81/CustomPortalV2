@@ -10,8 +10,7 @@ namespace CustomPortalV2.Core.Model.Setting
     {
         public int Id { get; set; }
         public int MainCompanyId { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+      
         public string AccountName { get; set; }
         public int  SmtpPort { get; set; }
         public string MailTemplate { get; set; }

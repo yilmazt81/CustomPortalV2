@@ -73,7 +73,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { Gridcolumns } from './DataGrid';
-import { GetBranchList, GetBranch, SaveBranch ,DeleteBranch} from '../../lib/companyapi';
+import { GetBranchList, GetBranch, SaveBranch ,DeleteBranch,CreateNewBranch} from '../../lib/companyapi';
 import { getUserRoles, GetBranchpackages } from '../../lib/userapi';
 
 
@@ -184,6 +184,8 @@ const BranchDefination = () => {
   async function DeleteData(row) {
     var id = row.original["id"];
     setdeleteStart(true);
+    
+    setSaveError(null);
     try {
        
       var editbranch = await GetBranch(id);
@@ -209,6 +211,7 @@ const BranchDefination = () => {
   async function SaveData() {
 
     try {
+      setSaveError(null);
       var saveBranchReturn = await SaveBranch(editBranch);
       if (saveBranchReturn.returnCode === 1) {
         setVisible(!visible);
@@ -239,17 +242,18 @@ const BranchDefination = () => {
   async function NewBranch() {
     setsaveStart(false);
     setSaveError(null);
-    setEditBranch({
-      branchPackageId: 0,
-      id: 0,
-      mainCompanyId: 0,
-      userRuleId: 0,
-      companyAdmin: false,
-      branchPackageName: "",
-      deleted: false,
-      userRuleName: "",
-      sysAdmin: false,
-    });
+
+    try {
+      var createBranchReturn = await CreateNewBranch();
+      if (createBranchReturn.returnCode === 1) {
+     
+        setEditBranch(createBranchReturn.data);
+      } else {
+        setSaveError(createBranchReturn.ReturnMessage);
+      }
+    } catch (error) {
+      setSaveError(error.message);
+    }     
     setVisible(!visible);
   }
 
@@ -337,7 +341,7 @@ const BranchDefination = () => {
         <CRow className="mb-12">
           <CFormLabel htmlFor="txtBranchName" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
           <CCol sm={9}>
-            <CFormInput type="text" id='txtBranchName' name="Name"
+            <CFormInput type="text" id='txtBranchName' name="name"
               onChange={e => handleChange(e)} value={editBranch?.name} />
           </CCol>
         </CRow>
@@ -345,7 +349,7 @@ const BranchDefination = () => {
         <CRow className="mb-12">
           <CFormLabel htmlFor="txtEMail" className="col-sm-3 col-form-label">{t("Email")}</CFormLabel>
           <CCol sm={9}>
-            <CFormInput type="text" id='txtEMail' name="Email"
+            <CFormInput type="text" id='txtEMail' name="email"
               onChange={e => handleChange(e)} value={editBranch?.email} />
           </CCol>
         </CRow>
@@ -353,7 +357,7 @@ const BranchDefination = () => {
         <CRow className="mb-12">
           <CFormLabel htmlFor="txtEMailPassword" className="col-sm-3 col-form-label">{t("EMailPassword")}</CFormLabel>
           <CCol sm={9}>
-            <CFormInput type="Password" id='txtEMailPassword' name="EMailPassword"
+            <CFormInput type="Password" id='txtEMailPassword' name="eMailPassword"
               onChange={e => handleChange(e)} />
           </CCol>
         </CRow>
@@ -361,7 +365,7 @@ const BranchDefination = () => {
         <CRow className="mb-12">
           <CFormLabel htmlFor="txtPhoneNumber" className="col-sm-3 col-form-label">{t("PhoneNumber")}</CFormLabel>
           <CCol sm={9}>
-            <CFormInput type="text" id='txtPhoneNumber' name="PhoneNumber"
+            <CFormInput type="text" id='txtPhoneNumber' name="phoneNumber"
               onChange={e => handleChange(e)} value={editBranch?.phoneNumber} />
           </CCol>
         </CRow>

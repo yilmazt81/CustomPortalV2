@@ -21,9 +21,7 @@ import {
     CButton
 
 
-} from '@coreui/react'
-import { func } from 'prop-types';
-
+} from '@coreui/react' ;
 
 
 const FormDefinationAttachments = () => {

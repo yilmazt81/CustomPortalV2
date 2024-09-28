@@ -3,6 +3,7 @@ using CustomPortalV2.Business.Service;
 using CustomPortalV2.Core.Model.Company;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Model.Company;
+using CustomPortalV2.RestApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -38,7 +39,7 @@ namespace CustomPortalV2.RestApi.Controllers
           if (_memoryCache.TryGetValue(key, out DefaultReturn<List<Branch>> list))
                 return Ok(list);
 
-            var branchList = branchService.GetCompanyBraches(int.Parse(companyId), int.Parse(branchId));
+            var branchList = branchService.GetCompanyBraches(User.GetCompanyId(), int.Parse(branchId));
 
             _memoryCache.Set(key, branchList, new MemoryCacheEntryOptions
             {
@@ -50,22 +51,41 @@ namespace CustomPortalV2.RestApi.Controllers
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
+        { 
+            var branch = branchService.GetBranch(User.GetCompanyId(), id);
+
+
+            return Ok(branch);
+        }
+        [HttpGet("CreateNewBranch")]
+        public IActionResult CreateNewBranch()
         {
-            var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
-            var branch = branchService.GetBranch(int.Parse(companyId), id);
-
-
+            DefaultReturn<Branch> branch = new DefaultReturn<Branch>();
+            branch.Data = new Branch()
+            {
+                BranchPackageName="",
+                CompanyAdmin=false,
+                Email="",
+                EMailPassword="",
+                MainCompanyId=User.GetCompanyId(),
+                Name="",
+                BranchPackageId=0,
+                PhoneNumber="",
+                SysAdmin=false,
+                UserRuleName="",
+                
+                
+            };
             return Ok(branch);
         }
 
         [HttpGet("DeleteBranch/{id}")]
         public IActionResult DeleteBranch(int id)
         {
-            var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
-
-            string key = $"CompanyBranch{companyId}";
+            
+            string key = $"CompanyBranch{User.GetCompanyId()}";
             _memoryCache.Remove(key);
-            var deleteResult = branchService.Delete(int.Parse(companyId), id);
+            var deleteResult = branchService.Delete(User.GetCompanyId(), id);
 
 
             return Ok(deleteResult);
@@ -74,15 +94,13 @@ namespace CustomPortalV2.RestApi.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody] Branch branchDefination)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var branchId = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
-            var companyId = User.FindFirst(ClaimTypes.GroupSid)?.Value;
+        { 
+           
 
-            branchDefination.MainCompanyId =int.Parse(companyId);
+            branchDefination.MainCompanyId =User.GetCompanyId();
            
             var returnV = branchService.Save(branchDefination);
-            string key = $"CompanyBranch{companyId}";
+            string key = $"CompanyBranch{User.GetCompanyId()}";
             _memoryCache.Remove(key);
 
             return Ok(returnV);

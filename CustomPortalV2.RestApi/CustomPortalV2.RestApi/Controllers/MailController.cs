@@ -35,7 +35,7 @@ namespace CustomPortalV2.RestApi.Controllers
         public IActionResult Post(AttachmentSendMailDTO attachmentSendMailDTO)
         {
 
-            var sendMail= _mailService.SendMail(attachmentSendMailDTO);
+            var sendMail= _mailService.SendMail(User.GetCompanyId(),User.GetBranchId(),User.GetUserId(),attachmentSendMailDTO);
             return Ok(sendMail);
         }
     }

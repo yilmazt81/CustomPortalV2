@@ -55,6 +55,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             oldBrach.Email = branch.Email;
             oldBrach.EMailPassword = branch.EMailPassword;
             oldBrach.UserRuleId = branch.UserRuleId;
+            oldBrach.UserRuleName = branch.UserRuleName;
             _dbContext.SaveChanges();
 
             return oldBrach;
