@@ -185,7 +185,8 @@ export const TRANSLATIONS_TR = {
     CCMail:"CC Mail",
     MailSubject:"Konu",
     MailAttachment:"Ekler",
-    MailBody:"Mesaj",
+    MailBody:"Mesaj", 
+
     
 
 

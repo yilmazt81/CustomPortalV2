@@ -399,7 +399,7 @@ namespace CustomPortalV2.Business.Service
 
 
                 };
-                 
+
                 defaultReturn = Save(formMetaDataDTO);
 
                 if (defaultReturn.ReturnCode == 1)
@@ -414,7 +414,7 @@ namespace CustomPortalV2.Business.Service
                         FormMetaDataId = sourceformId,
                         NewMetaDataId = defaultReturn.Data.Id
                     });
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -450,5 +450,42 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+        /*
+        public DefaultReturn<FormMetaData> CloneDocument(int companyId, int brachId, int userId, string userFullName, int sourceFormId)
+        {
+            DefaultReturn<FormMetaData> defaultReturn = new DefaultReturn<FormMetaData>();
+            try
+            {
+
+                var sourceForm = GetCompanyFormMetaData(companyId, brachId, sourceFormId);
+
+                if (sourceForm.ReturnCode != 1)
+                {
+                    throw new Exception(sourceForm.ReturnMessage);
+                }
+                var formData = sourceForm.Data;
+
+                FormMetaDataDTO formMetaDataDTO = new FormMetaDataDTO()
+                {
+                    BrachId = brachId,
+                    CompanyId = companyId,
+                    formDefinationTypeid = formData.FormDefinationId,
+                    isDefault = false,
+                    UserId = userId,
+                    workid = (formData.CustomWorkId == null ? 0 : formData.CustomWorkId.Value),
+                    UserName = userFullName
+                };
+
+                defaultReturn = Save(formMetaDataDTO);
+
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }*/
     }
 }

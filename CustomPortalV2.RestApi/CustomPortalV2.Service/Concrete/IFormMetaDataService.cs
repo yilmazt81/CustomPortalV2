@@ -26,6 +26,9 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<FormMetaData> CloneForm(int mainCompanyId, int branchId, int userId, string username, int sourceformId);
 
         DefaultReturn<bool> DeleteForm(int mainCompanyId, int brachId, int id);
+        /*
+
+        DefaultReturn<FormMetaData> CloneDocument(int companyId, int brachId, int userId,string userFullName, int sourceFormId); */
 
     }
 }

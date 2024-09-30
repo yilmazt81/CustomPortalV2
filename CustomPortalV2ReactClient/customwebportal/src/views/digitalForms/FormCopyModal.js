@@ -27,9 +27,17 @@ import { useTranslation } from "react-i18next";
 import LoadingAnimation from 'src/components/LoadingAnimation';
 
 import { CloneForm } from 'src/lib/formMetaDataApi';
+import { ThreeDot } from 'react-loading-indicators';
 import {
     FaFileWord
-  } from "react-icons/fa";
+} from "react-icons/fa";
+
+
+import { cilCopy, cibOpenAccess } from '@coreui/icons';
+
+import { CIcon } from '@coreui/icons-react';
+
+ 
 
 const FormCopyModal = ({ visiblep, formidp, OnClose }) => {
 
@@ -57,7 +65,7 @@ const FormCopyModal = ({ visiblep, formidp, OnClose }) => {
         try {
             setSaveError(null);
             setprocessLoading(true);
-
+            debugger;
             var formmetaDataReturn = await CloneForm(formidp);
             if (formmetaDataReturn.returnCode === 1) {
                 setnewFormmetadata(formmetaDataReturn.data);
@@ -68,6 +76,31 @@ const FormCopyModal = ({ visiblep, formidp, OnClose }) => {
             setSaveError(error.message);
         } finally {
             setprocessLoading(false);
+        }
+    }
+
+  
+
+    function GetCloneControls() {
+
+        if (newFormmetadata != null) {
+            return (
+
+                <Link to={{
+                    pathname: '/digitalFormEdit',
+                    search: '?id=' + newFormmetadata.id,
+                }} >
+                    <CButton color='primary'><FaFileWord />{t("OpenCloneDocument")}</CButton>
+                </Link>
+            )
+        } else if (processLoading) {
+            return (
+                <ThreeDot color="#1919e3" size="medium" text="" textColor="" />
+            )
+        } else {
+            return (
+                <></>
+            )
         }
     }
 
@@ -91,16 +124,11 @@ const FormCopyModal = ({ visiblep, formidp, OnClose }) => {
                     </CRow>
 
                     <CRow>
-                        {newFormmetadata == null ? ""
+                        {
+                            GetCloneControls()
+                        }
 
-                            : <Link to={{
-                                pathname: '/digitalFormEdit',
-                                search: '?id=' + newFormmetadata.id,
-                            }} >
-                                <CButton color='primary'><FaFileWord/>{t("OpenCloneDocument")}</CButton>
-                            </Link>}
 
-                        <LoadingAnimation loading={processLoading} size={"%30"}></LoadingAnimation>
                     </CRow>
 
                     <CRow>
@@ -112,7 +140,7 @@ const FormCopyModal = ({ visiblep, formidp, OnClose }) => {
                     </CRow>
                 </CModalBody>
                 <CModalFooter>
-                    <CButton color='primary' disabled={newFormmetadata!=null}  onClick={()=>CloneDocument()}>{t("Ok")}</CButton>
+                    <CButton color='primary' disabled={newFormmetadata != null} onClick={() => CloneDocument()}>{t("Ok")}</CButton>
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
 
                 </CModalFooter>
