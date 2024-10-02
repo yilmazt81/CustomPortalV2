@@ -26,8 +26,9 @@ import {
   CFormLabel,
   CFormInput,
   CFormSelect,
-  CCardText
-  
+  CCardText,
+  CContainer
+
 
 } from '@coreui/react'
 import { CChartLine } from '@coreui/react-chartjs'
@@ -73,17 +74,20 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { Gridcolumns } from './DataGrid';
-import { GetBranchList, GetBranch, SaveBranch ,DeleteBranch,CreateNewBranch} from '../../lib/companyapi';
+import { GetBranchList, GetBranch, SaveBranch, DeleteBranch, CreateNewBranch } from '../../lib/companyapi';
 import { getUserRoles, GetBranchpackages } from '../../lib/userapi';
 
+import AppBreadcrumb from 'src/components/AppBreadcrumb';
+
+import DeleteModal from 'src/components/DeleteModal'
+
+import BranchEditModal from './branchEditModal'
 
 
-const BranchDefination = () => { 
+const BranchDefination = () => {
 
   const { t } = useTranslation();
   const [branchList, setBranchList] = useState([]);
-  const [userRoles, setUserRoles] = useState([]);
-  const [branchPackages, setBranchPackages] = useState([]);
 
   const [editBranch, setEditBranch] = useState(null);
 
@@ -102,7 +106,7 @@ const BranchDefination = () => {
 
   async function LoadBranchList() {
     try {
-
+      setVisible(false);
       var companyBranchList = await GetBranchList();
 
       if (companyBranchList.returnCode === 1) {
@@ -117,44 +121,16 @@ const BranchDefination = () => {
 
   }
 
-  async function LoadUserRoles() {
 
-    try {
-      var userRolesList = await getUserRoles();
-      if (userRolesList.returnCode === 1) {
-        setUserRoles(userRolesList.data);
-      } else {
-        setSaveError(userRolesList.ReturnMessage);
-      }
-    } catch (error) {
-      setSaveError(error.message);
-    }
 
-  }
 
-  async function LoadBrachPackages() {
-
-    try {
-      var branchPackagesList = await GetBranchpackages();
-      if (branchPackagesList.returnCode === 1) {
-        setBranchPackages(branchPackagesList.data);
-      } else {
-        setSaveError(branchPackagesList.ReturnMessage);
-      }
-    } catch (error) {
-      setSaveError(error.message);
-    }
-
-  }
   useEffect(() => {
 
     try {
 
       LoadBranchList();
 
-      LoadUserRoles();
-
-      LoadBrachPackages();
+  
 
     } catch (error) {
       console.log(error);
@@ -184,14 +160,14 @@ const BranchDefination = () => {
   async function DeleteData(row) {
     var id = row.original["id"];
     setdeleteStart(true);
-    
+
     setSaveError(null);
     try {
-       
+
       var editbranch = await GetBranch(id);
       if (editbranch.returnCode === 1) {
-        setEditBranch(editbranch.data);
-        setVisibleDelete(!visibleDelete);
+        setEditBranch(editbranch.data); 
+        setVisibleDelete(true);
       } else {
         setSaveError(editbranch.ReturnMessage);
       }
@@ -202,31 +178,11 @@ const BranchDefination = () => {
     }
   }
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setEditBranch({ ...editBranch, [name]: value });
+ 
+  
 
-  }
-
-  async function SaveData() {
-
+  async function DeleteDataServer() {
     try {
-      setSaveError(null);
-      var saveBranchReturn = await SaveBranch(editBranch);
-      if (saveBranchReturn.returnCode === 1) {
-        setVisible(!visible);
-        LoadBranchList();
-      } else {
-        setSaveError(saveBranchReturn.ReturnMessage);
-      }
-    } catch (error) {
-      setSaveError(error.message);
-    }
-
-  }
-
-  async function DeleteDataServer(){
-    try {   
       var deleteBranchReturn = await DeleteBranch(editBranch.id);
       if (deleteBranchReturn.returnCode === 1) {
         setVisibleDelete(!visibleDelete);
@@ -246,14 +202,14 @@ const BranchDefination = () => {
     try {
       var createBranchReturn = await CreateNewBranch();
       if (createBranchReturn.returnCode === 1) {
-     
+
         setEditBranch(createBranchReturn.data);
       } else {
         setSaveError(createBranchReturn.ReturnMessage);
       }
     } catch (error) {
       setSaveError(error.message);
-    }     
+    }
     setVisible(!visible);
   }
 
@@ -280,152 +236,21 @@ const BranchDefination = () => {
   return (<>
 
 
-    <CModal
-      backdrop="static"
-      visible={visibleDelete}
-      onClose={() => setVisibleDelete(false)}
-      alignment='center'      
-
-    >
-      <CModalHeader>
-        <CModalTitle>{t("BranchDelete")}</CModalTitle>
-      </CModalHeader>
-      <CModalBody>
-
-        <CRow>
-            <CCardText>{t("DeleteMessage1")}</CCardText>
-        </CRow>
-        <CRow>
-            <CCardText>{t("DeleteMessage2")}</CCardText>
-        </CRow>
-
-        <CRow xs={{ cols: 4 }}>
-          <CCol> </CCol>
-          <CCol>
-            {
-              saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "80%", height: "80%" }} ></Lottie> : ""
-            }
-          </CCol>
-          <CCol> </CCol>
-          <CCol> </CCol>
 
 
+    <DeleteModal title={t("BranchDelete")}
+      message={t("DeleteMessage1")}
+      message2={t("DeleteMessage2")}
+      visiblep={visibleDelete}
+      OnClickOk={() => DeleteDataServer()}
+      OnClickCancel={() => setVisibleDelete(!visibleDelete)}
+    ></DeleteModal>
 
-        </CRow>
-        <CRow>
-          {saveError != null ?
-            <CAlert color="warning">{saveError}</CAlert>
-            : ""
-          }
-        </CRow>
+    <BranchEditModal visiblep={visible} editBranchp={editBranch}  OnCloseModal={()=>setVisible(false)} setFormData={()=>LoadBranchList()} ></BranchEditModal>
 
-      </CModalBody>
-      <CModalFooter>
-        <CButton color="secondary" onClick={() => setVisibleDelete(!visibleDelete)}>{t("Close")}</CButton>
-        <CButton color="primary" onClick={() => DeleteDataServer()}>{t("Ok")}</CButton>
-      </CModalFooter>
-
-    </CModal>
-
-    <CModal
-      backdrop="static"
-      visible={visible}
-      onClose={() => setVisible(false)}
-
-    >
-      <CModalHeader>
-        <CModalTitle>{t("BranchEdit")}</CModalTitle>
-      </CModalHeader>
-      <CModalBody>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="txtBranchName" className="col-sm-3 col-form-label">{t("BranchName")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormInput type="text" id='txtBranchName' name="name"
-              onChange={e => handleChange(e)} value={editBranch?.name} />
-          </CCol>
-        </CRow>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="txtEMail" className="col-sm-3 col-form-label">{t("Email")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormInput type="text" id='txtEMail' name="email"
-              onChange={e => handleChange(e)} value={editBranch?.email} />
-          </CCol>
-        </CRow>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="txtEMailPassword" className="col-sm-3 col-form-label">{t("EMailPassword")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormInput type="Password" id='txtEMailPassword' name="eMailPassword"
-              onChange={e => handleChange(e)} />
-          </CCol>
-        </CRow>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="txtPhoneNumber" className="col-sm-3 col-form-label">{t("PhoneNumber")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormInput type="text" id='txtPhoneNumber' name="phoneNumber"
-              onChange={e => handleChange(e)} value={editBranch?.phoneNumber} />
-          </CCol>
-        </CRow>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="cmbPackageName" className="col-sm-3 col-form-label">{t("PackedName")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormSelect type="text" id='cmbPackageName' name="branchPackageId"
-              onChange={e => handleChange(e)} value={editBranch?.branchPackageId}    >
-
-              <option value="0">Seçiniz</option>
-              {branchPackages.map(item => {
-                return (<option key={item.id} value={item.id}  >{item.name}</option>);
-              })}
-            </CFormSelect>
-
-          </CCol>
-        </CRow>
-
-        <CRow className="mb-12">
-          <CFormLabel htmlFor="cmbUserRuleName" className="col-sm-3 col-form-label">{t("UserRuleName")}</CFormLabel>
-          <CCol sm={9}>
-            <CFormSelect id='cmbUserRuleName' name="userRuleId" value={editBranch?.userRuleId}
-              onChange={e => handleChange(e)}    >
-
-              <option value="0">Seçiniz</option>
-              {userRoles.map(item => {
-                return (<option key={item.id} value={item.id}  >{item.name}</option>);
-              })}
-            </CFormSelect>
-          </CCol>
-        </CRow>
-
-        <CRow xs={{ cols: 4 }}>
-          <CCol> </CCol>
-          <CCol>
-            {
-              saveStart ? <Lottie animationData={ProcessAnimation} loop={true} style={{ width: "80%", height: "80%" }} ></Lottie> : ""
-            }
-          </CCol>
-          <CCol> </CCol>
-          <CCol> </CCol>
-
-
-
-        </CRow>
-        <CRow>
-          {saveError != null ?
-            <CAlert color="warning">{saveError}</CAlert>
-            : ""
-          }
-        </CRow>
-
-      </CModalBody>
-
-      <CModalFooter>
-        <CButton color="secondary" onClick={() => setVisible(!visible)}>{t("Close")}</CButton>
-        <CButton color="primary" onClick={() => SaveData()}>{t("Save")}</CButton>
-      </CModalFooter>
-    </CModal>
+    <CContainer fluid>
+      <AppBreadcrumb />
+    </CContainer>
 
     <CCard className="mb-4">
       <CCardBody>
