@@ -3,9 +3,6 @@
   "version": "4.4.0",
   "description": "DigiForm Gümrük işlemleri form hazırlama uygulaması",
   "homepage": ".",
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
-  },
   "license": "IstanbulSoftwareOffice",
   "author": "Turk Yilmaz Ozkan",
   "scripts": {

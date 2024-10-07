@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef,createContext, useReducer } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { getUserMenu } from 'src/lib/userapi';
-import { CToast, CToastHeader, CToastBody } from '@coreui/react'
-
+  
 
 const DefaultLayout = () => {
   const userToken = useSelector(state => state.userToken);
   const [userMenu, setUserMenu] = useState([]);
-  const [toast, addToast] = useState(0);
+  
+  const UrlContext = createContext();
+
   const navigate = useNavigate();
   const toaster = useRef()
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 
 import {
   CButton,
@@ -43,10 +43,13 @@ import {
 import EditModal from './editmodal';
 import DeleteModal from 'src/components/DeleteModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import { UrlContext } from 'src/lib/URLContext';
+
 const AdresDefination = () => {
   const navigate = useNavigate();
   //Bu sekilde redux tan okunacak 
   const { t } = useTranslation();
+  const { dispatch } = useContext(UrlContext); 
 
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [visibleEdit, setVisibleEdit] = useState(false);
@@ -78,6 +81,17 @@ const AdresDefination = () => {
     }finally{
       setLoading(false);
     }
+  }
+
+
+  function SetLocationAdress(){
+
+    dispatch({type:'reset'})
+
+    dispatch({
+      type: 'Add',
+      payload: {pathname:"#/AdressDefination",name:t("AdressDefinations"),active:false}
+    });   
   }
 
 
@@ -114,6 +128,7 @@ const AdresDefination = () => {
   useEffect(() => {
 
     try {
+      SetLocationAdress();
       LoadDefinationTypes();
       LoadUserAdressDefinations();
 

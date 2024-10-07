@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
 
 import {
   CButton,
@@ -22,6 +22,8 @@ import {GetSector} from 'src/lib/formdef';
 import {CreateProduct,GetCompanyProducts,GetCompanyProduct,DeleteProduct} from 'src/lib/customProductapi';
 import DeleteModal from 'src/components/DeleteModal';
 
+import { UrlContext } from 'src/lib/URLContext';
+
 const ProductDefination = () => { 
   const { t } = useTranslation();
   const [productList,setProductList] = useState([]);
@@ -30,7 +32,7 @@ const ProductDefination = () => {
   const [visibleEdit,setVisibleEdit]=useState(false);
   const [visibleDelete,setVisibleDelete]=useState(false);
   const [customSectors,setCustomSectors]=useState([]);
-  
+  const { dispatch } = useContext(UrlContext);
   
 const optionClick = (option, id) => {
       EditGroupDefination(option === 'Delete', id);
@@ -125,8 +127,20 @@ async function DeleteProductDB() {
 
 useEffect(() => {
  
+  dispatch({type:'reset'})
+  
+  dispatch({
+    type: 'Add',
+    payload: { pathname: "#/productdefination", name: t("ProductDefination"), active: false }
+});
+
+
+
   LoadCustomSectors();
   getProductList();
+
+
+
 
 
 }, []);

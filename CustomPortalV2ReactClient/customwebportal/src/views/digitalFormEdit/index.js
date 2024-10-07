@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import {
     CCard,
@@ -13,7 +13,7 @@ import {
 
 } from '@coreui/react'
 
- 
+
 
 
 import { useTranslation } from "react-i18next";
@@ -26,12 +26,13 @@ import DynamicForm from './dynamicForm';
 import MenuButtons from './MenuButtons'
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import FormActionModal from '../digitalForms/FormActionModal';
+import { UrlContext } from 'src/lib/URLContext';
 
 
 const DigitalFormEdit = () => {
 
     const { t } = useTranslation();
-
+    const { dispatch } = useContext(UrlContext);
     const [searchParams, setSearchParams] = useSearchParams();
     const [saveError, setSaveError] = useState(null);
     const [customSectors, setCustomSectors] = useState([]);
@@ -42,7 +43,7 @@ const DigitalFormEdit = () => {
     const [loading, setLoading] = useState(false);
     const [formdefinationType, setformdefinationType] = useState(0);
     const [controlValues, setControlValues] = useState([{ fieldName: '', fieldValue: '' }]);
-    const [formProcessAfterSave,setFormProcessAfterSave]=useState(false);
+    const [formProcessAfterSave, setFormProcessAfterSave] = useState(false);
 
     async function LoadCustomSectors() {
 
@@ -89,7 +90,24 @@ const DigitalFormEdit = () => {
 
     }
 
+    function SetLocationAdress() {
 
+        dispatch({ type: 'reset' })
+
+        const formid =   searchParams.get('id');
+
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "#/digitalForms", name: t("DigitalForms"), active: true }
+        });
+
+
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "./digitalFormEdit?id=" + formid, name: (formid === 0 ? t("NewForm") : t("EditForm")), active: false }
+        });
+
+    }
     async function GetFormMetaData(id) {
         if (id === null) {
             return;
@@ -102,20 +120,20 @@ const DigitalFormEdit = () => {
                 setformMetaData(fSectorService.data);
                 if (fSectorService.data.id != 0) {
                     await LoadCustomSectors();
-                    await GetformDefinationTypes(fSectorService.data.customSectorId); 
+                    await GetformDefinationTypes(fSectorService.data.customSectorId);
                     setformdefinationType(fSectorService.data.formDefinationId);
-                    var getFormDefination = await GetFormDefination(fSectorService.data.formDefinationId);                  
+                    var getFormDefination = await GetFormDefination(fSectorService.data.formDefinationId);
                     if (getFormDefination.returnCode === 1) {
                         setuseTemplate(getFormDefination.data.desingTemplate);
                     }
                     GetGroupList(fSectorService.data.formDefinationId);
-                  
-                    if (fSectorService.data.formMetaDataAttribute!=null){
-                      
-                        for(var i=0;i<fSectorService.data.formMetaDataAttribute.length;i++){
-                           var attribute= fSectorService.data.formMetaDataAttribute[i];
+
+                    if (fSectorService.data.formMetaDataAttribute != null) {
+
+                        for (var i = 0; i < fSectorService.data.formMetaDataAttribute.length; i++) {
+                            var attribute = fSectorService.data.formMetaDataAttribute[i];
                             controlValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue })
-                        }                       
+                        }
                         setControlValues(controlValues);
                     }
                 }
@@ -134,14 +152,14 @@ const DigitalFormEdit = () => {
 
     useEffect(() => {
 
+
+
         const id = searchParams.get('id');
-
-
+       
         LoadCustomSectors();
 
         GetFormMetaData(id)
-
-
+        SetLocationAdress();
 
     }, []);
     async function GetGroupList(id) {
@@ -190,7 +208,7 @@ const DigitalFormEdit = () => {
 
                 var formDef = formDefinationTypes.find(s => s.id == value);
 
-                
+
                 setLoading(true);
                 setformdefinationType(formDef.id);
                 setuseTemplate(formDef.desingTemplate)
@@ -224,7 +242,7 @@ const DigitalFormEdit = () => {
 
                 var fsaveReturn = await SaveMetaData((formMetaData == null ? 0 : formMetaData.id), formdefinationType, controlValues);
                 if (fsaveReturn.returnCode === 1) {
-                    
+
                     setformMetaData(fsaveReturn.data);
                     setFormProcessAfterSave(true);
                 } else {
@@ -300,7 +318,7 @@ const DigitalFormEdit = () => {
                     <CRow>
                         {
 
-                            useTemplate ? <DesingFormTemplate onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)}  controlValuesp={controlValues} formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
+                            useTemplate ? <DesingFormTemplate onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)} controlValuesp={controlValues} formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
                                 <DynamicForm OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)} controlValues={controlValues} formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm>
 
                         }
@@ -324,12 +342,12 @@ const DigitalFormEdit = () => {
 
                         </CCol>
                     </CRow>
-                 
+
                 </CForm>
             </CCardBody>
         </CCard>
 
-          <FormActionModal visiblep={formProcessAfterSave} formidp={formMetaData?.id} OnClose={()=>setFormProcessAfterSave(false)} foreditForm={true} ></FormActionModal>                      
+            <FormActionModal visiblep={formProcessAfterSave} formidp={formMetaData?.id} OnClose={() => setFormProcessAfterSave(false)} foreditForm={true} ></FormActionModal>
         </>
     )
 

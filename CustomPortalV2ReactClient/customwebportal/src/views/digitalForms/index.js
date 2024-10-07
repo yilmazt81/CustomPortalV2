@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 
 import {
     CButton,
@@ -34,8 +34,12 @@ import FormActionModal from './FormActionModal';
 import FormCopyModal from './FormCopyModal';
 import DeleteModal from 'src/components/DeleteModal';
 
+import { UrlContext } from 'src/lib/URLContext';
+
+
 const DigitalForms = () => {
     const { t } = useTranslation();
+    const { dispatch } = useContext(UrlContext);
 
     const [saveError, setSaveError] = useState(null);
     const [customSectors, setCustomSectors] = useState([]);
@@ -112,10 +116,22 @@ const DigitalForms = () => {
         }
     }
 
+
+    function SetLocationAdress() {
+
+        dispatch({ type: 'reset' })
+    
+        dispatch({
+          type: 'Add',
+          payload: { pathname: "./digitalForms", name: t("DigitalForms"), active: false }
+        });
+      }
+
+      
     useEffect(() => {
 
         const id = searchParams.get('id');
-
+        SetLocationAdress();
         LoadCustomSectors();
 
         GetBranchFormMetaData();
@@ -159,7 +175,7 @@ const DigitalForms = () => {
 
 
     return (
-        <> <CCard className="mb-4">
+        <> <CCard className="mb-8">
             <CCardBody>
                 <CRow>
                     <CCol>
@@ -219,7 +235,7 @@ const DigitalForms = () => {
                 <CRow>
 
                     <CCol>
-                        <CButton color="primary" shape='rounded-3'   > {t("Filter")}</CButton>
+                        <CButton color="primary" shape='rounded-3'> {t("Filter")}</CButton>
 
                     </CCol>
                 </CRow>

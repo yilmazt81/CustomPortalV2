@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState,useContext } from 'react'
 
 import {
   CAvatar,
@@ -75,13 +75,16 @@ import { useTranslation } from "react-i18next";
 
 import { Gridcolumns } from './DataGrid';
 import { GetBranchList, GetBranch, SaveBranch, DeleteBranch, CreateNewBranch } from '../../lib/companyapi';
-import { getUserRoles, GetBranchpackages } from '../../lib/userapi';
+ 
 
 import AppBreadcrumb from 'src/components/AppBreadcrumb';
 
 import DeleteModal from 'src/components/DeleteModal'
 
 import BranchEditModal from './branchEditModal'
+
+
+import { UrlContext } from 'src/lib/URLContext';
 
 
 const BranchDefination = () => {
@@ -94,6 +97,7 @@ const BranchDefination = () => {
   const [visible, setVisible] = useState(false)
   const [visibleDelete, setVisibleDelete] = useState(false)
 
+  const { dispatch } = useContext(UrlContext); 
 
   const [saveStart, setsaveStart] = useState(false);
   const [deleteStart, setdeleteStart] = useState(false);
@@ -122,15 +126,22 @@ const BranchDefination = () => {
   }
 
 
+  function SetLocationAdress(){
+
+    dispatch({type:'reset'})
+
+    dispatch({
+      type: 'Add',
+      payload: {pathname:"./BranchDefination",name:t("BranchDefination"),active:false}
+    });   
+  }
 
 
   useEffect(() => {
 
     try {
-
-      LoadBranchList();
-
-  
+      SetLocationAdress();
+      LoadBranchList(); 
 
     } catch (error) {
       console.log(error);
@@ -248,9 +259,7 @@ const BranchDefination = () => {
 
     <BranchEditModal visiblep={visible} editBranchp={editBranch}  OnCloseModal={()=>setVisible(false)} setFormData={()=>LoadBranchList()} ></BranchEditModal>
 
-    <CContainer fluid>
-      <AppBreadcrumb />
-    </CContainer>
+   
 
     <CCard className="mb-4">
       <CCardBody>

@@ -186,6 +186,11 @@ export const TRANSLATIONS_TR = {
     MailSubject:"Konu",
     MailAttachment:"Ekler",
     MailBody:"Mesaj", 
+    FormDefinations:"Form Türleri",
+    AdressDefinations:"Adres Tanımları",
+    DigitalForms:"Formlarım",
+    NewForm:"Yeni Form",
+    EditForm:"Form Güncelleniyor",
 
     
 

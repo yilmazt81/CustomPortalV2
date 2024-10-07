@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
 
 import {
   CButton,
@@ -7,7 +7,10 @@ import {
   CCardBody,
   CCol,
   CRow,
-  CAlert
+  CAlert,
+  CCardTitle,
+  CBreadcrumb,
+  CBreadcrumbItem
 } from '@coreui/react'
 
 import { useNavigate } from "react-router-dom";
@@ -21,12 +24,18 @@ import { useTranslation } from "react-i18next";
 import DeleteModal from '../../components/DeleteModal';
 import EditModal from './editmodal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
- 
+
+
+import { UrlContext } from 'src/lib/URLContext';
+
+
 import { CreateNewFormDefination, GetFormDefinations, GetSector, GetFormDefination } from '../../lib/formdef';
 
-const FormDefination = () => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+const FormDefination = () => { 
+
+  const { t } = useTranslation(); 
+  
+  const { dispatch } = useContext(UrlContext); 
 
 
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -39,7 +48,7 @@ const FormDefination = () => {
   const [Error, setError] = useState(null);
 
   const [visible, setVisible] = useState(false);
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function LoadFormDefinations() {
     setLoading(true);
@@ -52,9 +61,21 @@ const FormDefination = () => {
       }
     } catch (error) {
       setError(error.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
+  }
+
+
+  function SetLocationAdress(){
+
+    dispatch({type:'reset'})
+
+    dispatch({
+      type: 'Add',
+      payload: {pathname:"#/FormDefinationType",name:t("FormDefinations"),active:false}
+    });
+   
   }
 
   async function LoadCustomSectors() {
@@ -68,7 +89,7 @@ const FormDefination = () => {
       }
     } catch (error) {
       setError(error.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -77,7 +98,7 @@ const FormDefination = () => {
 
   useEffect(() => {
 
-
+    SetLocationAdress();
     LoadFormDefinations();
 
     LoadCustomSectors();
@@ -85,7 +106,7 @@ const FormDefination = () => {
   }, []);
 
   async function EditData(id) {
- 
+
     try {
       setDeleteStart(false);
       setVisible(false);
@@ -131,7 +152,7 @@ const FormDefination = () => {
   async function SaveComplated() {
     LoadFormDefinations();
   }
-  
+
 
 
   async function ImportDefinationFromFile() {
@@ -141,7 +162,7 @@ const FormDefination = () => {
   async function ImportBaseDefination() {
 
   }
-  
+
 
   const optionClick = (option, id) => {
     if (option == 'Edit') {
@@ -160,7 +181,6 @@ const FormDefination = () => {
   return (
     <>
  
-     
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -186,7 +206,7 @@ const FormDefination = () => {
               <div style={{ height: 450, width: '100%' }}>
                 <DataGrid rows={formDefinations}
                   columns={gridColumns}
-                
+
                 />
               </div>
             </CCol>
@@ -209,8 +229,8 @@ const FormDefination = () => {
         OnClickOk={(data) => DeleteAccepted(data)}
         title={t("UserDelete")}
         message={formdefinationEdit.FormName}
-        message2={t("UserDeleteMessage")} 
-        saveError={deleteError} 
+        message2={t("UserDeleteMessage")}
+        saveError={deleteError}
         saveStart={deleteStart}></DeleteModal>
 
 

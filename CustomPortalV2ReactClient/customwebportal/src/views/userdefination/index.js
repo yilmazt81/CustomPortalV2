@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import {
   CButton,
@@ -7,11 +7,11 @@ import {
   CCardBody,
   CCol,
   CAlert,
-  CRow, 
+  CRow,
 
 } from '@coreui/react'
- 
-import { GetUserList, GetUser,CreateNewUser,DeleteUser } from '../../lib/userapi';
+
+import { GetUserList, GetUser, CreateNewUser, DeleteUser } from '../../lib/userapi';
 
 import {
   MaterialReactTable,
@@ -34,19 +34,21 @@ import { Gridcolumns } from './DataGrid';
 
 import { useTranslation } from "react-i18next";
 
-import  EditModal  from './editmodal';
-import  DeleteModal from 'src/components/DeleteModal'
+import EditModal from './editmodal';
+import DeleteModal from 'src/components/DeleteModal'
+import { UrlContext } from 'src/lib/URLContext';
 
-const UserDefination = () => { 
+const UserDefination = () => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(UrlContext);
 
   //Bu sekilde redux tan okunacak 
-  
-  const [useredit, setuseredit] = useState({id:0});
+
+  const [useredit, setuseredit] = useState({ id: 0 });
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [saveError, setSaveError] = useState(null);
-  const[deleteStart,setDeleteStart]=useState(null);
+  const [deleteStart, setDeleteStart] = useState(null);
 
   const [visible, setVisible] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -63,12 +65,12 @@ const UserDefination = () => {
       setError(error.message);
     }
   }
-  
+
   async function NewUser() {
     try {
       setVisible(false);
       var editUser = await CreateNewUser();
-      
+
       if (editUser.returnCode === 1) {
         setuseredit(editUser.data);
         setVisible(true);
@@ -78,18 +80,18 @@ const UserDefination = () => {
     } catch (error) {
       setSaveError(error.message);
     } finally {
-     // setdeleteStart(false);
-    } 
+      // setdeleteStart(false);
+    }
   }
 
-  async function EditData(row) { 
+  async function EditData(row) {
     var id = row.original["id"];
-    
+
     try {
       setDeleteStart(false);
       setVisible(false);
       var getuserReturn = await GetUser(id);
-      
+
       if (getuserReturn.returnCode === 1) {
         setuseredit(getuserReturn.data);
         setVisible(true);
@@ -99,19 +101,19 @@ const UserDefination = () => {
     } catch (error) {
       setSaveError(error.message);
     } finally {
-     // setdeleteStart(false);
+      // setdeleteStart(false);
     }
-    
+
   }
 
   async function DeleteData(row) {
     var id = row.original["id"];
-   
+
     try {
       setVisibleDelete(false);
       setVisible(false);
       var editUser = await GetUser(id);
-      
+
       if (editUser.returnCode === 1) {
         setuseredit(editUser.data);
         setVisibleDelete(true);
@@ -129,11 +131,11 @@ const UserDefination = () => {
   async function DeleteAccepted(data) {
     setDeleteStart(true);
 
-    try{
-      if (data==null)
+    try {
+      if (data == null)
         return;
-        var deleteUserReturn = await DeleteUser(useredit.id);
-      
+      var deleteUserReturn = await DeleteUser(useredit.id);
+
       if (deleteUserReturn.returnCode === 1) {
         LoadUserList();
         setVisibleDelete(false);
@@ -149,10 +151,21 @@ const UserDefination = () => {
     setDeleteStart(false);
   }
 
+  function SetLocationAdress() {
+
+    dispatch({ type: 'reset' })
+
+    dispatch({
+      type: 'Add',
+      payload: { pathname: "./userdefination", name: t("Userdefination"), active: false }
+    });
+  }
+
+
   useEffect(() => {
 
     try {
-
+      SetLocationAdress();
       LoadUserList();
 
 
@@ -185,7 +198,7 @@ const UserDefination = () => {
 
   return (
     <>
-      
+
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -211,12 +224,12 @@ const UserDefination = () => {
         </CCardBody>
       </CCard>
 
-      <EditModal userp={useredit} visiblep={visible} setFormData ={()=>LoadUserList()}></EditModal>
+      <EditModal userp={useredit} visiblep={visible} setFormData={() => LoadUserList()}></EditModal>
       <DeleteModal visiblep={visibleDelete}
-       OnClickOk={(data)=>DeleteAccepted(data)} 
-       title={t("UserDelete")}
-       message={useredit.fullName}
-       message2={t("UserDeleteMessage")} saveError={error} saveStart={deleteStart}></DeleteModal>    
+        OnClickOk={(data) => DeleteAccepted(data)}
+        title={t("UserDelete")}
+        message={useredit.fullName}
+        message2={t("UserDeleteMessage")} saveError={error} saveStart={deleteStart}></DeleteModal>
     </>
   )
 }
