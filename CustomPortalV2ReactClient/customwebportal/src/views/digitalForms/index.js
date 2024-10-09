@@ -123,7 +123,7 @@ const DigitalForms = () => {
     
         dispatch({
           type: 'Add',
-          payload: { pathname: "./digitalForms", name: t("DigitalForms"), active: false }
+          payload: { pathname: "/digitalForms", name: t("DigitalForms"), active: false }
         });
       }
 

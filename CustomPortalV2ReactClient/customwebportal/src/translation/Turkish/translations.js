@@ -191,6 +191,7 @@ export const TRANSLATIONS_TR = {
     DigitalForms:"Formlarım",
     NewForm:"Yeni Form",
     EditForm:"Form Güncelleniyor",
+    FormDefinationModalFields: "Form Türü Alanları",
 
     
 

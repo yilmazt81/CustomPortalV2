@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import {
   CButton,
@@ -31,11 +31,11 @@ import { UrlContext } from 'src/lib/URLContext';
 
 import { CreateNewFormDefination, GetFormDefinations, GetSector, GetFormDefination } from '../../lib/formdef';
 
-const FormDefination = () => { 
+const FormDefination = () => {
 
-  const { t } = useTranslation(); 
-  
-  const { dispatch } = useContext(UrlContext); 
+  const { t } = useTranslation();
+
+  const { dispatch } = useContext(UrlContext);
 
 
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -50,15 +50,18 @@ const FormDefination = () => {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function LoadFormDefinations() {
+  function LoadFormDefinations() {
     setLoading(true);
     try {
-      var fdefinationService = await GetFormDefinations();
-      if (fdefinationService.returnCode === 1) {
-        setFormDefinations(fdefinationService.data);
-      } else {
-        setError(fdefinationService.returnMessage);
-      }
+      GetFormDefinations().then(fdefinationService => {
+
+        if (fdefinationService.returnCode === 1) {
+          setFormDefinations(fdefinationService.data);
+        } else {
+          setError(fdefinationService.returnMessage);
+        }
+      });
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -67,26 +70,28 @@ const FormDefination = () => {
   }
 
 
-  function SetLocationAdress(){
+  async function SetLocationAdress() {
 
-    dispatch({type:'reset'})
+    dispatch({ type: 'reset' })
 
     dispatch({
       type: 'Add',
-      payload: {pathname:"#/FormDefinationType",name:t("FormDefinations"),active:false}
+      payload: { pathname: "/FormDefinationType", name: t("FormDefinations"), active: false }
     });
-   
+
   }
 
-  async function LoadCustomSectors() {
+  function LoadCustomSectors() {
     setLoading(true);
     try {
-      var fSectorService = await GetSector();
-      if (fSectorService.returnCode === 1) {
-        setCustomSectors(fSectorService.data);
-      } else {
-        setError(fSectorService.returnMessage);
-      }
+      GetSector().then(fSectorService => {
+        if (fSectorService.returnCode === 1) {
+          setCustomSectors(fSectorService.data);
+        } else {
+          setError(fSectorService.returnMessage);
+        }
+      });
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -98,10 +103,15 @@ const FormDefination = () => {
 
   useEffect(() => {
 
-    SetLocationAdress();
+    LoadCustomSectors();
     LoadFormDefinations();
 
-    LoadCustomSectors();
+
+    SetLocationAdress();
+
+    return () => {
+      console.log("unmount");
+    }
 
   }, []);
 
@@ -180,7 +190,7 @@ const FormDefination = () => {
 
   return (
     <>
- 
+
       <CCard className="mb-4">
         <CCardBody>
           <CRow>

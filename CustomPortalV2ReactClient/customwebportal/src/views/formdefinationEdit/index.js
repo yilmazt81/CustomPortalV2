@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import {
     CButton,
@@ -43,14 +43,15 @@ import {
     GetFonts,
     GetFormDefinationField
 } from '../../lib/formdef';
-import { bool } from 'prop-types';
+import { UrlContext } from 'src/lib/URLContext';
+
 
 const FormDefinationEdit = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
 
-
+    const { dispatch } = useContext(UrlContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [visiblemodalGroup, setvisiblemodalGroup] = useState(false);
@@ -74,17 +75,36 @@ const FormDefinationEdit = () => {
     const [saveError, setSaveError] = useState(null);
     const [deleteError, setDeleError] = useState(null);
 
-    useEffect(() => {
+    useEffect(async () => {
 
         const id = searchParams.get('formdefinationId');
-        
+
         LoadFieldTypes();
         LoadFontTypes();
         GetDefination(id);
-        GetGroups(id);
+        GetGroups(id); 
 
+        return () => {
+            console.log("unmount");
+        }
 
     }, []);
+
+
+    function SetLocationAdress(formdefination) {
+
+        dispatch({ type: 'reset' })
+
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "#/FormDefinationType", name: t("FormDefinations"), active: true }
+        }); 
+        debugger;
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "/FormDefinationTypeEdit/formdefinationId=", name: formdefination?.formName, active: false }
+        });
+    }
 
     async function LoadFieldTypes() {
         var getFieldTypesreturn = await GetFieldTypes();
@@ -111,13 +131,25 @@ const FormDefinationEdit = () => {
     }
 
     async function GetDefination(id) {
-        var getdefinationReturn = await GetFormDefination(id);
+        try {
 
-        if (getdefinationReturn.returnCode === 1) {
-            setFormDefinationEdit(getdefinationReturn.data);
-            //setVisible(true);
-        } else {
-            setSaveError(getdefinationReturn.returnMessage);
+            var getdefinationReturn = await GetFormDefination(id);
+
+            if (getdefinationReturn.returnCode === 1) {
+                setFormDefinationEdit(getdefinationReturn.data);
+               
+                SetLocationAdress(getdefinationReturn.data);
+ 
+                // return getdefinationReturn.data;
+                //setVisible(true);
+            } else {
+                setSaveError(getdefinationReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+
+        } finally {
+
         }
     }
 
@@ -125,13 +157,19 @@ const FormDefinationEdit = () => {
 
     async function GetGroups(formdefinationId) {
 
-        var getgroupsReturn = await GetFormGroups(formdefinationId);
+        try {
+            var getgroupsReturn = await GetFormGroups(formdefinationId);
 
-        if (getgroupsReturn.returnCode === 1) {
-            setformdefinationGroups(getgroupsReturn.data);
+            if (getgroupsReturn.returnCode === 1) {
+                setformdefinationGroups(getgroupsReturn.data);
 
-        } else {
-            setSaveError(getgroupsReturn.returnMessage);
+            } else {
+                setSaveError(getgroupsReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        } finally {
+
         }
     }
 
@@ -240,6 +278,8 @@ const FormDefinationEdit = () => {
             }
         } catch (error) {
             setSaveError(error.message);
+        } finally {
+
         }
     }
 
@@ -259,7 +299,7 @@ const FormDefinationEdit = () => {
         }
     }
 
-    
+
     async function EditDefinationField(operation, id) {
         try {
             setSaveError(null);
@@ -270,9 +310,9 @@ const FormDefinationEdit = () => {
 
             if (editformdefination.returnCode === 1) {
                 setformdefinationFieldEdit(editformdefination.data);
-                if (operation==='Edit') {
+                if (operation === 'Edit') {
                     setvisiblemodalEditField(true);
-                } else if (operation=='AddComboItem') {
+                } else if (operation == 'AddComboItem') {
                     setvisibleEditComboItems(true);
                 }
 
@@ -290,9 +330,9 @@ const FormDefinationEdit = () => {
         EditGroupDefination(option === 'Delete', id);
     }
 
-    const   optionClickField = (option, id) => {
-        
-        EditDefinationField(option , id);
+    const optionClickField = (option, id) => {
+
+        EditDefinationField(option, id);
     }
 
     const CheckItemValueChange = (option, id, checked) => {
@@ -377,10 +417,10 @@ const FormDefinationEdit = () => {
                 fontTypesp={fontTypes}
             ></FieldEditModal>
 
-            <ComboBoxItemEditModal 
+            <ComboBoxItemEditModal
                 visiblep={visibleEditComboItems}
                 formDefinationFieldp={formdefinationFieldEdit}
-            
+
             ></ComboBoxItemEditModal>
 
             <DeleteModal visiblep={visiblemodalGroupDelete}

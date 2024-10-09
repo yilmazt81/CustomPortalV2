@@ -61,7 +61,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
     useEffect(() => {
         setSaveError(null);
-        debugger;
+     
         setvisible(visiblep);
         setformDefinationField(formDefinationFieldp);
         //LoadBranchList();
