@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.FDefination
@@ -28,6 +29,7 @@ namespace CustomPortalV2.Core.Model.FDefination
 
         public int? HeaderHeightRuleValue { get; set; }
 
+        [JsonIgnore]
         public virtual CustomeField CustomeField { get; set; }
         public int? HeaderHeight { get; set; }
         public int? RowHeightRuleValue { get; set; }

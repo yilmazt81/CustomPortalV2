@@ -4,6 +4,7 @@ using CustomPortalV2.Model.Work;
 using CustomPortalV2.RestApi.Helper;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CustomPortalV2.RestApi.Controllers
 {
@@ -12,14 +13,29 @@ namespace CustomPortalV2.RestApi.Controllers
     public class WorkflowController : ControllerBase
     {
         IWorkFlowService _workFlowService;
-        public WorkflowController(IWorkFlowService workFlowService)
+        private IMemoryCache _memoryCache;
+        public WorkflowController(IWorkFlowService workFlowService, IMemoryCache memoryCache)
         {
             _workFlowService = workFlowService;
+            _memoryCache = memoryCache;
         }
         [HttpGet()]
         public IActionResult Get()
         {
-            var workFlowList = _workFlowService.GetCompanyWorkFlow(User.GetCompanyId(), User.GetBranchId());
+            var key = $"WorkFlowCompany{User.GetCompanyId()}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<WorkFlow>> workFlowList))
+            {
+                return Ok(workFlowList);
+            }
+            workFlowList = _workFlowService.GetCompanyWorkFlow(User.GetCompanyId(), User.GetBranchId());
+            _memoryCache.Set(key, workFlowList, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(30),
+                Priority = CacheItemPriority.Normal
+            });
+
+
             return Ok(workFlowList);
         }
         [HttpGet("CreateWorkFlow")]

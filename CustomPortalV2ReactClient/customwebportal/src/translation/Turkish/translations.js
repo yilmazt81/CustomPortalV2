@@ -192,6 +192,22 @@ export const TRANSLATIONS_TR = {
     NewForm:"Yeni Form",
     EditForm:"Form Güncelleniyor",
     FormDefinationModalFields: "Form Türü Alanları",
+    Workflows:"İş Akışları",
+    CustomeFieldTitle:"Özel alanlar",
+    CustomeFieldName:"Alan Adı",
+    CustomeFieldTag:"Alan Kodu",    
+    CustomeFieldModalTitle : "Özel Alan Tipi Güncelle",
+    CustomeFieldViewType :"Form Görünün Türü",
+    CustomeFieldTable: "Tablo",
+    CustomeFieldText: "Düz Yazı",
+    CustomeFieldTableText: "Yazı Tablo",
+    CustomeFieldHeaderHeight:"Başlık Yükseklik",
+    CustomeFieldHeaderOto:"Otomatik",
+    CustomeFieldHeaderInc:"inç {inc}",
+    CustomeFieldHeaderEnazInc:"En az {inc}",
+    CustomeFieldRowHeightRule:"Satır Yükseklik",
+    
+
 
     
 

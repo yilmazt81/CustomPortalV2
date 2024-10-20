@@ -655,5 +655,36 @@ namespace CustomPortalV2.Business.Service
 
 
         }
+
+        public DefaultReturn<List<CustomeField>> GetCustomeFields(int mainCompanyId)
+        {
+            DefaultReturn<List<CustomeField>> defaultReturn = new DefaultReturn<List<CustomeField>>();
+
+            defaultReturn.Data=_formDefinationService.GetCustomeFields(mainCompanyId).ToList();
+            return defaultReturn;
+        }
+
+        public DefaultReturn<CustomeField> SaveCustomeField(CustomeField customeField)
+        {
+            DefaultReturn<CustomeField> defaultReturn = new DefaultReturn<CustomeField>();
+            try
+            {
+
+                if (customeField.Id == 0)
+                {
+                    defaultReturn.Data = _formDefinationService.Add(customeField);
+                }
+                else
+                {
+                    defaultReturn.Data = _formDefinationService.Update(customeField);
+                }
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
     }
 }

@@ -26,6 +26,18 @@ namespace CustomPortalV2.Core.Model.FDefination
 
         public int MainCompanyId { get; set; }
 
+        public string createdBy { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+
+        public string? editedBy { get; set; }
+
+
+        public DateTime? editedDate { get; set; }
+
+
+
         public virtual ICollection<CustomeField_VirtualTable> CustomeField_VirtualTable { get; set; } 
         public virtual ICollection<CustomeFieldItem> CustomeFieldItem { get; set; }
 

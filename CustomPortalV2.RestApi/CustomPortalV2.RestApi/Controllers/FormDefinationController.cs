@@ -5,7 +5,7 @@ using CustomPortalV2.Core.Model.Definations;
 using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.RestApi.Helper;
-using CustomPortalV2.TemplateProcess; 
+using CustomPortalV2.TemplateProcess;
 using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -59,7 +59,6 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var companyId = User.GetCompanyId();
             string key = $"FormDefination{id}";
             if (_memoryCache.TryGetValue(key, out DefaultReturn<FormDefination> list))
                 return Ok(list);
@@ -470,9 +469,9 @@ namespace CustomPortalV2.RestApi.Controllers
                     }
 
                     var fileStream = file.OpenReadStream();
-               
 
-                
+
+
 
                     if (extention == ".docx")
                     {
@@ -487,7 +486,7 @@ namespace CustomPortalV2.RestApi.Controllers
                             tagList = softCreatorWord.GetTagList(destPath);
                         }
 
-                        var newStream=System.IO.File.OpenRead(destPath);
+                        var newStream = System.IO.File.OpenRead(destPath);
 
                         formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), newStream);
                     }
@@ -495,7 +494,7 @@ namespace CustomPortalV2.RestApi.Controllers
                     {
                         formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), fileStream);
 
-                    } 
+                    }
 
                 }
                 else if (formVersion.Id == 0)
@@ -801,6 +800,66 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formTemplate);
         }
+
+        [HttpGet("GetCustomeFields")]
+        public IActionResult GetCustomeFields()
+        {
+            string key = $"CompanyCustomeFields{User.GetCompanyId()}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<CustomeField>> list))
+                return Ok(list);
+
+            var customeFields = _formDefinationService.GetCustomeFields(User.GetCompanyId());
+            _memoryCache.Set(key, customeFields, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(customeFields);
+        }
+        [HttpGet("CreateCustomeField")]
+        public IActionResult CreateCustomeField()
+        {
+            DefaultReturn<CustomeField> defaultReturn = new DefaultReturn<CustomeField>();
+
+            defaultReturn.Data = new CustomeField()
+            {
+                createdBy = User.GetUserFullName(),
+                CreatedDate = DateTime.Now,
+                MainCompanyId = User.GetCompanyId(),
+                HeaderHeightRuleValue = 0,
+                RowHeightRuleValue = 0,
+                ElementType = "Tablo"
+
+            };
+            return Ok(defaultReturn);
+        }
+
+        [HttpPost("SaveCustomeField")]
+        public IActionResult SaveCustomeField(CustomeField customeField)
+        {
+            customeField.MainCompanyId=User.GetCompanyId();
+            if (customeField.Id!=0)
+            {
+                customeField.editedBy=User.GetUserFullName();
+                customeField.editedDate = DateTime.Now;
+            }
+            else
+            {
+                customeField.createdBy = User.GetUserFullName();
+                customeField.CreatedDate = DateTime.Now;
+
+            }
+            string key = $"CompanyCustomeFields{User.GetCompanyId()}";
+            _memoryCache.Remove(key);
+
+            var saveReturn = _formDefinationService.SaveCustomeField(customeField);
+
+            return Ok(saveReturn);
+        }
+
+
 
     }
 

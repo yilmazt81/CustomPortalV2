@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.FDefination
@@ -34,7 +35,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public Nullable<int> FormVersionId { get; set; }
 
         public int MainCompanyId { get; set; }
-
+        [JsonIgnore]
         public virtual CustomeField CustomeField { get; set; } 
         public virtual ICollection<CustomeField_VirtualTableField> CustomeField_VirtualTableField { get; set; }
     }

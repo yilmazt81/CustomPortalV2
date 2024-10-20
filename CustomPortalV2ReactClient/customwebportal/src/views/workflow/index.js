@@ -32,13 +32,45 @@ const WorkFlow = () => {
     // EditGroupDefination(option === 'Delete', id);
   }
 
+  function SetLocationAdress() {
+
+    dispatch({ type: 'reset' })
+
+    dispatch({
+      type: 'Add',
+      payload: { pathname: "./workflow", name: t("Workflows"), active: false }
+    });
+  }
+
+  async function LoadWorkFlowList() {
+
+    try {
+      var workFlowListReturn = await GetBranchWorkFlows();
+      if (workFlowListReturn.returnCode === 1) {
+        setworkflowList(workFlowListReturn.data);
+      } else {
+        setsaveError(workFlowListReturn.ReturnMessage);
+      }
+    } catch (error) {
+      setsaveError(error.message);
+    }
+  }
+  useEffect(() => {
+
+    try {
+      SetLocationAdress();
+      LoadWorkFlowList();
 
 
+    } catch (error) {
+      console.log(error);
+    }
+
+  }, []);
+
+ 
   const gridColumns = WorkFlowGrid(optionClick);
-
-
-
-
+ 
 
   return (
     <>
@@ -46,11 +78,8 @@ const WorkFlow = () => {
         <CCardBody>
           <CRow>
             <CCol>
-              <CButtonGroup role="group">
-
-
-                <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton>
-
+              <CButtonGroup role="group"> 
+                <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton> 
               </CButtonGroup>
             </CCol>
           </CRow>

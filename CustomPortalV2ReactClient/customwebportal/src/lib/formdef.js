@@ -204,6 +204,26 @@ export async function GetFormDefinationAttachment(id) {
   const { data } = await GetRequest(`/api/FormDefination/GetFormDefinationAttachment/${id}`);
   return data;
 }
+export async function GetCustomeFields() {
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetCustomeFields`);
+  return data;
+}
+
+export async function CreateCustomeField() {
+  
+  const { data } = await GetRequest(`/api/FormDefination/CreateCustomeField`);
+  return data;
+}
+
+export async function SaveCustomeField(postdata) {
+  
+  const { data } = await Post(`/api/FormDefination/SaveCustomeField`,postdata);
+  return data;
+}
+
+
+
 
 export async function SaveFormAttachment(formData) {
    

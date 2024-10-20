@@ -11,6 +11,13 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 {
     public class WorkFlowRepository : IWorkFlowRepository
     {
+        DBContext _dbContext;
+        public WorkFlowRepository(DBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+
         public WorkFlow Add(WorkFlow workFlow)
         {
             throw new NotImplementedException();
@@ -20,6 +27,20 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public WorkFlowDocument AddDocument(WorkFlowDocument freeWorkFlowDocument)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<WorkFlow> GetWorkFlows(int mainCompanyId, int branchId)
+        {
+            var branch = _dbContext.Branches.Single(s => s.Id == branchId);
+            if (!branch.CompanyAdmin)
+            {
+                return _dbContext.WorkFlow.Where(s => s.MainCompanyId == mainCompanyId && s.CompanyBranchId == branchId).ToArray();
+            }
+            else
+            {
+                return _dbContext.WorkFlow.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+
+            } 
         }
 
         public WorkFlow Update(WorkFlow workFlow)

@@ -26,4 +26,6 @@ namespace CustomPortalV2.Core.Model.DTO
         }
         public T Data { get; set; }
     }
+    
+
 }

@@ -58,6 +58,10 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<FormDefinationAttachment> Save(FormDefinationAttachment formDefinationAttachment, string[] taglist);
 
+        DefaultReturn<List<CustomeField>> GetCustomeFields(int mainCompanyId);
+
+        DefaultReturn<CustomeField> SaveCustomeField(CustomeField customeField);
+
          
     }
 }

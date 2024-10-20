@@ -26,7 +26,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         IEnumerable<FormDefinationField> GetFormGroupFields(int formGroupId);
         IEnumerable<FormDefinationField> GetAllFields(int formdefinationTypeid);
 
-       FormDefinationField GetDefinationField(int definationTypeId, string tagName);
+        FormDefinationField GetDefinationField(int definationTypeId, string tagName);
 
         FormGroup GetFormGroup(int id);
 
@@ -41,7 +41,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         FormDefinationField GetFormDefinationField(int id);
 
-        IEnumerable<ComboBoxItem>   GetComboBoxItems(int mainCompanyId,string fieldTag);
+        IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string fieldTag);
         IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId);
         ComboBoxItem AddComboboxItem(ComboBoxItem comboBoxItem);
 
@@ -91,7 +91,12 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<TranslateDictionary> GetTranslateDictionaries();
 
-        public IEnumerable<SoftImageChangeFormatRule> GetSoftImageChangeFormatRules(int formDefinationId);
+        IEnumerable<SoftImageChangeFormatRule> GetSoftImageChangeFormatRules(int formDefinationId);
+
+        CustomeField Update(CustomeField customeField);
+        CustomeField Add(CustomeField customeField);
+    
+
 
     }
 }

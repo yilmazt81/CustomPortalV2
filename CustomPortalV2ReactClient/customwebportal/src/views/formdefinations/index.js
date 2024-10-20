@@ -13,7 +13,7 @@ import {
   CBreadcrumbItem
 } from '@coreui/react'
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataGrid } from '@mui/x-data-grid'
 
 import Gridcolumns from './DataGrid'
@@ -199,7 +199,9 @@ const FormDefination = () => {
                 <CButton color="primary" shape='rounded-3' onClick={() => NewDefination()} > {t("AddNewFormDefination")}</CButton>
                 <CButton color="primary" shape='rounded-3' onClick={() => ImportDefinationFromFile()} > {t("ImportFormDefinations")}</CButton>
                 <CButton color="primary" shape='rounded-3' onClick={() => ImportBaseDefination()} > {t("ImportBaseDefination")}</CButton>
-                <CButton color="primary" shape='rounded-3' onClick={() => ImportBaseDefination()} > {t("CreatePrivateType")}</CButton>
+                <Link to={{
+                  pathname: '/customefields',
+                }}>  <CButton color="primary" shape='rounded-3'> {t("CreatePrivateType")}</CButton></Link>
 
               </CButtonGroup>
             </CCol>

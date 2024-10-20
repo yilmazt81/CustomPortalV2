@@ -193,6 +193,7 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
                                         return (<option key={item.id} value={item.controlType} >{item.name}</option>);
                                     })}
                                 </CFormSelect>
+                                
                             </CCol>
 
                         </CRow>

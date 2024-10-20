@@ -90,7 +90,6 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICompanyAdresDefinationRepository, CompanyDefinationRepository>();
             services.AddScoped<IFormMetaDataRepository, FormMetaDataRepository>();
             services.AddScoped<ICustomProductRepository, CustomProductRepository>();
-
             services.AddScoped<IWorkFlowRepository, WorkFlowRepository>();
             services.AddScoped<IMailRepository, MailRepository>();
 

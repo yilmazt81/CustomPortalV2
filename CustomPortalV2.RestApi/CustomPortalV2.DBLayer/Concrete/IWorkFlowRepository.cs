@@ -10,6 +10,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 {
     public interface IWorkFlowRepository
     {
+        IEnumerable<WorkFlow> GetWorkFlows(int mainCompanyId,int branchId);
         WorkFlowDocument AddDocument(WorkFlowDocument freeWorkFlowDocument);
 
         WorkFlow Add(WorkFlow workFlow);

@@ -407,5 +407,34 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         {
             return _dbContext.SoftImageChangeFormatRule.Where(s=>s.FormDefinationId==formDefinationId).ToArray();
         }
+
+        public CustomeField Update(CustomeField customeField)
+        {
+            var dbCustomeField = _dbContext.CustomeField.Single(s => s.Id == customeField.Id);
+
+            dbCustomeField.FieldName = customeField.FieldName;
+            dbCustomeField.RowHeightRuleValue = customeField.RowHeightRuleValue;
+            dbCustomeField.HeaderHeightRuleValue = customeField.HeaderHeightRuleValue;
+
+            dbCustomeField.editedDate = DateTime.Now;
+            dbCustomeField.HeaderHeight = customeField.HeaderHeight;
+            dbCustomeField.RowHeight = customeField.RowHeight;
+            dbCustomeField.ElementType = customeField.ElementType;
+
+
+            _dbContext.SaveChanges();
+
+            return dbCustomeField;
+        }
+
+        public CustomeField Add(CustomeField customeField)
+        {
+
+            _dbContext.CustomeField.Add(customeField);
+            _dbContext.SaveChanges();
+
+            return customeField;
+
+        }
     }
 }
