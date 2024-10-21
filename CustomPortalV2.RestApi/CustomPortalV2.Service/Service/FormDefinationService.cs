@@ -622,7 +622,7 @@ namespace CustomPortalV2.Business.Service
                         TagName = oneTag,
                         FieldCaption = (field == null ? oneTag : field.FieldCaption),
                         FontFamily = formDefinationAttachment.FontFamily,
-                        FormDefinationAttachmentId= defaultReturn.Data.Id
+                        FormDefinationAttachmentId = defaultReturn.Data.Id
                     });
                 }
 
@@ -631,7 +631,7 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.Data = _formDefinationService.Update(formDefinationAttachment);
 
-                foreach(var oneTag in fielTags)
+                foreach (var oneTag in fielTags)
                 {
                     if (!_formDefinationService.IsExistAttachmentFontStype(formDefinationAttachment.Id, oneTag))
                     {
@@ -643,7 +643,7 @@ namespace CustomPortalV2.Business.Service
                             Italic = formDefinationAttachment.Italic,
                             TagName = oneTag,
                             FieldCaption = (field == null ? oneTag : field.FieldCaption),
-                            FontFamily = formDefinationAttachment.FontFamily, 
+                            FontFamily = formDefinationAttachment.FontFamily,
                             FormDefinationAttachmentId = defaultReturn.Data.Id
                         });
                     }
@@ -660,7 +660,7 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<List<CustomeField>> defaultReturn = new DefaultReturn<List<CustomeField>>();
 
-            defaultReturn.Data=_formDefinationService.GetCustomeFields(mainCompanyId).ToList();
+            defaultReturn.Data = _formDefinationService.GetCustomeFields(mainCompanyId).ToList();
             return defaultReturn;
         }
 
@@ -683,6 +683,15 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.SetException(ex);
             }
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<CustomeFieldItem>> GetCustomeFieldItems(int customeFieldId)
+        {
+            DefaultReturn<List<CustomeFieldItem>> defaultReturn = new DefaultReturn<List<CustomeFieldItem>>();
+
+            defaultReturn.Data = _formDefinationService.GetCustomeFieldItems(customeFieldId).ToList();
 
             return defaultReturn;
         }

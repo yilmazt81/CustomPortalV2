@@ -444,7 +444,7 @@ namespace CustomPortalV2.TemplateProcess
         ComboBoxItem[] comboBoxItems)
         {
 
-            var customeFieldItems = customeFieldItemList.Where(s => s.CustomeFieldId == customeFieldTypeId && !s.Deleted.Value).OrderBy(s => s.OrderNumber).ToList();
+            var customeFieldItems = customeFieldItemList.Where(s => s.CustomeFieldId == customeFieldTypeId && !s.Deleted).OrderBy(s => s.OrderNumber).ToList();
             var customeFiel = customeFields.Single(s => s.Id == customeFieldTypeId);
 
 

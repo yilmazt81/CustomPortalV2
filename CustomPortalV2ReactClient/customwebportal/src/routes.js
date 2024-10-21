@@ -18,6 +18,8 @@ const workflow = React.lazy(()=>import('./views/workflow'));
 const Settings = React.lazy(()=>import('./views/settings'));
 const UserProfile = React.lazy(()=>import('./views/Profile'));
 const CustomeFields=React.lazy(()=>import('./views/customefields'));
+const customeFieldEdit=React.lazy(()=>import('./views/customefieldEdit'));
+
 
 const routes = [
 
@@ -41,8 +43,10 @@ const routes = [
   { path: '/workflow', name: 'workflow', element: workflow }, 
   { path: '/Settings', name: 'Settings', element: Settings }, 
   { path: '/UserProfile', name: 'UserProfile', element: UserProfile }, 
-
   { path: '/customeFields', name: 'CustomeFields', element: CustomeFields }, 
+  { path: '/CustomeFieldEdit', name: 'CustomeFieldEdit', element: customeFieldEdit }, 
+
+  
   
   
   

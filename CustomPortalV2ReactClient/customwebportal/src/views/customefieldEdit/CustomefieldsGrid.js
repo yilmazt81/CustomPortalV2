@@ -14,19 +14,25 @@ import { Link } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 
-const CustomeFieldsGrid = (OptionClick) => {
+const CustomefieldsGrid = (OptionClick) => {
 
 
     return [
         {
-            field: 'fieldName',
-            headerName: i18.t('CustomeFieldName'),
+            field: 'fieldCaption',
+            headerName: i18.t('FieldCaption'),
             width: 200,
 
         },
         {
-            field: 'fieldTagName',
-            headerName: i18.t('CustomeFieldTag'),
+            field: 'controlType',
+            headerName: i18.t('ControlType'),
+            width: 200,
+
+        },
+        {
+            field: 'tagName',
+            headerName: i18.t('TagName'),
             width: 200,
 
         },
@@ -68,8 +74,8 @@ const CustomeFieldsGrid = (OptionClick) => {
 
 
                         <Link to={{
-                            pathname: '/customefieldEdit',
-                            search: `?customeFieldid=${params.row.id}`,
+                            pathname: '/formdefinationsAComp',
+                            search: `?formfieldid=${params.row.id}`,
                         }}> <Dehaze /></Link>;
                     </IconButton>
 
@@ -98,5 +104,5 @@ const CustomeFieldsGrid = (OptionClick) => {
 
 };
 
-export default CustomeFieldsGrid;
+export default CustomefieldsGrid;
 

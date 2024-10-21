@@ -62,6 +62,8 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<CustomeField> SaveCustomeField(CustomeField customeField);
 
+        DefaultReturn<List<CustomeFieldItem>> GetCustomeFieldItems(int customeFieldId);
+
          
     }
 }

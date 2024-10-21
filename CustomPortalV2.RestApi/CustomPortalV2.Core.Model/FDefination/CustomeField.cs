@@ -18,7 +18,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string FieldName { get; set; }
         public string FieldTagName { get; set; }
         public string ElementType { get; set; }
-        public Nullable<bool> Deleted { get; set; }
+        public  bool  Deleted { get; set; }
         public Nullable<int> HeaderHeightRuleValue { get; set; }
         public Nullable<int> RowHeightRuleValue { get; set; }
         public Nullable<int> RowHeight { get; set; }

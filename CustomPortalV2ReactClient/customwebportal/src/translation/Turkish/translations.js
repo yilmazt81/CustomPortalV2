@@ -206,9 +206,13 @@ export const TRANSLATIONS_TR = {
     CustomeFieldHeaderInc:"inç {inc}",
     CustomeFieldHeaderEnazInc:"En az {inc}",
     CustomeFieldRowHeightRule:"Satır Yükseklik",
-    
-
-
+    CustomeFieldTitleItems: "Özel Tip Alanları",
+    CustomeFieldItemHeaderWidthRuleValue:"Kolon Genişlik",
+    CustomeFieldItemOto:"Otomatik",
+    CustomeFieldItemInc:"inç {inc}",
+    CustomeFieldItemPer:"Yüzde %",
+    CustomeFieldItemLen:"Karakter Sayısı", 
+    CustomeFieldItemColomnWith:"Kolon Genişlik"
     
 
 

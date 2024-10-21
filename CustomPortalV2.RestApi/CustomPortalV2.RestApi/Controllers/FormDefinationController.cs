@@ -830,19 +830,28 @@ namespace CustomPortalV2.RestApi.Controllers
                 MainCompanyId = User.GetCompanyId(),
                 HeaderHeightRuleValue = 0,
                 RowHeightRuleValue = 0,
-                ElementType = "Tablo"
+                ElementType = "Tablo",
+                Deleted = false,
 
             };
             return Ok(defaultReturn);
         }
 
+        [HttpGet("GetCustomeFieldItems/{id}")]
+        public IActionResult GetCustomeFieldItems(int id)
+        {
+            var customeFieldReturn = _formDefinationService.GetCustomeFieldItems(id);
+
+            return Ok(customeFieldReturn);
+        }
+
         [HttpPost("SaveCustomeField")]
         public IActionResult SaveCustomeField(CustomeField customeField)
         {
-            customeField.MainCompanyId=User.GetCompanyId();
-            if (customeField.Id!=0)
+            customeField.MainCompanyId = User.GetCompanyId();
+            if (customeField.Id != 0)
             {
-                customeField.editedBy=User.GetUserFullName();
+                customeField.editedBy = User.GetUserFullName();
                 customeField.editedDate = DateTime.Now;
             }
             else

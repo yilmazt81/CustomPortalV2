@@ -380,12 +380,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<CustomeField> GetCustomeFields(int mainCompanyId)
         {
 
-            return _dbContext.CustomeField.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+            return _dbContext.CustomeField.Where(s => s.MainCompanyId == mainCompanyId && !s.Deleted).ToArray();
         }
 
         public IEnumerable<CustomeFieldItem> GetCustomeFielList(int mainCompanyId)
         {
-            return _dbContext.CustomeFieldItem.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
+            return _dbContext.CustomeFieldItem.Where(s => s.MainCompanyId == mainCompanyId && !s.Deleted).ToArray();
         }
 
         public IEnumerable<CustomeField_VirtualTable> GetCustomeVirtualTables(int mainCompanyId)
@@ -395,17 +395,17 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public IEnumerable<CustomeField_VirtualTableField> GetCustomeVirtualTableFields(int mainCompanyId)
         {
-            return _dbContext.CustomeField_VirtualTableField.Where(s => s.MainCompanyId == mainCompanyId).ToArray(); throw new NotImplementedException();
+            return _dbContext.CustomeField_VirtualTableField.Where(s => s.MainCompanyId == mainCompanyId).ToArray();
         }
 
         public IEnumerable<TranslateDictionary> GetTranslateDictionaries()
         {
-           return _dbContext.TranslateDictionary.ToArray();
+            return _dbContext.TranslateDictionary.ToArray();
         }
 
         public IEnumerable<SoftImageChangeFormatRule> GetSoftImageChangeFormatRules(int formDefinationId)
         {
-            return _dbContext.SoftImageChangeFormatRule.Where(s=>s.FormDefinationId==formDefinationId).ToArray();
+            return _dbContext.SoftImageChangeFormatRule.Where(s => s.FormDefinationId == formDefinationId).ToArray();
         }
 
         public CustomeField Update(CustomeField customeField)
@@ -435,6 +435,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return customeField;
 
+        }
+
+        public IEnumerable<CustomeFieldItem> GetCustomeFieldItems(int customeFieldId)
+        {
+
+            return _dbContext.CustomeFieldItem.Where(s => s.CustomeFieldId == customeFieldId).ToList();
         }
     }
 }

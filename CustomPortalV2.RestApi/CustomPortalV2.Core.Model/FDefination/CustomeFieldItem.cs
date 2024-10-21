@@ -11,12 +11,12 @@ namespace CustomPortalV2.Core.Model.FDefination
     {
         public int Id { get; set; }
         public int CustomeFieldId { get; set; }
-        public Nullable<bool> Mandatory { get; set; }
+        public  bool  Mandatory { get; set; }
         public string FieldCaption { get; set; }
         public string ControlType { get; set; }
         public string TagName { get; set; }
         public bool AutoComplate { get; set; }
-        public Nullable<bool> Deleted { get; set; }
+        public bool Deleted { get; set; }
         public Nullable<int> MaxCharacter { get; set; }
         public string CellName { get; set; }
         public Nullable<int> TableWith { get; set; }
@@ -34,7 +34,6 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int? HeaderHeight { get; set; }
         public int? RowHeightRuleValue { get; set; }
         public int? RowHeight { get; set; }
-
         public int MainCompanyId { get; set; }
     }
 }
