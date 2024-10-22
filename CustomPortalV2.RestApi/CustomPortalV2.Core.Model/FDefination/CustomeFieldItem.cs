@@ -29,7 +29,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int? HeaderHeightRuleValue { get; set; }
 
         [JsonIgnore]
-        public virtual CustomeField CustomeField { get; set; }
+        public virtual CustomeField? CustomeField { get; set; }
         public int? HeaderHeight { get; set; }
         public int? RowHeightRuleValue { get; set; }
         public int? RowHeight { get; set; }

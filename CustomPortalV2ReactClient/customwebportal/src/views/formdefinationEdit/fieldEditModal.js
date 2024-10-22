@@ -159,7 +159,7 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
                         ref={formRef}
                     >
                         <CRow className="mb-12">
-                            <CFormLabel htmlFor="txtGroupName" className="col-sm-3 col-form-label">{t("FieldCaption")}</CFormLabel>
+                            <CFormLabel htmlFor="txtGroupName" className="col-sm-3 col-form-label">{t("GroupName")}</CFormLabel>
                             <CCol sm={9}>
                                 <CFormInput type="text" id='txtGroupName' value={formgroup?.name} readOnly={true} />
                             </CCol>

@@ -63,7 +63,8 @@ const CustomefieldEdit = () => {
     async function LoadCustomeFields() {
 
         try {
-            var customeFieldList = await GetCustomeFieldItems();
+            const id = searchParams.get('customeFieldid');
+            var customeFieldList = await GetCustomeFieldItems(id);
             if (customeFieldList.returnCode === 1) {
                 setcustomeFieldItems(customeFieldList.data);
             } else {
@@ -82,7 +83,7 @@ const CustomefieldEdit = () => {
 
             setcustomeFieldId(id);
             SetLocationAdress();
-            //LoadCustomeFields();
+            LoadCustomeFields();
 
 
         } catch (error) {
@@ -162,7 +163,7 @@ const CustomefieldEdit = () => {
             <EditModal visiblep={visibleEdit}
                 setFormData={() => SaveComplated()}
                 customeFielditemp={customeFieldItem}
-                visibleEdit={visibleEdit}
+                visibleEdit={visibleEdit} 
 
             >
 

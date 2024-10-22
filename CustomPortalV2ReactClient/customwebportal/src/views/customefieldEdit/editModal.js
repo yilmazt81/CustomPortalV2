@@ -18,7 +18,7 @@ import {
 
 } from '@coreui/react'
 
-import { CreateCustomeField,SaveCustomeField } from '../../lib/formdef';
+import { CreateCustomeField,SaveCustomeFieldItem } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -65,7 +65,8 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
     async function SaveData() {
 
         try {
-            var customeFieldReturn = await SaveCustomeField(customeFielditem);
+            debugger;
+            var customeFieldReturn = await SaveCustomeFieldItem(customeFielditem);
             if (customeFieldReturn.returnCode === 1) {
                 setFormData();
             } else {

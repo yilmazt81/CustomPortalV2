@@ -64,6 +64,10 @@ namespace CustomPortalV2.Business.Concrete
 
         DefaultReturn<List<CustomeFieldItem>> GetCustomeFieldItems(int customeFieldId);
 
-         
+        int GetCustomeFieldMaxOrder(int customeFieldId);
+
+        DefaultReturn<CustomeFieldItem> SaveCustomeFieldItem(CustomeFieldItem customeFielditem);
+
+
     }
 }

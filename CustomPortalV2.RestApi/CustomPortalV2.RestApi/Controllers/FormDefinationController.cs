@@ -841,7 +841,7 @@ namespace CustomPortalV2.RestApi.Controllers
         public IActionResult CreateCustomeFieldItem(int createFieldId)
         {
             DefaultReturn<CustomeFieldItem> defaultReturn = new DefaultReturn<CustomeFieldItem>();
-
+            var maxOrderNumber = _formDefinationService.GetCustomeFieldMaxOrder(createFieldId);
             defaultReturn.Data = new CustomeFieldItem()
             {
                 
@@ -850,7 +850,17 @@ namespace CustomPortalV2.RestApi.Controllers
                 HeaderHeightRuleValue = 0,
                 RowHeightRuleValue = 0, 
                 Deleted = false,
+                OrderNumber= maxOrderNumber,
+                CellName="",
+                ControlType="Text",
+                HeaderWidthRuleValue=3,
+                HeaderHeight=0,
+                FieldCaption="",
+                TagName="",
                 
+
+
+
 
             };
             return Ok(defaultReturn);
@@ -859,7 +869,21 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetCustomeFieldItems/{id}")]
         public IActionResult GetCustomeFieldItems(int id)
         {
+
+            string key = $"GetCustomeFieldItems{id}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<CustomeFieldItem>> list))
+                return Ok(list);
+
+
+
             var customeFieldReturn = _formDefinationService.GetCustomeFieldItems(id);
+
+            _memoryCache.Set(key, customeFieldReturn, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
 
             return Ok(customeFieldReturn);
         }
@@ -883,6 +907,18 @@ namespace CustomPortalV2.RestApi.Controllers
             _memoryCache.Remove(key);
 
             var saveReturn = _formDefinationService.SaveCustomeField(customeField);
+
+            return Ok(saveReturn);
+        }
+
+
+        [HttpPost("SaveCustomeFieldItem")]
+        public IActionResult SaveCustomeFieldItem(CustomeFieldItem customeFielditem)
+        { 
+            string key = $"CompanyCustomeFields{customeFielditem.CustomeFieldId}";
+            _memoryCache.Remove(key);
+
+            var saveReturn = _formDefinationService.SaveCustomeFieldItem(customeFielditem);
 
             return Ok(saveReturn);
         }

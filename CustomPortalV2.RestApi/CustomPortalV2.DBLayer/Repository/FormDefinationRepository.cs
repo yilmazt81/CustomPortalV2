@@ -442,5 +442,41 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
             return _dbContext.CustomeFieldItem.Where(s => s.CustomeFieldId == customeFieldId).ToList();
         }
+
+        public CustomeFieldItem Add(CustomeFieldItem customeFieldItem)
+        {
+            _dbContext.CustomeFieldItem.Add(customeFieldItem);
+            _dbContext.SaveChanges();
+
+            return customeFieldItem;
+        }
+
+        public CustomeFieldItem Update(CustomeFieldItem customeFieldItem)
+        {
+           var dbItem = _dbContext.CustomeFieldItem.Single(s => s.Id == customeFieldItem.Id);
+            dbItem.Mandatory = customeFieldItem.Mandatory;
+
+            dbItem.FieldCaption = customeFieldItem.FieldCaption;
+            dbItem.ControlType = customeFieldItem.ControlType;
+            dbItem.TagName = customeFieldItem.TagName;
+
+            dbItem.AutoComplate = customeFieldItem.AutoComplate;
+            dbItem.Deleted = customeFieldItem.Deleted;
+            dbItem.MaxCharacter = customeFieldItem.MaxCharacter;
+            dbItem.TableWith = customeFieldItem.TableWith;
+            dbItem.OrderNumber = customeFieldItem.OrderNumber;
+            dbItem.HeaderWidth = customeFieldItem.HeaderWidth;
+            dbItem.HeaderWidthRuleValue = customeFieldItem.HeaderWidthRuleValue;
+
+
+            dbItem.Bold = customeFieldItem.Bold;
+            dbItem.Italic = customeFieldItem.Italic;
+            dbItem.FontSize = customeFieldItem.FontSize;
+
+            return dbItem;
+
+        }
+
+        
     }
 }

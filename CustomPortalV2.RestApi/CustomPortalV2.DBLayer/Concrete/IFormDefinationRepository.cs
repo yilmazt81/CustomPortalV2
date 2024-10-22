@@ -98,6 +98,10 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<CustomeFieldItem> GetCustomeFieldItems(int customeFieldId);
 
+        CustomeFieldItem Add(CustomeFieldItem customeFieldItem);
+
+        CustomeFieldItem Update(CustomeFieldItem customeFieldItem);
+
 
 
     }

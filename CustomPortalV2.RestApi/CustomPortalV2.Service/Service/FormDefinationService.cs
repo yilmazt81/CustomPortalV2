@@ -695,5 +695,40 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+        public int GetCustomeFieldMaxOrder(int customeFieldId)
+        {
+            var list = _formDefinationService.GetCustomeFieldItems(customeFieldId).ToList();
+            var maxNumber = (list.Count == 0 ? 1 : list.Max(s => s.OrderNumber));
+
+            return (maxNumber + 5);
+
+        }
+
+        public DefaultReturn<CustomeFieldItem> SaveCustomeFieldItem(CustomeFieldItem customeFielditem)
+        {
+            DefaultReturn<CustomeFieldItem> defaultReturn = new DefaultReturn<CustomeFieldItem>();
+
+            try
+            {
+
+                if (customeFielditem.Id == 0)
+                {
+                    defaultReturn.Data= _formDefinationService.Add(customeFielditem);
+
+                }
+                else
+                {
+                    defaultReturn.Data = _formDefinationService.Update(customeFielditem);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+
+            return defaultReturn;
+        }
     }
 }

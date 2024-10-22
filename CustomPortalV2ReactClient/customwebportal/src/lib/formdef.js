@@ -234,6 +234,12 @@ export async function SaveCustomeField(postdata) {
   const { data } = await Post(`/api/FormDefination/SaveCustomeField`,postdata);
   return data;
 }
+export async function SaveCustomeFieldItem(postdata) {
+  
+  const { data } = await Post(`/api/FormDefination/SaveCustomeFieldItem`,postdata);
+  return data;
+}
+
 
 
 
