@@ -81,7 +81,15 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
 
     }
 
+    function handleChangeSwich(event) {
+        const { name, value } = event.target;
 
+        var newValue = customeFielditem[name];
+        newValue = !newValue;
+
+        setcustomeFielditem({ ...customeFielditem, [name]: newValue });
+
+    }
 
     return (
 
@@ -173,8 +181,35 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
 
                         </CRow>
  
+                        <CRow className="mb-12">
+                            <CCol sm={3}>
+                                <CFormSwitch label={t("Bold")} name='bold' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={customeFielditem?.bold} ></CFormSwitch>
 
+                            </CCol>
+                            <CCol sm={3}>
+                                <CFormSwitch label={t("Italic")} name='italic' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={customeFielditem?.italic} ></CFormSwitch>
+                            </CCol>
+                            <CCol sm={3}>
+                                <CFormSwitch label={t("Mandatory")} name='mandatory' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={customeFielditem?.mandatory} ></CFormSwitch>
+                            </CCol>
+                        </CRow>
                     </CForm>
+
+                    <CRow className='mb-12'>
+                            <CCol sm={6}>
+                                <CFormSwitch label={t("AutoComplate")} name='autoComplate' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+
+                                    checked={customeFielditem?.autoComplate} ></CFormSwitch>
+                            </CCol>
+                        </CRow>
+
                     <CRow xs={{ cols: 4 }}>
                         <CCol> </CCol>
                         <CCol>

@@ -222,6 +222,13 @@ export async function GetCustomeFieldItems(id) {
   return data;
 }
 
+export async function CreateCustomeFieldItem(createFieldId) {
+  
+  const { data } = await GetRequest(`/api/FormDefination/CreateCustomeFieldItem/${createFieldId}`);
+  return data;
+}
+
+
 export async function SaveCustomeField(postdata) {
   
   const { data } = await Post(`/api/FormDefination/SaveCustomeField`,postdata);

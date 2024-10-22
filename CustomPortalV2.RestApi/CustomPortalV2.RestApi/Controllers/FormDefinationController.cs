@@ -837,6 +837,25 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(defaultReturn);
         }
 
+        [HttpGet("CreateCustomeFieldItem/{createFieldId}")]
+        public IActionResult CreateCustomeFieldItem(int createFieldId)
+        {
+            DefaultReturn<CustomeFieldItem> defaultReturn = new DefaultReturn<CustomeFieldItem>();
+
+            defaultReturn.Data = new CustomeFieldItem()
+            {
+                
+                MainCompanyId = User.GetCompanyId(),
+                CustomeFieldId = createFieldId,
+                HeaderHeightRuleValue = 0,
+                RowHeightRuleValue = 0, 
+                Deleted = false,
+                
+
+            };
+            return Ok(defaultReturn);
+        }
+
         [HttpGet("GetCustomeFieldItems/{id}")]
         public IActionResult GetCustomeFieldItems(int id)
         {

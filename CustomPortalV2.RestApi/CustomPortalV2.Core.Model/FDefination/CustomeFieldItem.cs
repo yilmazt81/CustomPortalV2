@@ -17,16 +17,15 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string TagName { get; set; }
         public bool AutoComplate { get; set; }
         public bool Deleted { get; set; }
-        public Nullable<int> MaxCharacter { get; set; }
+        public int MaxCharacter { get; set; }
         public string CellName { get; set; }
-        public Nullable<int> TableWith { get; set; }
-        public Nullable<int> OrderNumber { get; set; }
-        public Nullable<int> HeaderWidthRuleValue { get; set; }
+        public int TableWith { get; set; }
+        public int OrderNumber { get; set; }
+        public int HeaderWidthRuleValue { get; set; }
         public string HeaderWidth { get; set; }
-        public Nullable<int> FontSize { get; set; }
-        public Nullable<bool> Bold { get; set; }
-        public Nullable<bool> Italic { get; set; }
-
+        public int FontSize { get; set; }
+        public  bool  Bold { get; set; }
+        public  bool  Italic { get; set; }
         public int? HeaderHeightRuleValue { get; set; }
 
         [JsonIgnore]

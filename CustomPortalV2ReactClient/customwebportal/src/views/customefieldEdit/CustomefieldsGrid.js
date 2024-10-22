@@ -36,32 +36,7 @@ const CustomefieldsGrid = (OptionClick) => {
             width: 200,
 
         },
-        {
-            field: 'createdBy',
-            headerName: i18.t('CreatedBy'),
-            width: 150,
-        },
-        {
-            field: 'createdDate',
-            headerName: i18.t('CreatedDate'),
-            width: 100,
-            valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY HH:mm')
-        },
-
-        {
-            field: 'editedBy',
-            headerName: i18.t('EditedBy'),
-            width: 150,
-        },
-
-        {
-            field: 'editedDate',
-            headerName: i18.t('EditedDate'),
-            width: 100,
-
-            valueFormatter: (params) => (params === null ? "" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
-
-        },
+        
         {
             field: 'actions',
             headerName: 'Actions',

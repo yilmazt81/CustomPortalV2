@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from 'react'
 
 import { useTranslation } from "react-i18next";
 import { UrlContext } from 'src/lib/URLContext';
-import {CreateCustomeField,GetCustomeFieldItems } from 'src/lib/formdef';
+import { CreateCustomeField, GetCustomeFieldItems, CreateCustomeFieldItem } from 'src/lib/formdef';
 import CustomefieldsGrid from './CustomefieldsGrid';
 import DeleteModal from 'src/components/DeleteModal';
 import EditModal from './editModal';
@@ -29,8 +29,9 @@ const CustomefieldEdit = () => {
     const { dispatch } = useContext(UrlContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [customeFieldId,setcustomeFieldId] = useState(0);
+    const [customeFieldId, setcustomeFieldId] = useState(0);
     const [customeField, setcustomeField] = useState(null);
+    const [customeFieldItem, setcustomeFieldItem] = useState(null);
     const [visibleDelete, setVisibleDelete] = useState(false);
     const [visibleEdit, setvisibleEdit] = useState(false);
     const [customeFieldItems, setcustomeFieldItems] = useState([]);
@@ -52,7 +53,7 @@ const CustomefieldEdit = () => {
             type: 'Add',
             payload: { pathname: "../#/customefields", name: t("CustomeFieldTitle"), active: true }
         });
-        
+
         dispatch({
             type: 'Add',
             payload: { pathname: "./customefieldEdit", name: t("CustomeFieldTitleItems"), active: false }
@@ -79,7 +80,7 @@ const CustomefieldEdit = () => {
 
             const id = searchParams.get('customeFieldid');
 
-           // setcustomeFieldId(id);
+            setcustomeFieldId(id);
             SetLocationAdress();
             //LoadCustomeFields();
 
@@ -95,10 +96,11 @@ const CustomefieldEdit = () => {
     async function NewCustomeField() {
         try {
             setvisibleEdit(false);
-            var createNewCustomeField = await CreateCustomeField();
+            debugger;
+            var createNewCustomeField = await CreateCustomeFieldItem(customeFieldId);
 
             if (createNewCustomeField.returnCode === 1) {
-                setcustomeField(createNewCustomeField.data);
+                setcustomeFieldItem(createNewCustomeField.data);
                 setvisibleEdit(true);
             } else {
                 setsaveError(createNewCustomeField.returnMessage);
@@ -113,7 +115,7 @@ const CustomefieldEdit = () => {
     async function SaveComplated() {
         setvisibleEdit(false);
         LoadCustomeFields();
-        
+
     }
 
     const gridColumns = CustomefieldsGrid(optionClick);
@@ -157,9 +159,11 @@ const CustomefieldEdit = () => {
             </CCard>
 
 
-            <EditModal visiblep={visibleEdit}  
-            setFormData={() => SaveComplated()}
-            
+            <EditModal visiblep={visibleEdit}
+                setFormData={() => SaveComplated()}
+                customeFielditemp={customeFieldItem}
+                visibleEdit={visibleEdit}
+
             >
 
 
@@ -167,7 +171,7 @@ const CustomefieldEdit = () => {
 
             <DeleteModal
                 setClose={() => setVisibleDelete(false)}
-                message={customeField?.fieldName}
+                message={customeFieldItem?.fieldCaption}
                 title={t("ModalDeleteProductTitle")}
                 visiblep={visibleDelete}
                 message2={t("AutoComplateMapDeleteMessage")}
