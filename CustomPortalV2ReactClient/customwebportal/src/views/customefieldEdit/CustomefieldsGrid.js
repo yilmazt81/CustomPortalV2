@@ -43,17 +43,7 @@ const CustomefieldsGrid = (OptionClick) => {
             width: 150,
             renderCell: (params) => (
                 <div>
-
-                    <IconButton>
-
-
-
-                        <Link to={{
-                            pathname: '/formdefinationsAComp',
-                            search: `?formfieldid=${params.row.id}`,
-                        }}> <Dehaze /></Link>;
-                    </IconButton>
-
+ 
                     <IconButton
                         onClick={() => OptionClick('Edit', params.row.id)}
                         aria-label="edit"

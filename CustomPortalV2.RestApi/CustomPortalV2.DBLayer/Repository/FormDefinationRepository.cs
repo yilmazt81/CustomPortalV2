@@ -440,7 +440,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<CustomeFieldItem> GetCustomeFieldItems(int customeFieldId)
         {
 
-            return _dbContext.CustomeFieldItem.Where(s => s.CustomeFieldId == customeFieldId).ToList();
+            return _dbContext.CustomeFieldItem.Where(s => s.CustomeFieldId == customeFieldId && !s.Deleted).ToList();
         }
 
         public CustomeFieldItem Add(CustomeFieldItem customeFieldItem)
@@ -453,7 +453,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public CustomeFieldItem Update(CustomeFieldItem customeFieldItem)
         {
-           var dbItem = _dbContext.CustomeFieldItem.Single(s => s.Id == customeFieldItem.Id);
+            var dbItem = _dbContext.CustomeFieldItem.Single(s => s.Id == customeFieldItem.Id);
             dbItem.Mandatory = customeFieldItem.Mandatory;
 
             dbItem.FieldCaption = customeFieldItem.FieldCaption;
@@ -472,11 +472,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbItem.Bold = customeFieldItem.Bold;
             dbItem.Italic = customeFieldItem.Italic;
             dbItem.FontSize = customeFieldItem.FontSize;
-
+            _dbContext.SaveChanges();
             return dbItem;
 
         }
 
-        
+
     }
 }

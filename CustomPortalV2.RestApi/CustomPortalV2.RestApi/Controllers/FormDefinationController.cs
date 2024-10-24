@@ -915,13 +915,15 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpPost("SaveCustomeFieldItem")]
         public IActionResult SaveCustomeFieldItem(CustomeFieldItem customeFielditem)
         { 
-            string key = $"CompanyCustomeFields{customeFielditem.CustomeFieldId}";
+            string key = $"GetCustomeFieldItems{customeFielditem.CustomeFieldId}";
             _memoryCache.Remove(key);
 
             var saveReturn = _formDefinationService.SaveCustomeFieldItem(customeFielditem);
 
             return Ok(saveReturn);
         }
+
+
 
 
 

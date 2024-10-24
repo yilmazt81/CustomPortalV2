@@ -18,7 +18,7 @@ import {
 
 } from '@coreui/react'
 
-import { CreateCustomeField,SaveCustomeFieldItem } from '../../lib/formdef';
+import { CreateCustomeField, SaveCustomeFieldItem } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
@@ -151,13 +151,13 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
                                     <option value="RadioBox">{t("RadioBox")}</option>
                                     <option value="ComboBox">{t("ComboBox")}</option>
                                 </CFormSelect>
-                                
+
                             </CCol>
 
                         </CRow>
 
 
-                        
+
 
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="selectHeaderHeightRule" className="col-sm-3 col-form-label">{t("CustomeFieldItemHeaderWidthRuleValue")}</CFormLabel>
@@ -181,7 +181,7 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
                             </CCol>
 
                         </CRow>
- 
+
                         <CRow className="mb-12">
                             <CCol sm={3}>
                                 <CFormSwitch label={t("Bold")} name='bold' size='lg'
@@ -203,14 +203,20 @@ const EditModal = ({ visiblep, customeFielditemp, setFormData }) => {
                     </CForm>
 
                     <CRow className='mb-12'>
-                            <CCol sm={6}>
-                                <CFormSwitch label={t("AutoComplate")} name='autoComplate' size='lg'
-                                    onChange={e => handleChangeSwich(e)}
+                        <CCol sm={6}>
+                            <CFormSwitch label={t("AutoComplate")} name='autoComplate' size='lg'
+                                onChange={e => handleChangeSwich(e)}
 
-                                    checked={customeFielditem?.autoComplate} ></CFormSwitch>
-                            </CCol>
-                        </CRow>
-
+                                checked={customeFielditem?.autoComplate} ></CFormSwitch>
+                        </CCol>
+                    </CRow>
+                    <CRow className='mb-12'>
+                        <CFormLabel htmlFor="txtfontSize" className="col-sm-3 col-form-label">{t("FontSize")}</CFormLabel>
+                        <CCol sm={9}>
+                            <CFormInput type="number" id='txtfontSize' name="fontSize"
+                                onChange={e => handleChange(e)} value={customeFielditem?.fontSize} />
+                        </CCol>
+                    </CRow>
                     <CRow xs={{ cols: 4 }}>
                         <CCol> </CCol>
                         <CCol>
@@ -249,6 +255,6 @@ export default EditModal;
 
 
 EditModal.propTypes = {
-    visiblep: PropTypes.bool, 
+    visiblep: PropTypes.bool,
     customeFielditemp: PropTypes.object,
 };

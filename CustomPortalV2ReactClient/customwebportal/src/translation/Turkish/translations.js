@@ -212,7 +212,9 @@ export const TRANSLATIONS_TR = {
     CustomeFieldItemInc:"inç {inc}",
     CustomeFieldItemPer:"Yüzde %",
     CustomeFieldItemLen:"Karakter Sayısı", 
-    CustomeFieldItemColomnWith:"Kolon Genişlik"
+    CustomeFieldItemColomnWith:"Kolon Genişlik",
+    ModalDeleteCustomeFieldTitle : "Alanı Silme Soru ",
+    AutoComplateCustomeFieldDeleteMessage:"Silmek istediğinizden emin misiniz? ",
     
 
 

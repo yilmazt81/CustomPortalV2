@@ -137,9 +137,15 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<List<FieldType>> GetFielTypes(int companyId)
         {
             DefaultReturn<List<FieldType>> defaultReturn = new DefaultReturn<List<FieldType>>();
+            var customeFielTypes = GetCustomeFields(companyId);
+            var fieldTypeList = _formDefinationService.GetDefaultFieldTypes().ToList();
+            var maxId = fieldTypeList.Max(s => s.Id);
+            var newFieldList = customeFielTypes.Data.Select(s => new FieldType() { ControlType = s.FieldTagName, Name = s.FieldName, Id = (maxId + s.Id) }).ToList();
 
-            defaultReturn.Data = _formDefinationService.GetDefaultFieldTypes().ToList();
+            var index = fieldTypeList.Count;
+            fieldTypeList.InsertRange(index, newFieldList);
 
+            defaultReturn.Data = fieldTypeList;
             return defaultReturn;
         }
 
@@ -714,7 +720,7 @@ namespace CustomPortalV2.Business.Service
 
                 if (customeFielditem.Id == 0)
                 {
-                    defaultReturn.Data= _formDefinationService.Add(customeFielditem);
+                    defaultReturn.Data = _formDefinationService.Add(customeFielditem);
 
                 }
                 else

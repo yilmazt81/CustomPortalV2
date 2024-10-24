@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from 'react'
 
 import { useTranslation } from "react-i18next";
 import { UrlContext } from 'src/lib/URLContext';
-import { CreateCustomeField, GetCustomeFieldItems, CreateCustomeFieldItem } from 'src/lib/formdef';
+import { SaveCustomeFieldItem, GetCustomeFieldItems, CreateCustomeFieldItem } from 'src/lib/formdef';
 import CustomefieldsGrid from './CustomefieldsGrid';
 import DeleteModal from 'src/components/DeleteModal';
 import EditModal from './editModal';
@@ -39,7 +39,21 @@ const CustomefieldEdit = () => {
 
 
     const optionClick = (option, id) => {
-        // EditGroupDefination(option === 'Delete', id);
+        EditCustomeFieldItemDefination(option === 'Delete', id);
+    }
+
+
+    async function EditCustomeFieldItemDefination(forDelete, id) {
+
+
+        var tmpCustomeField = customeFieldItems.find(s => s.id === id);
+        setcustomeFieldItem(tmpCustomeField);
+        if (!forDelete) {
+            setvisibleEdit(true);
+        } else {
+            setVisibleDelete(true);
+        }
+
     }
 
     function SetLocationAdress() {
@@ -119,6 +133,29 @@ const CustomefieldEdit = () => {
 
     }
 
+
+    async function DeleteCustomeItemData() {
+
+        try {
+            debugger;
+            customeFieldItem.deleted=true;
+            var customeFieldReturn = await SaveCustomeFieldItem(customeFieldItem);
+            if (customeFieldReturn.returnCode === 1) {
+                setVisibleDelete(false);
+                LoadCustomeFields();
+            } else {
+                setsaveError(customeFieldReturn.ReturnMessage);
+            }
+
+        } catch (error) {
+            setsaveError(error.message);
+        } finally {
+
+            //setsaveStart(false);
+        }
+
+    }
+
     const gridColumns = CustomefieldsGrid(optionClick);
 
 
@@ -163,7 +200,8 @@ const CustomefieldEdit = () => {
             <EditModal visiblep={visibleEdit}
                 setFormData={() => SaveComplated()}
                 customeFielditemp={customeFieldItem}
-                visibleEdit={visibleEdit} 
+                visibleEdit={visibleEdit}
+
 
             >
 
@@ -171,12 +209,12 @@ const CustomefieldEdit = () => {
             </EditModal>
 
             <DeleteModal
-                setClose={() => setVisibleDelete(false)}
                 message={customeFieldItem?.fieldCaption}
-                title={t("ModalDeleteProductTitle")}
+                title={t("ModalDeleteCustomeFieldTitle")}
                 visiblep={visibleDelete}
-                message2={t("AutoComplateMapDeleteMessage")}
-            // OnClickOk={() => DeleteProductDB()}
+                message2={t("AutoComplateCustomeFieldDeleteMessage")}
+                OnClickCancel={() => setVisibleDelete(false)}
+                OnClickOk={() =>DeleteCustomeItemData()}
             >
 
 
