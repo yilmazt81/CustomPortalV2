@@ -229,8 +229,9 @@ const CreateGroupField = ({ fieldList, onChangeData ,controlValuesp}) => {
                         <CFormInput key={item.id} onChange={(e) => handleChange(e)} name={item.tagName} type="Hidden" id={`hdn${item.tagName}`} />
                     )
                 } else {
+                    debugger;
                     return (
-                        <></>
+                        <><CFormLabel>testtt</CFormLabel></>
                     )
                 }
             })}

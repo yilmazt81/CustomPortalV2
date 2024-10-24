@@ -98,8 +98,7 @@ const FormDefinationEdit = () => {
         dispatch({
             type: 'Add',
             payload: { pathname: "#/FormDefinationType", name: t("FormDefinations"), active: true }
-        }); 
-        debugger;
+        });  
         dispatch({
             type: 'Add',
             payload: { pathname: "/FormDefinationTypeEdit/formdefinationId=", name: formdefination?.formName, active: false }
@@ -206,9 +205,7 @@ const FormDefinationEdit = () => {
             var editformdefination = await CreateNewFormDefinationGroup(formdefinationEdit.id);
 
             if (editformdefination.returnCode === 1) {
-                setformdefinationGroup(editformdefination.data);
-
-
+                setformdefinationGroup(editformdefination.data); 
                 setvisiblemodalGroup(true);
             } else {
                 setSaveError(editformdefination.returnMessage);

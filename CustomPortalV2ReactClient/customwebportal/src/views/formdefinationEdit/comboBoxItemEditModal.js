@@ -96,7 +96,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
         try {
             setsaveStart(true);
-
+            debugger;
             var comboboxItemsReturn = await GetComboBoxItems(formDefinationField.tagName);
 
             if (comboboxItemsReturn.returnCode === 1) {

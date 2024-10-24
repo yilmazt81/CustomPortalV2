@@ -42,19 +42,19 @@ export async function CreateNewFormDefinationGroup(formdefinationId) {
 };
 
 export async function SaveFormGroup(formGroup) { 
-  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveGroup`, formGroup);
+  const { data } = await  Post(`/api/FormDefination/SaveGroup`, formGroup);
   return data;
 };
 
 export async function SaveFormDefinationField(formdefinationField) {
- 
-  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveFormDefinationField`, formdefinationField);
+
+  const { data } = await  Post(`/api/FormDefination/SaveFormDefinationField`, formdefinationField);
   return data;
 };
 
 
 export async function SaveComboBoxItem(comboboxItem) { 
-  const { data } = await  Post(process.env.REACT_APP_APIURL + `/api/FormDefination/SaveComboBoxItem`, comboboxItem);
+  const { data } = await  Post(`/api/FormDefination/SaveComboBoxItem`, comboboxItem);
   return data;
 };
 
@@ -230,7 +230,7 @@ export async function CreateCustomeFieldItem(createFieldId) {
 
 
 export async function SaveCustomeField(postdata) {
-  
+  debugger;
   const { data } = await Post(`/api/FormDefination/SaveCustomeField`,postdata);
   return data;
 }

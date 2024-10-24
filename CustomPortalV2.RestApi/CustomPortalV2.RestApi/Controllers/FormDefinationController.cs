@@ -586,12 +586,11 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formGroupReturn);
         }
-        [HttpPost("SaveFormDefinationField")]
-        [AllowAnonymous]
+        [HttpPost("SaveFormDefinationField")] 
         public IActionResult SaveFormDefinationField(FormDefinationField formDefinationField)
         {
 
-
+        
             var formGroupReturn = _formDefinationService.SaveFormDefinationField(formDefinationField);
 
             string key = $"FormGroupFields{formDefinationField.FormGroupId}";
