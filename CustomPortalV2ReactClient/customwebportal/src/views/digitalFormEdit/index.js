@@ -190,6 +190,7 @@ const DigitalFormEdit = () => {
 
     function handleChange(event) {
         const { name, value } = event.target;
+      
         setformMetaData({ ...formMetaData, [name]: value });
 
         if (name == 'customSectorId') {
@@ -221,7 +222,7 @@ const DigitalFormEdit = () => {
     }
 
     function changeDynamicControlValues(name, value) {
-
+ 
         var findField = controlValues.find(s => s.fieldName === name);
 
         if (findField === undefined) {

@@ -736,5 +736,26 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
         }
+
+        public DefaultReturn<List<CustomeFieldItem>> GetCustomeField(int mainCompanyId, string fieldTypeName)
+        {
+            DefaultReturn<List<CustomeFieldItem>> defaultReturn = new DefaultReturn<List<CustomeFieldItem>>();
+            try
+            {
+
+                var customeField = _formDefinationService.GetCustomeField(mainCompanyId, fieldTypeName);
+                if (customeField == null)
+                {
+                    throw new Exception("DefinationNotFound");
+                }
+                defaultReturn.Data = _formDefinationService.GetCustomeFieldItems(customeField.Id).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+            return defaultReturn;
+        }
     }
 }

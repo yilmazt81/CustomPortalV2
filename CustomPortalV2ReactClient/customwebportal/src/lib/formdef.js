@@ -250,3 +250,12 @@ export async function SaveFormAttachment(formData) {
   const { data } = await PostFile(`/api/FormDefination/SaveFormAttachment`, formData);
   return data;
 };
+
+
+export async function GetCustomeFieldByName(fieldTypeName) {
+   
+  
+  const { data } = await GetRequest(`/api/FormDefination/GetCustomeField/${fieldTypeName}`);
+  return data;
+};
+

@@ -477,6 +477,9 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         }
 
-
+        public CustomeField? GetCustomeField(int mainCompanyId, string customeFieldName)
+        {
+            return _dbContext.CustomeField.FirstOrDefault(s => s.MainCompanyId == mainCompanyId && s.FieldTagName == customeFieldName);
+        }
     }
 }

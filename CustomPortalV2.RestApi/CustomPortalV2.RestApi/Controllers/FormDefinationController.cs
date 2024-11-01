@@ -586,11 +586,10 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(formGroupReturn);
         }
-        [HttpPost("SaveFormDefinationField")] 
+        [HttpPost("SaveFormDefinationField")]
         public IActionResult SaveFormDefinationField(FormDefinationField formDefinationField)
         {
 
-        
             var formGroupReturn = _formDefinationService.SaveFormDefinationField(formDefinationField);
 
             string key = $"FormGroupFields{formDefinationField.FormGroupId}";
@@ -817,6 +816,25 @@ namespace CustomPortalV2.RestApi.Controllers
 
             return Ok(customeFields);
         }
+
+        [HttpGet("GetCustomeField/{fieldTypeName}")]
+        public IActionResult GetCustomeField(string fieldTypeName)
+        {
+            string key = $"CompanyCustomeField_{fieldTypeName}";
+
+            if (_memoryCache.TryGetValue(key, out DefaultReturn<List<CustomeFieldItem>> customeField))
+                return Ok(customeField);
+
+            customeField = _formDefinationService.GetCustomeField(User.GetCompanyId(), fieldTypeName);
+            _memoryCache.Set(key, customeField, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                Priority = CacheItemPriority.Normal
+            });
+
+            return Ok(customeField);
+        }
+
         [HttpGet("CreateCustomeField")]
         public IActionResult CreateCustomeField()
         {
@@ -843,20 +861,20 @@ namespace CustomPortalV2.RestApi.Controllers
             var maxOrderNumber = _formDefinationService.GetCustomeFieldMaxOrder(createFieldId);
             defaultReturn.Data = new CustomeFieldItem()
             {
-                
+
                 MainCompanyId = User.GetCompanyId(),
                 CustomeFieldId = createFieldId,
                 HeaderHeightRuleValue = 0,
-                RowHeightRuleValue = 0, 
+                RowHeightRuleValue = 0,
                 Deleted = false,
-                OrderNumber= maxOrderNumber,
-                CellName="",
-                ControlType="Text",
-                HeaderWidthRuleValue=3,
-                HeaderHeight=0,
-                FieldCaption="",
-                TagName="",
-                
+                OrderNumber = maxOrderNumber,
+                CellName = "",
+                ControlType = "Text",
+                HeaderWidthRuleValue = 3,
+                HeaderHeight = 0,
+                FieldCaption = "",
+                TagName = "",
+
 
 
 
@@ -913,7 +931,7 @@ namespace CustomPortalV2.RestApi.Controllers
 
         [HttpPost("SaveCustomeFieldItem")]
         public IActionResult SaveCustomeFieldItem(CustomeFieldItem customeFielditem)
-        { 
+        {
             string key = $"GetCustomeFieldItems{customeFielditem.CustomeFieldId}";
             _memoryCache.Remove(key);
 

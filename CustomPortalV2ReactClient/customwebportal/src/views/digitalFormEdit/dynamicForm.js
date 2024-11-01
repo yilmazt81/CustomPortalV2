@@ -54,7 +54,7 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups,OnValueChanged,controlV
                         <CCardHeader>{item.formNumber} {item.name}</CCardHeader>
                         <CCardBody>
 
-                            <CreateGroupField onChangeData={(fieldName,value)=>OnValueChanged(fieldName,value)} controlValuesp={controlValues} fieldList={item.formFields}></CreateGroupField>
+                            <CreateGroupField key={item.id} onChangeData={(fieldName,value)=>OnValueChanged(fieldName,value)} controlValuesp={controlValues} fieldList={item.formFields}></CreateGroupField>
                         </CCardBody>
                     </CCard>
                 </CRow>

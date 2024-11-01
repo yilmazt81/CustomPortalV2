@@ -82,6 +82,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         IEnumerable<FormMetaDataAttachmentFilter> GetFormDefinationFilters(int formDefinationId);
 
         IEnumerable<CustomeField> GetCustomeFields(int mainCompanyId);
+        CustomeField? GetCustomeField(int mainCompanyId, string customeFieldName);
 
         IEnumerable<CustomeFieldItem> GetCustomeFielList(int mainCompanyId);
 
