@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { cilSave, cilClearAll, cilPin } from '@coreui/icons';
+import { cilSave, cilClearAll, cilPin, cilNoteAdd } from '@coreui/icons';
 import { GetCustomeFieldByName } from 'src/lib/formdef';
 import { CIcon } from '@coreui/icons-react';
 import {
@@ -22,7 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { cilMap, cilBarcode } from '@coreui/icons';
+import { cilMap, cilBarcode, cilPlus, cilDelete } from '@coreui/icons';
 
 function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData, controlValuesp }) {
     const { t } = useTranslation();
@@ -109,7 +109,7 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
     }
 
     function handleChange(e) {
-     
+
         //const { name, value } = e.target;
 
 
@@ -162,8 +162,8 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
     }
 
     function getFieldControl(item, linenumber) {
-        var fieldName = customeFielType +'_'+item.tagName+ '_' + linenumber;
-        
+        var fieldName = customeFielType + '_' + item.tagName + '_' + linenumber;
+
         if (item.controlType == "Text") {
             return (
                 <CCol key={item.id}>
@@ -239,38 +239,73 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
     }
 
     function CreateFormHeader() {
- 
+
         return (
             <CRow className="mb-12" >
                 {customeFielditems.map((item, i) => {
 
                     return (
-                        <CCol key={item.id}>
-                            <CFormLabel key={i} className="col-form-label">{item.fieldCaption}</CFormLabel>
+                        <>
+                            <CCol key={item.id}>
+                                <CFormLabel key={i} className="col-form-label">{item.fieldCaption}</CFormLabel>
 
-                        </CCol>
+                            </CCol>
+
+
+                        </>
                     )
 
                 })}
+
+                <CCol>
+                </CCol>
+            </CRow>
+        )
+    }
+
+    function AddRowCount(a) {
+        var newRow = 0;
+        if (a===false) {
+
+            newRow = rowCount - 1;
+        } else {
+            newRow = rowCount + 1;
+        }
+
+
+        setRowCount(newRow);
+        CreateFormByLine();
+
+    }
+
+    function CreateOneLine(index) {
+        return (
+            <CRow className="mb-12" >
+                {customeFielditems.map((item, i) => {
+
+                    return getFieldControl(item, index)
+
+                })}
+                <CCol>
+
+                    <CButton color="primary" onClick={() => AddRowCount((rowCount - 1) === index)}  >
+                        <CIcon icon={(rowCount - 1) === index ? cilPlus : cilDelete} ></CIcon>
+                    </CButton>
+                </CCol>
             </CRow>
         )
     }
     function CreateFormByLine() {
 
-
+        var items = [];
 
         for (let index = 0; index < rowCount; index++) {
-            return (
-                <CRow className="mb-12" >
-                    {customeFielditems.map((item, i) => {
 
-                        return getFieldControl(item, index)
-
-                    })}
-                </CRow>
-            )
+            items.push(CreateOneLine(index));
 
         }
+
+        return items;
 
     }
 
