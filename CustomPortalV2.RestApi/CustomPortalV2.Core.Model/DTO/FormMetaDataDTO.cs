@@ -19,6 +19,8 @@ namespace CustomPortalV2.Core.Model.DTO
         public int formDefinationTypeid { get; set; }
         public FieldValueDTO[] fieldValues { get; set; }
 
+        public CustomeFieldValueDTO[] customeFieldfieldValues { get; set; }
+
         public bool  isDefault { get; set; }
 
         public int  workid { get; set; }
@@ -29,5 +31,13 @@ namespace CustomPortalV2.Core.Model.DTO
 
         public string fieldName { get; set; }
         public string fieldValue { get; set; }
+        
+
+     
+    }
+
+    public class CustomeFieldValueDTO: FieldValueDTO
+    {
+        public int fieldOrder { get; set; }
     }
 }

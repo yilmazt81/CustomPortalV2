@@ -24,7 +24,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { cilMap, cilBarcode, cilPlus, cilDelete } from '@coreui/icons';
 
-function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData, controlValuesp }) {
+function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, controlValuesp }) {
     const { t } = useTranslation();
     const [customeFielditems, setcustomeFielditems] = useState([]);
     const [saveError, setSaveError] = useState(null);
@@ -56,21 +56,21 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
         }
     }
 
-    function GetDateValue(fieldName) {
-
-        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+    function GetDateValue(fieldName,lineNumber) {
+ 
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName && s.fieldOrder===lineNumber);
 
         return (fieldValue === undefined ? null : dayjs(fieldValue.fieldValue));
     }
-    function handleChangeChecked(e) {
+    function handleChangeChecked(e,lineNumber) {
         const { name, value } = e.target;
 
         let checkbox = (e.target.checked ? "true" : "false");
 
-        onChangeData(name, checkbox);
+        onChangeDataCustomeField(name, checkbox,lineNumber);
     }
 
-    function CreateAutoComplateText(textField) {
+    function CreateAutoComplateText(textField,lineNumber) {
 
 
         return (
@@ -80,7 +80,7 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
                     type="text"
                     name={textField.tagName}
                     id={`txt${textField.tagName}`}
-                    onChange={(e) => handleChange(e)} value={GetControlValue(textField.tagName)} /></CCol>
+                    onChange={(e) => handleChange(e,lineNumber)} value={GetControlValue(textField.tagName,lineNumber)} /></CCol>
 
 
                 <CCol sm={2}><CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
@@ -108,23 +108,22 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
         }*/
     }
 
-    function handleChange(e) {
+    function handleChange(e,lineNumber) {
 
-        //const { name, value } = e.target;
-
-
-        onChangeData(e);
+         const { name, value } = e.target;
+ 
+        onChangeDataCustomeField(name,value,lineNumber);
     }
 
-    function GetControlValue(fieldName) {
-
-        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+    function GetControlValue(fieldName,lineNumber) {
+        debugger;
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName && s.fieldOrder===lineNumber);
         return (fieldValue === undefined ? "" : fieldValue.fieldValue);
     }
 
-    function GetControlCheckedValue(fieldName) {
+    function GetControlCheckedValue(fieldName,lineNumber ) {
 
-        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName);
+        var fieldValue = controlValuesp.find(s => s.fieldName === fieldName & s.fieldOrder===lineNumber);
 
         return (fieldValue === undefined ? false : fieldValue.fieldValue === 'true');
     }
@@ -148,16 +147,21 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
             setLoading(false);
         }
     }
-    function handleChangeDatetime(field, date) {
+    function handleChangeDatetime(field, date,lineNumber) {
 
         var dateStr = moment(date.$d).format('DD-MM-YYYY');
-        onChangeData(field, dateStr);
+        onChangeDataCustomeField(field, dateStr,lineNumber);
     }
 
-    function CreateText(textField, fieldName) {
+    function CreateText(textField, fieldName,lineNumber) {
 
         return (
-            <CFormInput value={GetControlValue(fieldName)} key={textField.id} name={fieldName} onChange={(e) => handleChange(e)} type="text" id={`txt${fieldName}`} />
+            <CFormInput value={GetControlValue(textField.tagName,lineNumber)} 
+            key={textField.id} 
+            name={textField.tagName} 
+            onChange={(e) => handleChange(e,lineNumber)} 
+            type="text" 
+            id={`txt${fieldName}`} />
         )
     }
 
@@ -169,7 +173,7 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
                 <CCol key={item.id}>
 
                     {
-                        item.autoComplate === true ? CreateAutoComplateText(item, fieldName) : CreateText(item, fieldName)
+                        item.autoComplate === true ? CreateAutoComplateText(item, fieldName,linenumber) : CreateText(item, fieldName,linenumber)
 
                     }
 
@@ -182,8 +186,8 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
                         <DatePicker key={item.id} id={`txt${fieldName}`}
 
                             name={item.tagName}
-                            value={GetDateValue(item.tagName)}
-                            onChange={date => handleChangeDatetime(item.tagName, date)} />
+                            value={GetDateValue(item.tagName,linenumber)}
+                            onChange={date => handleChangeDatetime(item.tagName, date,linenumber)} />
                     </LocalizationProvider>
 
                 </CCol>)
@@ -191,7 +195,8 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
 
             return <CCol key={item.id}>
 
-                <CFormSelect id={`cmb${fieldName}`} value={GetControlValue(fieldName)} onChange={(e) => handleChange(e)} name={fieldName}>
+                <CFormSelect id={`cmb${fieldName}`}
+                 value={GetControlValue(item.tagName,linenumber)} onChange={(e) => handleChange(e,linenumber)} name={item.tagName}>
                     <option value="" ></option>
                     {item.comboBoxItems.map((combo, t) => {
                         return (
@@ -207,11 +212,9 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
                 {item.comboBoxItems.map((combo, t) => {
 
                     return (
-                        <CFormCheck onChange={(e) => handleChangeChecked(e)}
-                            name={`${fieldName}_${combo.tagName}`}
-
-                            checked={GetControlCheckedValue(`${item.tagName}_${combo.tagName}`)}
-
+                        <CFormCheck onChange={(e) => handleChangeChecked(e,linenumber)}
+                            name={`${item.tagName}_${combo.tagName}`}
+                            checked={GetControlCheckedValue(`${item.tagName}_${combo.tagName}`,linenumber)}
                             inline key={t} id={`chk${fieldName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
                     )
                 })}
@@ -225,14 +228,25 @@ function CustomeField({ customeFielType, onButtonClick, rowCountP, onChangeData,
 
                 {item.comboBoxItems.map((combo, t) => {
                     return (
-                        <CFormCheck onChange={(e) => handleChangeChecked(e)} name={`${fieldName}_${combo.tagName}`} inline key={t} type='radio' id={`chk${item.tagName}_${combo.tagName}`} value={combo.tagName} label={combo.name} ></CFormCheck>
+                        <CFormCheck 
+                        onChange={(e) => handleChangeChecked(e,linenumber)} 
+                        name={`${item.tagName}_${combo.tagName}`} 
+                        inline key={t} type='radio'
+                         id={`chk${item.tagName}_${combo.tagName}`} 
+                         value={combo.tagName} label={combo.name} ></CFormCheck>
                     )
                 })}
 
             </CCol>
         } else if (item.controlType == "Hidden") {
             return (
-                <CFormInput key={item.id} onChange={(e) => handleChange(e)} name={fieldName} type="Hidden" id={`hdn${fieldName}`} />
+                <CFormInput key={item.id} 
+                onChange={(e) => handleChange(e,linenumber)} 
+                name={item.tagName} 
+                type="Hidden" 
+                id={`hdn${fieldName}`} 
+                value={GetDateValue(item.tagName,linenumber)}
+                />
             )
         }
 

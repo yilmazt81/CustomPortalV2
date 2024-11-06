@@ -27,7 +27,7 @@ import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import CustomeField from './CustomeField';
 
-const CreateGroupField = ({ fieldList, onChangeData, controlValuesp }) => {
+const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, controlValuesp ,controlValuesCustomep}) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
@@ -90,8 +90,12 @@ const CreateGroupField = ({ fieldList, onChangeData, controlValuesp }) => {
 
     function handleChange(e) {
         const { name, value } = e.target;
-        debugger;
         onChangeData(name, value);
+    }
+
+    function handleChangeCustomeField(name, value, rowCount) {
+      
+        onchangeDataCustomeField(name, value, rowCount);
     }
 
     function handleChangeChecked(e) {
@@ -132,7 +136,11 @@ const CreateGroupField = ({ fieldList, onChangeData, controlValuesp }) => {
     function CreateText(textField) {
 
         return (
-            <CCol sm={9} ><CFormInput value={GetControlValue(textField.tagName)} key={textField.id} name={textField.tagName} onChange={(e) => handleChange(e)} type="text" id={`txt${textField.tagName}`} /></CCol>
+            <CCol sm={9} ><CFormInput value={GetControlValue(textField.tagName)}
+                key={textField.id} name={textField.tagName}
+                onChange={(e) => handleChange(e)}
+                type="text"
+                id={`txt${textField.tagName}`} /></CCol>
         )
     }
 
@@ -230,12 +238,15 @@ const CreateGroupField = ({ fieldList, onChangeData, controlValuesp }) => {
                     return (
                         <CFormInput key={item.id} onChange={(e) => handleChange(e)} name={item.tagName} type="Hidden" id={`hdn${item.tagName}`} />
                     )
-                } else { 
+                } else {
                     return (
                         <>
-                            <CustomeField customeFielType={item.controlType} 
-                            controlValuesp={controlValuesp} 
-                            rowCountP={1} onChangeData={(e) => handleChange(e)}></CustomeField>
+                            <CustomeField customeFielType={item.controlType}
+                                controlValuesp={controlValuesCustomep}
+                                rowCountP={1}
+                                onChangeDataCustomeField={(fieldName, value, rowNumber) => handleChangeCustomeField(fieldName, value, rowNumber)}>
+
+                                </CustomeField>
                         </>
                     )
                 }

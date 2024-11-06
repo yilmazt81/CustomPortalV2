@@ -32,7 +32,7 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import CIcon from '@coreui/icons-react';
 
-const DesingFormTemplate = ({ formdefinationTypeIdp, onChangeData, controlValuesp }) => {
+const DesingFormTemplate = ({ formdefinationTypeIdp, onChangeData,OnCustomeValueChanged, controlValuesp }) => {
 
     const [formDesingTemplate, setformDesingTemplate] = useState("");
 
@@ -109,7 +109,6 @@ const DesingFormTemplate = ({ formdefinationTypeIdp, onChangeData, controlValues
                             <DatePicker name={domNode.attribs.name}
                                 id={domNode.attribs.id}
                                 onChange={(e) => handleChangeDatetime(domNode.attribs.name, e)}
-
                                 value={GetDateValue(domNode.attribs.name)} />
                         </LocalizationProvider>
                     );

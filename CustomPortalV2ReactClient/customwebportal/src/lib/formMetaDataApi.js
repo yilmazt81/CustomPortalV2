@@ -37,17 +37,18 @@ export async function  DeleteForm(formid) {
 
 
 
-export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,woid) {
-    debugger;
+export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,workid,custimefieldList) {
+ 
   var postobj=  {id:formid,
                  formDefinationTypeid:fordefinationtypeid,
                  fieldValues:fieldList,
+                 customeFieldfieldValues:custimefieldList,
                  isDefault:isdefault,
-                 workid:woid,
+                 workid:workid,
                  userId:0,
                  userName:"",
                  companyId:0,
-                 brachId:0};
+                 brachId:0}; 
   const { data } =  await Post (`/api/FormMetaData`,postobj);
   return data;
 }

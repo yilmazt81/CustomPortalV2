@@ -21,12 +21,15 @@ namespace CustomPortalV2.Business.Service
         IFormMetaDataRepository _formMetaDataRepository;
         IBranchRepository _branchRepository;
         IFormDefinationRepository _formDefinationRepository;
+
+        string[] standartFieldTypes = null;
         public FormMetaDataService(IFormMetaDataRepository formMetaDataRepository,
                     IBranchRepository branchRepository, IFormDefinationRepository formDefinationRepository)
         {
             _formMetaDataRepository = formMetaDataRepository;
             _branchRepository = branchRepository;
             _formDefinationRepository = formDefinationRepository;
+            standartFieldTypes = new string[] { "Text", "Hidden", "ComboBox", "DateTime", "CheckBox", "RadioBox" };
         }
         public DefaultReturn<List<FormMetaData>> FilterForms(FormMetaDataFilterPost formMetaData)
         {
@@ -167,7 +170,10 @@ namespace CustomPortalV2.Business.Service
         private Dictionary<string, string> GetFieldValue(FormDefinationField formDefinationField, FormMetaDataDTO formMetaDataDTO)
         {
             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
-            if (formDefinationField.ControlType == "Text" || formDefinationField.ControlType == "DateTime" || formDefinationField.ControlType == "Hidden" || formDefinationField.ControlType == "ComboBox")
+            if (formDefinationField.ControlType == "Text" ||
+                formDefinationField.ControlType == "DateTime" ||
+                formDefinationField.ControlType == "Hidden" ||
+                formDefinationField.ControlType == "ComboBox")
             {
                 var controlValue = formMetaDataDTO.fieldValues.FirstOrDefault(s => s.fieldName == formDefinationField.TagName);
 
@@ -188,9 +194,38 @@ namespace CustomPortalV2.Business.Service
                 }
 
             }
-
             return keyValuePairs;
+        }
 
+        private List<CustomeFieldValueDTO> GetFieldCustomeValue(FormDefinationField formDefinationField, FormMetaDataDTO formMetaDataDTO)
+        {
+            List<CustomeFieldValueDTO> customeFieldValueList = new List<CustomeFieldValueDTO>();
+            var customeField = _formDefinationRepository.GetCustomeField(formMetaDataDTO.CompanyId, formDefinationField.ControlType);
+            if (customeField == null)
+            {
+                throw new Exception("NotDefinationCustomeField");
+            }
+            var customeFieldItems = _formDefinationRepository.GetCustomeFieldItems(customeField.Id);
+
+            var maxRowCount = formMetaDataDTO.customeFieldfieldValues.Max(s => s.fieldOrder);
+
+            foreach (var oneField in customeFieldItems)
+            {
+                for (int i = 0; i <= maxRowCount; i++)
+                {
+                    var customeValue = formMetaDataDTO.customeFieldfieldValues.FirstOrDefault(s => s.fieldName == oneField.TagName && s.fieldOrder == i);
+
+                    customeFieldValueList.Add(new CustomeFieldValueDTO()
+                    {
+                        fieldName = oneField.TagName,
+                        fieldOrder = i,
+                        fieldValue = (customeValue == null ? string.Empty : customeValue.fieldValue),
+                    });
+                }
+            }
+
+
+            return customeFieldValueList;
         }
 
         private void SetMetaObjectField(FormMetaData formmetaData)
@@ -275,18 +310,39 @@ namespace CustomPortalV2.Business.Service
                 formmetaData.FormMetaDataAttribute = new List<FormMetaDataAttribute>();
                 foreach (var formDefinationField in definationFields)
                 {
-
-                    var fieldValues = GetFieldValue(formDefinationField, formMetaDataDTO);
-                    foreach (var field in fieldValues.Keys)
+                    if (standartFieldTypes.Any(s => s == formDefinationField.ControlType))
                     {
-                        var formdefinationField = definationFields.FirstOrDefault(s => s.TagName == field);
-                        formmetaData.FormMetaDataAttribute.Add(new FormMetaDataAttribute()
+
+
+                        var fieldValues = GetFieldValue(formDefinationField, formMetaDataDTO);
+                        foreach (var field in fieldValues.Keys)
                         {
-                            FieldValue = fieldValues[field],
-                            TagName = field,
-                            FormDefinationFieldId = formDefinationField.Id,
-                        });
+                            var formdefinationField = definationFields.FirstOrDefault(s => s.TagName == field);
+                            formmetaData.FormMetaDataAttribute.Add(new FormMetaDataAttribute()
+                            {
+                                FieldValue = fieldValues[field],
+                                TagName = field,
+                                FormDefinationFieldId = formDefinationField.Id,
+                            });
+                        }
                     }
+                    else
+                    {
+                        var customeField = GetFieldCustomeValue(formDefinationField, formMetaDataDTO);
+                        formmetaData.FormMetaDataAttribute_CustomeField = new List<FormMetaDataAttribute_CustomeField>();
+                        foreach (var oneField in customeField)
+                        {
+                            formmetaData.FormMetaDataAttribute_CustomeField.Add(new FormMetaDataAttribute_CustomeField()
+                            {
+                                DataOrder = oneField.fieldOrder,
+                                FieldValue = oneField.fieldValue,
+                                TagName = oneField.fieldName,
+                                FormDefinationFieldId = formDefinationField.Id,
+                                
+                            });
+                        }
+                    }
+
                 }
                 SetMetaObjectField(formmetaData);
                 if (formmetaData.Id == 0)

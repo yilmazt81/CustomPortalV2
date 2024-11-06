@@ -43,6 +43,8 @@ const DigitalFormEdit = () => {
     const [loading, setLoading] = useState(false);
     const [formdefinationType, setformdefinationType] = useState(0);
     const [controlValues, setControlValues] = useState([{ fieldName: '', fieldValue: '' }]);
+    const [controlCustomeValues, setcontrolCustomeValues] = useState([{ fieldName: '', fieldValue: '', fieldOrder: 0 }]);
+
     const [formProcessAfterSave, setFormProcessAfterSave] = useState(false);
 
     async function LoadCustomSectors() {
@@ -94,7 +96,7 @@ const DigitalFormEdit = () => {
 
         dispatch({ type: 'reset' })
 
-        const formid =   searchParams.get('id');
+        const formid = searchParams.get('id');
 
         dispatch({
             type: 'Add',
@@ -135,6 +137,12 @@ const DigitalFormEdit = () => {
                             controlValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue })
                         }
                         setControlValues(controlValues);
+
+                        for (var i = 0; i < fSectorService.data.formMetaDataAttribute_CustomeField.length; i++) {
+                            var attribute = fSectorService.data.formMetaDataAttribute_CustomeField[i];
+                            controlCustomeValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue,fieldOrder:attribute.dataOrder })
+                        }
+                        setcontrolCustomeValues(controlCustomeValues);
                     }
                 }
             } else {
@@ -155,7 +163,7 @@ const DigitalFormEdit = () => {
 
 
         const id = searchParams.get('id');
-       
+
         LoadCustomSectors();
 
         GetFormMetaData(id)
@@ -190,7 +198,7 @@ const DigitalFormEdit = () => {
 
     function handleChange(event) {
         const { name, value } = event.target;
-      
+
         setformMetaData({ ...formMetaData, [name]: value });
 
         if (name == 'customSectorId') {
@@ -222,7 +230,7 @@ const DigitalFormEdit = () => {
     }
 
     function changeDynamicControlValues(name, value) {
- 
+
         var findField = controlValues.find(s => s.fieldName === name);
 
         if (findField === undefined) {
@@ -233,6 +241,19 @@ const DigitalFormEdit = () => {
         setControlValues([...controlValues]);
     }
 
+    function changeDynamicControlCustomeValues(name, value,orderNumber) {
+
+         
+        var findField = controlCustomeValues.find(s => s.fieldName === name & s.fieldOrder===orderNumber);
+
+        if (findField === undefined) {
+            controlCustomeValues.push({ fieldName: name, fieldValue: value,fieldOrder:orderNumber })
+        } else {
+            findField.fieldValue = value;
+        }
+        setcontrolCustomeValues([...controlCustomeValues]);
+    }
+
 
     async function ClickMenuIcon(value) {
 
@@ -240,8 +261,9 @@ const DigitalFormEdit = () => {
         if (value === "Save") {
             try {
                 setLoading(true);
-
-                var fsaveReturn = await SaveMetaData((formMetaData == null ? 0 : formMetaData.id), formdefinationType, controlValues);
+                debugger;
+                var fsaveReturn = await SaveMetaData((formMetaData == null ? 0 : formMetaData.id), 
+                formdefinationType, controlValues,false,0,controlCustomeValues);
                 if (fsaveReturn.returnCode === 1) {
 
                     setformMetaData(fsaveReturn.data);
@@ -319,8 +341,19 @@ const DigitalFormEdit = () => {
                     <CRow>
                         {
 
-                            useTemplate ? <DesingFormTemplate onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)} controlValuesp={controlValues} formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
-                                <DynamicForm OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)} controlValues={controlValues} formdefinationTypeIdp={formdefinationType} formgroups={formdefinationGroups}></DynamicForm>
+                            useTemplate ? <DesingFormTemplate
+                                onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)}
+
+                                controlValuesp={controlValues}
+                                formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
+                                <DynamicForm
+                                    OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)}
+                                    OnCustomeValueChanged={(fieldName,value,order)=>changeDynamicControlCustomeValues(fieldName,value,order)}
+                                    controlValues={controlValues}
+                                    formdefinationTypeIdp={formdefinationType}
+                                    formgroups={formdefinationGroups}
+                                    controlValuesCustome={controlCustomeValues}
+                                ></DynamicForm>
 
                         }
 
