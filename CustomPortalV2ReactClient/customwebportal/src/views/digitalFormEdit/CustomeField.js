@@ -116,7 +116,7 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
     }
 
     function GetControlValue(fieldName,lineNumber) {
-        debugger;
+
         var fieldValue = controlValuesp.find(s => s.fieldName === fieldName && s.fieldOrder===lineNumber);
         return (fieldValue === undefined ? "" : fieldValue.fieldValue);
     }
@@ -262,10 +262,7 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
                         <>
                             <CCol key={item.id}>
                                 <CFormLabel key={i} className="col-form-label">{item.fieldCaption}</CFormLabel>
-
                             </CCol>
-
-
                         </>
                     )
 
@@ -302,8 +299,8 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
                 })}
                 <CCol>
 
-                    <CButton color="primary" onClick={() => AddRowCount((rowCount - 1) === index)}  >
-                        <CIcon icon={(rowCount - 1) === index ? cilPlus : cilDelete} ></CIcon>
+                    <CButton color="primary" onClick={() => AddRowCount((rowCount) === index)}  >
+                        <CIcon icon={(rowCount) === index ? cilPlus : cilDelete} ></CIcon>
                     </CButton>
                 </CCol>
             </CRow>
@@ -313,7 +310,7 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
 
         var items = [];
 
-        for (let index = 0; index < rowCount; index++) {
+        for (let index = 1; index <= rowCount; index++) {
 
             items.push(CreateOneLine(index));
 

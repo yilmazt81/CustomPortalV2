@@ -16,6 +16,11 @@ import { Link } from 'react-router-dom';
 const GridColumsDigitalForm = (OptionClick) => {
     return [ 
         {
+            field: 'id',
+            headerName:"Id",
+            width: 50,
+        },
+        {
             field: 'formDefinationName',
             headerName: i18.t('FormDefinationName'),
             width: 100,
@@ -48,7 +53,7 @@ const GridColumsDigitalForm = (OptionClick) => {
             field: 'createdDate',
             headerName: i18.t('CreatedDate'),
             width: 100,
-            valueFormatter: (params) => (params === null ? "" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
+           valueFormatter: (params) => (params === null ? "" : dayjs(params.value).format('DD/MM/YYYY HH:mm'))
         },
 
         {

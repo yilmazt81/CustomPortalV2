@@ -44,7 +44,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormMetaData Update(FormMetaData formMetaData)
         {
-            var dbFormData = _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Single(s => s.Id == formMetaData.Id);
+            var dbFormData = _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Include(s=>s.FormMetaDataAttribute_CustomeField).Single(s => s.Id == formMetaData.Id);
             dbFormData.EditedBy = formMetaData.EditedBy;
             dbFormData.EditedDate = formMetaData.EditedDate;
             dbFormData.EditedId = formMetaData.EditedId;
@@ -119,6 +119,35 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
                  
                 }
+            }
+             
+
+            var newFormDataMax = dbFormData.FormMetaDataAttribute_CustomeField.Max(s => s.DataOrder);
+
+            foreach ( var fieldCustome in formMetaData.FormMetaDataAttribute_CustomeField)
+            {
+                var oldValue = dbFormData.FormMetaDataAttribute_CustomeField.FirstOrDefault(s => s.TagName == fieldCustome.TagName && s.DataOrder == fieldCustome.DataOrder);
+                if (oldValue == null)
+                {
+                    dbFormData.FormMetaDataAttribute_CustomeField.Add(new FormMetaDataAttribute_CustomeField()
+                    {
+                        FormMetaDataId=dbFormData.Id,
+                        DataOrder=fieldCustome.DataOrder,
+                        FieldValue=fieldCustome.FieldValue,
+                        TagName=fieldCustome.TagName,
+                        FormDefinationFieldId= fieldCustome.FormDefinationFieldId,
+                    });
+                }
+                else
+                {
+                    oldValue.FieldValue = fieldCustome.FieldValue;
+                }
+            }
+
+            var oldValues = dbFormData.FormMetaDataAttribute_CustomeField.Where(s => s.DataOrder >= newFormDataMax).ToList();
+            foreach (var item in oldValues)
+            {
+                dbFormData.FormMetaDataAttribute_CustomeField.Remove(item);
             }
             _dbContext.SaveChanges();
             return dbFormData;

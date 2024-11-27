@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import {
     CCol,
@@ -31,6 +31,24 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
+    const [maxRowCount,setmaxRowCount]=useState(1);
+
+    useEffect(() => {
+
+        let maxValue = 0;
+
+        const values = Object.values(controlValuesCustomep);
+ 
+        values.map((el) => {
+            //getting the value from each object and 
+            //comparing to existing value
+            const valueFromObject = el.fieldOrder;
+            maxValue = Math.max(maxValue, valueFromObject);
+          });
+
+          setmaxRowCount(maxValue);
+
+    }, []);
 
 
     function openModal(modalType, definationTypeid) {
@@ -243,7 +261,7 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
                         <>
                             <CustomeField customeFielType={item.controlType}
                                 controlValuesp={controlValuesCustomep}
-                                rowCountP={1}
+                                rowCountP={maxRowCount}
                                 onChangeDataCustomeField={(fieldName, value, rowNumber) => handleChangeCustomeField(fieldName, value, rowNumber)}>
 
                                 </CustomeField>

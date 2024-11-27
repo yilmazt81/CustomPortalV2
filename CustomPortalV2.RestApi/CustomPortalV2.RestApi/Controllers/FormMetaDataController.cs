@@ -125,10 +125,13 @@ namespace CustomPortalV2.RestApi.Controllers
             formMetaDataDTO.BrachId = User.GetBranchId();
 
             var returnV = _formMetaDataService.Save(formMetaDataDTO);
+            if (returnV.ReturnCode == 1)
+            {
+                var key = $"FormMetaData{returnV.Data.Id}";
 
-            var key = $"FormMetaData{returnV.Data.Id}";
+                _memoryCache.Remove(key);
 
-            _memoryCache.Remove(key);
+            }
 
             return Ok(returnV);
         }

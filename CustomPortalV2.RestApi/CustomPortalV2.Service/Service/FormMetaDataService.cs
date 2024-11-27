@@ -209,20 +209,24 @@ namespace CustomPortalV2.Business.Service
 
             var maxRowCount = formMetaDataDTO.customeFieldfieldValues.Max(s => s.fieldOrder);
 
-            foreach (var oneField in customeFieldItems)
+            int rowC = 1;
+            for (int i = 1; i <= maxRowCount; i++)
             {
-                for (int i = 0; i <= maxRowCount; i++)
+                foreach (var oneField in customeFieldItems)
                 {
                     var customeValue = formMetaDataDTO.customeFieldfieldValues.FirstOrDefault(s => s.fieldName == oneField.TagName && s.fieldOrder == i);
 
                     customeFieldValueList.Add(new CustomeFieldValueDTO()
                     {
                         fieldName = oneField.TagName,
-                        fieldOrder = i,
+                        fieldOrder = rowC,
                         fieldValue = (customeValue == null ? string.Empty : customeValue.fieldValue),
                     });
+
                 }
+                rowC++;
             }
+
 
 
             return customeFieldValueList;
@@ -338,7 +342,7 @@ namespace CustomPortalV2.Business.Service
                                 FieldValue = oneField.fieldValue,
                                 TagName = oneField.fieldName,
                                 FormDefinationFieldId = formDefinationField.Id,
-                                
+
                             });
                         }
                     }
