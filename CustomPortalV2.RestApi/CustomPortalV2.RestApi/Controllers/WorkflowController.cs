@@ -1,5 +1,6 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.Core.Model.Work;
 using CustomPortalV2.Model.Work;
 using CustomPortalV2.RestApi.Helper;
 using DocumentFormat.OpenXml.EMMA;
@@ -50,6 +51,13 @@ namespace CustomPortalV2.RestApi.Controllers
                 CreatedBy = User.GetUserFullName(),
                 CreatedDate = DateTime.Now,
                 CreatedId = User.GetUserId(),
+                EditedBy="",
+                EditedDate=null,
+                EditedId=0,
+                FlowType="",
+                WorkFlowEdges = new List<WorkFlowEdge>(),
+                WorkFlowName="",
+                WorkFlowNodes = new List<WorkFlowNode>(),
             };
             return Ok(defaultReturn);
         }

@@ -11,7 +11,7 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            return Ok();
+            return Ok("testt");
         }
     }
 }

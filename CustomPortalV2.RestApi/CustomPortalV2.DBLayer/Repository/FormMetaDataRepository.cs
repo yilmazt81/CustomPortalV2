@@ -44,7 +44,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormMetaData Update(FormMetaData formMetaData)
         {
-            var dbFormData = _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Include(s=>s.FormMetaDataAttribute_CustomeField).Single(s => s.Id == formMetaData.Id);
+            var dbFormData = _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Include(s => s.FormMetaDataAttribute_CustomeField).Single(s => s.Id == formMetaData.Id);
             dbFormData.EditedBy = formMetaData.EditedBy;
             dbFormData.EditedDate = formMetaData.EditedDate;
             dbFormData.EditedId = formMetaData.EditedId;
@@ -55,7 +55,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbFormData.FormDefinationId = formMetaData.FormDefinationId;
             dbFormData.FormDefinationName = formMetaData.FormDefinationName;
             dbFormData.CustomSectorId = formMetaData.CustomSectorId;
-            dbFormData.Deleted=formMetaData.Deleted;
+            dbFormData.Deleted = formMetaData.Deleted;
 
             var oldAttributes = dbFormData.FormMetaDataAttribute;
             foreach (var oldAttribute in dbFormData.FormMetaDataAttribute)
@@ -73,7 +73,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                         NewValue = "",
                         FormMetaDataAttributeId = oldAttribute.Id,
                         OldValue = oldAttribute.FieldValue,
-                        ModifyByPartner=false
+                        ModifyByPartner = false
 
                     });
 #pragma warning restore CS8601 // Possible null reference assignment.
@@ -98,7 +98,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                 else
                 {
                     if (oldAttribute.FieldValue != newAttribute.FieldValue)
-                    { 
+                    {
 
                         _dbContext.FormMetaDataAttributeHistory.Add(new FormMetaDataAttributeHistory()
                         {
@@ -110,45 +110,46 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                             NewValue = newAttribute.FieldValue,
                             FormMetaDataAttributeId = oldAttribute.Id,
                             OldValue = oldAttribute.FieldValue,
-                            ModifyByPartner=false,
+                            ModifyByPartner = false,
 
                         });
                         oldAttribute.FieldValue = newAttribute.FieldValue;
                         oldAttribute.FormDefinationFieldId = newAttribute.FormDefinationFieldId;
                     }
 
-                 
+
                 }
             }
-             
 
-            var newFormDataMax = dbFormData.FormMetaDataAttribute_CustomeField.Max(s => s.DataOrder);
 
-            foreach ( var fieldCustome in formMetaData.FormMetaDataAttribute_CustomeField)
+            var newFormDataMax = (dbFormData.FormMetaDataAttribute_CustomeField.Count == 0 ? 1 : dbFormData.FormMetaDataAttribute_CustomeField.Max(s => s.DataOrder));
+            var oldValues = dbFormData.FormMetaDataAttribute_CustomeField.Where(s => s.DataOrder > newFormDataMax).ToList();
+            foreach (var item in oldValues)
+            {
+                dbFormData.FormMetaDataAttribute_CustomeField.Remove(item);
+            }
+            foreach (var fieldCustome in formMetaData.FormMetaDataAttribute_CustomeField)
             {
                 var oldValue = dbFormData.FormMetaDataAttribute_CustomeField.FirstOrDefault(s => s.TagName == fieldCustome.TagName && s.DataOrder == fieldCustome.DataOrder);
                 if (oldValue == null)
                 {
                     dbFormData.FormMetaDataAttribute_CustomeField.Add(new FormMetaDataAttribute_CustomeField()
                     {
-                        FormMetaDataId=dbFormData.Id,
-                        DataOrder=fieldCustome.DataOrder,
-                        FieldValue=fieldCustome.FieldValue,
-                        TagName=fieldCustome.TagName,
-                        FormDefinationFieldId= fieldCustome.FormDefinationFieldId,
+                        FormMetaDataId = dbFormData.Id,
+                        DataOrder = fieldCustome.DataOrder,
+                        FieldValue = fieldCustome.FieldValue,
+                        TagName = fieldCustome.TagName,
+                        FormDefinationFieldId = fieldCustome.FormDefinationFieldId,
                     });
                 }
                 else
                 {
                     oldValue.FieldValue = fieldCustome.FieldValue;
+                    oldValue.DataOrder = fieldCustome.DataOrder;
                 }
             }
 
-            var oldValues = dbFormData.FormMetaDataAttribute_CustomeField.Where(s => s.DataOrder >= newFormDataMax).ToList();
-            foreach (var item in oldValues)
-            {
-                dbFormData.FormMetaDataAttribute_CustomeField.Remove(item);
-            }
+
             _dbContext.SaveChanges();
             return dbFormData;
 
