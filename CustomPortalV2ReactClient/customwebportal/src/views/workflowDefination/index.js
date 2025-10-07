@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 
 import {
   ReactFlow,
@@ -37,6 +37,7 @@ import OCRProcessNode from "./OCRProcess/index.js";
 import BarcodeProcessNode from "./BarcodeReadProcess/index.js";
 import ClassificationProcessNode from './ClassificationProcess/index.js';
 
+import { UrlContext } from 'src/lib/URLContext';
 
 import {
   FaWhatsapp,
@@ -48,6 +49,7 @@ import {
   FaBarcode,
   FaRandom,
   FaMailBulk,
+  FaSave
 } from "react-icons/fa";
 
 import { useTranslation } from "react-i18next";
@@ -56,7 +58,7 @@ const initialNodes = [];
 const WorkflowDefination = () => {
 
   const { t } = useTranslation();
-
+  const { dispatch } = useContext(UrlContext);
 
   const nodeTypes = {
     textUpdater: TextUpdaterNode,
@@ -82,6 +84,23 @@ const WorkflowDefination = () => {
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [edges],
   );
+
+
+  function SetLocationAdress() {
+
+    dispatch({ type: 'reset' })
+
+    dispatch({
+      type: 'Add',
+      payload: { pathname: "#/workflow", name: t("Workflows"), active: true }
+    });
+
+    dispatch({
+      type: 'Add',
+      payload: { pathname: "./workflowDefination", name: t("WorkFlowDefinationTitle"), active: false }
+    });
+  }
+
   /*
   const onConnect = useCallback(
  
@@ -114,7 +133,21 @@ const WorkflowDefination = () => {
     setWorkFlow({ ...workFlow, [name]: value });
   }
 
+  useEffect(() => {
 
+    try {
+      SetLocationAdress();
+
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }, []);
+
+  function SaveWorkFlow() {
+
+  }
   function GetForkFlowTypeOptions() {
 
     if (workFlow.flowType === "Business") {
@@ -172,18 +205,25 @@ const WorkflowDefination = () => {
         {t("WFTitle")}
       </CCardHeader>
       <CCardBody>
+
         <CRow className="mb-12">
-          <CFormLabel htmlFor="selectFlowType" className="col-sm-3 col-form-label">{t("WorkFlowType")}</CFormLabel>
-          <CCol sm={3}>
+          <CFormLabel htmlFor="selectFlowType" className="col-sm-2 col-form-label">{t("WorkFlowType")}</CFormLabel>
+          <CCol sm={2}>
             <CFormSelect id='selectFlowType' name="flowType"
               onChange={e => WorkFlowTypeChange(e)} value={workFlow?.flowType} >
               <option value="Process">{t("WFProcess")}</option>
               <option value="Business">{t("WFBusiness")}</option>
             </CFormSelect>
           </CCol>
-          <CFormLabel htmlFor="txtWorkFlowName" className="col-sm-3 col-form-label">{t("WorkFlowName")}</CFormLabel>
-          <CCol sm={3}>
+          <CFormLabel htmlFor="txtWorkFlowName" className="col-sm-2 col-form-label">{t("WorkFlowName")}</CFormLabel>
+          <CCol sm={2}>
             <CFormInput type="text" value={workFlow?.workFlowName} name="WorkFlowName"></CFormInput>
+          </CCol>
+          <CCol sm={2}>
+            <CButton color="primary" variant="outline" onClick={() => SaveWorkFlow()}>
+              <FaSave></FaSave> {t("Save")}
+
+            </CButton>
           </CCol>
         </CRow>
 

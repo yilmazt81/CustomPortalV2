@@ -19,6 +19,8 @@ import {
 } from '@coreui/react'
 
 
+import { Link, useNavigate } from "react-router-dom";
+
 const WorkFlow = () => {
   const { t } = useTranslation();
   const { dispatch } = useContext(UrlContext);
@@ -79,7 +81,14 @@ const WorkFlow = () => {
           <CRow>
             <CCol>
               <CButtonGroup role="group"> 
+              <Link to={{
+                  pathname: '/workflowDefination',
+                  search: '?id=0',
+
+                }}> 
+
                 <CButton color="primary" shape='rounded-3'   > {t("AddNewFormDefination")}</CButton> 
+                </Link>
               </CButtonGroup>
             </CCol>
           </CRow>

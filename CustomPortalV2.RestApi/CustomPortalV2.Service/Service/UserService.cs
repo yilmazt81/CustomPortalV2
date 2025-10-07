@@ -29,7 +29,8 @@ namespace CustomPortalV2.Business.Service
             ICompanyDefinationRepository companyRepository,
             IParamRepository paramRepository,
             ILoginrequestLogRepository loginrequestLogRepository,
-            IAppLangRepository appLangRepository, IBranchRepository branchRepository)
+            IAppLangRepository appLangRepository,
+            IBranchRepository branchRepository)
         {
             _userRepository = userRepository;
             _companyRepository = companyRepository;

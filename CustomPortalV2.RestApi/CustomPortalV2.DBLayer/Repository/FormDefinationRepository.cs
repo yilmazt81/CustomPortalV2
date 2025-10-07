@@ -131,6 +131,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbDefination.CustomSectorName = formDefination.CustomSectorName;
             dbDefination.Deleted = formDefination.Deleted;
             dbDefination.Deployed = formDefination.Deployed;
+            dbDefination.PublicDefiation=formDefination.PublicDefiation;
             if (!string.IsNullOrEmpty(formDefination.TemplatePath))
             {
                 dbDefination.TemplatePath = formDefination.TemplatePath;

@@ -86,9 +86,9 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
                 formData.append("CustomSectorId", formdefination.customSectorId);
                 formData.append("Deployed", formdefination.deployed);
                 formData.append("Templatefile", templateFile);
-                formData.append("MainCompanyId",formdefination.mainCompanyId);
-                formData.append("DesingTemplate",formdefination.desingTemplate);
-                 
+                formData.append("MainCompanyId", formdefination.mainCompanyId);
+                formData.append("DesingTemplate", formdefination.desingTemplate);
+
                 setsaveStart(true);
                 var savedefinationResult = await SaveFormDefination(formData);
 
@@ -189,7 +189,14 @@ const EditModal = ({ visiblep, formdefinationp, customSectorList, setFormData })
 
                             </CCol>
 
-                        </CRow>   
+                            <CCol sm={6}>
+                                <CFormSwitch label={t("publicDefiation")} name='publicDefiation' size='lg'
+                                    onChange={e => handleChangeSwich(e)}
+                                    checked={formdefination?.publicDefiation} ></CFormSwitch>
+
+                            </CCol>
+
+                        </CRow>
 
                     </CForm>
                     <CRow xs={{ cols: 4 }}>

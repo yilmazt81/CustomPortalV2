@@ -1,2 +1,0 @@
-CustomPortalV2.RestApi
-CustomPortalV2.Model

@@ -11,8 +11,7 @@ export const TRANSLATIONS_TR = {
     Createyouraccount: "Hesap Oluştur",
     Register: "Hesap",
     CompanyName: "Firma Adı",
-    Email: "Email",
-    PhoneNumber: "Telefon No",
+    Email: "Email", 
     TaxNumber: "Vergi No",
     AuthorizedPersonName: "Yetkili Kişi Adı",
     city: "Şehir",
@@ -52,8 +51,7 @@ export const TRANSLATIONS_TR = {
     CustomSectorName: "Sektör",
     AddNewFormDefination: "Yeni Ekle",
     FormDefinationModalTitle: "Form Türü Düzenle",
-    IsoCode: "İso Kodu",
-    FactoryNumber: "Firma Kodu",
+    IsoCode: "İso Kodu", 
     DefinationTypeName: "Adres Türü",
     AdressDefinationModalTitle: "Adres Düzenle",
     Country_ISO: "Ülke / Iso Kodu",
@@ -70,8 +68,7 @@ export const TRANSLATIONS_TR = {
     OrderNumber: "Sıra No",
     GroupTag: "Group Adı",
     CustomerCanChange: "Müşteri Değiştirebilir",
-    FieldCaption: "Alan Başlığı",
-    TagName: "Alan Adı",
+    FieldCaption: "Alan Başlığı", 
     ControlType: "Kontrol Türü",
     Mandatory: "Zorumlu",
     GroupDelete: "Group Sil",
@@ -81,8 +78,7 @@ export const TRANSLATIONS_TR = {
     FormFieldModalTitle: "Alan Düzenle",
     FontSize: "Font Boyutu",
     Bold: "Koyu",
-    Italic: "Eğimli",
-    Mandatory: "Zorumlu",
+    Italic: "Eğimli", 
     TranslateLanguage: "Çeviri Dili",
     FontFamily: "Font",
     AutoComplate: "Otomatik Tamamla",
@@ -215,7 +211,9 @@ export const TRANSLATIONS_TR = {
     CustomeFieldItemColomnWith:"Kolon Genişlik",
     ModalDeleteCustomeFieldTitle : "Alanı Silme Soru ",
     AutoComplateCustomeFieldDeleteMessage:"Silmek istediğinizden emin misiniz? ",
-    
+    WorkFlowDefinationTitle:"İş Akışı güncelle",
+    publicDefiation:"Herkese Açık Tanım",
+
 
 
 

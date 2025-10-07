@@ -56,29 +56,7 @@ namespace CustomPortalV2.RestApi.Controllers
                     SecurityAlgorithms.HmacSha256Signature)
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
-
-            /*
-            var secretKey = Configuration.GetSection("ApplicationSettings:JWT_Secret");
-            // generate token that is valid for 7 days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secretKey.Value);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                         {
-                              new Claim(ClaimTypes.Name,user.FullName.ToString()),
-                              new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
-                              new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                              new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
-                         }
-                         ),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-
-            */
+             
         }
         // GET: api/<LoginController>
         [HttpGet]

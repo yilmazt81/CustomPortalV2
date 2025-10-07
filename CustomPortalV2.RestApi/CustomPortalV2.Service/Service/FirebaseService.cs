@@ -14,7 +14,7 @@ namespace CustomPortalV2.Business.Service
         private readonly FirebaseAuthProvider _authProvider;
         public FirebaseService() {
 
-            string ApiKey = "AIzaSyCfRAsxaGptI-WCKZbhQFXZskT2YqarmBk";
+            string ApiKey = "AIzaSyDTT2x6P6Dz7s9kKIHezrg1qsVVpUO_uDs";
 
             _authProvider = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
         }

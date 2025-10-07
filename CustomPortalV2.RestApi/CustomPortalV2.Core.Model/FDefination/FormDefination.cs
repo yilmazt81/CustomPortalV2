@@ -27,5 +27,7 @@ namespace CustomPortalV2.Core.Model.FDefination
 
         public string TemplateFileName { get; set; }
 
+        public bool PublicDefiation { get; set; }
+
     }
 }
