@@ -14,16 +14,16 @@ namespace CustomPortalV2.Core.Model.Definations
         public string CreatedBy { get; set; }
         public int CreatedId { get; set; }
         public  System.DateTime  CreatedDate { get; set; }
-        public Nullable<int> EditedId { get; set; }
-        public string? EditedBy { get; set; }
-        public Nullable<System.DateTime> EditedDate { get; set; }
+        public int? EditedId { get; set; }
+        public string EditedBy { get; set; }
+        public System.DateTime? EditedDate { get; set; }
         public int  CustomSectorId { get; set; }
         public bool Deleted { get; set; }
         public string ProductName { get; set; }
         public string ProductName_TRK { get; set; }
         public string IntendedUse { get; set; }
         public string TransferTemperature { get; set; }
-        public string? CustomSectorName { get; set; }
+        public string CustomSectorName { get; set; }
         public string Transfercondition { get; set; }
         public string GtipCode { get; set; }
         public string ProductCulture { get; set; }

@@ -482,5 +482,10 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         {
             return _dbContext.CustomeField.FirstOrDefault(s => s.MainCompanyId == mainCompanyId && s.FieldTagName == customeFieldName);
         }
+
+        public IEnumerable<FormDefinationField> GetFormDefinationFields(int formdefinationId)
+        {
+            return _dbContext.FormDefinationField.Where(s => s.FormDefinationId == formdefinationId && !s.Deleted).ToList().ToList();    
+        }
     }
 }

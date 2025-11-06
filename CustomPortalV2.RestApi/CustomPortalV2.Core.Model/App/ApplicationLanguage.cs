@@ -10,10 +10,10 @@ namespace CustomPortalV2.Core.Model.App
     {
         public int Id { get; set; }
         public string TranslateTag { get; set; }
-        public Nullable<byte> LangId { get; set; }
+        public byte? LangId { get; set; }
         public string TranslateText { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public System.DateTime? CreatedDate { get; set; }
 
-        public Nullable<byte> MustTranslate { get; set; }
+        public byte? MustTranslate { get; set; }
     }
 }

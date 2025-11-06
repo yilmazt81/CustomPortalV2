@@ -19,10 +19,10 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string FieldTagName { get; set; }
         public string ElementType { get; set; }
         public  bool  Deleted { get; set; }
-        public Nullable<int> HeaderHeightRuleValue { get; set; }
-        public Nullable<int> RowHeightRuleValue { get; set; }
-        public Nullable<int> RowHeight { get; set; }
-        public Nullable<int> HeaderHeight { get; set; }
+        public int? HeaderHeightRuleValue { get; set; }
+        public int? RowHeightRuleValue { get; set; }
+        public int? RowHeight { get; set; }
+        public int? HeaderHeight { get; set; }
 
         public int MainCompanyId { get; set; }
 

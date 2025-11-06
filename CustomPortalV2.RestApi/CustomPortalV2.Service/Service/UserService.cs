@@ -7,8 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CustomPortalV2.DataAccessLayer.Repository;
 using CustomPortalV2.DataAccessLayer.Concrete;
-using static CustomPortalV2.Business.Helper.Enums;
-using CustomPortalV2.Core.Model.App;
+using static CustomPortalV2.Business.Helper.Enums; 
 using CustomPortalV2.Model.DTO;
 using CustomPortalV2.Model;
 using CustomPortalV2.Core.Model.DTO;
@@ -156,7 +155,7 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public User? GetUserByUserName(string companyCode, string userName)
+        public User GetUserByUserName(string companyCode, string userName)
         {
             var company = _companyRepository.GetCompanyCode(companyCode);
             if (company == null)
@@ -254,7 +253,7 @@ namespace CustomPortalV2.Business.Service
 
         }
 
-        public enumLoginReturn Login(string clientIp, string companyCode, string username, string password, ref User? user)
+        public enumLoginReturn Login(string clientIp, string companyCode, string username, string password, ref User user)
         {
 
             var loginLog = new LoginRequestLog()

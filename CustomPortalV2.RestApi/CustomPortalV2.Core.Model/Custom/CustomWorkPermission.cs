@@ -13,9 +13,9 @@ namespace CustomPortalV2.Core.Model.Custom
         public int CustomWorkId { get; set; }
         public int AppUserId { get; set; }
         public string UserFullName { get; set; }
-        public Nullable<bool> Admin { get; set; }
-        public Nullable<long> ReadOnly { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public bool? Admin { get; set; }
+        public long? ReadOnly { get; set; }
+        public System.DateTime? CreatedDate { get; set; }
 
         public virtual CustomWork CustomWork { get; set; }
     }

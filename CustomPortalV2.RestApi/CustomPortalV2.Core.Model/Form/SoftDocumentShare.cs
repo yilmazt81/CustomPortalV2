@@ -13,10 +13,10 @@ namespace CustomPortalV2.Core.Model.Form
         public int FormVersionId { get; set; }
         public string ShareUser { get; set; }
         public int ShareUserId { get; set; }
-        public Nullable<System.DateTime> ShareDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
+        public System.DateTime? ShareDate { get; set; }
+        public System.DateTime? EndDate { get; set; }
         public string Token { get; set; }
         public string FormLanguage { get; set; }
-        public Nullable<int> DownloadCount { get; set; }
+        public int? DownloadCount { get; set; }
     }
 }

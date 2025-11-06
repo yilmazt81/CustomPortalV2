@@ -15,7 +15,7 @@ namespace CustomPortalV2.Core.Model.App
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> DefaultFormRuleId { get; set; }
+        public int? DefaultFormRuleId { get; set; }
          
         public virtual ICollection<UserRuleMenu> UserRuleMenu { get; set; }
     }

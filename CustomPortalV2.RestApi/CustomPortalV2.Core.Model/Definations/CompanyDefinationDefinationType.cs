@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.Definations
@@ -13,7 +13,7 @@ namespace CustomPortalV2.Core.Model.Definations
         public int Id { get; set; }
         [JsonIgnore]
         public int CompanyDefinationId { get; set; }
-        [JsonPropertyName("typeid")]
+        [JsonProperty("typeid")]
         public int DefinationTypeId { get; set; }
         [JsonIgnore]
         public virtual CompanyDefination CompanyDefination { get; set; }

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "CustomPortalV2.RestApi\\CustomPortalV2.RestApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "CustomPortalV2.OfficeAddIn\\CustomPortalV2.OfficeAddIn.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

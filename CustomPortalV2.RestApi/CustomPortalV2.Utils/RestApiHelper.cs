@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.Core.Model.FDefination;
+using CustomPortalV2.Model;
+using CustomPortalV2.Model.DTO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +15,28 @@ namespace CustomPortalV2.Utils
 {
     public class RestApiHelper
     {
-        private string apiEndPoint = "https://localhost:7232/ap'";
+        private string apiEndPoint = "https://localhost:7232";
+        private string token = string.Empty;
         HttpClient client = null;
 
+        public string Token
+        {
+            get
+            {
 
-        public RestApiHelper() {
+                return token;
+            }
+            set
+            {
+                token = value;
+
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            }
+        }
+
+
+        public RestApiHelper()
+        {
 
             client = new HttpClient();
             System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -27,9 +48,32 @@ namespace CustomPortalV2.Utils
 
         }
 
-        public void GetFormDefinationGroup(int formDefinationId)
+        public LoginReturn LoginUser(string username, string password, string companyCode)
         {
+            var url = apiEndPoint + "/api/Login";
+            var loginObj = new LoginRequest
+            {
+                UserName = username,
+                password = password,
+                CompanyCode = companyCode,
+            };
+            var result = PostRequest<LoginReturn, LoginRequest>(url, loginObj);
+            this.token = result.token;
 
+            return result;
+        }
+
+        public DefaultReturn<List<FormDefination>> GetFormDefination()
+        {
+            var url = apiEndPoint + "/api/FormDefination";
+            return GetRequest<DefaultReturn<List<FormDefination>>>(url);
+        }
+
+        public DefaultReturn<List<FormGroup>> GetFormDefinationGroup(int formDefinationId)
+        {
+            var url = apiEndPoint + $"/api/FormDefination/GetFormGroups?formDefinationId={formDefinationId}";
+
+            return GetRequest<DefaultReturn<List<FormGroup>>>(url);
         }
 
 
@@ -71,6 +115,27 @@ namespace CustomPortalV2.Utils
                 throw new Exception("Request Return Code : " + result.StatusCode);
 
             }
+        }
+
+        public DefaultReturn<List<FormDefinationField>> GetFormGroupDefinationField(int formGroupId)
+        {
+            var url = apiEndPoint + $"/api/FormDefination/GetGroupFields/{formGroupId}";
+
+            return GetRequest<DefaultReturn<List<FormDefinationField>>>(url);
+        }
+
+        public DefaultReturn<List<ComboBoxItem>> GetComboBoxItems(string tagName)
+        {
+            var url = apiEndPoint + $"/api/FormDefination/GetComboBoxItems/{tagName}";
+
+            return GetRequest<DefaultReturn<List<ComboBoxItem>>>(url);
+        }
+
+        public DefaultReturn<List<FormDefinationField>> GetFormDefinationAllField(int formdefinationId)
+        {
+            var url = apiEndPoint + $"/api/FormDefination/GetFormDefinationAllField/{formdefinationId}";
+
+            return GetRequest<DefaultReturn<List<FormDefinationField>>>(url);
         }
     }
 }

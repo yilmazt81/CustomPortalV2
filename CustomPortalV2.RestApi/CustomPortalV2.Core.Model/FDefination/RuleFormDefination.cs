@@ -12,7 +12,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int FormRuleId { get; set; }
         public int FormDefinationId { get; set; }
         public string FormName { get; set; }
-        public Nullable<int> FormDefinationFieldId { get; set; }
+        public int? FormDefinationFieldId { get; set; }
         public string TagName { get; set; }
         public string AttributeName { get; set; }
         public string AttributeValue { get; set; }

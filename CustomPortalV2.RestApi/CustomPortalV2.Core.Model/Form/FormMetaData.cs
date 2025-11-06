@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks; 
 
 namespace CustomPortalV2.Core.Model.Form
@@ -26,9 +26,9 @@ namespace CustomPortalV2.Core.Model.Form
         public int CreatedId { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<int> EditedId { get; set; }
+        public int? EditedId { get; set; }
         public string? EditedBy { get; set; }
-        public Nullable<System.DateTime> EditedDate { get; set; }
+        public System.DateTime? EditedDate { get; set; }
         public int CustomSectorId { get; set; }
         public string FormDefinationName { get; set; }
         public string BrancName { get; set; }
@@ -37,7 +37,7 @@ namespace CustomPortalV2.Core.Model.Form
         public bool Deleted { get; set; }
         public bool CopyDocument { get; set; }
         public bool DefaultForm { get; set; }
-        public Nullable<int> CustomWorkId { get; set; }
+        public int? CustomWorkId { get; set; }
 
         [JsonIgnore]
         public virtual FormDefination? FormDefination { get; set; }

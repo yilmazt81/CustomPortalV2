@@ -12,6 +12,6 @@ namespace CustomPortalV2.Core.Model.App
         public string Name { get; set; }
         public string Description { get; set; }
         public string Value { get; set; }
-        public Nullable<int> MainCompanyId { get; set; }
+        public int? MainCompanyId { get; set; }    
     }
 }

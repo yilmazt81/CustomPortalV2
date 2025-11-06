@@ -10,9 +10,9 @@ namespace CustomPortalV2.Core.Model.App
     {
         public int Id { get; set; }
         public int AppUserId { get; set; }
-        public Nullable<System.Guid> Token { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
+        public  System.Guid? Token { get; set; }
+        public System.DateTime? StartDate { get; set; }
+        public System.DateTime? EndDate { get; set; }
 
     }
 }

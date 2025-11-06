@@ -479,7 +479,7 @@ namespace CustomPortalV2.Business.Service
 
                 var formGroups = _formDefinationService.GetFormGroups(formdefinationId);
                 string templateFile = string.Empty;
-                using (WebClient webClient = new())
+                using (WebClient webClient = new WebClient())
                 {
                     var templateArray = webClient.DownloadData(formDefination.TemplatePath);
                     templateFile = System.Text.Encoding.Default.GetString(templateArray);
@@ -749,6 +749,25 @@ namespace CustomPortalV2.Business.Service
                     throw new Exception("DefinationNotFound");
                 }
                 defaultReturn.Data = _formDefinationService.GetCustomeFieldItems(customeField.Id).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                defaultReturn.SetException(ex);
+            }
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<FormDefinationField>> GetFormDefinationAddFields(int formdefinationId)
+        {
+            DefaultReturn<List<FormDefinationField>> defaultReturn = new DefaultReturn<List<FormDefinationField>>();
+
+            try
+            {
+
+                var formdefinationfields = _formDefinationService.GetFormDefinationFields(formdefinationId);
+                
+                defaultReturn.Data = formdefinationfields.ToList();
 
             }
             catch (Exception ex)

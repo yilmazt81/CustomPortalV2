@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
+using System.Text; 
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.FDefination
@@ -15,24 +15,24 @@ namespace CustomPortalV2.Core.Model.FDefination
         }
 
         public int Id { get; set; }
-        public Nullable<int> FormAttachmentTypeId { get; set; }
-        public Nullable<int> FormDefinationId { get; set; }
+        public int? FormAttachmentTypeId { get; set; }
+        public int? FormDefinationId { get; set; }
         public int CustomeFieldId { get; set; }
-        public Nullable<int> TableBorder { get; set; }
+        public int? TableBorder { get; set; }
         public string ElementType { get; set; }
         public  bool Deleted { get; set; }
         public string FormDefinationName { get; set; }
         public string FormAttachmentName { get; set; }
-        public Nullable<int> FormDefinationAttachmentId { get; set; }
+        public int? FormDefinationAttachmentId { get; set; }
         public string FormDefinationAttachmentName { get; set; }
-        public Nullable<int> HeaderHeightRuleValue { get; set; }
-        public Nullable<int> RowHeightRuleValue { get; set; }
-        public Nullable<int> RowHeight { get; set; }
-        public Nullable<int> HeaderHeight { get; set; }
-        public Nullable<int> FontSize { get; set; }
-        public Nullable<bool> Bold { get; set; }
-        public Nullable<bool> Italic { get; set; }
-        public Nullable<int> FormVersionId { get; set; }
+        public int? HeaderHeightRuleValue { get; set; }
+        public int? RowHeightRuleValue { get; set; }
+        public int? RowHeight { get; set; }
+        public int? HeaderHeight { get; set; }
+        public int? FontSize { get; set; }
+        public  bool? Bold { get; set; }
+        public bool? Italic { get; set; }
+        public int? FormVersionId { get; set; }
 
         public int MainCompanyId { get; set; }
         [JsonIgnore]

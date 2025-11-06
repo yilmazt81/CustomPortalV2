@@ -17,10 +17,10 @@ namespace CustomPortalV2.Core.Model.FDefination
 
         public int Id { get; set; }
         public string RuleName { get; set; }
-        public Nullable<int> FormDefinationFieldId { get; set; }
+        public int? FormDefinationFieldId { get; set; }
         public string AttributeName { get; set; }
         public string AttributeValue { get; set; }
-        public Nullable<int> FormDefinationId { get; set; }
+        public int? FormDefinationId { get; set; }
         public string CheckBoxValue { get; set; }
          
         public virtual ICollection<User> AppUser { get; set; } 

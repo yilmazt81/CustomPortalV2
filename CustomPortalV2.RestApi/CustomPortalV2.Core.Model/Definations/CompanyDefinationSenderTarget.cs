@@ -11,6 +11,6 @@ namespace CustomPortalV2.Core.Model.Definations
         public int Id { get; set; }
         public int SenderCompanyId { get; set; }
         public int TargetCompanyId { get; set; }
-        public Nullable<int> MainCompanyId { get; set; }
+        public int? MainCompanyId { get; set; }
     }
 }

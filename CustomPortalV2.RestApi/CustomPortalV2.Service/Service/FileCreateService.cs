@@ -5,6 +5,7 @@ using CustomPortalV2.TemplateProcess;
 using Firebase.Storage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -135,11 +136,11 @@ namespace CustomPortalV2.Business.Service
                 }
 
                 string newFileName = Path.Combine(tempFolder, Guid.NewGuid().ToString() + Path.GetExtension(formVersion.FileName));
-                using (WebClient webClient = new WebClient())
+                /*using (WebClient webClient = new  WebClient())
                 {
                     webClient.DownloadFile(formVersion.FilePath, newFileName);
 
-                }
+                }*/
                 var formDefinationFields = _formDefinationRepository.GetAllFields(formData.FormDefinationId).ToArray();
                 if (Path.GetExtension(formVersion.FileName) == ".docx")
                 {

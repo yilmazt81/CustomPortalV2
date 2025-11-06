@@ -12,18 +12,18 @@ namespace CustomPortalV2.Business.Concrete
 {
     public interface IUserService
     {
-        enumLoginReturn Login(string clientIp, string companyCode,string username, string password,ref User? user);
+        enumLoginReturn Login(string clientIp, string companyCode, string username, string password, ref User user);
         DefaultReturn<User> UpdateUser(User user);
-        DefaultReturn< List<User>> GetUsers(int companyId,int branchId);
+        DefaultReturn<List<User>> GetUsers(int companyId, int branchId);
         DefaultReturn<User> GetById(int companyId, int id);
-        User? GetUserByUserName(string companyCode, string userName);
+        User GetUserByUserName(string companyCode, string userName);
 
         //bool DeleteUser(User user);
         DefaultReturn<bool> DeleteUser(int companyId, int branchId, int id);
 
-        DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId,int branchId);
+        DefaultReturn<List<UserRuleMenuDTO>> GetUserManu(int userId, int branchId);
 
-        DefaultReturn<List<UserRule>>  GetUserRoles(int companyId, int userId);
+        DefaultReturn<List<UserRule>> GetUserRoles(int companyId, int userId);
 
         DefaultReturn<List<BranchPackage>> GetBranchPackage(int companyId, int userId);
 

@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\BaseReturn.cs" />
+    <Compile Include="DTO\DefaultReturn.cs" />
+    <Compile Include="DTO\LoginRequest.cs" />
+    <Compile Include="DTO\LoginReturn.cs" />
+    <Compile Include="FormDefination.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

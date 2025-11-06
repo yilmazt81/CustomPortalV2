@@ -13,7 +13,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string PDFFieldName { get; set; }
         public string TagName { get; set; }
         public string CalculateField { get; set; }
-        public Nullable<int> FormDefinationId { get; set; }
-        public Nullable<int> FontSize { get; set; }
+        public int? FormDefinationId { get; set; }
+        public int? FontSize { get; set; }
     }
 }

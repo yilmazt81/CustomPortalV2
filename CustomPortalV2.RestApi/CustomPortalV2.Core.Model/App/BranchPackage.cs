@@ -16,8 +16,9 @@ namespace CustomPortalV2.Core.Model.App
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> MonthlyRecordCount { get; set; }
-         
+        public int? RecordCount { get; set; }
+
+        public int MonthlyRecordCount { get; set; }
         public virtual ICollection<Branch> CompanyBranch { get; set; }
     }
 }

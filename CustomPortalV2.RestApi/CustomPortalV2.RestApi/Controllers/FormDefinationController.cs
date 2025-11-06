@@ -25,16 +25,15 @@ namespace CustomPortalV2.RestApi.Controllers
         IFormDefinationService _formDefinationService = null;
         IMemoryCache _memoryCache;
         IFirebaseStorage _firebaseStorage;
-        [Obsolete]
-        Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+
         public FormDefinationController(IFormDefinationService formDefinationService,
             IMemoryCache memoryCache,
-            IFirebaseStorage firebaseStorage, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+            IFirebaseStorage firebaseStorage)
         {
             _formDefinationService = formDefinationService;
             _memoryCache = memoryCache;
             _firebaseStorage = firebaseStorage;
-            _hostingEnvironment = hostingEnvironment;
+          //  _hostingEnvironment = hostingEnvironment;
         }
         [HttpGet]
         public IActionResult Get()
@@ -475,11 +474,12 @@ namespace CustomPortalV2.RestApi.Controllers
 
                     if (extention == ".docx")
                     {
-                        string destPath = _hostingEnvironment.ContentRootPath + @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
+                        /*string destPath = _hostingEnvironment.ContentRootPath + @"\TempFolder\" + Guid.NewGuid().ToString("N") + extention;
                         using (var fileStreamLocal = new FileStream(destPath, FileMode.Create, FileAccess.Write))
                         {
                             fileStream.CopyTo(fileStreamLocal);
                         }
+                      
 
                         using (SoftCreatorWord softCreatorWord = new SoftCreatorWord())
                         {
@@ -489,6 +489,7 @@ namespace CustomPortalV2.RestApi.Controllers
                         var newStream = System.IO.File.OpenRead(destPath);
 
                         formVersion.FilePath = await _firebaseStorage.SaveFileToStorageAsync("Attachment", Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName), newStream);
+                          */
                     }
                     else
                     {
@@ -940,7 +941,16 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(saveReturn);
         }
 
+        [HttpGet("GetFormDefinationAllField/{formdefinationid}")]
+        public IActionResult GetFormDefinationAllField(int formdefinationid)
+        {
+             
 
+            var defaultReturn = _formDefinationService.GetFormDefinationFields(formdefinationid);
+
+          
+            return Ok(defaultReturn);
+        }
 
 
 

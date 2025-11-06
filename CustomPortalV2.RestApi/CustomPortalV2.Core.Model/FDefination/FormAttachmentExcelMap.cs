@@ -16,6 +16,6 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string ExcelCell { get; set; }
         public string WorkSheetName { get; set; }
         public string SumCell { get; set; }
-        public Nullable<int> FormGroupId { get; set; }
+        public int? FormGroupId { get; set; }
     }
 }

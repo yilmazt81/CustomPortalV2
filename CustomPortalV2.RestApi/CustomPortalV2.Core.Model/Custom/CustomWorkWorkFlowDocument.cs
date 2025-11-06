@@ -10,16 +10,16 @@ namespace CustomPortalV2.Core.Model.Custom
     {
         public int Id { get; set; }
         public int CustomWorkWorkFlowId { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public System.DateTime? CreatedDate { get; set; }
         public int CustomWorkDocumentId { get; set; }
         public string DocumentName { get; set; }
         public string FileExtention { get; set; }
-        public Nullable<System.DateTime> OpenDate { get; set; }
+        public System.DateTime? OpenDate { get; set; }
         public string OpenUser { get; set; }
-        public Nullable<bool> IsOpenForm { get; set; }
-        public Nullable<System.DateTime> EditDate { get; set; }
+        public bool?IsOpenForm { get; set; }
+        public System.DateTime? EditDate { get; set; }
         public string EditUser { get; set; }
-        public Nullable<bool> IsEditForm { get; set; }
+        public bool?IsEditForm { get; set; }
 
         public virtual CustomWorkWorkFlow CustomWorkWorkFlow { get; set; }
     }

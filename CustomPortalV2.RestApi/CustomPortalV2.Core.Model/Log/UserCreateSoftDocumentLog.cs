@@ -10,10 +10,10 @@ namespace CustomPortalV2.Core.Model.Log
     {
         public int Id { get; set; }
         public int FormDefinationId { get; set; }
-        public Nullable<int> FormVersionId { get; set; }
-        public Nullable<int> FormAttachmentTypeId { get; set; }
-        public Nullable<System.DateTime> LogDate { get; set; }
-        public Nullable<int> AppUserId { get; set; }
+        public int? FormVersionId { get; set; }
+        public int? FormAttachmentTypeId { get; set; }
+        public System.DateTime? LogDate { get; set; }
+        public int? AppUserId { get; set; }
         public int BranchId { get; set; }
     }
 }

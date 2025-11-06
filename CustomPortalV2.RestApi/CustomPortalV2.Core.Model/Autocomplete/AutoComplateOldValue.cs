@@ -13,6 +13,6 @@ namespace CustomPortalV2.Core.Model.Autocomplete
         public string FieldValue { get; set; }
         public string FieldValueUpper { get; set; }
         public System.DateTime LastUseDate { get; set; }
-        public Nullable<bool> CustomeField { get; set; }
+        public bool? CustomeField { get; set; }
     }
 }

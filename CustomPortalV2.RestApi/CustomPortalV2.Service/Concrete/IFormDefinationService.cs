@@ -19,6 +19,7 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<FormVersion> Save(FormVersion formDefination);
         DefaultReturn<ComboBoxItem> Save(ComboBoxItem comboBoxItem);
         DefaultReturn<List<FormDefinationField>> GetFormDefinationFields(int formgroupId);
+        DefaultReturn<List<FormDefinationField>> GetFormDefinationAddFields(int formdefinationId);
         DefaultReturn<FormDefinationField> GetFormDefinationField(int id);
 
         DefaultReturn<List<FormVersion>> GetDefinationFormVersions(int formdefinationId);

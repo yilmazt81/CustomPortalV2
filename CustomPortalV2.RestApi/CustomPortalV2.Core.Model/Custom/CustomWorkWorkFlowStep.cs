@@ -10,15 +10,15 @@ namespace CustomPortalV2.Core.Model.Custom
     {
         public int Id { get; set; }
         public int CustomWorkWorkFlowId { get; set; }
-        public Nullable<int> AppUserId { get; set; }
-        public Nullable<int> CompanyBranchId { get; set; }
+        public int? AppUserId { get; set; }
+        public int? CompanyBranchId { get; set; }
         public string Name { get; set; }
-        public Nullable<int> FlowStepId { get; set; }
-        public Nullable<byte> StepStateId { get; set; }
+        public int? FlowStepId { get; set; }
+        public byte? StepStateId { get; set; }
         public string UserNote { get; set; }
-        public Nullable<System.DateTime> EditedDate { get; set; }
+        public System.DateTime? EditedDate { get; set; }
         public string EditedUser { get; set; }
-        public Nullable<int> EditedUserId { get; set; }
+        public int? EditedUserId { get; set; }
 
         public virtual CustomWorkWorkFlow CustomWorkWorkFlow { get; set; }
     }

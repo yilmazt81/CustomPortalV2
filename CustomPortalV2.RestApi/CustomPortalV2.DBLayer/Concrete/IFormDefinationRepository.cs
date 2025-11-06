@@ -40,6 +40,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         bool IsExistFormDefinationField(int formDefinationId, string tagName);
 
         FormDefinationField GetFormDefinationField(int id);
+        IEnumerable<FormDefinationField> GetFormDefinationFields(int formdefinationId);
 
         IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId, string fieldTag);
         IEnumerable<ComboBoxItem> GetComboBoxItems(int mainCompanyId);

@@ -12,7 +12,7 @@ namespace CustomPortalV2.Core.Model.App
         public int UserRuleId { get; set; }
         public string MenuName { get; set; }
         public string MenuAdress { get; set; }
-        public Nullable<int> AppMenuId { get; set; }
+        public int? AppMenuId { get; set; }
         public string IconClass { get; set; }
 
         public virtual UserRule UserRule { get; set; }
