@@ -327,7 +327,11 @@ namespace CustomPortalV2.OfficeAddIn
 
         private void buttonDownloadServer_Click(object sender, RibbonControlEventArgs e)
         {
+            FormSelectTemplate formSelectTemplate= new FormSelectTemplate();
+            if (formSelectTemplate.ShowDialog() == DialogResult.OK)
+            {
 
+            }
         }
     }
 }

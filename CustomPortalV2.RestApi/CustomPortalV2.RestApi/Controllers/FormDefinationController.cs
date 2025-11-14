@@ -536,6 +536,11 @@ namespace CustomPortalV2.RestApi.Controllers
 
 
             };
+            if (formDefination.Id == 0)
+            {
+                formDefination.CreatedId = User.GetUserId();
+                formDefination.CreatedBy = User.GetUserFullName();
+            }
             key = $"FormDefination{formDefination.Id}";
             _memoryCache.Remove(key);
 

@@ -21,6 +21,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormDefination Add(FormDefination formDefination)
         {
+            formDefination.CreatedDate = DateTime.Now;
             _dbContext.FormDefination.Add(formDefination);
 
             _dbContext.SaveChanges();

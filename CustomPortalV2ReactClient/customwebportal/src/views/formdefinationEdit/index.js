@@ -74,7 +74,7 @@ const FormDefinationEdit = () => {
 
     const [saveError, setSaveError] = useState(null);
     const [deleteError, setDeleError] = useState(null);
-
+/*
     useEffect(async () => {
 
         const id = searchParams.get('formdefinationId');
@@ -89,7 +89,37 @@ const FormDefinationEdit = () => {
         }
 
     }, []);
+    */
+useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
 
+    const load = async () => {
+        try {
+            const id = searchParams.get("formdefinationId");
+
+            // Paralel yükleme (daha hızlı)
+            await Promise.all([
+                LoadFieldTypes({ signal }),
+                LoadFontTypes({ signal }),
+                GetDefination(id, { signal }),
+                GetGroups(id, { signal })
+            ]);
+
+        } catch (err) {
+            if (err.name !== "AbortError") {
+                console.error("Hata:", err);
+            }
+        }
+    };
+
+    load();
+
+    return () => {
+        console.log("Unmount → fetch iptal edildi");
+        controller.abort();   // cleanup
+    };
+}, []);
 
     function SetLocationAdress(formdefination) {
 

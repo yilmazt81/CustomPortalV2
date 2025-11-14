@@ -1,9 +1,9 @@
 ﻿using CustomPortalV2.Business.Concrete;
 using Firebase.Auth;
-using Firebase.Storage; 
-using System; 
-using System.IO; 
-using System.Threading.Tasks; 
+using Firebase.Storage;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CustomPortalV2.Business.Service
 {
@@ -17,8 +17,7 @@ namespace CustomPortalV2.Business.Service
 
 
 
-            _storage = new FirebaseStorage(
-           $"{projectId}.appspot.com",
+            _storage = new FirebaseStorage($"{projectId}.firebasestorage.app",
            new FirebaseStorageOptions
            {
                AuthTokenAsyncFactory = async () =>
@@ -26,12 +25,16 @@ namespace CustomPortalV2.Business.Service
                         var authService = new FirebaseService();
                         var auth = await authService.LoginUserAsync("api@gmail.com", "49999f9f");
                         return auth.FirebaseToken;
-                    }
+                    },
            }
             );
+            //gs://digiform-e2926.firebasestorage.app
+            var bucket = _storage.StorageBucket;//= "digiform-e2926.firebasestorage.app";
+
+
         }
 
-       
+
 
         public async Task<string> SaveFileToStorageAsync(string folder, string fileName, Stream fileStream)
         {
@@ -51,7 +54,7 @@ namespace CustomPortalV2.Business.Service
             }
         }
 
-      
+
 
         async Task<string> IFirebaseStorage.DeleteFileToStorageAsync(string folder, string fileName)
         {
