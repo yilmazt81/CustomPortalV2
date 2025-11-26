@@ -75,8 +75,7 @@ const GroupEditModal = ({ visiblep, formdefinationGroupp, setFormData }) => {
 
             try {
                 setSaveError(null);
-                setsaveStart(true);
-                debugger;
+                setsaveStart(true); 
                 var savedefinationResult = await SaveFormGroup(formdefinationGroup);
 
                 if (savedefinationResult.returnCode === 1) {

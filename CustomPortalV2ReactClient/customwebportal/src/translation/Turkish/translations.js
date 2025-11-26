@@ -1,3 +1,5 @@
+import { CloneForm } from "src/lib/formMetaDataApi";
+
 export const TRANSLATIONS_TR = {
     login: "Giriş",
     CompanyCode: 'Firma Kodu',
@@ -213,6 +215,11 @@ export const TRANSLATIONS_TR = {
     AutoComplateCustomeFieldDeleteMessage:"Silmek istediğinizden emin misiniz? ",
     WorkFlowDefinationTitle:"İş Akışı güncelle",
     publicDefiation:"Herkese Açık Tanım",
+    AddNewFormGroup:"Yeni Group Ekle",
+    CloneNewFormGroup:"Farklı Türden Kopyala",
+    CloneFormGroupModalTitle:"Form Group Kopyala",
+    Copy:" Kopyala ",
+
 
 
 

@@ -83,7 +83,7 @@ const GridcolumnFormFields = (OptionClick, CheckItemValueChange) => {
         if (params.row.controlType == 'ComboBox' || params.row.controlType=='CheckBox' || params.row.controlType=='RadioBox')  {
           statusIcon = <IconButton color="secondary" onClick={() => OptionClick('AddComboItem', params.row.id)} > <AddCircleIcon /></IconButton>;
         } else if (params.row.autoComplate === true) {
-          debugger;
+       
           statusIcon =<Link  to={{
             pathname: '/formdefinationsAComp',
             search: `?formfieldid=${params.row.id}`,

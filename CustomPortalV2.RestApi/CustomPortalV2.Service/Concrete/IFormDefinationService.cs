@@ -72,5 +72,10 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<CustomeFieldItem> SaveCustomeFieldItem(CustomeFieldItem customeFielditem);
 
 
+        DefaultReturn<List<FormGroup>> CloneFormGroup(int[] sourceformGroupId, int targetDefinationId, int companyId, int userId);
+
+        DefaultReturn<List<string>> GetDistinctFieldNames(int mainCompanyId);
+
+
     }
 }

@@ -105,6 +105,13 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         CustomeFieldItem Update(CustomeFieldItem customeFieldItem);
 
 
+        FormGroup CloneFormGroup(FormGroup sourceFormGroup, FormDefination targetFormDefination);
+
+        FormDefination GetFormDefination(int id);
+
+        IEnumerable<string> GetDistinctFieldNames(int mainCompanyId);
+
+
 
     }
 }

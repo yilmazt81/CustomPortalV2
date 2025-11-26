@@ -44,6 +44,7 @@ import {
     GetFormDefinationField
 } from '../../lib/formdef';
 import { UrlContext } from 'src/lib/URLContext';
+import CloneFormGroupModal from './cloneFormGroupModal';
 
 
 const FormDefinationEdit = () => {
@@ -59,6 +60,7 @@ const FormDefinationEdit = () => {
 
     const [visiblemodalEditField, setvisiblemodalEditField] = useState(false);
     const [visibleEditComboItems, setvisibleEditComboItems] = useState(false);
+    const [visibleCloneModal, setvisibleCloneModal] = useState(false);
 
 
     const [formdefinationEdit, setFormDefinationEdit] = useState({ id: 0, formName: "" });
@@ -68,58 +70,58 @@ const FormDefinationEdit = () => {
     const [fontTypes, setfontTypes] = useState([]);
     const [formdefinationGroup, setformdefinationGroup] = useState(null);
     const [formdefinationFieldEdit, setformdefinationFieldEdit] = useState(null);
-
+    const [currentFormdefinationType, setcurrentFormdefinationType] = useState(null);
 
     const [deleteStart, setDeleteStart] = useState(false);
 
     const [saveError, setSaveError] = useState(null);
     const [deleteError, setDeleError] = useState(null);
-/*
-    useEffect(async () => {
+    /*
+        useEffect(async () => {
+    
+            const id = searchParams.get('formdefinationId');
+    
+            LoadFieldTypes();
+            LoadFontTypes();
+            GetDefination(id);
+            GetGroups(id); 
+    
+            return () => {
+                console.log("unmount");
+            }
+    
+        }, []);
+        */
+    useEffect(() => {
+        const controller = new AbortController();
+        const { signal } = controller;
 
-        const id = searchParams.get('formdefinationId');
+        const load = async () => {
+            try {
+                const id = searchParams.get("formdefinationId");
 
-        LoadFieldTypes();
-        LoadFontTypes();
-        GetDefination(id);
-        GetGroups(id); 
+                // Paralel yükleme (daha hızlı)
+                await Promise.all([
+                    LoadFieldTypes({ signal }),
+                    LoadFontTypes({ signal }),
+                    GetDefination(id, { signal }),
+                    GetGroups(id, { signal })
+                ]);
+
+            } catch (err) {
+                if (err.name !== "AbortError") {
+                    console.error("Hata:", err);
+                }
+            }
+        };
+
+        load();
 
         return () => {
-            console.log("unmount");
-        }
-
+            console.log("Unmount → fetch iptal edildi");
+            controller.abort();   // cleanup
+        };
     }, []);
-    */
-useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
-
-    const load = async () => {
-        try {
-            const id = searchParams.get("formdefinationId");
-
-            // Paralel yükleme (daha hızlı)
-            await Promise.all([
-                LoadFieldTypes({ signal }),
-                LoadFontTypes({ signal }),
-                GetDefination(id, { signal }),
-                GetGroups(id, { signal })
-            ]);
-
-        } catch (err) {
-            if (err.name !== "AbortError") {
-                console.error("Hata:", err);
-            }
-        }
-    };
-
-    load();
-
-    return () => {
-        console.log("Unmount → fetch iptal edildi");
-        controller.abort();   // cleanup
-    };
-}, []);
 
     function SetLocationAdress(formdefination) {
 
@@ -128,7 +130,7 @@ useEffect(() => {
         dispatch({
             type: 'Add',
             payload: { pathname: "#/FormDefinationType", name: t("FormDefinations"), active: true }
-        });  
+        });
         dispatch({
             type: 'Add',
             payload: { pathname: "/FormDefinationTypeEdit/formdefinationId=", name: formdefination?.formName, active: false }
@@ -166,9 +168,10 @@ useEffect(() => {
 
             if (getdefinationReturn.returnCode === 1) {
                 setFormDefinationEdit(getdefinationReturn.data);
-               
+
+                setcurrentFormdefinationType(getdefinationReturn.data);
                 SetLocationAdress(getdefinationReturn.data);
- 
+
                 // return getdefinationReturn.data;
                 //setVisible(true);
             } else {
@@ -187,6 +190,7 @@ useEffect(() => {
     async function GetGroups(formdefinationId) {
 
         try {
+
             var getgroupsReturn = await GetFormGroups(formdefinationId);
 
             if (getgroupsReturn.returnCode === 1) {
@@ -207,6 +211,7 @@ useEffect(() => {
             setSaveError(null);
             setvisiblemodalGroup(false);
             setvisiblemodalGroupDelete(false);
+
             var editformdefination = await GetFormGroup(id);
 
             if (editformdefination.returnCode === 1) {
@@ -235,7 +240,7 @@ useEffect(() => {
             var editformdefination = await CreateNewFormDefinationGroup(formdefinationEdit.id);
 
             if (editformdefination.returnCode === 1) {
-                setformdefinationGroup(editformdefination.data); 
+                setformdefinationGroup(editformdefination.data);
                 setvisiblemodalGroup(true);
             } else {
                 setSaveError(editformdefination.returnMessage);
@@ -247,6 +252,10 @@ useEffect(() => {
         }
     }
 
+
+    async function CloneGroupDefination() {
+        setvisibleCloneModal(true);
+    }
 
     async function NewGroupFieldDefination() {
         try {
@@ -319,11 +328,21 @@ useEffect(() => {
 
     async function GridGroupRowChange(e) {
 
-        var editformdefination = await GetFormGroup(e);
+        if (e.length > 0) {
+            try {
+                var editformdefination = await GetFormGroup(e);
 
-        if (editformdefination.returnCode === 1) {
-            setformdefinationGroup(editformdefination.data);
+                if (editformdefination.returnCode === 1) {
+                    setformdefinationGroup(editformdefination.data);
+                }
+
+            } catch (error) {
+                debugger;
+                setSaveError(error.message);
+
+            }
         }
+
     }
 
 
@@ -373,6 +392,11 @@ useEffect(() => {
 
     const gridcolumnFormFields = GridcolumnFormFields(optionClickField, CheckItemValueChange);
 
+    const CloseCloneModal = (data) => {
+        setvisibleCloneModal(false);
+        setformdefinationGroups(data);
+    }
+
     return (
         <>
             <CCard className="mb-4">
@@ -381,7 +405,9 @@ useEffect(() => {
                         <CCol>
                             <CButtonGroup role="group">
                                 <CButton color="primary" shape='rounded-3'
-                                    onClick={() => NewGroupDefination()} > {t("AddNewFormDefination")}</CButton>
+                                    onClick={() => NewGroupDefination()} > {t("AddNewFormGroup")}</CButton>
+                                <CButton color="primary" shape='rounded-3'
+                                    onClick={() => CloneGroupDefination()} > {t("CloneNewFormGroup")}</CButton>
 
                             </CButtonGroup>
                         </CCol>
@@ -451,14 +477,21 @@ useEffect(() => {
             ></ComboBoxItemEditModal>
 
             <DeleteModal visiblep={visiblemodalGroupDelete}
-                OnClickOk={(data) => DeleteGroupDefination()}
+                OnClickOk={() => DeleteGroupDefination()}
+                OnClickCancel={() => setvisiblemodalGroupDelete(false)}
                 title={t("GroupDelete")}
                 message={formdefinationGroup?.name}
                 message2={t("GroupDeleteMessage")}
                 saveError={deleteError}
                 saveStart={deleteStart}></DeleteModal>
 
+            <CloneFormGroupModal
+                visiblep={visibleCloneModal}
+                formdefinationP={currentFormdefinationType}
+                setClosed={() => setvisibleCloneModal(false)}
+                setFormData={(data) => CloseCloneModal(data)}
 
+            ></CloneFormGroupModal>
 
         </>
     )

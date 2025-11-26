@@ -33,7 +33,7 @@ namespace CustomPortalV2.RestApi.Controllers
             _formDefinationService = formDefinationService;
             _memoryCache = memoryCache;
             _firebaseStorage = firebaseStorage;
-          //  _hostingEnvironment = hostingEnvironment;
+            //  _hostingEnvironment = hostingEnvironment;
         }
         [HttpGet]
         public IActionResult Get()
@@ -949,16 +949,38 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("GetFormDefinationAllField/{formdefinationid}")]
         public IActionResult GetFormDefinationAllField(int formdefinationid)
         {
-             
+
 
             var defaultReturn = _formDefinationService.GetFormDefinationFields(formdefinationid);
 
-          
+
             return Ok(defaultReturn);
         }
 
 
+        [HttpPost("CloneFormGroup")]
+        public IActionResult CloneFormGroup(CloneFormGroupRequest cloneFormGroupRequest)
+        {
+            string key = $"FormDefinationGroups{cloneFormGroupRequest.targetFormDefinationId}";
+            _memoryCache.Remove(key);
 
+            key = $"FormDefinationGroupDTO{cloneFormGroupRequest.targetFormDefinationId}";
+            _memoryCache.Remove(key);
+
+            var defaultReturn = _formDefinationService.CloneFormGroup(cloneFormGroupRequest.FormGroupList, cloneFormGroupRequest.targetFormDefinationId, User.GetCompanyId(), User.GetUserId());
+
+            return Ok(defaultReturn);
+        }
+
+        [HttpGet("GetUniqueFieldNames")]
+        public IActionResult GetUniqueFieldNames()
+        {
+
+            var fieldNames= _formDefinationService.GetDistinctFieldNames(User.GetCompanyId());
+
+            return Ok(fieldNames);
+
+        }
     }
 
 }

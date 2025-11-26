@@ -2,6 +2,7 @@
 using CustomPortalV2.Core.Model.Autocomplete;
 using CustomPortalV2.Core.Model.FDefination;
 using CustomPortalV2.DataAccessLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,7 +133,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbDefination.CustomSectorName = formDefination.CustomSectorName;
             dbDefination.Deleted = formDefination.Deleted;
             dbDefination.Deployed = formDefination.Deployed;
-            dbDefination.PublicDefiation=formDefination.PublicDefiation;
+            dbDefination.PublicDefiation = formDefination.PublicDefiation;
             if (!string.IsNullOrEmpty(formDefination.TemplatePath))
             {
                 dbDefination.TemplatePath = formDefination.TemplatePath;
@@ -486,7 +487,113 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public IEnumerable<FormDefinationField> GetFormDefinationFields(int formdefinationId)
         {
-            return _dbContext.FormDefinationField.Where(s => s.FormDefinationId == formdefinationId && !s.Deleted).ToList().ToList();    
+            return _dbContext.FormDefinationField.Where(s => s.FormDefinationId == formdefinationId && !s.Deleted).ToList().ToList();
+        }
+
+        public FormGroup CloneFormGroup(FormGroup sourceFormGroup, FormDefination targetFormDefination)
+        {
+            var newFormGroup = new FormGroup()
+            {
+                AllowEditCustomer = sourceFormGroup.AllowEditCustomer,
+                FormDefinationId = targetFormDefination.Id,
+                FormNumber = sourceFormGroup.FormNumber,
+                GroupTag = sourceFormGroup.GroupTag,
+                Name = sourceFormGroup.Name,
+                OrderNumber = sourceFormGroup.OrderNumber,
+            };
+            var formgroupFields = GetFormGroupFields(sourceFormGroup.Id);
+
+            List<AutocompleteField> autocompleteFields = new List<AutocompleteField>();
+
+
+            _dbContext.FormGroup.Add(newFormGroup);
+            _dbContext.SaveChanges();
+            foreach (var field in formgroupFields)
+            {
+
+
+                var autocompleteField = GetAutoComplateField(field.Id);
+
+                var newField = new FormDefinationField()
+                {
+                    FontSize = field.FontSize,
+                    FormGroupId = newFormGroup.Id,
+                    FormDefinationId = targetFormDefination.Id,
+                    FontFamily = field.FontFamily,
+                    FieldCaption = field.FieldCaption,
+                    Italic = field.Italic,
+                    Mandatory = field.Mandatory,
+                    DefaultProp = field.DefaultProp,
+                    ControlType = field.ControlType,
+                    CellName = field.CellName,
+                    OrderNumber = field.OrderNumber,
+                    TranslateLanguage = field.TranslateLanguage,
+                    TagName = field.TagName,
+                    AutoComlateType = field.AutoComlateType,
+                    AutoComplate = field.AutoComplate,
+                    Bold = field.Bold,
+
+                };
+
+                _dbContext.FormDefinationField.Add(newField);
+                _dbContext.SaveChanges();
+                if (autocompleteField != null)
+                {
+                    var newautoComplate = new AutocompleteField()
+                    {
+                        ComplateObject = autocompleteField.ComplateObject,
+                        FieldName = autocompleteField.FieldName,
+                        FilterValue = autocompleteField.FilterValue,
+                        RelationalFieldName = autocompleteField.RelationalFieldName,
+                        FormDefinationFieldId = newField.Id
+                    };
+
+                    _dbContext.AutocompleteField.Add(newautoComplate);
+                    _dbContext.SaveChanges();
+
+                    var autoComlateMaps = GetAutoComplateFieldMaps(field.Id);
+
+                    var items = autoComlateMaps.Select(s => new AutocompleteFieldMap()
+                    {
+                        FieldCaption = s.FieldCaption,
+                        FormDefinationFieldId = newField.Id,
+                        FormGroupId = newFormGroup.Id,
+                        PropertyValue1 = s.PropertyValue1,
+                        PropertyValue2 = s.PropertyValue2,
+                        PropertyValue3 = s.PropertyValue3,
+                        TagName = s.TagName
+                    }).ToList();
+
+                    _dbContext.AutocompleteFieldMap.AddRange(items);
+                    _dbContext.SaveChanges();
+                }
+            }
+
+
+
+            return newFormGroup;
+
+        }
+
+        public FormDefination GetFormDefination(int id)
+        {
+            return _dbContext.FormDefination.Single(s => s.Id == id);
+        }
+
+        public IEnumerable<string> GetDistinctFieldNames(int mainCompanyId)
+        {
+
+            var result = _dbContext.FormDefination
+                .Join(_dbContext.FormDefinationField,
+                        c => c.Id,
+                        o => o.FormDefinationId,
+                        (c, o) => new { c, o })
+                .Where(x => x.c.MainCompanyId == mainCompanyId & !x.c.Deleted && !x.o.Deleted)
+                .Select(x => x.o.TagName)
+                .Distinct()
+                .ToList();
+
+            return result;
         }
     }
 }

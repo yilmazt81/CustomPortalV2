@@ -14,16 +14,19 @@ import {
     CFormInput,
     CFormSwitch,
     CFormSelect,
-    CForm
+    CForm,
+    CListGroup,
+    CListGroupItem
 
 } from '@coreui/react'
 
-import { SaveFormDefinationField } from '../../lib/formdef';
+import { SaveFormDefinationField, GetUniqueFieldNames } from '../../lib/formdef';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 
 
 import ProcessAnimation from "../../content/animation/Process.json";
+import CoreUiAutoComplete from '../../components/CoreUiAutoComplete';
 
 
 import { useTranslation } from "react-i18next";
@@ -37,17 +40,19 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
 
     const [saveError, setSaveError] = useState(null);
     const [fieldTypes, setfieldTypes] = useState([]);
+    const [uniqueTagNames, setuniqueTagNames] = useState([]);
     const [fontTypes, setfontTypes] = useState([]);
 
     const [formgroup, setformGroup] = useState(null);
     const [saveStart, setsaveStart] = useState(false);
     const [validated, setValidated] = useState(false)
-    const [canSaveForm,setCanSaveForm]=useState(false);
+    const [canSaveForm, setCanSaveForm] = useState(false);
 
     const { t } = useTranslation();
 
     function handleChange(event) {
         const { name, value } = event.target;
+
         setValidated(false);
         setformdefinationField({ ...formdefinationField, [name]: value });
 
@@ -59,24 +64,29 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
         newValue = !newValue;
 
         setformdefinationField({ ...formdefinationField, [name]: newValue });
+    }
 
+    async function LoaduniqueFormName() {
+        var uniqueNamesResult = await GetUniqueFieldNames();
+        if (uniqueNamesResult.returnCode === 1) {
+            setuniqueTagNames(uniqueNamesResult.data);
+        }
     }
 
     async function ClosedClick() {
         setvisible(false);
     }
 
-
-
     useEffect(() => {
         setSaveError(null);
         setvisible(visiblep);
+        LoaduniqueFormName();
         setformdefinationField(formDefinationFieldp);
         setfieldTypes(fieldTypesp);
         setformGroup(formGroupp);
-        setfontTypes(fontTypesp); 
+        setfontTypes(fontTypesp);
         console.log(formdefinationField);
-  
+
         //LoadBranchList();
 
     }, [visiblep, formDefinationFieldp, fieldTypesp])
@@ -85,7 +95,7 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
         const form = event.currentTarget
         setCanSaveForm(form.checkValidity())
         if (canSaveForm === false) {
-          
+
             event.preventDefault()
             event.stopPropagation()
         }
@@ -100,16 +110,14 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
                 setSaveError(null);
                 setsaveStart(true);
                 debugger;
-                 var savedefinationResult = await SaveFormDefinationField(formdefinationField);
- 
-                 if (savedefinationResult.returnCode === 1) {
-                     setFormData(savedefinationResult.data);
-                     setvisible(false);
-                 } else {
-                     setSaveError(savedefinationResult.returnMessage);
-                 }
- 
-               
+                var savedefinationResult = await SaveFormDefinationField(formdefinationField);
+
+                if (savedefinationResult.returnCode === 1) {
+                    setFormData(savedefinationResult.data);
+                    setvisible(false);
+                } else {
+                    setSaveError(savedefinationResult.returnMessage);
+                }
 
             } catch (error) {
                 setSaveError(error.message);
@@ -129,13 +137,13 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
 
     const handleExternalSubmit = () => {
         SaveData();
-       /* if (formRef.current) {
-            formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        }
-
-        if (canSaveForm) {
-            SaveData();
-        }*/
+        /* if (formRef.current) {
+             formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+         }
+ 
+         if (canSaveForm) {
+             SaveData();
+         }*/
     };
 
     return (
@@ -170,16 +178,21 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
                                 <CFormInput type="text"
                                     id='txtFieldCaption'
                                     name="fieldCaption"
-                                    required 
+                                    required
                                     onChange={e => handleChange(e)} value={formdefinationField?.fieldCaption} />
                             </CCol>
                         </CRow>
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txtTagName" className="col-sm-3 col-form-label">{t("TagName")}</CFormLabel>
                             <CCol sm={9}>
-                                <CFormInput type="text" id='txtTagName' name="tagName"
+                                <CoreUiAutoComplete
+                                    type="text"
+                                    id='txtTagName'
+                                    name="tagName"
+                                    suggestions={uniqueTagNames}
                                     required
-                                    onChange={e => handleChange(e)} value={formdefinationField?.tagName} />
+                                    onChange={handleChange} 
+                                    value={formdefinationField?.tagName} />
                             </CCol>
                         </CRow>
 
@@ -193,7 +206,7 @@ const FieldEditModal = ({ visiblep, formGroupp, formDefinationFieldp, setFormDat
                                         return (<option key={item.id} value={item.controlType} >{item.name}</option>);
                                     })}
                                 </CFormSelect>
-                                
+
                             </CCol>
 
                         </CRow>

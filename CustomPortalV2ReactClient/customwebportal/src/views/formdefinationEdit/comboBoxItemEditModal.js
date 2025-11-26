@@ -45,7 +45,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
     const [saveStart, setsaveStart] = useState(false);
 
     const { t } = useTranslation();
-    const formRef = useRef(null); // Form referansını oluşturun
+    const formRef = useRef(null); 
 
 
     function handleChange(event) {
@@ -63,6 +63,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
         setSaveError(null);
      
         setvisible(visiblep);
+        debugger;
         setformDefinationField(formDefinationFieldp);
         //LoadBranchList();
         LoadComboboxItems();
@@ -96,7 +97,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
         try {
             setsaveStart(true);
-            debugger;
+     
             var comboboxItemsReturn = await GetComboBoxItems(formDefinationField.tagName);
 
             if (comboboxItemsReturn.returnCode === 1) {
@@ -230,7 +231,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
 
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => ClosedClick()}  >{t("Close")}</CButton>
-                    <CButton color="primary" onClick={() => SaveData()}>{t("Save")}</CButton>
+                   
                 </CModalFooter>
             </CModal>
 

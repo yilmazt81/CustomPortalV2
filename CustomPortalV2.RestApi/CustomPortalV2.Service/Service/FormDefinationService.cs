@@ -766,7 +766,7 @@ namespace CustomPortalV2.Business.Service
             {
 
                 var formdefinationfields = _formDefinationService.GetFormDefinationFields(formdefinationId);
-                
+
                 defaultReturn.Data = formdefinationfields.ToList();
 
             }
@@ -774,6 +774,44 @@ namespace CustomPortalV2.Business.Service
             {
                 defaultReturn.SetException(ex);
             }
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<FormGroup>> CloneFormGroup(int[] sourceformGroupId, int targetDefinationId, int companyId, int userId)
+        {
+            DefaultReturn<List<FormGroup>> defaultReturn = new DefaultReturn<List<FormGroup>>();
+
+            var formdefination = _formDefinationService.GetFormDefination(targetDefinationId);
+           
+            if (targetDefinationId == 0)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "targetDefinationId Cannot be 0";
+                return defaultReturn;
+            }
+            if (formdefination.MainCompanyId != companyId)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "CompanyNameIsNotSame";
+                return defaultReturn;
+            }
+
+            foreach (var groupId in sourceformGroupId)
+            {
+                var formGroupSource = _formDefinationService.GetFormGroup(groupId);
+                var formGroup = _formDefinationService.CloneFormGroup(formGroupSource, formdefination);
+            } 
+
+            defaultReturn.Data = _formDefinationService.GetFormGroups(targetDefinationId).ToList(); 
+
+            return defaultReturn;
+        }
+
+        public DefaultReturn<List<string>> GetDistinctFieldNames(int mainCompanyId)
+        {
+            DefaultReturn<List<string>> defaultReturn= new DefaultReturn<List<string>>();
+
+            defaultReturn.Data = _formDefinationService.GetDistinctFieldNames(mainCompanyId).ToList();
             return defaultReturn;
         }
     }
