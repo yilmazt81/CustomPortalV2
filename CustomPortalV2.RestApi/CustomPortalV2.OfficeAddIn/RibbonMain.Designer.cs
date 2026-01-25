@@ -54,6 +54,7 @@
             this.group5 = this.Factory.CreateRibbonGroup();
             this.buttonSendToServer = this.Factory.CreateRibbonButton();
             this.buttonDownloadServer = this.Factory.CreateRibbonButton();
+            this.buttonAddTranslate = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -126,6 +127,7 @@
             this.group3.Items.Add(this.buttonAddBookMark);
             this.group3.Items.Add(this.buttonRemoveBookMark);
             this.group3.Items.Add(this.buttonValidateBookMark);
+            this.group3.Items.Add(this.buttonAddTranslate);
             this.group3.Label = "Yer İşareti";
             this.group3.Name = "group3";
             // 
@@ -207,6 +209,14 @@
             this.buttonDownloadServer.ShowImage = true;
             this.buttonDownloadServer.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonDownloadServer_Click);
             // 
+            // buttonAddTranslate
+            // 
+            this.buttonAddTranslate.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddTranslate.Image")));
+            this.buttonAddTranslate.Label = "Ing. Ekle";
+            this.buttonAddTranslate.Name = "buttonAddTranslate";
+            this.buttonAddTranslate.ShowImage = true;
+            this.buttonAddTranslate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonAddTranslate_Click);
+            // 
             // RibbonMain
             // 
             this.Name = "RibbonMain";
@@ -250,6 +260,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSendToServer;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonDownloadServer;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel labelUserName;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonAddTranslate;
     }
 
     partial class ThisRibbonCollection

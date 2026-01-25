@@ -15,6 +15,7 @@ namespace CustomPortalV2.Core.Model.Definations
         public int CompanyDefinationId { get; set; }
         [JsonProperty("typeid")]
         public int DefinationTypeId { get; set; }
+
         [JsonIgnore]
         public virtual CompanyDefination CompanyDefination { get; set; }
     }

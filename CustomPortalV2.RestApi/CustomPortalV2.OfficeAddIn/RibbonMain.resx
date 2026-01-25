@@ -166,6 +166,18 @@
         YII=
 </value>
   </data>
+  <data name="buttonAddTranslate.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFUSURBVDhPpZE9a8JQGIX9tRKCYIYgGRSMi0NANCJB
+        UDBIBA2SoOjiEBcHIX+h0KVTobSF0kJbjpwLffHeQQoGnnC45wNuUgFQuQf1Go/HpJhOp5jP51gul8iy
+        DNvtVkHNM3rMMMuODERRVGw2G5Rl+S+YZUcGhsMhzuezxn6/R57nCmrTZ0cG+v0+TqeTxnq9ZkA91KbP
+        jgwEQYDj8ajBO//8QkFt+uzIQLfbxeFwQJqmWCwWwuc3FNdnzDDLjgx0Oh3sdjvEcYy3L9yEGWbZkYFW
+        q6U+Fn/R8wduwgyz7MiA53lYrVZ//1h4eofi+owZZtmRAdd1kSSJxmg0wuMrFNSmz44M1Ot1zGYzjcFg
+        gIcXKKhNnx0ZqNVqmEwmGmEYotfrKahNnx0ZsCyr8H1fu+stmGVHBqrVKils24bjOGg0Gmg2m2i32wpq
+        ntFjhll2ZOAeLogc/LFkaWvdAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="buttonAddToday.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29m

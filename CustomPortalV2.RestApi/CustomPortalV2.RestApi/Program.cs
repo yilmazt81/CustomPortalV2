@@ -1,9 +1,12 @@
-using CustomPortalV2.RestApi;
-using CustomPortalV2.DataAccessLayer;
 using CustomPortalV2.Business;
+using CustomPortalV2.DataAccessLayer;
+using CustomPortalV2.RestApi;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +20,12 @@ startup.ConfigureServices(builder.Services);
            .AllowAnyMethod()
            .AllowAnyHeader();
 }));*/
-builder.Services.AddControllers();
+builder.Services.AddControllers(); 
 builder.Services.AddMemoryCache();
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+    );
 // JWT
 
 builder.Services.AddAuthentication(cfg => {

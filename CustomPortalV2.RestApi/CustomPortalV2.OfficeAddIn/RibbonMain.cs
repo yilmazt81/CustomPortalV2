@@ -333,5 +333,65 @@ namespace CustomPortalV2.OfficeAddIn
 
             }
         }
+
+        private void buttonAddTranslate_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (comboBoxFormFields.Text == String.Empty)
+            {
+                ShowMessage("Bir Alan seçilmedi");
+            }
+
+            try
+            {
+                var doc = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveDocument);
+
+                Bookmarks bookmarks = null;
+                Bookmark myBookmark = null;
+                object bookmarkRange = null;
+                Selection selection = null;
+
+                try
+                {
+                    selection = Globals.ThisAddIn.Application.Selection;
+                    bookmarkRange = (object)selection.Range;
+                    bookmarks = doc.Bookmarks;
+
+                    var selectedItem = comboBoxFormFields.Items.FirstOrDefault(s => s.Label == comboBoxFormFields.Text);
+                    string bookmarkName =$"{selectedItem.Tag.ToString()}__Eng";
+                    if (doc.Bookmarks.Exists(bookmarkName))
+                    {
+                        var dialog = MessageBox.Show($"{selectedItem.Label} Alan form üzerinden zaten mevcut \nTekrar Tanımlamak istediğinize emin misiniz", "Soru", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialog == DialogResult.Yes)
+                        {
+                            Random random = new Random();
+                            for (int i = 0; i < 100; i++)
+                            {
+                                var nextId = random.Next(1, 200);
+                                var newBookMarkName = $"Sayfa{nextId}_{bookmarkName}";
+                                if (!doc.Bookmarks.Exists(newBookMarkName))
+                                {
+                                    bookmarkName = newBookMarkName;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    var newBookMark = bookmarks.Add(bookmarkName, ref bookmarkRange);
+                }
+                finally
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message);
+            }
+
+        }
     }
 }

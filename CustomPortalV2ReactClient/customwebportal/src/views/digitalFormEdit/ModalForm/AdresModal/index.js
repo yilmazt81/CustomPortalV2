@@ -94,7 +94,7 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
     async function GetAdressControlList(id) {
         try {
             setsaveStart(true);
-
+            debugger;
             var filterServiceReturn = await GetAutoComplateAdress(filterCompany.formDefinationFieldId, id);
 
             if (filterServiceReturn.returnCode === 1) {

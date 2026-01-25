@@ -382,8 +382,13 @@ const FormDefinationEdit = () => {
     }
 
     const CheckItemValueChange = (option, id, checked) => {
+        var field = formgroupFields.find(f => f.id === id);
         debugger;
-
+        if (option === 'mandatory') {
+            field.mandatory= !checked;
+        } else if (option === 'deleted') {
+             field.deleted= !checked;
+        }
     }
 
 

@@ -178,6 +178,13 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbGroup.AllowEditCustomer = formGroup.AllowEditCustomer;
             dbGroup.Name = formGroup.Name;
             dbGroup.GroupTag = formGroup.GroupTag;
+            if (dbGroup.Deleted)
+            {
+                var groupFieldList = _dbContext.FormDefinationField.Where(s => s.FormGroupId == formGroup.Id);
+                foreach (var field in groupFieldList) {
+                    field.Deleted = dbGroup.Deleted;
+                }
+            }
 
             _dbContext.SaveChanges();
 
@@ -248,7 +255,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormDefinationField GetDefinationField(int definationTypeId, string tagName)
         {
-            return _dbContext.FormDefinationField.Single(s => s.FormDefinationId == definationTypeId && s.TagName == tagName);
+            return _dbContext.FormDefinationField.Single(s => s.FormDefinationId == definationTypeId && s.TagName == tagName && !s.Deleted);
         }
 
         public bool DeleteAutoComplateFieldMap(int autocomplateFieldMapid)
@@ -588,7 +595,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                         c => c.Id,
                         o => o.FormDefinationId,
                         (c, o) => new { c, o })
-                .Where(x => x.c.MainCompanyId == mainCompanyId & !x.c.Deleted && !x.o.Deleted)
+                .Where(x => x.c.MainCompanyId == mainCompanyId && !x.c.Deleted && !x.o.Deleted)
                 .Select(x => x.o.TagName)
                 .Distinct()
                 .ToList();
