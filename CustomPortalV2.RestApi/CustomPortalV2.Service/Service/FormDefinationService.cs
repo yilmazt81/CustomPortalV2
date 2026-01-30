@@ -289,6 +289,15 @@ namespace CustomPortalV2.Business.Service
                     defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
                 }
             }
+            else if (objectName == "FoodPerson")
+            {
+                FoodPersonel country = new FoodPersonel();
+                foreach (var prop in country.GetType().GetProperties())
+                {
+                    var caption = _appLangRepository.Get($"FoodPersonel_{prop.Name}", userLangId, prop.Name);
+                    defaultReturn.Data.Add(new ObjectFieldDTO(prop.Name, caption));
+                }
+            }
             else
             {
                 AutoComplateDefination autocompleteField = new AutoComplateDefination();

@@ -281,6 +281,11 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FormAttachmentField>().HasKey(k => k.Id);
             modelBuilder.Entity<FormAttachmentField>().Property(k => k.Id).HasColumnName("Id");
 
+            modelBuilder.Entity<FoodPersonel>().ToTable("seafoodpersonel");
+            modelBuilder.Entity<FoodPersonel>().HasKey(k => k.Id);
+            modelBuilder.Entity<FoodPersonel>().Property(k => k.Id).HasColumnName("Id");
+            
+
             //  modelBuilder.UseIdentityColumns();
         }
 

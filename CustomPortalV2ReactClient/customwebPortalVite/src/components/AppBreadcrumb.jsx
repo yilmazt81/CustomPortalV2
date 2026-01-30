@@ -1,0 +1,68 @@
+import React, { useState, useContext } from 'react'
+import { useLocation } from 'react-router-dom'
+
+import routes from '../routes'
+
+import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+
+
+import { UrlContext } from '../lib/URLContext.jsx';
+
+const AppBreadcrumb = () => {
+
+  const currentLocation = useLocation().pathname
+
+  const { state, dispatch } = useContext(UrlContext); // State ve dispatch'i alıyoruz
+
+
+  const [value, setValue] = useState([{ name: "Home", href: "/Home", pathname: "/home", active: true }]);
+
+  const getRouteName = (pathname, routes) => {
+    const currentRoute = routes.find((route) => route.path === pathname)
+    return currentRoute ? currentRoute.name : false
+  }
+
+  const getBreadcrumbs = (location) => {
+
+
+    /*
+    const breadcrumbs = []
+    location.split('/').reduce((prev, curr, index, array) => {
+      const currentPathname = `${prev}/${curr}`
+      const routeName = getRouteName(currentPathname, routes)
+  
+      routeName &&
+        breadcrumbs.push({
+          pathname: currentPathname,
+          name: routeName, 
+          href:"Test.html",
+          active: index + 1 === array.length ? true : false,
+        })
+      return currentPathname
+    })*/
+    return state;
+  }
+
+  const breadcrumbs = getBreadcrumbs(currentLocation)
+
+  return (
+    <CBreadcrumb className="m-0 ms-2">
+      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      {breadcrumbs.map((breadcrumb, index) => { 
+        return (
+          <CBreadcrumbItem
+            {...(!breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
+            key={index}
+
+          >
+            {breadcrumb.name}
+          </CBreadcrumbItem>
+        )
+      })}
+    </CBreadcrumb>
+  )
+}
+
+export default React.memo(AppBreadcrumb)
+
+

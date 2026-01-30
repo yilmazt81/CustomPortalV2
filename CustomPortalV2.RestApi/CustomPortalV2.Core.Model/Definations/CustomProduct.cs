@@ -15,7 +15,7 @@ namespace CustomPortalV2.Core.Model.Definations
         public int CreatedId { get; set; }
         public  System.DateTime  CreatedDate { get; set; }
         public int? EditedId { get; set; }
-        public string EditedBy { get; set; }
+        public string? EditedBy { get; set; }
         public System.DateTime? EditedDate { get; set; }
         public int  CustomSectorId { get; set; }
         public bool Deleted { get; set; }

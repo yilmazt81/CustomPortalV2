@@ -1,0 +1,52 @@
+// Here you can add other styles
+
+// Make container-lg use full available width
+.container-lg {
+  max-width: 100%;
+  width: 100%;
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  padding-right: var(--bs-gutter-x, 0.75rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Dark mode support
+html[data-coreui-theme="dark"],
+[data-coreui-theme="dark"] {
+  color-scheme: dark;
+
+  // Background colors
+  --bs-body-bg: #1a1a1a;
+  --bs-body-color: #e9ecef;
+  --bs-border-color: #333;
+
+  // Text colors
+  --bs-heading-color: #e9ecef;
+  --bs-secondary-color: #adb5bd;
+
+  // Component backgrounds
+  --cui-card-bg: #2d2d2d;
+  --cui-table-bg: #252525;
+  --cui-modal-bg: #2d2d2d;
+
+  // Sidebar
+  --cui-sidebar-bg: #1f1f1f;
+  --cui-sidebar-color: #e9ecef;
+
+  // Input
+  --bs-form-control-bg: #333;
+  --bs-form-control-color: #e9ecef;
+  --bs-form-control-border-color: #555;
+
+  background-color: #1a1a1a;
+}
+
+// Dark mode toggle button styling
+.dark-mode-toggle {
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
