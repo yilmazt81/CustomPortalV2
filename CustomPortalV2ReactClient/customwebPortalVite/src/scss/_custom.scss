@@ -50,3 +50,103 @@ html[data-coreui-theme="dark"],
     opacity: 0.7;
   }
 }
+
+// Dashboard Card Styles (matching CoreUI dashboard aesthetic)
+.dashboard-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Card backgrounds with gradients
+.card-primary {
+  background: linear-gradient(135deg, #321fdb 0%, #6f42c1 100%);
+  color: white;
+
+  .card-text {
+    opacity: 0.9;
+  }
+}
+
+.card-success {
+  background: linear-gradient(135deg, #2eb85c 0%, #1b9e3e 100%);
+  color: white;
+}
+
+.card-warning {
+  background: linear-gradient(135deg, #f9b115 0%, #f6960b 100%);
+  color: white;
+}
+
+.card-danger {
+  background: linear-gradient(135deg, #e55353 0%, #d93737 100%);
+  color: white;
+}
+
+.card-info {
+  background: linear-gradient(135deg, #39f 0%, #2982cc 100%);
+  color: white;
+}
+
+// Chart container
+.chart-container {
+  position: relative;
+  height: 250px;
+  margin-top: 1rem;
+}
+
+// Badge styling
+.badge-primary {
+  background-color: #321fdb;
+}
+
+.badge-success {
+  background-color: #2eb85c;
+}
+
+.badge-warning {
+  background-color: #f9b115;
+}
+
+.badge-danger {
+  background-color: #e55353;
+}
+
+// Dark mode card backgrounds
+[data-coreui-theme="dark"] {
+  .card {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e9ecef;
+  }
+
+  .card-header {
+    background-color: #252525;
+    border-bottom-color: #444;
+  }
+
+  .table {
+    color: #e9ecef;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  .btn-outline-secondary {
+    color: #adb5bd;
+    border-color: #555;
+
+    &:hover {
+      background-color: #555;
+      border-color: #555;
+    }
+  }
+}
+

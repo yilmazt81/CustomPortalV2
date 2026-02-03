@@ -23,12 +23,12 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isDarkMode: localStorage.getItem('theme') === 'dark'
+      isDarkMode: localStorage.getItem('theme') !== 'light' // Default to dark mode
     }
   }
 
   componentDidMount() {
-    // Apply saved theme on load
+    // Apply saved theme on load, default to dark
     this.applyTheme(this.state.isDarkMode)
   }
 

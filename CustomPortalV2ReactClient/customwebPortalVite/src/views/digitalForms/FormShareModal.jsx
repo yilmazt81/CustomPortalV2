@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 
 import LoadingAnimation from "../../components/LoadingAnimation.jsx";
 
-import { CloneForm } from 'src/lib/formMetaDataApi.jsx';
+import { CloneForm } from '../../lib/formMetaDataApi.jsx';
 import {
     FaFileWord
   } from "react-icons/fa";

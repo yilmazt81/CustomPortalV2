@@ -146,7 +146,6 @@ const FormDefinationEdit = () => {
         } else {
             setSaveError(getFieldTypesreturn.returnMessage);
         }
-
     }
     async function LoadFontTypes() {
 
@@ -236,6 +235,7 @@ const FormDefinationEdit = () => {
         try {
             setSaveError(null);
             setvisiblemodalGroup(false);
+            debugger;
 
             var editformdefination = await CreateNewFormDefinationGroup(formdefinationEdit.id);
 
@@ -260,6 +260,7 @@ const FormDefinationEdit = () => {
     async function NewGroupFieldDefination() {
         try {
             setSaveError(null);
+            debugger;
             setvisiblemodalGroup(false);
             setvisibleEditComboItems(false);
             var editfieldfination = await CreateNewGroupField(formdefinationEdit.id, formdefinationGroup.id);
@@ -322,7 +323,8 @@ const FormDefinationEdit = () => {
     async function handleSelectFormGroupClick(params) {
         setvisiblemodalGroup(false);
         GetGroupFieldList(params.id);
-        //setformdefinationGroup
+   
+        setformdefinationGroup(params.row);
     };
 
 
@@ -336,8 +338,7 @@ const FormDefinationEdit = () => {
                     setformdefinationGroup(editformdefination.data);
                 }
 
-            } catch (error) {
-                debugger;
+            } catch (error) { 
                 setSaveError(error.message);
 
             }

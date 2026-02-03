@@ -16,7 +16,7 @@ import 'dayjs/locale/tr';
 import BrowserAdressModal from './ModalForm/AdresModal';
 import BrowserProductModal from './ModalForm/productModal';
 
-import { cilMap, cilBarcode } from '@coreui/icons';
+import { cilMap, cilBarcode,cilUser } from '@coreui/icons';
 
 import CIcon from '@coreui/icons-react';
 import moment from 'moment';
@@ -30,6 +30,7 @@ import CustomeField from './CustomeField';
 const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, controlValuesp ,controlValuesCustomep}) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
     const [autoComplateModalFormProduct, setautoComplateModalFormProduct] = useState(false);
+    const [autoComplatePersonelmodalForm, setautoComplatePersonelModalForm] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
     const [maxRowCount,setmaxRowCount]=useState(1);
 
@@ -55,12 +56,15 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
 
         setautocomplatemodalform(false);
         setautoComplateModalFormProduct(false);
+        setautoComplatePersonelModalForm(false);
         setformdefinationtypeid(definationTypeid);
         if (modalType == 'CompanyDefination') {
             setautocomplatemodalform(true);
         } else if (modalType == "ProductDefination") {
             setautoComplateModalFormProduct(true);
-        } else {
+        } else if (modalType == "FoodPerson") {
+            setautoComplatePersonelModalForm(true);
+        }  else {
 
         }
     }
@@ -77,7 +81,12 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
                 <CIcon icon={cilBarcode}></CIcon>
             )
 
-        } else {
+        }else if (modalType == "FoodPerson") {
+            return (
+                <CIcon icon={cilUser}></CIcon>
+            )
+
+        }  else {
             return (
                 <></>
             )

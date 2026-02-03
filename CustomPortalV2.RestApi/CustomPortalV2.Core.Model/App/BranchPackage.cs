@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.Company;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace CustomPortalV2.Core.Model.App
         public int? RecordCount { get; set; }
 
         public int MonthlyRecordCount { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Branch> CompanyBranch { get; set; }
     }
 }

@@ -63,7 +63,7 @@ const ComboBoxItemEditModal = ({ visiblep, formDefinationFieldp, setFormData }) 
         setSaveError(null);
      
         setvisible(visiblep);
-        debugger;
+     
         setformDefinationField(formDefinationFieldp);
         //LoadBranchList();
         LoadComboboxItems();

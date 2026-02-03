@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 import { GetBranchList, GetBranch, SaveBranch, DeleteBranch, CreateNewBranch } from '../../lib/companyapi.jsx';
 
-import LoadingAnimation from 'src/components/LoadingAnimation.jsx';
+import LoadingAnimation from '../../components/LoadingAnimation.jsx';
 import { getUserRoles, GetBranchpackages } from '../../lib/userapi.jsx';
 
 import PropTypes  from 'prop-types';

@@ -2,10 +2,10 @@
 import React, { useEffect, useContext, useState } from 'react'
 
 import { useTranslation } from "react-i18next";
-import { UrlContext } from 'src/lib/URLContext.jsx';
-import { GetCustomeFields, CreateCustomeField,SaveCustomeField } from 'src/lib/formdef.jsx';
+import { UrlContext } from '../../lib/URLContext.jsx';
+import { GetCustomeFields, CreateCustomeField,SaveCustomeField } from '../../lib/formdef.jsx';
 import CustomeFieldsGrid from './CustomeFieldsGrid';
-import DeleteModal from 'src/components/DeleteModal.jsx';
+import DeleteModal from '../../components/DeleteModal.jsx';
 import EditModal from './editModal';
 import { DataGrid } from '@mui/x-data-grid'
 

@@ -18,7 +18,7 @@ import {
 } from '@coreui/react'
 
 import { SaveUser} from '../../lib/userapi.jsx';
-import { GetBranchList } from 'src/lib/companyapi.jsx'
+import { GetBranchList } from '../../lib/companyapi.jsx'
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
 

@@ -61,6 +61,10 @@ const FormdefinationsAutoComlate = () => {
 
             if (editformdefination.returnCode === 1) {
                 setautoComplateField(editformdefination.data);
+                debugger;
+               
+                setfilterSelectVisible(editformdefination.data.complateObject == 'CompanyDefination');
+ 
             } else {
 
                 setSaveError(editformdefination.returnMessage);
@@ -255,7 +259,7 @@ const FormdefinationsAutoComlate = () => {
 
                     <CCol sm={3}>
 
-                        <CFormSelect id='selectDefinationType' name='complateObject' onChange={e => handleChange(e)} >
+                        <CFormSelect id='selectDefinationType' name='complateObject' onChange={e => handleChange(e)} value={autoComplateField?.complateObject}>  
                             <option value='CompanyDefination'>{t("AdressDefination")}</option>
                             <option value='ProductDefination'>{t("ProductDefination")}</option>
                             <option value='Country'>{t("CountryDefination")}</option>
