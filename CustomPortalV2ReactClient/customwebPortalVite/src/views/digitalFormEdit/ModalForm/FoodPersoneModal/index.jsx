@@ -26,15 +26,15 @@ import { useTranslation } from "react-i18next";
 
 import { DataGrid } from '@mui/x-data-grid';
 
-import { FilterCompanyDefination, GetAutoComplateAdress } from "../../../../lib/companyAdressDef.jsx";
+import { FilterPersonel, GetAutoComplatePersonel } from "../../../../lib/foodPersonelApi.jsx";
 
 const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setFormData }) => {
 
 
     const [visible, setvisible] = useState(visiblep);
-    const [filterAdressList, setFilterAdressList] = useState([]);
+    const [filterPersonelList, setFilterPersonelList] = useState([]);
     const [adressDefinationControlList, setadressDefinationControlList] = useState([]);
-    const [filterCompany, setFilterCompany] = useState({ formDefinationFieldId: formDefinationTypeIdp, filterValue: '' });
+    const [filterPersonel, setFilterPersonel] = useState({ formDefinationFieldId: formDefinationTypeIdp, filterValue: '' });
 
     //const [user, setUser] = useState({ ...userp });
 
@@ -48,14 +48,14 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
 
 
 
-    async function GetCompanyList() {
+    async function GetPersonelList() {
 
         try {
             setsaveStart(true);
-            var filterServiceReturn = await FilterCompanyDefination(filterCompany);
+            var filterServiceReturn = await FilterPersonel(filterPersonel);
             debugger;
             if (filterServiceReturn.returnCode === 1) {
-                setFilterAdressList(filterServiceReturn.data);
+                setFilterPersonelList(filterServiceReturn.data);
             } else {
                 setSaveError(filterServiceReturn.returnMessage);
             }
@@ -77,10 +77,10 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
         setvisible(visiblep);
         setSaveError(null);
         if (visiblep) {
-            filterCompany.formDefinationFieldId = formDefinationTypeIdp;
-            setFilterCompany(filterCompany);
+            filterPersonel.formDefinationFieldId = formDefinationTypeIdp;
+            setFilterPersonel(filterPersonel);
             //  setUser(userp);//set if you change value inside
-            GetCompanyList();
+            GetPersonelList();
         }
 
 
@@ -91,11 +91,10 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
         //    EditGroupDefination(option === 'Delete', id);
     }
 
-    async function GetAdressControlList(id) {
+    async function GetPersonelControlList(id) {
         try {
-            setsaveStart(true);
-            debugger;
-            var filterServiceReturn = await GetAutoComplateAdress(filterCompany.formDefinationFieldId, id);
+            setsaveStart(true); 
+            var filterServiceReturn = await GetAutoComplatePersonel(filterPersonel.formDefinationFieldId, id);
 
             if (filterServiceReturn.returnCode === 1) {
                 setadressDefinationControlList(filterServiceReturn.data);
@@ -114,12 +113,9 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
 
     }
     const SelectedRowChanged = async (param) => {
-        console.log(param);
-
-        await GetAdressControlList(param.id);
-
-
-
+      
+        await GetPersonelControlList(param.id);
+ 
     }
 
     const gridColumns = Gridcolumns(optionClick);
@@ -136,7 +132,7 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
 
             >
                 <CModalHeader>
-                    <CModalTitle>{t("AdressModalTitle")}</CModalTitle>
+                    <CModalTitle>{t("PersonelModalTitle")}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
 
@@ -146,7 +142,7 @@ const BrowserAdressModal = ({ visiblep, formDefinationTypeIdp, setClose, setForm
                         <CCol>
 
                             <div style={{ height: 300, width: '100%' }}>
-                                <DataGrid rows={filterAdressList}
+                                <DataGrid rows={filterPersonelList}
                                     columns={gridColumns}
                                     //onRowSelectionModelChange={(e)=>SelectedRowChanged(e)}
                                     onRowClick={(param) => SelectedRowChanged(param)}

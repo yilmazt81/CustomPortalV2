@@ -133,6 +133,8 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<CompanySmtpSetting> CompanySmtpSettings { get; set; }
 
         public virtual DbSet<FormSendMailLog> FormSendMailLogs { get;set; }
+
+        public virtual DbSet<FoodPersonel> FoodPersonels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -281,7 +283,7 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<FormAttachmentField>().HasKey(k => k.Id);
             modelBuilder.Entity<FormAttachmentField>().Property(k => k.Id).HasColumnName("Id");
 
-            modelBuilder.Entity<FoodPersonel>().ToTable("seafoodpersonel");
+            modelBuilder.Entity<FoodPersonel>().ToTable("Seafoodpersonel");
             modelBuilder.Entity<FoodPersonel>().HasKey(k => k.Id);
             modelBuilder.Entity<FoodPersonel>().Property(k => k.Id).HasColumnName("Id");
             

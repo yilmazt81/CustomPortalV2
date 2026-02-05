@@ -215,5 +215,7 @@ export const TRANSLATIONS_RU = {
     CloneFormGroupModalTitle: "Клонировать группу форм",
     Copy: " Копировать ",
     FoodPerson: "Персонал по инспекции пищевых продуктов",
-
+    PersonelModalTitle: "Выбор персонала",
+    RegistrationNumber: "Регистрационный номер",
+    Title: "Название",
 };

@@ -16,29 +16,29 @@ html[data-coreui-theme="dark"],
   color-scheme: dark;
 
   // Background colors
-  --bs-body-bg: #1a1a1a;
-  --bs-body-color: #e9ecef;
-  --bs-border-color: #333;
+  --bs-body-bg: #2a2a2a;
+  --bs-body-color: #f0f0f0;
+  --bs-border-color: #444;
 
   // Text colors
-  --bs-heading-color: #e9ecef;
-  --bs-secondary-color: #adb5bd;
+  --bs-heading-color: #ffffff;
+  --bs-secondary-color: #c9c9c9;
 
   // Component backgrounds
-  --cui-card-bg: #2d2d2d;
-  --cui-table-bg: #252525;
-  --cui-modal-bg: #2d2d2d;
+  --cui-card-bg: #333333;
+  --cui-table-bg: #2d2d2d;
+  --cui-modal-bg: #333333;
 
   // Sidebar
-  --cui-sidebar-bg: #1f1f1f;
-  --cui-sidebar-color: #e9ecef;
+  --cui-sidebar-bg: #252525;
+  --cui-sidebar-color: #f0f0f0;
 
   // Input
-  --bs-form-control-bg: #333;
-  --bs-form-control-color: #e9ecef;
-  --bs-form-control-border-color: #555;
+  --bs-form-control-bg: #3a3a3a;
+  --bs-form-control-color: #f0f0f0;
+  --bs-form-control-border-color: #666;
 
-  background-color: #1a1a1a;
+  background-color: #2a2a2a;
 }
 
 // Dark mode toggle button styling

@@ -14,12 +14,12 @@ const Gridcolumns = (OptionClick) => {
         {
             field: 'fullName',
             headerName: i18.t('FullName'),
-            width: 150,
+            width: 200,
         },
         {
             field: 'title',
             headerName: i18.t('Title'),
-            width: 150,
+            width: 200,
         },
         {
             field: 'registrationNumber',
@@ -27,7 +27,7 @@ const Gridcolumns = (OptionClick) => {
             width: 150,
         },
         {
-            field: 'city',
+            field: 'cityName',
             headerName: i18.t('City'),
             width: 150,
 

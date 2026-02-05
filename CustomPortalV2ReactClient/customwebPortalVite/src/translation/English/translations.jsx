@@ -1,3 +1,5 @@
+import { Title } from "chart.js";
+
 export const TRANSLATIONS_EN = {
     login: 'Login',
     CompanyCode: 'Company Code',
@@ -219,6 +221,9 @@ export const TRANSLATIONS_EN = {
     CloneFormGroupModalTitle: "Clone Form Group",
     Copy: " Copy ",
     FoodPerson: "Food Inspection Personnel",
+    PersonelModalTitle: "Personnel Selection Window",
+    RegistrationNumber: "Registration Number",
+    Title: "Title",
 };
 
 

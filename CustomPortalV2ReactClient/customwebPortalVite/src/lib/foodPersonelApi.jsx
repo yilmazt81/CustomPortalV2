@@ -1,12 +1,7 @@
 
 import { GetRequest,Post } from "./Apibase";
 
-export async function CreateProduct() {
- 
-    const { data } = await GetRequest(`/api/CustomProduct/CreateProduct`);
-    return data;
-  };
-  
+ /*
   export async function GetCompanyProducts() {
  
     const { data } = await GetRequest(`/api/CustomProduct`);
@@ -32,19 +27,17 @@ export async function CreateProduct() {
  
     const { data } = await GetRequest(`/api/CustomProduct/DeleteProduct/${id}`);
     return data;
-  };
+  }; */
  
-
-  export async function FilterProduct(filterReq) {
+  export async function FilterPersonel(filterReq) {
  
-    const { data } = await Post(`/api/CustomProduct/FilterProduct`,filterReq);
+    const { data } = await Post(`/api/FoodPersonel/FilterPersonel`,filterReq);
     return data;
   };
-
  
-  export async function GetAutoComplateProduct(formdefinationid,productidlist) {
+  export async function GetAutoComplatePersonel(formdefinationid,personelid) {
  
-    const { data } = await GetRequest(`/api/CustomProduct/GetAutoComplateProduct/${formdefinationid}/${productidlist}`);
+    const { data } = await GetRequest(`/api/FoodPersonel/GetAutoComplatePersonel/${formdefinationid}/${personelid}`);
     return data;
   };
  

@@ -16,11 +16,11 @@ import PropTypes from 'prop-types';
 
 
 import { useSearchParams } from 'react-router-dom';
-import CreateGroupField from './CreateGroupField';
+import CreateGroupField from './CreateGroupField.jsx';
 import 'dayjs/locale/tr';
 import dayjs from 'dayjs';
 
-const DynamicForm = ({ formdefinationTypeIdp, formgroups, OnValueChanged, OnCustomeValueChanged, controlValues,controlValuesCustome }) => {
+const DynamicForm = ({ formdefinationTypeIdp, formgroups, OnValueChanged, OnCustomeValueChanged, controlValues, controlValuesCustome }) => {
 
 
     const [formgroup, setformGroup] = useState(null);
@@ -44,30 +44,8 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups, OnValueChanged, OnCust
 
 
     function customeValueChanged(fieldName, value, orderNumber) {
-        debugger;
+
         OnCustomeValueChanged(fieldName, value, orderNumber);
-    }
-
-    function CreateGroupCard(item) {
-
-        return (
-            <>
-                <CRow xs={{ gutterX: 1, gutterY: 1 }}>
-                    <CCard >
-                        <CCardHeader>{item.formNumber} {item.name}</CCardHeader>
-                        <CCardBody>
-
-                            <CreateGroupField key={item.id}
-                                onChangeData={(fieldName, value) => OnValueChanged(fieldName, value)}
-                                onchangeDataCustomeField={(fieldName, value, orderNumber) => customeValueChanged(fieldName, value, orderNumber)}
-                                controlValuesp={controlValues}
-                                controlValuesCustomep={controlValuesCustome}
-                                fieldList={item.formFields}></CreateGroupField>
-                        </CCardBody>
-                    </CCard>
-                </CRow>
-            </>
-        )
     }
 
     return (
@@ -75,7 +53,24 @@ const DynamicForm = ({ formdefinationTypeIdp, formgroups, OnValueChanged, OnCust
         <>
             {formdefinationGroups?.map(item => {
 
-                return CreateGroupCard(item);
+                return (
+                    <div key={item.id}>
+                        <CRow xs={{ gutterX: 1, gutterY: 1 }}>
+                            <CCard>
+                                <CCardHeader>{item.formNumber} {item.name}</CCardHeader>
+                                <CCardBody>
+
+                                    <CreateGroupField
+                                        onChangeData={(fieldName, value) => OnValueChanged(fieldName, value)}
+                                        onchangeDataCustomeField={(fieldName, value, orderNumber) => customeValueChanged(fieldName, value, orderNumber)}
+                                        controlValuesp={controlValues}
+                                        controlValuesCustomep={controlValuesCustome}
+                                        fieldList={item.formFields}></CreateGroupField>
+                                </CCardBody>
+                            </CCard>
+                        </CRow>
+                    </div>
+                );
             })}
         </>
     )

@@ -1,3 +1,5 @@
+import { Title } from "chart.js";
+
  
 
 export const TRANSLATIONS_TR = {
@@ -220,13 +222,9 @@ export const TRANSLATIONS_TR = {
     CloneFormGroupModalTitle:"Form Group Kopyala",
     Copy:" Kopyala ",
     FoodPerson: "Gıda Denetim Personeli",
-
-
-
-
-
-
-
+    PersonelModalTitle:"Personel Seçim Penceresi",
+    RegistrationNumber:"Kayıt Numarası",
+    Title:"Unvan",
 
 };
 

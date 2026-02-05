@@ -1,6 +1,6 @@
 
 
-import i18 from "../../../../translation/i18.jsx"
+import i18 from "../../../../translation/i18.jsx";
 
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';

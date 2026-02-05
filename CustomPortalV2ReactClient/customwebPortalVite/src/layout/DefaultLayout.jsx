@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserMenu } from "../lib/userapi.jsx"
   
 
-const DefaultLayout = ({ toggleDarkMode, isDarkMode }) => {
+const DefaultLayout = () => {
   const userToken = useSelector(state => state.userToken);
   const [userMenu, setUserMenu] = useState([]);
   
@@ -48,7 +48,7 @@ const DefaultLayout = ({ toggleDarkMode, isDarkMode }) => {
     <div className="d-flex" style={{ height: '100vh' }}>
       <AppSidebar menuList={userMenu} />
       <div className="wrapper d-flex flex-column flex-grow-1">
-        <AppHeader toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+        <AppHeader />
         <div className="body flex-grow-1 px-3" style={{ overflowY: 'auto' }}>
           <AppContent />
         </div>

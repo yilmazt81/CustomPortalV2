@@ -70,6 +70,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFileCreateService, FileCreateService>();
             services.AddScoped<IWorkFlowService, WorkFlowService>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IFoodPersonelService, FoodPersonelService>();
+
 
             services.AddSingleton<IFirebaseStorage, FireStorage>();
 
@@ -92,7 +94,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<ICustomProductRepository, CustomProductRepository>();
             services.AddScoped<IWorkFlowRepository, WorkFlowRepository>();
             services.AddScoped<IMailRepository, MailRepository>();
- 
+            services.AddScoped<IFoodPersonelRepository, FoodPersonelRepository>();
+
 
             services.AddMemoryCache();
 
