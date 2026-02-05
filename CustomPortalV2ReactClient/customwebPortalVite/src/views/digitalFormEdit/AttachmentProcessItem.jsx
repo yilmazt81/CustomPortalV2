@@ -23,14 +23,12 @@ import { ThreeDot } from 'react-loading-indicators';
 
 import { cilChevronCircleRightAlt, cilCloudDownload, cilX, cilReload } from '@coreui/icons';
 
+import  ProcessFileStatusIcon  from "../../components/ProcessFileStatusIcon.jsx";
 
 function AttachmentProcessItem({ data, processp, OnProcessAttachment, itemCheckedp, OnSelecteAttachment }) {
 
     //const [itemChecked, setItemCheck] = useState(false);
-    function DownloadFile(fileUrl) {
-        window.open(fileUrl);
-    }
-
+  
     useEffect(() => {
   
 
@@ -38,65 +36,11 @@ function AttachmentProcessItem({ data, processp, OnProcessAttachment, itemChecke
 
     function GetControl() {
 
-        if (!processp.process) {
-            if (processp.error != '') {
-                return (
-
-                    <>
-                        <CPopover
-                            title="Error"
-                            content={processp.error}
-                            placement="right"
-                        >
-                            <CButton color="danger" variant="outline" shape="rounded-pill"  >
-                                <CIcon icon={cilX} />
-                            </CButton>
-                        </CPopover>
-
-                        <CButton color="primary" variant="outline" shape="rounded-pill"  >
-
-                            <CIcon icon={cilReload} onClick={() => OnProcessAttachment(data.id)} />
-
-                        </CButton>
-                    </>
-                )
-
-            } else if (processp.downloadUrl === '') {
-
-                return (
-                    <CButton color="primary" variant="outline" shape="rounded-pill"  >
-
-                        <CIcon icon={cilChevronCircleRightAlt} onClick={() => OnProcessAttachment(data.id)} />
-
-                    </CButton>
-                )
-            } else if (processp.downloadUrl != '') {
-                return (
-                    <CButton color="success" variant="outline" shape="rounded-pill" onClick={() => DownloadFile(processp.downloadUrl)} >
-                        <CIcon icon={cilCloudDownload} ></CIcon>
-                    </CButton>
-                )
-            } else {
-                return (
-                    <>
-
-                    </>
-                )
-            }
-        } else {
-            return (
-                <CRow>
-
-                    <ThreeDot color="#1919e3" size="medium" text="" textColor="" />
-                </CRow>
-            )
-        }
+        
     }
 
     function CheckedChanged(e, data) {
-       
-        //setItemCheck(!e.target.checked);
-
+        
         OnSelecteAttachment({ id: data.id, selected: e.target.checked, formName: data.formName });
 
     }
@@ -110,7 +54,13 @@ function AttachmentProcessItem({ data, processp, OnProcessAttachment, itemChecke
                 </CCol>
                 <CCol sm={2}>
 
-                    {GetControl()}
+                     <ProcessFileStatusIcon 
+                        formattachmentid={data.id}
+                        process={processp}
+                        ClickProcess={(attachmentid,versionid) => OnProcessAttachment(attachmentid,versionid)}
+                      >
+
+                     </ProcessFileStatusIcon>
 
                 </CCol>
             </CRow>

@@ -12,7 +12,7 @@ namespace CustomPortalV2.Business.Concrete
 
         Task<DefaultReturn<string>> ConvertAttachment(int id, int attachmentTypeid, int companyId, int userId,string tempFolder);
 
-        DefaultReturn<string> ConvertFormVersion(int id, int formVersionId, int companyId, int userId,string tempFolder);
+        Task<DefaultReturn<string>> ConvertFormVersion(int id, int formVersionId, int companyId, int userId,string tempFolder);
 
     }
 }

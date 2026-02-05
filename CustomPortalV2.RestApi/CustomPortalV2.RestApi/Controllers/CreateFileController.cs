@@ -18,12 +18,13 @@ namespace CustomPortalV2.RestApi.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpGet("CreateFormVersion/{id}/{versionid}")]
-        public IActionResult CreateFormVersion(int id, int versionid)
+        public async Task<IActionResult> CreateFormVersion(int id, int versionid)
         {
-            /*
-            var formConvertReturn = _fileCreateService.ConvertFormVersion(id, versionid, User.GetCompanyId(), User.GetUserId(), _hostingEnvironment.ContentRootPath + @"\TempFolder\");*/
-            Thread.Sleep(1000);
-            return Ok("ddd");
+
+            var formConvertReturn = _fileCreateService.ConvertFormVersion(id, versionid, User.GetCompanyId(), User.GetUserId(), _hostingEnvironment.ContentRootPath + @"\TempFolder\");
+            //Thread.Sleep(1000);
+            var result = formConvertReturn.Result;
+            return Ok(result);
         }
 
         [HttpGet("CreateFormAttachment/{id}/{attachmentId}")]

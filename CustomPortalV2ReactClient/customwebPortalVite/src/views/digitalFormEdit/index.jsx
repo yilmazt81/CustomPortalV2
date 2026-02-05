@@ -261,11 +261,21 @@ const DigitalFormEdit = () => {
         if (value === "Save") {
             try {
                 setLoading(true);
-                debugger;
-                var fsaveReturn = await SaveMetaData((formMetaData == null ? 0 : formMetaData.id), 
-                formdefinationType, controlValues,false,0,controlCustomeValues);
+                
+                // Filter out records with null or empty fieldName
+                const filteredControlValues = controlValues.filter(item => item.fieldName && item.fieldName.trim() !== '');
+                const filteredControlCustomeValues = controlCustomeValues.filter(item => item.fieldName && item.fieldName.trim() !== '');
+                
+                var fsaveReturn = await SaveMetaData(
+                    (formMetaData == null ? 0 : formMetaData.id), 
+                    formdefinationType, 
+                    filteredControlValues,
+                    false,
+                    0,
+                    filteredControlCustomeValues
+                );
+                
                 if (fsaveReturn.returnCode === 1) {
-
                     setformMetaData(fsaveReturn.data);
                     setFormProcessAfterSave(true);
                 } else {

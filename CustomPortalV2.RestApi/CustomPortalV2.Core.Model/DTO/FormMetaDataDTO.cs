@@ -29,7 +29,7 @@ namespace CustomPortalV2.Core.Model.DTO
     public class FieldValueDTO
     {
 
-        public string fieldName { get; set; }
+        public string? fieldName { get; set; }
         public string fieldValue { get; set; }
         
 

@@ -31,8 +31,9 @@ import { cilChevronCircleRightAlt } from '@coreui/icons';
 
 import { CIcon } from '@coreui/icons-react';
 
-import { CreateFormAttachment } from "../../lib/CreateFileApi.jsx";
+import { CreateFormAttachment, CreateFormVersion } from "../../lib/CreateFileApi.jsx";
 
+import ProcessFileStatusIcon from "../../components/ProcessFileStatusIcon.jsx";
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -64,7 +65,7 @@ CustomTabPanel.propTypes = {
 
 
 
-const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLoadFormAttachment,listAttachmentSelectionp}) => {
+const FileCreateProcess = ({ formidp, loading, onError, onSelecteAttachment, OnLoadFormAttachment, listAttachmentSelectionp }) => {
 
     const { t } = useTranslation();
 
@@ -73,11 +74,11 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
     const [formAttachmentNotPrivate, setformAttachmentNotPrivate] = useState([]);
 
     const [formdefinationVersion, setformdefinationVersion] = useState(0);
-    const [versionConvertFileUrl, setversionConvertFileUrl] = useState(null);
+   
     const [formdefinationName, setformdefinationName] = useState("");
 
     const [processAttachmentList, setprocessAttachmentList] = useState([{ attachmentid: 0, process: false, downloadUrl: '', error: '' }]);
-
+    const [processVersionstatus, setprocessVersionstatus] = useState({ process: false, downloadUrl: '', error: '' });
 
     const [value, setValue] = useState(0);
 
@@ -86,45 +87,31 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
     };
 
 
-    function handleChange(event) {
-        const { name, value } = event.target;
+    const handleChange = (event) => {
+        setformdefinationVersion(event.target.value); 
+    };
 
-        setformdefinationVersion(value);
-        setversionConvertFileUrl(null);
-
-    }
-
-    async function LoadFormConvertTypes() {
-  
+    const LoadFormConvertTypes = async () => {
         try {
-            var convertTypeReturn = await GetConvertFileList(formidp);
-
-            if (convertTypeReturn.returnCode === 1) {
-
-                setformdefinationName(convertTypeReturn.data.formDefinationTypeName);
-                setFormVersionList(convertTypeReturn.data.formVersions)
-                setformAttachmentPrivate(convertTypeReturn.data.attachmentPrivateForForm);
-                setformAttachmentNotPrivate(convertTypeReturn.data.attachmentNotPrivateForForm);
-
-                OnLoadFormAttachment(convertTypeReturn.data.attachmentPrivateForForm);
-                OnLoadFormAttachment(convertTypeReturn.data.attachmentNotPrivateForForm);
-                if (convertTypeReturn.data.attachmentPrivateForForm.length === 0) {
-                    setValue(1);
-                }
-                if (convertTypeReturn.data.formVersions.length != 0) {
-                    setformdefinationVersion(convertTypeReturn.data.formVersions[0].id);
-                }
-
+            const { data, returnCode, returnMessage } = await GetConvertFileList(formidp);
+            if (returnCode === 1) {
+                setformdefinationName(data.formDefinationTypeName);
+                setFormVersionList(data.formVersions);
+                setformAttachmentPrivate(data.attachmentPrivateForForm);
+                setformAttachmentNotPrivate(data.attachmentNotPrivateForForm);
+                OnLoadFormAttachment(data.attachmentPrivateForForm);
+                OnLoadFormAttachment(data.attachmentNotPrivateForForm);
+                if (data.attachmentPrivateForForm.length === 0) setValue(1);
+                if (data.formVersions.length > 0) setformdefinationVersion(data.formVersions[0].id);
             } else {
-                onError(convertTypeReturn.returnMessage)
+                onError(returnMessage);
             }
         } catch (error) {
             onError(error.message);
+        } finally {
+            loading(false);
         }
-
-        loading(false);
-
-    }
+    };
 
     useEffect(() => {
 
@@ -135,77 +122,55 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
 
 
     async function CreateVersionFile() {
-
+        //CreateFormVersion
+        
+        setprocessVersionstatus({ process: true, downloadUrl: '', error: '' });
+        const { data, returnCode, returnMessage } = await CreateFormVersion(formidp, formdefinationVersion);
+        if (returnCode === 1) { 
+            setprocessVersionstatus({ process: false, downloadUrl: data, error: '' });
+        } else {
+            setprocessVersionstatus({ process: false, downloadUrl: '', error: returnMessage });
+        }
     }
 
-    async function CreateAttacment(attachmentid) {
-
-        var itemold = processAttachmentList.find(s => s.attachmentid === attachmentid);
-        if (itemold === undefined) {
-            processAttachmentList.push({ attachmentid: attachmentid, process: true, downloadUrl: '', error: '' });
-        } else {
-            itemold.process = true;
+    const CreateAttacment = async (versionid,attachmentid) => {
+        let item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+        if (!item) {
+            processAttachmentList.push({ attachmentid, process: true, downloadUrl: '', error: '' });
+            item = processAttachmentList[processAttachmentList.length - 1];
         }
+        item.process = true;
+        setprocessAttachmentList([...processAttachmentList]);
 
         try {
-            setprocessAttachmentList([...processAttachmentList]);
-            var createFileReturn = await CreateFormAttachment(formidp, attachmentid);
-            if (createFileReturn.returnCode === 1) {
-                var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-                itemold1.process = false;
-                itemold1.downloadUrl = createFileReturn.data;
-                itemold1.error = '';
-                debugger;
-                setprocessAttachmentList([...processAttachmentList]);
+            const { data, returnCode, returnMessage } = await CreateFormAttachment(formidp, attachmentid);
+            item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+            if (returnCode === 1) {
+                item.downloadUrl = data;
+                item.error = '';
             } else {
-
-                var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-                itemold1.process = false;
-                itemold1.error = createFileReturn.returnMessage;
-                setprocessAttachmentList([...processAttachmentList]);
+                item.error = returnMessage;
             }
-
         } catch (error) {
-            var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-            itemold1.process = false;
-            itemold1.error = error.message;
-            setprocessAttachmentList([...processAttachmentList]);
+            item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+            item.error = error.message;
         } finally {
-            var itemold1 = processAttachmentList.find(s => s.attachmentid === attachmentid);
-            itemold1.process = false;
-
+            item = processAttachmentList.find(s => s.attachmentid === attachmentid);
+            item.process = false;
             setprocessAttachmentList([...processAttachmentList]);
         }
+    };
 
+    const GetProcessStatus = (attachmentid) =>
+        processAttachmentList.find(s => s.attachmentid === attachmentid) ||
+        { attachmentid, process: false, downloadUrl: '', error: '' };
 
+    const GetProcessVersionStatus = () => {
+
+        return processVersionstatus;
     }
-
-    function GetProcessStatus(attachmentid) {
-
-        var item = processAttachmentList.find(s => s.attachmentid === attachmentid);
-
-        if (item === undefined)
-            return { attachmentid: attachmentid, process: false, downloadUrl: '', error: '' };
-        else
-            return item;
-
-    }
-
-    function selecteAttachment(data)
-    {       
-        onSelecteAttachment(data);
-    }
-
-    function getAttachmentCheckedValue(id){
-
-        var item= listAttachmentSelectionp.find(s=>s.id===id.toString());
- 
-        if (item===undefined){
-            return false;
-        }else{ 
-            return item.selected;
-        }
-    }
+    const getAttachmentCheckedValue = (id) =>
+        listAttachmentSelectionp.find(s => s.id === id.toString())?.selected ?? false;
 
     return (
         <>
@@ -218,20 +183,27 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
                     <CFormLabel className="form-label">{formdefinationName}</CFormLabel>
                 </CCol>
                 <CCol sm={6}>
-                    <CFormSelect id='selectFormVersion' name="formVersion" value={formdefinationVersion}
-                        onChange={e => handleChange(e)}>
-                        {formVersionList.map(item => {
-
-                            return (<option key={item.id} value={item.id} >{item.formLanguage}</option>);
-                        })}
+                    <CFormSelect
+                        id="selectFormVersion"
+                        name="formVersion"
+                        value={formdefinationVersion}
+                        onChange={handleChange}
+                    >
+                        {formVersionList.map(item => (
+                            <option key={item.id} value={item.id}>{item.formLanguage}</option>
+                        ))}
                     </CFormSelect>
 
                 </CCol>
                 <CCol sm={2}>
 
-                    <CButton color="primary" variant="outline" shape="rounded-pill">
-                        <CIcon icon={cilChevronCircleRightAlt} onClick={() => CreateVersionFile()} />
-                    </CButton>
+                   
+                    <ProcessFileStatusIcon
+                        formversionid={formdefinationVersion}
+                        processp={GetProcessVersionStatus()}
+                        ClickProcess={(attachmentid,versionid) => CreateVersionFile(versionid)} >
+
+                    </ProcessFileStatusIcon>
 
                 </CCol>
             </CRow>
@@ -245,16 +217,16 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
                 <CustomTabPanel value={value} index={0}>
                     <CRow>
                         <CCol sm={12}>
-                            {formAttachmentPrivate.map(item => {
-                                return (<AttachmentProcessItem
-                                    OnProcessAttachment={() => CreateAttacment(item.id)}
-                                    key={item.id} data={item}
-                                    processp={GetProcessStatus(item.id)}
-                                    OnSelecteAttachment={(data)=> selecteAttachment(data) }
+                            {formAttachmentPrivate.map(item => (
+                                <AttachmentProcessItem
+                                    key={item.id}
+                                    data={item}
                                     itemCheckedp={getAttachmentCheckedValue(item.id)}
-
-                                ></AttachmentProcessItem>);
-                            })}
+                                    processp={GetProcessStatus(item.id)}
+                                    ClickProcess={(attachmentid,versionid) => CreateAttacment(attachmentid,versionid)}
+                                    OnSelecteAttachment={onSelecteAttachment}
+                                />
+                            ))}
                         </CCol>
                     </CRow>
 
@@ -264,16 +236,16 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
                         <CCol sm={12}>
 
 
-                            {formAttachmentNotPrivate.map(item => {
-                                return (<AttachmentProcessItem
+                            {formAttachmentNotPrivate.map(item => (
+                                <AttachmentProcessItem
                                     key={item.id}
                                     data={item}
                                     itemCheckedp={getAttachmentCheckedValue(item.id)}
-                                    OnProcessAttachment={() => CreateAttacment(item.id)}
                                     processp={GetProcessStatus(item.id)}
-                                    OnSelecteAttachment={(data)=> selecteAttachment(data) }
-                                ></AttachmentProcessItem>);
-                            })}
+                                    OnProcessAttachment={() => CreateAttacment(item.id)}
+                                    OnSelecteAttachment={onSelecteAttachment}
+                                />
+                            ))}
 
                         </CCol>
                     </CRow>
@@ -282,10 +254,6 @@ const FileCreateProcess = ({ formidp, loading, onError,onSelecteAttachment ,OnLo
 
 
             </CCol>
-            <CRow>
-
-
-            </CRow>
         </>
     )
 }

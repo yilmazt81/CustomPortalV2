@@ -113,13 +113,13 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public DefaultReturn<string> ConvertFormVersion(int id, int formVersionId, int companyId, int userId, string tempFolder)
+        public async Task<DefaultReturn<string>> ConvertFormVersion(int id, int formVersionId, int companyId, int userId, string tempFolder)
         {
             DefaultReturn<string> defaultReturn = new DefaultReturn<string>();
             try
             {
                 var formData = _formMetaDataRepository.Get(id);
-                if (formData.CompanyBranchId != companyId)
+                if (formData.MainCompanyId != companyId)
                 {
                     throw new Exception("FormIsNotCompany");
                 }
@@ -130,27 +130,48 @@ namespace CustomPortalV2.Business.Service
                 var customeVirtualTables = _formDefinationRepository.GetCustomeVirtualTables(companyId).ToArray();
                 var customeVirtualTableFields = _formDefinationRepository.GetCustomeVirtualTableFields(companyId).ToArray();
                 var translateDictonary = _formDefinationRepository.GetTranslateDictionaries().ToArray();
+
+
+                var softwareFormatChangeRules = _formDefinationRepository.GetSoftImageChangeFormatRules(formData.FormDefinationId);
+
                 if (!formVersion.Active)
                 {
                     throw new Exception("Version");
                 }
 
                 string newFileName = Path.Combine(tempFolder, Guid.NewGuid().ToString() + Path.GetExtension(formVersion.FileName));
-                /*using (WebClient webClient = new  WebClient())
+                using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(formVersion.FilePath, newFileName);
 
-                }*/
+                }
                 var formDefinationFields = _formDefinationRepository.GetAllFields(formData.FormDefinationId).ToArray();
                 if (Path.GetExtension(formVersion.FileName) == ".docx")
                 {
                     using (SoftCreatorWord softCreatorWord = new SoftCreatorWord())
                     {
-                        softCreatorWord.ChangeTemplateForm(newFileName,
+                        softCreatorWord.ChangeTemplateForm(
+                            newFileName,
                             formDefinationFields,
                             formData.FormMetaDataAttribute_CustomeField.ToArray(),
-                            formData.FormMetaDataAttribute.ToArray(), null, formData.FormDefinationId, 0, 0, new Core.Model.FDefination.FormAttachmentFontStyle[0], comboBoxItems, customeFields, customeFieldItems, customeVirtualTables, customeVirtualTableFields, translateDictonary);
+                            formData.FormMetaDataAttribute.ToArray(),
+                            softwareFormatChangeRules.ToArray(),
+                            formData.FormDefinationId, 
+                            0, 0,
+                            new Core.Model.FDefination.FormAttachmentFontStyle[0], 
+                            comboBoxItems,
+                            customeFields,
+                            customeFieldItems, 
+                            customeVirtualTables, 
+                            customeVirtualTableFields,
+                            translateDictonary);
                     }
+                }
+
+                using (Stream reader = new FileStream(newFileName, FileMode.Open))
+                {
+                    defaultReturn.Data = await _firebaseStorage.SaveFileToStorageAsync("Convert", Path.GetFileName(newFileName), reader);
+
                 }
 
             }
