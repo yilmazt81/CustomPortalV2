@@ -191,12 +191,13 @@ const ProductDefination = () => {
 
 
       <DeleteModal
-        setClose={() => setVisibleDelete(false)}
+        
         message={product?.productName}
         title={t("ModalDeleteProductTitle")}
         visiblep={visibleDelete}
         message2={t("AutoComplateMapDeleteMessage")}
         OnClickOk={() => DeleteProductDB()}
+        OnClickCancel ={() => setVisibleDelete(false)}
       >
 
 
