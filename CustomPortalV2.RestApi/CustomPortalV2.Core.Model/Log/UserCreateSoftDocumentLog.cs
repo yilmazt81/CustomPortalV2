@@ -15,5 +15,7 @@ namespace CustomPortalV2.Core.Model.Log
         public System.DateTime? LogDate { get; set; }
         public int? AppUserId { get; set; }
         public int BranchId { get; set; }
+
+        public int FormMetaDataId { get; set; }
     }
 }

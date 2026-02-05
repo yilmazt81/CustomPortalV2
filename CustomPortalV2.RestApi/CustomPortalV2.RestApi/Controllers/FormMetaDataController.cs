@@ -136,7 +136,19 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(returnV);
         }
 
+        [HttpPost("FilterForms")]
+        public IActionResult FilterForms(FormMetaDataFilterPost formMetaDataFilterPost)
+        {
+            formMetaDataFilterPost.UserId = User.GetUserId();
+            formMetaDataFilterPost.CompanyId = User.GetCompanyId();
+            formMetaDataFilterPost.UserName = User.GetUserFullName();
+            formMetaDataFilterPost.BrachId = User.GetBranchId();
 
+            var returnV = _formMetaDataService.FilterForms(formMetaDataFilterPost);
+           
+
+            return Ok(returnV);
+        }
 
     }
 }

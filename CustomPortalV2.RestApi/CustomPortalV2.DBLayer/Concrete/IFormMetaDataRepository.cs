@@ -19,6 +19,7 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
         FormMetaData Update(FormMetaData formMetaData);
 
         void AddCopyDocumentLog(CopyDocumentLog copyDocumentLog);
+        IQueryable<FormMetaData> GetQueryable();
 
     }
 }

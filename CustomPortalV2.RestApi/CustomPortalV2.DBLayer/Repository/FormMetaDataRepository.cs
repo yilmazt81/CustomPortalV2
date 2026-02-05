@@ -27,12 +27,18 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public IEnumerable<FormMetaData> Get(Expression<Func<FormMetaData, bool>> predicate, int maxCount)
         {
+            _dbContext.FormMetaData.AsQueryable();
             return _dbContext.FormMetaData.Take(maxCount).Where(predicate).OrderByDescending(s => s.Id).ToList();
         }
 
         public FormMetaData? Get(int id)
         {
             return _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Include(s => s.FormMetaDataAttribute_CustomeField).Single(s => s.Id == id);
+        }
+
+        public IQueryable<FormMetaData> GetQueryable()
+        {
+            return _dbContext.FormMetaData.AsQueryable<FormMetaData>();
         }
 
         public FormMetaData Save(FormMetaData formMetaData)

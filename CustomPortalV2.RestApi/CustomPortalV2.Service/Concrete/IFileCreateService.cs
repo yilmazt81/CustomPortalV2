@@ -10,9 +10,9 @@ namespace CustomPortalV2.Business.Concrete
     public interface IFileCreateService
     {
 
-        Task<DefaultReturn<string>> ConvertAttachment(int id, int attachmentTypeid, int companyId, int userId,string tempFolder);
+        Task<DefaultReturn<string>> ConvertAttachment(int id, int attachmentTypeid, int companyId, int userId,int branchId, string tempFolder);
 
-        Task<DefaultReturn<string>> ConvertFormVersion(int id, int formVersionId, int companyId, int userId,string tempFolder);
+        Task<DefaultReturn<string>> ConvertFormVersion(int id, int formVersionId, int companyId, int userId,int branchId, string tempFolder);
 
     }
 }

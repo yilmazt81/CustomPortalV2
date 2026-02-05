@@ -21,7 +21,7 @@ namespace CustomPortalV2.RestApi.Controllers
         public async Task<IActionResult> CreateFormVersion(int id, int versionid)
         {
 
-            var formConvertReturn = _fileCreateService.ConvertFormVersion(id, versionid, User.GetCompanyId(), User.GetUserId(), _hostingEnvironment.ContentRootPath + @"\TempFolder\");
+            var formConvertReturn = _fileCreateService.ConvertFormVersion(id, versionid, User.GetCompanyId(), User.GetUserId(), User.GetBranchId(),_hostingEnvironment.ContentRootPath + @"\TempFolder\");
             //Thread.Sleep(1000);
             var result = formConvertReturn.Result;
             return Ok(result);
@@ -30,7 +30,7 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpGet("CreateFormAttachment/{id}/{attachmentId}")]
         public async Task<IActionResult> CreateFormAttachment(int id, int attachmentId)
         {
-            var formConvertReturn = await _fileCreateService.ConvertAttachment(id, attachmentId, User.GetCompanyId(), User.GetUserId(), _hostingEnvironment.ContentRootPath + @"\TempFolder\");
+            var formConvertReturn = await _fileCreateService.ConvertAttachment(id, attachmentId, User.GetCompanyId(), User.GetUserId(),User.GetBranchId(), _hostingEnvironment.ContentRootPath + @"\TempFolder\");
             return Ok(formConvertReturn);
         }
     }

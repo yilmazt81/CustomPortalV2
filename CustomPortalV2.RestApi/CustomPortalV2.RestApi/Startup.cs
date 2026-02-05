@@ -95,6 +95,8 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IWorkFlowRepository, WorkFlowRepository>();
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IFoodPersonelRepository, FoodPersonelRepository>();
+            services.AddScoped<ILogRepository, LogRepository>();
+            
 
 
             services.AddMemoryCache();

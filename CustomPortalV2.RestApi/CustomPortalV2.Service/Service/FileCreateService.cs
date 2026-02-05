@@ -18,13 +18,16 @@ namespace CustomPortalV2.Business.Service
         IFormMetaDataRepository _formMetaDataRepository;
         IFirebaseStorage _firebaseStorage;
         IFormDefinationRepository _formDefinationRepository;
+        ILogRepository _logRepository;
         public FileCreateService(IFormMetaDataRepository formMetaDataRepository,
                         IFirebaseStorage firebaseStorage,
-                        IFormDefinationRepository formDefinationRepository)
+                        IFormDefinationRepository formDefinationRepository,
+                        ILogRepository logRepository)
         {
             _firebaseStorage = firebaseStorage;
             _formMetaDataRepository = formMetaDataRepository;
             _formDefinationRepository = formDefinationRepository;
+            _logRepository= logRepository;
         }
 
         private void DeleteOldFiles(string tempFolder)
@@ -51,7 +54,12 @@ namespace CustomPortalV2.Business.Service
 
             }
         }
-        public async Task<DefaultReturn<string>> ConvertAttachment(int id, int attachmentTypeid, int companyId, int userId, string tempFolder)
+        public async Task<DefaultReturn<string>> ConvertAttachment(int id,
+            int attachmentTypeid,
+            int companyId, 
+            int userId,
+            int branchId,
+            string tempFolder)
         {
             DefaultReturn<string> defaultReturn = new DefaultReturn<string>();
             try
@@ -97,6 +105,16 @@ namespace CustomPortalV2.Business.Service
                     }
 
                 }
+                _logRepository.AddCreateSoftDocumentLog(new Core.Model.Log.UserCreateSoftDocumentLog()
+                {
+                    AppUserId=userId,
+                    FormAttachmentTypeId=attachmentTypeid,
+                    LogDate=DateTime.Now,
+                    FormMetaDataId=id,
+                    FormDefinationId= formData.FormDefinationId,
+                    BranchId= branchId
+
+                });
 
 
                 using (Stream reader = new FileStream(newFileName, FileMode.Open))
@@ -113,7 +131,12 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-        public async Task<DefaultReturn<string>> ConvertFormVersion(int id, int formVersionId, int companyId, int userId, string tempFolder)
+        public async Task<DefaultReturn<string>> ConvertFormVersion(int id,
+            int formVersionId,
+            int companyId,
+            int userId, 
+            int branchId,
+            string tempFolder)
         {
             DefaultReturn<string> defaultReturn = new DefaultReturn<string>();
             try
@@ -167,6 +190,17 @@ namespace CustomPortalV2.Business.Service
                             translateDictonary);
                     }
                 }
+
+                _logRepository.AddCreateSoftDocumentLog(new Core.Model.Log.UserCreateSoftDocumentLog()
+                {
+                    AppUserId = userId,
+                    FormVersionId = formVersionId,
+                    LogDate = DateTime.Now,
+                    FormMetaDataId = id,
+                    FormDefinationId = formData.FormDefinationId,
+                    BranchId = branchId
+
+                });
 
                 using (Stream reader = new FileStream(newFileName, FileMode.Open))
                 {

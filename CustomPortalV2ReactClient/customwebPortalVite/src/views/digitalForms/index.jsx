@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import {
     CButton,
@@ -26,7 +26,7 @@ import LoadingAnimation from "../../components/LoadingAnimation.jsx";
 import { useTranslation } from "react-i18next";
 
 import { GetSector, GetFormDefinationBySector } from '../../lib/formdef.jsx'
-import { GetBrachData,DeleteForm } from '../../lib/formMetaDataApi.jsx';
+import { GetBrachData, DeleteForm, FilterForms } from '../../lib/formMetaDataApi.jsx';
 
 import GridColumsDigitalForm from './GridColumsDigitalForm';
 
@@ -107,7 +107,22 @@ const DigitalForms = () => {
         }
     }
 
-
+    async function FilterFormsByUser() {
+        try {
+            setSaveError(null);
+            setLoading(true); 
+            var formmetaDataReturn = await FilterForms(filterItem);
+            if (formmetaDataReturn.returnCode === 1) {
+                setBranchFormMetaData(formmetaDataReturn.data);
+            } else {
+                setSaveError(formmetaDataReturn.returnMessage);
+            }
+        } catch (error) {
+            setSaveError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
     function handleChange(event) {
         const { name, value } = event.target;
         setfilterItem({ ...filterItem, [name]: value });
@@ -120,14 +135,14 @@ const DigitalForms = () => {
     function SetLocationAdress() {
 
         dispatch({ type: 'reset' })
-    
-        dispatch({
-          type: 'Add',
-          payload: { pathname: "/digitalForms", name: t("DigitalForms"), active: false }
-        });
-      }
 
-      
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "/digitalForms", name: t("DigitalForms"), active: false }
+        });
+    }
+
+
     useEffect(() => {
 
         const id = searchParams.get('id');
@@ -138,15 +153,15 @@ const DigitalForms = () => {
 
     }, []);
 
-    async function DeleDocumentAccept(data){
-   
+    async function DeleDocumentAccept(data) {
+
 
         try {
             setSaveError(null);
             setLoading(true);
             var formmetaDataReturn = await DeleteForm(selectedFormId);
             if (formmetaDataReturn.returnCode === 1) {
-                GetBranchFormMetaData(); 
+                GetBranchFormMetaData();
                 setformDeleteModal(false);
 
             } else {
@@ -193,7 +208,7 @@ const DigitalForms = () => {
                 </CRow>
                 <CRow>
 
-                    <CCol sm={2}>
+                    <CCol sm={1}>
                         <CFormLabel htmlFor="cmbCustomSector" className="form-label">{t("CustomSectorName")}</CFormLabel>
                     </CCol>
                     <CCol sm={2}>
@@ -206,7 +221,7 @@ const DigitalForms = () => {
                             })}
                         </CFormSelect>
                     </CCol>
-                    <CCol sm={2}>
+                    <CCol sm={1}>
                         <CFormLabel htmlFor="cmbFormDefinationType" className="form-label">{t("FormDefinationName")}</CFormLabel>
                     </CCol>
                     <CCol sm={2}>
@@ -221,7 +236,7 @@ const DigitalForms = () => {
                         </CFormSelect>
                     </CCol>
 
-                    <CCol sm={2}>
+                    <CCol sm={1}>
                         <CFormLabel htmlFor="txtCompanyName" className="form-label">{t("CompanyName")}</CFormLabel>
 
                     </CCol>
@@ -230,15 +245,11 @@ const DigitalForms = () => {
                             onChange={e => handleChange(e)} />
                     </CCol>
 
-
-                </CRow>
-                <CRow>
-
                     <CCol>
-                        <CButton color="primary" shape='rounded-3'> {t("Filter")}</CButton>
-
+                        <CButton color="primary" shape='rounded-3' onClick={()=>FilterFormsByUser()}> {t("Filter")}</CButton>
                     </CCol>
                 </CRow>
+
                 <CRow>
                     <LoadingAnimation loading={loading} size={"%10"}></LoadingAnimation>
                 </CRow>
@@ -276,14 +287,14 @@ const DigitalForms = () => {
 
                 visiblep={formDeleteModal}
                 title={t("DeleteFormModalTitle")}
-                message={t("DeleteQuestionLabel")} 
-                OnClickOk={(data)=>DeleDocumentAccept(data)}
-                OnClickCancel={()=>setformDeleteModal(false)}
+                message={t("DeleteQuestionLabel")}
+                OnClickOk={(data) => DeleDocumentAccept(data)}
+                OnClickCancel={() => setformDeleteModal(false)}
                 saveStart={loading}
                 deleteError={saveError}
                 message2=''
 
-                >
+            >
 
 
             </DeleteModal>

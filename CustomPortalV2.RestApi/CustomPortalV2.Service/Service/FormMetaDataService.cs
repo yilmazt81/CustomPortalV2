@@ -33,7 +33,43 @@ namespace CustomPortalV2.Business.Service
         }
         public DefaultReturn<List<FormMetaData>> FilterForms(FormMetaDataFilterPost formMetaData)
         {
-            throw new NotImplementedException();
+            DefaultReturn<List<FormMetaData>> defaultReturn = new DefaultReturn<List<FormMetaData>>();
+            var formData = _formMetaDataRepository.GetQueryable();
+            var userBranch = _branchRepository.Get(s => s.Id == formMetaData.BrachId);
+
+            if (!userBranch.SysAdmin)
+            {
+                formData = formData.Where(s => s.MainCompanyId == formMetaData.CompanyId);
+            }
+
+            if (!userBranch.CompanyAdmin)
+            {
+
+                formData = formData.Where(s => s.CompanyBranchId == formMetaData.BrachId);
+            }
+
+            if (formMetaData.SectorId != 0)
+            {
+                formData = formData.Where(s => s.CustomSectorId == formMetaData.SectorId);
+            }
+
+            if (formMetaData.FormDefinationTypeId != 0)
+            {
+                formData = formData.Where(s => s.FormDefinationId == formMetaData.FormDefinationTypeId);
+            }
+            if (!string.IsNullOrEmpty(formMetaData.CompanyName))
+            {
+                formData = formData.Where(s => s.SenderCompanyName.Contains(formMetaData.CompanyName) || s.RecrivedCompanyName.Contains(formMetaData.CompanyName));
+            }
+
+            formData = formData.Where(s => !s.Deleted && !s.DefaultForm);
+
+            List<FormMetaData> userLastForms = new List<FormMetaData>();
+            userLastForms = formData.OrderBy(s => s.Id).Take(50).ToList();
+
+            defaultReturn.Data = userLastForms.ToList();
+
+            return defaultReturn;
         }
 
         public DefaultReturn<List<FormMetaData>> GetBranchFormMetaData(int companyId, int brachId)

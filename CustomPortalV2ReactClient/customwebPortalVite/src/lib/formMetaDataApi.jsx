@@ -36,6 +36,13 @@ export async function  DeleteForm(formid) {
 };
 
 
+export async function  FilterForms(filterrequest) {   
+  
+  const { data } =  await Post (`/api/FormMetaData/FilterForms/`,filterrequest);
+  return data;
+};
+
+
 
 export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,workid,custimefieldList) {
  
