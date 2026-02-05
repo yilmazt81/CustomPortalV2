@@ -224,6 +224,8 @@ export const TRANSLATIONS_EN = {
     PersonelModalTitle: "Personnel Selection Window",
     RegistrationNumber: "Registration Number",
     Title: "Title",
+    CustomWorks: "Works",
+    WorkflowInbox:"Inbox",
 };
 
 

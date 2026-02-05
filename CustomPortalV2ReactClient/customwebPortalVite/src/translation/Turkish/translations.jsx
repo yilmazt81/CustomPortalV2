@@ -225,6 +225,8 @@ export const TRANSLATIONS_TR = {
     PersonelModalTitle:"Personel Seçim Penceresi",
     RegistrationNumber:"Kayıt Numarası",
     Title:"Unvan",
+    CustomWorks:"İşlerim",
+    WorkflowInbox:"Gelen Kutusu",
 
 };
 

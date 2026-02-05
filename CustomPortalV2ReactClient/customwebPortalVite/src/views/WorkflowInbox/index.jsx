@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 import { UrlContext } from "../../lib/URLContext";
 
-const CustomWorks = () => {
+const WorkflowInbox = () => {
     const navigate = useNavigate();
     //Bu sekilde redux tan okunacak 
     const { t } = useTranslation();
@@ -39,7 +39,7 @@ const CustomWorks = () => {
 
         dispatch({
             type: 'Add',
-            payload: { pathname: "#/CustomWorks", name: t("CustomWorks"), active: false }
+            payload: { pathname: "#/WorkflowInbox", name: t("WorkflowInbox"), active: false }
         });
     }
 
@@ -76,6 +76,6 @@ const CustomWorks = () => {
     )
 }
 
-export default CustomWorks;
+export default WorkflowInbox;
 
 

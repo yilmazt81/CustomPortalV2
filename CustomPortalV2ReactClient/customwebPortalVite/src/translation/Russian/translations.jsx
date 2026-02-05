@@ -218,4 +218,6 @@ export const TRANSLATIONS_RU = {
     PersonelModalTitle: "Выбор персонала",
     RegistrationNumber: "Регистрационный номер",
     Title: "Название",
+    CustomWorks: "Работы",
+    WorkflowInbox:"Входящие",
 };
