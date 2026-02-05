@@ -73,7 +73,10 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IFoodPersonelService, FoodPersonelService>();
 
 
+
+
             services.AddSingleton<IFirebaseStorage, FireStorage>();
+            services.AddSingleton<IOpenAIService, OpenAIService>();
 
             services.AddSingleton<FirebaseService>();
 

@@ -19,6 +19,7 @@ const Settings = React.lazy(()=>import('./views/settings/index.jsx'));
 const UserProfile = React.lazy(()=>import('./views/Profile/index.jsx'));
 const CustomeFields=React.lazy(()=>import('./views/customefields/index.jsx'));
 const customeFieldEdit=React.lazy(()=>import('./views/customefieldEdit/index.jsx'));
+const CustomWorks=React.lazy(()=>import('./views/customworks/index.jsx'));
 
 
 const routes = [
@@ -45,6 +46,9 @@ const routes = [
   { path: '/UserProfile', name: 'UserProfile', element: UserProfile }, 
   { path: '/customeFields', name: 'CustomeFields', element: CustomeFields }, 
   { path: '/CustomeFieldEdit', name: 'CustomeFieldEdit', element: customeFieldEdit }, 
+  { path: '/CustomWorks', name: 'CustomWorks', element: CustomWorks }, 
+
+  
 
   
   

@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 import GridColumns from './GridColumns';
 import ProductEditModal from './productEditModal'
-import { GetSector } from '../../lib/formdef.jsx'; 
+import { GetSector } from '../../lib/formdef.jsx';
 import { CreateProduct, GetCompanyProducts, GetCompanyProduct, DeleteProduct } from "../../lib/customProductapi.jsx";
 import DeleteModal from '../../components/DeleteModal.jsx';
 
@@ -191,13 +191,13 @@ const ProductDefination = () => {
 
 
       <DeleteModal
-        
+
         message={product?.productName}
         title={t("ModalDeleteProductTitle")}
         visiblep={visibleDelete}
         message2={t("AutoComplateMapDeleteMessage")}
         OnClickOk={() => DeleteProductDB()}
-        OnClickCancel ={() => setVisibleDelete(false)}
+        OnClickCancel={() => setVisibleDelete(false)}
       >
 
 

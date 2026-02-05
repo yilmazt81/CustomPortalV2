@@ -3,10 +3,13 @@ using CustomPortalV2.DataAccessLayer;
 using CustomPortalV2.RestApi;
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OpenAI;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,11 @@ builder.Services.AddControllers().AddJsonOptions(x =>
         x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
     );
 // JWT
+builder.Services.AddSingleton(_ =>
+{
+    var apiKey = builder.Configuration["OpenAI:ApiKey"];
+    return new OpenAIClient(apiKey);
+});
 
 builder.Services.AddAuthentication(cfg => {
     cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -48,11 +56,28 @@ builder.Services.AddAuthentication(cfg => {
     };
 });
 
-//
+//Rate limit
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("AIRateLimit", opt =>
+    {
+        opt.Window = TimeSpan.FromMinutes(1); // 1 dk
+        opt.PermitLimit = 10;                  // 10 istek
+        opt.QueueLimit = 2;                    // taþanlar kuyrukta
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+//Rate limit
+app.UseRateLimiter();
+//app.MapPost("/api/ChatAI").RequireRateLimiting("AIRateLimit");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
