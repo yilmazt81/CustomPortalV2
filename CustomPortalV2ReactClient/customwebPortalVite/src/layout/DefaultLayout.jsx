@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef,createContext, useReducer } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index.jsx'
+import CookieConsent from '../components/CookieConsent.jsx'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -54,6 +55,7 @@ const DefaultLayout = () => {
         </div>
         <AppFooter />
       </div>
+      <CookieConsent />
     </div>
   )
 }

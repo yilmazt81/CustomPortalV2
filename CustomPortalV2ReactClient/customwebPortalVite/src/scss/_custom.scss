@@ -1,5 +1,13 @@
 // Here you can add other styles
 
+html[data-coreui-theme="light"],
+[data-coreui-theme="light"] {
+  --cui-sidebar-bg: #213547;
+  --cui-sidebar-color: #ffffff;
+  --cui-sidebar-brand-bg: #213547;
+  --cui-sidebar-toggler-bg: #1b2c3e;
+}
+
 // Make container-lg use full available width
 .container-lg {
   max-width: 100%;

@@ -31,6 +31,12 @@ export const TRANSLATIONS_TR = {
     UserDisable: "Kullancı  Aktif Değil",
     FailTimeOutMinute: "Fazla hatalı giriş denemesi bir süre bekledikten sonra tekrar deneyiniz.",
     Dashboard: "Genel Görünüm",
+    CookieConsentMessage: "Bu uygulama performans ve deneyim icin cookie kullanir. Devam ederek izin verirsiniz.",
+    CookieConsentAccept: "Kabul Et",
+    CookieConsentReject: "Reddet",
+    CookieConsentNecessaryNote: "Zorunlu cookie'ler her zaman aktiftir.",
+    CookieConsentDetailsLink: "Detaylar",
+    CookieConsentDetailsUrl: "http://istanbulyazilimofisi.com.tr/gizlilik",
     BranchDefination: "Şube Tanımları",
     BranchName: "Şube Adı",
     PackedName: "Paket Adı",
@@ -45,6 +51,7 @@ export const TRANSLATIONS_TR = {
     DeleteMessage1: "Silmek istediğinizden emin misiniz ?",
     DeleteMessage2: "Sildikten sonra Şube kullanıcıları dokumanlarına ulaşılamayacaktır.",
     FullName: "Tam Adı",
+    Users: "Kullanıcılar",
     EditUserName: "Kullanıcı Güncelle",
     UserDelete: "Kullanıcı Sil",
     UserDeleteMessage: "Kullanıcıyı silmek istediğinizden emin misiniz ?",
@@ -227,6 +234,11 @@ export const TRANSLATIONS_TR = {
     Title:"Unvan",
     CustomWorks:"İşlerim",
     WorkflowInbox:"Gelen Kutusu",
+    NewWork:"Yeni İş",
+    InProgress:"Devam Eden",
+    Completed:"Tamamlanan",
+    CustomeWorkModalTitle:"İş Düzenle",
+    CustomWorkName:"İş Adı",
 
 };
 

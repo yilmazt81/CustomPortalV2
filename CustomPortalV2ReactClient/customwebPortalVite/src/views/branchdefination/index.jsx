@@ -1,46 +1,14 @@
-import React, { useEffect, useMemo, useState,useContext } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 import {
-  CAvatar,
   CButton,
   CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
-  CCardHeader,
   CCol,
   CAlert,
-  CProgress,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalFooter,
-  CModalBody,
-  CFormLabel,
-  CFormInput,
-  CFormSelect,
-  CCardText,
-  CContainer
-
-
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import { cilNoteAdd } from '@coreui/icons'
-import Lottie from 'lottie-react';
-
-import ProcessAnimation from "../../content/animation/Process.json";
-
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
 
 import {
   MaterialReactTable,
@@ -49,11 +17,6 @@ import {
 
 import {
   Box,
-  Button,
-  ListItemIcon,
-  MenuItem,
-  Typography,
-  lighten,
   IconButton
 
 
@@ -61,18 +24,13 @@ import {
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Email as EmailIcon,
-  AlignHorizontalCenter,
 } from '@mui/icons-material';
 
 
 import { useTranslation } from "react-i18next";
 
 import { Gridcolumns } from './DataGrid';
-import { GetBranchList, GetBranch, SaveBranch, DeleteBranch, CreateNewBranch } from '../../lib/companyapi.jsx';
- 
-
-import AppBreadcrumb from '../../components/AppBreadcrumb.jsx';
+import { GetBranchList, GetBranch, DeleteBranch, CreateNewBranch } from '../../lib/companyapi.jsx';
 
 import DeleteModal from '../../components/DeleteModal.jsx'
 
@@ -94,19 +52,12 @@ const BranchDefination = () => {
 
   const { dispatch } = useContext(UrlContext); 
 
-  const [saveStart, setsaveStart] = useState(false);
-  const [deleteStart, setdeleteStart] = useState(false);
-
   const [saveError, setSaveError] = useState(null);
 
-
-  //Bu sekilde redux tan okunacak
-  const userToken = useSelector(state => state.userToken);
-
-  async function LoadBranchList() {
+  const loadBranchList = async () => {
     try {
       setVisible(false);
-      var companyBranchList = await GetBranchList();
+      const companyBranchList = await GetBranchList();
 
       if (companyBranchList.returnCode === 1) {
         setBranchList(companyBranchList.data);
@@ -118,25 +69,23 @@ const BranchDefination = () => {
       setSaveError(error.message);
     }
 
-  }
+  };
 
 
-  function SetLocationAdress(){
-
-    dispatch({type:'reset'})
-
+  const setLocationAdress = () => {
+    dispatch({ type: 'reset' })
     dispatch({
       type: 'Add',
-      payload: {pathname:"./BranchDefination",name:t("BranchDefination"),active:false}
-    });   
-  }
+      payload: { pathname: "./BranchDefination", name: t("BranchDefination"), active: false }
+    });
+  };
 
 
   useEffect(() => {
 
     try {
-      SetLocationAdress();
-      LoadBranchList(); 
+      setLocationAdress();
+      loadBranchList(); 
 
     } catch (error) {
       console.log(error);
@@ -144,12 +93,10 @@ const BranchDefination = () => {
 
   }, []);
 
-  async function EditData(row) {
-    var id = row.original["id"];
-    setsaveStart(true);
+  const editData = async (row) => {
+    const id = row.original["id"];
     try {
-
-      var editbranch = await GetBranch(id);
+      const editbranch = await GetBranch(id);
       if (editbranch.returnCode === 1) {
         setEditBranch(editbranch.data);
         setVisible(!visible);
@@ -158,19 +105,14 @@ const BranchDefination = () => {
       }
     } catch (error) {
       setSaveError(error.message);
-    } finally {
-      setsaveStart(false);
     }
-  }
+  };
 
-  async function DeleteData(row) {
-    var id = row.original["id"];
-    setdeleteStart(true);
-
+  const deleteData = async (row) => {
+    const id = row.original["id"];
     setSaveError(null);
     try {
-
-      var editbranch = await GetBranch(id);
+      const editbranch = await GetBranch(id);
       if (editbranch.returnCode === 1) {
         setEditBranch(editbranch.data); 
         setVisibleDelete(true);
@@ -179,34 +121,31 @@ const BranchDefination = () => {
       }
     } catch (error) {
       setSaveError(error.message);
-    } finally {
-      setdeleteStart(false);
     }
-  }
+  };
 
  
   
 
-  async function DeleteDataServer() {
+  const deleteDataServer = async () => {
     try {
-      var deleteBranchReturn = await DeleteBranch(editBranch.id);
+      const deleteBranchReturn = await DeleteBranch(editBranch.id);
       if (deleteBranchReturn.returnCode === 1) {
         setVisibleDelete(!visibleDelete);
-        LoadBranchList();
+        loadBranchList();
       } else {
         setSaveError(deleteBranchReturn.returnMessage);
       }
     } catch (error) {
       setSaveError(error.message);
     }
-  }
+  };
 
-  async function NewBranch() {
-    setsaveStart(false);
+  const newBranch = async () => {
     setSaveError(null);
 
     try {
-      var createBranchReturn = await CreateNewBranch();
+      const createBranchReturn = await CreateNewBranch();
       if (createBranchReturn.returnCode === 1) {
 
         setEditBranch(createBranchReturn.data);
@@ -217,7 +156,7 @@ const BranchDefination = () => {
       setSaveError(error.message);
     }
     setVisible(!visible);
-  }
+  };
 
   const table = useMaterialReactTable({
     columns: Gridcolumns,
@@ -227,10 +166,10 @@ const BranchDefination = () => {
     positionActionsColumn: 'last',
     renderRowActions: ({ row }) => (
       <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '3px' }}>
-        <IconButton onClick={() => EditData(row)}>
+        <IconButton onClick={() => editData(row)}>
           <EditIcon />
         </IconButton>
-        <IconButton onClick={() => DeleteData(row)}>
+        <IconButton onClick={() => deleteData(row)}>
           <DeleteIcon />
         </IconButton>
 
@@ -248,11 +187,11 @@ const BranchDefination = () => {
       message={t("DeleteMessage1")}
       message2={t("DeleteMessage2")}
       visiblep={visibleDelete}
-      OnClickOk={() => DeleteDataServer()}
+      OnClickOk={() => deleteDataServer()}
       OnClickCancel={() => setVisibleDelete(!visibleDelete)}
     ></DeleteModal>
 
-    <BranchEditModal visiblep={visible} editBranchp={editBranch}  OnCloseModal={()=>setVisible(false)} setFormData={()=>LoadBranchList()} ></BranchEditModal>
+    <BranchEditModal visiblep={visible} editBranchp={editBranch}  OnCloseModal={() => setVisible(false)} setFormData={() => loadBranchList()} ></BranchEditModal>
 
    
 
@@ -261,7 +200,7 @@ const BranchDefination = () => {
         <CRow>
           <CCol>
             <CButtonGroup role="group">
-              <CButton color="primary" shape='rounded-3' onClick={() => NewBranch()} > {t("AddNew")}</CButton>
+              <CButton color="primary" shape='rounded-3' onClick={() => newBranch()} > {t("AddNew")}</CButton>
             </CButtonGroup>
           </CCol>
         </CRow>

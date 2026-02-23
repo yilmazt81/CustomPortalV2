@@ -3,21 +3,13 @@
 // If you want to customize your project please uncomment and update 
 //one of the following variables.
 
+@use "sass:color";
+
 // Color system
 
 // scss-docs-start gray-color-variables
-// $white:     #fff !default;
-// $gray-base: #3c4b64 !default;
-// $gray-100:  #ebedef !default;
-// $gray-200:  #d8dbe0 !default;
-// $gray-300:  #c4c9d0 !default;
-// $gray-400:  #b1b7c1 !default;
-// $gray-500:  #9da5b1 !default;
-// $gray-600:  #8a93a2 !default;
-// $gray-700:  #768192 !default;
-// $gray-800:  #636f83 !default;
-// $gray-900:  #4f5d73 !default;
-// $black:     #000015 !default;
+$gray-100:  #ebedef !default;
+$gray-900:  #4f5d73 !default;
 // scss-docs-end gray-color-variables
 
 // fusv-disable
@@ -108,13 +100,13 @@ $danger-25: #f9d4d4 !default;
 
 $light-dark: $gray-100 !default;
 $light-base: $gray-100 !default;
-$light-50: lighten($light-base, 5%) !default;
-$light-25: lighten($light-base, 10%) !default;
+$light-50: color.adjust($light-base, $lightness: 5%) !default;
+$light-25: color.adjust($light-base, $lightness: 10%) !default;
 
 $dark-dark: $gray-900 !default;
 $dark-base: $gray-900 !default;
-$dark-50: darken($dark-base, 5%) !default;
-$dark-25: darken($dark-base, 11%) !default;
+$dark-50: color.adjust($dark-base, $lightness: -5%) !default;
+$dark-25: color.adjust($dark-base, $lightness: -11%) !default;
 // fusv-enable
 
 // scss-docs-start theme-color-variables
