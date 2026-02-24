@@ -26,6 +26,7 @@ import { GetUserList } from '../../lib/userapi.jsx';
 import { GetSector } from '../../lib/formdef.jsx';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
+ 
 
 import './reactTags.scss';
 import ProcessAnimation from "../../content/animation/Process.json";
@@ -308,8 +309,12 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txtReceivedCompanyName" className="col-sm-3 col-form-label">{t("RecrivedCompanyName")}</CFormLabel>
                             <CCol sm={8}>
+                                
+                                
                                 <CFormInput type="text" id='txtReceivedCompanyName' name="receivedCompanyName"
                                     onChange={e => handleChange(e)} value={customeWork?.RecrivedCompanyName} />
+                              
+                            
                             </CCol>
 
                             <CCol sm={1}>

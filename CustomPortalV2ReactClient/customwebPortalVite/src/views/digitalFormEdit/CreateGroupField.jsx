@@ -193,7 +193,7 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
             return;
         for (var i = 0; i < controlDataList.length; i++) {
             var item = controlDataList[i];
-
+ 
             const inputElement = document.getElementById(item.controlName);
             if (inputElement == null)
                 continue;
