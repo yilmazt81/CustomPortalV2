@@ -238,6 +238,15 @@ export const TRANSLATIONS_EN = {
     Completed: "Completed    ",
     CustomeWorkModalTitle: "Edit Work",
     CustomWorkName: "Work Name",
+    AiChatTitle: "AI Chat",
+    AiChatDescription: "Ask questions about documents, workflows, or forms.",
+    AiChatWelcomeMessage: "Hello, how can I help you today?",
+    AiChatInputPlaceholder: "Type your question...",
+    AiChatSend: "Send",
+    AiChatUserLabel: "You",
+    AiChatAssistantLabel: "Assistant",
+    AiChatFallbackMessage: "I could not generate a response right now. Please try again.",
+    AiChatRequestError: "An error occurred while connecting to the AI service.",
 };
 
 

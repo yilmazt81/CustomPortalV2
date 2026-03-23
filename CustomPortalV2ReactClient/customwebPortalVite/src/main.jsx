@@ -5,6 +5,9 @@ import store from './store'
 import './index.css'
 import App from './App'
 import './translation/i18'
+import { setupAuthInterceptor } from './lib/authInterceptor.jsx'
+
+setupAuthInterceptor()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

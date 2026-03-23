@@ -12,7 +12,7 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int Id { get; set; }
         public int FormDefinationId { get; set; }
         public string FormLanguage { get; set; }
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         public string CreatedBy { get; set; }
 
@@ -28,7 +28,7 @@ namespace CustomPortalV2.Core.Model.FDefination
 
      
         public int? EditedId { get; set; }
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
 
         public bool Active { get; set; }
         [JsonIgnore]

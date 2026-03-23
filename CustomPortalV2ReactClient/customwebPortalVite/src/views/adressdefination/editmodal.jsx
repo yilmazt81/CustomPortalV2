@@ -113,6 +113,7 @@ const EditModal = ({ visiblep, adressdefinationp,adresDefinationTypesp,setFormDa
         if (adressdefinationp!=null)
         { 
            var defaultSelectData=[];
+           debugger;
             if (adressdefinationp.definations!=null){
                 for (let index = 0; index < adressdefinationp.definations.length; index++) {
                     const adressdefination =  adressdefinationp.definations[index];

@@ -15,6 +15,7 @@ namespace CustomPortalV2.Core.Model.DTO
             ReturnMessage = "ok";
         }
         public string token { get; set; }
+        public string refreshtoken { get; set; }
         public bool IsLogin { get; set; }
 
         public int UserId { get; set; }

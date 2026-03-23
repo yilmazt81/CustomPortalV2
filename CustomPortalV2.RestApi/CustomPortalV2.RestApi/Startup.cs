@@ -71,7 +71,7 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IWorkFlowService, WorkFlowService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IFoodPersonelService, FoodPersonelService>();
-
+            services.AddScoped<ICustomWorkService, CustomWorkService>();
 
 
 
@@ -99,7 +99,11 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IFoodPersonelRepository, FoodPersonelRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
+
+            services.AddScoped<ICustomWorkRepository, CustomWorkRepository>();
             
+
+
 
 
             services.AddMemoryCache();

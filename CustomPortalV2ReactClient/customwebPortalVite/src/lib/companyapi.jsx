@@ -1,5 +1,6 @@
 import axios from "axios"; 
 import {GetRequest,Post} from './Apibase'
+import { getAccessToken } from "./tokenStorage.jsx";
 
 async function   CreateCompany(company)
 { 
@@ -22,7 +23,7 @@ async function CreateNewBranch() {
   return data;
 }
 async function GetBranch(id){
-  var lastToken=localStorage.getItem("LastToken");
+  var lastToken=getAccessToken();
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
 
   const { data } =  await axios.get(import.meta.env.VITE_APIURL+`/api/Branch/${id}`);
@@ -30,7 +31,7 @@ async function GetBranch(id){
 
 }
 async function DeleteBranch(id){
-  var lastToken=localStorage.getItem("LastToken");
+  var lastToken=getAccessToken();
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
 
   const { data } =  await axios.get(import.meta.env.VITE_APIURL+`/api/Branch/DeleteBranch/${id}`);
@@ -39,7 +40,7 @@ async function DeleteBranch(id){
 }
 async function SaveBranch(savedata)
 {
-  var lastToken=localStorage.getItem("LastToken");
+  var lastToken=getAccessToken();
   axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
  
   const { data } =  await axios.post(import.meta.env.VITE_APIURL+`/api/Branch`,savedata);

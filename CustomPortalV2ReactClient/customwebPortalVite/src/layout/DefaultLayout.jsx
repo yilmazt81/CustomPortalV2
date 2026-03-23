@@ -5,6 +5,7 @@ import CookieConsent from '../components/CookieConsent.jsx'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { getUserMenu } from "../lib/userapi.jsx"
+import { clearTokens, getAccessToken } from '../lib/tokenStorage.jsx';
   
 
 const DefaultLayout = () => {
@@ -28,15 +29,15 @@ const DefaultLayout = () => {
       }
     } catch (error) {
       debugger;
-      localStorage.removeItem("LastToken");
-      navigate('../Login');
+      clearTokens();
+      navigate('/login');
     }
   }
 
   useEffect(() => {
-    var lastToken = localStorage.getItem("LastToken");
+    var lastToken = getAccessToken();
     if (lastToken == null) {
-      navigate('../Login');
+      navigate('/login');
     } else {
       if (userMenu.length == 0) {
         LoadUserMenu();

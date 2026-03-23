@@ -16,6 +16,12 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             _dbContext = dbContext;
         }
 
+        public void AddRefreshToken(RefreshToken refreshToken)
+        {
+            _dbContext.RefreshTokens.Add(refreshToken);
+            _dbContext.SaveChanges();
+        }
+
         public User AddUser(User user)
         {
             _dbContext.Add(user);
@@ -43,6 +49,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public IEnumerable<User> GetBranchUsers(int branchId)
         {
             return _dbContext.Users.Where(s => s.CompanyBranchId == branchId && !s.Deleted).ToList();
+        }
+
+        public RefreshToken? GetRefreshToken(string tokenHash)
+        {
+            return _dbContext.RefreshTokens.FirstOrDefault(s => s.TokenHash == tokenHash);
         }
 
         public User? GetUserName(string userName, int companyId)
@@ -82,6 +93,15 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             dbUser.Deleted=user.Deleted;
             _dbContext.SaveChanges();
             return true;
+        }
+
+        public void UpdateRefreshToken(RefreshToken token)
+        {
+            var dbToken = _dbContext.RefreshTokens.Single(s => s.Id == 0);
+            dbToken.IsRevoked = token.IsRevoked;
+            dbToken.RevokedAt = token.RevokedAt;
+
+            _dbContext.SaveChanges();
         }
     }
 }

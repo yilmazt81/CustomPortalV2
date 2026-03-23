@@ -288,9 +288,10 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public FormVersion Update(FormVersion formVersion)
         {
-            var dbVersion = _dbContext.FormVersion.Single(s => s.FormDefinationId == formVersion.Id);
+            var dbVersion = _dbContext.FormVersion.Single(s => s.Id == formVersion.Id);
             dbVersion.FormLanguage = formVersion.FormLanguage;
-            dbVersion.FileName = formVersion.FilePath;
+            dbVersion.FileName = formVersion.FileName;
+            dbVersion.FilePath = formVersion.FilePath;
             dbVersion.EditedBy = formVersion.EditedBy;
             dbVersion.EditedDate = formVersion.EditedDate;
             dbVersion.EditedId = formVersion.EditedId;

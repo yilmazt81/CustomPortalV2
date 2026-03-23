@@ -23,6 +23,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {useNavigate } from 'react-router-dom'
 //import SimpleReactValidator from 'simple-react-validator'; 
 import {LoginUser} from '../../../lib/userapi.jsx';
+import { getAccessToken, setTokens } from '../../../lib/tokenStorage.jsx';
 
 import Lottie from "lottie-react"; 
 import animationLogin from "../../../content/animation/Login.json";
@@ -63,8 +64,12 @@ const Login = () => {
         dispatch({ type: 'set', UserName: userInfo.UserName });        
         dispatch({ type: 'set', CompanyCode: userInfo.CompanyCode })
         axios.defaults.headers.common['Authorization'] = `Bearer ${loginresult.token}`;
-        localStorage.setItem("LastToken",loginresult.token);
-        navigate('../Dashboard');
+        setTokens(
+          loginresult.token,
+          loginresult.refreshToken || loginresult.newRefreshToken || loginresult.refresh
+        );
+        
+        navigate('/dashboard');
 
       }else{ 
         setLoginError(t(loginresult.returnMessage));
@@ -73,18 +78,18 @@ const Login = () => {
       setLoginError(error.message);
     }finally{
       setloginStart(false);
-      setLoginError(null);
+      //setLoginError(null);
     }   
 
   }
   
   
   useEffect(() => { 
-    var lastToken=localStorage.getItem("LastToken");
+    var lastToken=getAccessToken();
     if (lastToken!=null)
       {  
         axios.defaults.headers.common['Authorization'] = `Bearer ${lastToken}`;
-        navigate('../Dashboard'); 
+        navigate('/dashboard'); 
       }else{
 
         setLoginError(null);

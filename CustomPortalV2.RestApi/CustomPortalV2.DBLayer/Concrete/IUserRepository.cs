@@ -25,6 +25,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         IEnumerable<BranchPackage> GetBranchPackages();
 
-
+        RefreshToken? GetRefreshToken(string tokenHash);
+        void AddRefreshToken(RefreshToken refreshToken);
+        void UpdateRefreshToken(RefreshToken token);
     }
 }

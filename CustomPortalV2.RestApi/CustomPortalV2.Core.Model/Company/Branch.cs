@@ -13,9 +13,9 @@ namespace CustomPortalV2.Core.Model.Company
         public int Id { get; set; } 
         public int MainCompanyId { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
-        public string PhoneNumber   { get; set; }
+        public string? PhoneNumber   { get; set; }
 
         public bool WaitForAllowApp { get; set; }
 
@@ -26,7 +26,7 @@ namespace CustomPortalV2.Core.Model.Company
         public bool Deleted { get; set; }
         public int UserRuleId { get; set; }
 
-        public string UserRuleName { get; set; }
+        public string? UserRuleName { get; set; }
          
         public bool CompanyAdmin { get; set; }
 

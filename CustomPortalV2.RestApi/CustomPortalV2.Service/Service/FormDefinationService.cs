@@ -580,16 +580,26 @@ namespace CustomPortalV2.Business.Service
         public DefaultReturn<FormVersion> Save(FormVersion formDefination)
         {
             DefaultReturn<FormVersion> defaultReturn = new DefaultReturn<FormVersion>();
-
-            if (formDefination.Id == 0)
+            try
             {
-                defaultReturn.Data = _formDefinationService.Add(formDefination);
-            }
-            else
-            {
-                defaultReturn.Data = _formDefinationService.Update(formDefination);
-            }
+            
 
+                if (formDefination.Id == 0)
+                {
+                    defaultReturn.Data = _formDefinationService.Add(formDefination);
+                }
+                else
+                {
+                    defaultReturn.Data = _formDefinationService.Update(formDefination);
+                }
+
+            
+            }
+            catch (Exception ex)
+            {
+
+                defaultReturn.SetException(ex);
+            }
             return defaultReturn;
         }
 

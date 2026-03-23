@@ -14,20 +14,20 @@ namespace CustomPortalV2.Model.Company
 
         public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public string? TaxNumber { get; set; }
 
         public string? TaxOffice { get; set; }
 
-        public string AuthorizedPersonName { get; set; }
+        public string? AuthorizedPersonName { get; set; }
 
         public int? CountryId { get; set; }
 
 
         public int? CityId { get; set; }
 
-        public string MersisNo { get; set; }
+        public string? MersisNo { get; set; }
 
 
         public string CompanyCode { get; set; }

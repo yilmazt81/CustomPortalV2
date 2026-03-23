@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import LoadingAnimation from "../../components/LoadingAnimation.jsx";
 import { useTranslation } from "react-i18next";
@@ -19,12 +19,12 @@ import {
 
 } from '@coreui/react'
 
-
+import { UrlContext } from '../../lib/URLContext.jsx';
 
 const FormDefinationVersion = () => {
     const { t } = useTranslation();
     const [searchParams, setSearchParams] = useSearchParams();
-
+    const { dispatch } = useContext(UrlContext);
     const [formdefinationTypeId, setFormDefinationTypeId] = useState(0);
     const [formdefination, setformdefination] = useState(null);
     const [formVersion,setFormVersion]=useState({active:true,id:0,formLanguage:"",fileName:""});
@@ -44,6 +44,7 @@ const FormDefinationVersion = () => {
             if (versionDataReturn.returnCode === 1) {
 
                 setformdefination(versionDataReturn.data);
+                return versionDataReturn.data;
             } else {
 
                 setErrorMessage(versionDataReturn.returnMessage);
@@ -54,6 +55,7 @@ const FormDefinationVersion = () => {
             setLoading(false);
         }
 
+        return null;
     }
 
     async function LoadFormVersions(id) {
@@ -77,16 +79,36 @@ const FormDefinationVersion = () => {
         }
 
     }
+   function SetLocationAdress(formdefination) {
+
+        dispatch({ type: 'reset' })
+
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "#/FormDefinationType", name: t("FormDefinations"), active: true }
+        }); 
+        dispatch({
+            type: 'Add',
+            payload: { pathname: "/FormDefinationTypeEdit/formdefinationId=", name: formdefination?.formName, active: false }
+        });
+    }
 
 
     useEffect(() => {
-
         const id = searchParams.get('formdefinationId');
-        setFormDefinationTypeId(id);
-        GetDefination(id);
-        LoadFormVersions(id);
 
-    }, []);
+        const loadData = async () => {
+            setFormDefinationTypeId(id);
+            const definationData = await GetDefination(id);
+            await LoadFormVersions(id);
+
+            if (definationData) {
+                SetLocationAdress(definationData);
+            }
+        };
+
+        loadData();
+    }, [searchParams]);
 
 
 

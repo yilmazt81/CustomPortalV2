@@ -19,21 +19,21 @@ namespace CustomPortalV2.Core.Model.FDefination
         public int? FormGroupId { get; set; }
         public bool AutoComplate { get; set; }
         public  bool  Deleted { get; set; }
-        public string CellName { get; set; }
+        public string? CellName { get; set; }
         public int? OrderNumber { get; set; }
         public int? FontSize { get; set; }
         public bool Bold { get; set; }
         public bool Italic { get; set; }
-        public string DefaultProp { get; set; }
+        public string? DefaultProp { get; set; }
 
-        public string FontFamily { get; set; }
-        public string TranslateLanguage { get; set; }
+        public string? FontFamily { get; set; }
+        public string? TranslateLanguage { get; set; }
         [JsonIgnore]
         public virtual FormDefination? FormDefination { get; set; }
         [JsonIgnore]
         public virtual FormGroup? FormGroup { get; set; }
 
-        public string AutoComlateType { get; set; }
+        public string? AutoComlateType { get; set; }
 
     }
 }

@@ -15,6 +15,7 @@ namespace CustomPortalV2.Business.Service
     {
 
         OpenAIClient _client;
+        private string modelname = "gpt-5-mini";
         public OpenAIService(OpenAIClient client)
         {
             _client = client;
@@ -22,7 +23,7 @@ namespace CustomPortalV2.Business.Service
         public async Task<DefaultReturn<string>> SendPromtAsync(AIPostRequest promt)
         {
             DefaultReturn<string> defaultReturn = new DefaultReturn<string>();
-            var chat = _client.GetChatClient("gpt-5-mini");
+            var chat = _client.GetChatClient(modelname);
             var messages = new List<ChatMessage>
                 {
                     ChatMessage.CreateSystemMessage("You are a helpful assistant."),
@@ -31,7 +32,7 @@ namespace CustomPortalV2.Business.Service
             var response = await chat.CompleteChatAsync(messages);
 
             defaultReturn.Data = response.Value.Content[0].Text;
-
+          
 
             return defaultReturn;
         }

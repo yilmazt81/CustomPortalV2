@@ -13,6 +13,9 @@ namespace CustomPortalV2.Business.Concrete
     public interface IUserService
     {
         enumLoginReturn Login(string clientIp, string companyCode, string username, string password, ref User user);
+
+       DefaultReturn<RefreshToken> GenerateRefreshToken(string token);
+         
         DefaultReturn<User> UpdateUser(User user);
         DefaultReturn<List<User>> GetUsers(int companyId, int branchId);
         DefaultReturn<User> GetById(int companyId, int id);
@@ -28,6 +31,8 @@ namespace CustomPortalV2.Business.Concrete
         DefaultReturn<List<BranchPackage>> GetBranchPackage(int companyId, int userId);
 
         DefaultReturn<User> AddUser(User user);
+
+        public void AddRefreshToken(RefreshToken refreshToken);
 
     }
 }

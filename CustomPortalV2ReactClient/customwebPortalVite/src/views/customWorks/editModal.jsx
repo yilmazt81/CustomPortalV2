@@ -17,16 +17,12 @@ import {
 
 } from '@coreui/react'
 
-import { cilMap } from '@coreui/icons';
-
-import CIcon from '@coreui/icons-react';
-
 import { Save } from '../../lib/customWorkapi.jsx';
 import { GetUserList } from '../../lib/userapi.jsx';
 import { GetSector } from '../../lib/formdef.jsx';
 import Lottie from 'lottie-react';
 import PropTypes from 'prop-types';
- 
+
 
 import './reactTags.scss';
 import ProcessAnimation from "../../content/animation/Process.json";
@@ -35,7 +31,7 @@ import { WithContext as ReactTags, SEPARATORS } from 'react-tag-input';
 
 import { useTranslation } from "react-i18next";
 import BrowserAdressModal from '../digitalFormEdit/ModalForm/AdresModal/index.jsx';
-
+import AutoCompleteField from '../../components/AutoCompleteField.jsx';
 
 const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
 
@@ -55,15 +51,20 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
 
     const { t } = useTranslation();
 
+
+
     function handleChange(event) {
         const { name, value } = event.target;
-
+ 
         setcustomeWork({ ...customeWork, [name]: value });
 
     }
 
 
     async function ClosedClick() {
+        if (typeof document !== "undefined") {
+            document.activeElement?.blur?.();
+        }
         setvisible(false);
     }
 
@@ -96,6 +97,11 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
         };
     }
 
+    function GetControlValue(fieldName) {
+        return customeWork?.[fieldName] ?? "";
+    }
+
+
 
     useEffect(() => {
         setSaveError(null);
@@ -121,6 +127,10 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
 
         setUserTags(tags);
     }, [customeWorkP, userSuggestions]);
+
+    useEffect(() => {
+        console.log("customeWork updated", customeWork);
+    }, [customeWork]);
 
     async function SaveData() {
 
@@ -186,14 +196,17 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
     };
 
     function openModal(modalType, definationTypeid) {
-
+      
+        if (typeof document !== "undefined") {
+            document.activeElement?.blur?.();
+        }
         setautoComplateModalFormSender(false);
         setautoComplateModalFormRecrived(false);
         setformdefinationtypeid(definationTypeid);
         setvisible(false);
         const modals = {
-            SenderCompany: setautoComplateModalFormSender,
-            RecrivedCompany: setautoComplateModalFormRecrived
+            SenderCompanyName: setautoComplateModalFormSender,
+            RecrivedCompanyName: setautoComplateModalFormRecrived
         };
         modals[modalType]?.(true);
         /*setautocomplatemodalform(false);
@@ -211,12 +224,12 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
             SenderCompanyId: "SenderCompanyId",
             AliciAdi: "RecrivedCompanyName",
             RecrivedCompanyId: "RecrivedCompanyId"
-        };
-        debugger;
+        }; 
         const updates = (Array.isArray(data) ? data : []).reduce((acc, item) => {
             const key = fieldMap[item.fieldName];
             if (key) {
-                acc[key] = item.controlValue;
+                acc[key] = item.controlValue ?? item.value ?? "";
+               customeWork[key] = item.controlValue ?? item.value ?? "";
             }
             return acc;
         }, {});
@@ -224,6 +237,7 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
         if (Object.keys(updates).length > 0) {
             setcustomeWork((prev) => ({ ...prev, ...updates }));
         }
+        console.log("Updated customeWork with modal data", customeWork);
     }
 
     const handleUserAddition = (tag) => {
@@ -294,35 +308,34 @@ const EditModal = ({ visiblep, customeWorkP, setFormData }) => {
 
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txtSenderCompanyName" className="col-sm-3 col-form-label">{t("SenderCompanyName")}</CFormLabel>
-                            <CCol sm={8}>
-                                <CFormInput type="text" id='txtSenderCompanyName' name="senderCompanyName"
-                                    onChange={e => handleChange(e)} value={customeWork?.SenderCompanyName} />
-                            </CCol>
-                            <CCol sm={1}>
-                                <CButton color="primary" onClick={() => openModal("SenderCompany", 1)}>
-
-                                    <CIcon icon={cilMap} />
-                                </CButton>
-                            </CCol>
+                            <AutoCompleteField
+                                tagName="SenderCompanyName"
+                                autoComlateType="CompanyDefination"
+                                fieldId={1}
+                                value={customeWork?.SenderCompanyName}
+                                onValueChange={(name, value) =>
+                                    setcustomeWork((prev) => ({ ...prev, [name]: value }))
+                                }
+                                onLoadControlData={SetValuesToWork}
+                                onOpenModal={openModal}
+                                applyLabelOnSelect={false}
+                            />
                         </CRow>
 
                         <CRow className="mb-12">
-                            <CFormLabel htmlFor="txtReceivedCompanyName" className="col-sm-3 col-form-label">{t("RecrivedCompanyName")}</CFormLabel>
-                            <CCol sm={8}>
-                                
-                                
-                                <CFormInput type="text" id='txtReceivedCompanyName' name="receivedCompanyName"
-                                    onChange={e => handleChange(e)} value={customeWork?.RecrivedCompanyName} />
-                              
-                            
-                            </CCol>
-
-                            <CCol sm={1}>
-                                <CButton color="primary" onClick={() => openModal("RecrivedCompany", 12)}>
-
-                                    <CIcon icon={cilMap} />
-                                </CButton>
-                            </CCol>
+                            <CFormLabel htmlFor="txtRecrivedCompanyName" className="col-sm-3 col-form-label">{t("RecrivedCompanyName")}</CFormLabel>
+                            <AutoCompleteField
+                                tagName="RecrivedCompanyName"
+                                autoComlateType="CompanyDefination"
+                                fieldId={12}
+                                value={customeWork?.RecrivedCompanyName}
+                                onValueChange={(name, value) =>
+                                    setcustomeWork((prev) => ({ ...prev, [name]: value }))
+                                }
+                                onLoadControlData={SetValuesToWork}
+                                onOpenModal={openModal}
+                                applyLabelOnSelect={false}
+                            />
                         </CRow>
                         <CRow className="mb-12">
                             <CFormLabel htmlFor="txtUserList" className="col-sm-3 col-form-label">{t("Users")}</CFormLabel>

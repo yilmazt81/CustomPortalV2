@@ -50,6 +50,7 @@ import avatar3 from '../../assets/images/avatars/3.jpg'
 import avatar4 from '../../assets/images/avatars/4.jpg'
 import avatar5 from '../../assets/images/avatars/5.jpg'
 import avatar6 from '../../assets/images/avatars/6.jpg'
+import AiChatPanel from './AiChatPanel.jsx'
   
 
 import { useDispatch, useSelector } from 'react-redux'; 
@@ -188,6 +189,7 @@ const Dashboard = () => {
 
   return (
     <>
+ 
     
       <CCard className="mb-4">
         <CCardBody>

@@ -1,19 +1,20 @@
-﻿using CustomPortalV2.Model;
+﻿using CustomPortalV2.Business;
+using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Business.Helper;
+using CustomPortalV2.Business.Service;
+using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.Model;
 using CustomPortalV2.Model.DTO;
-using CustomPortalV2.Business;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using CustomPortalV2.Business.Concrete;
-using CustomPortalV2.Core.Model.App;
-
 using User = CustomPortalV2.Core.Model.App.User;
-using CustomPortalV2.Core.Model.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,6 +26,7 @@ namespace CustomPortalV2.RestApi.Controllers
     {
         private readonly IConfiguration Configuration;
         private IUserService _userservice;
+        Helper.JwtService jwtService;
         // private ILogger _logger;
         public LoginController(
             IUserService userService,
@@ -32,32 +34,33 @@ namespace CustomPortalV2.RestApi.Controllers
         {
             _userservice = userService;
             Configuration = configuration;
+            jwtService = new Helper.JwtService(configuration);
         }
-        private string generateJwtToken(User user)
-        {
+        /*  private string generateJwtToken(User user)
+          {
 
 
-            var claims = new List<Claim> {
-                              new Claim(ClaimTypes.Name,user.FullName.ToString()),
-                              new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
-                              new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                              new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
-                              new Claim(ClaimTypes.Locality, user.AppLangId.ToString())
-                              
-                 };
-            var jwtToken = new JwtSecurityToken(
-                claims: claims,
-                notBefore: DateTime.UtcNow,
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(
-                       Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"])
-                        ),
-                    SecurityAlgorithms.HmacSha256Signature)
-                );
-            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
-             
-        }
+              var claims = new List<Claim> {
+                                new Claim(ClaimTypes.Name,user.FullName.ToString()),
+                                new Claim(ClaimTypes.GroupSid, user.MainCompanyId.ToString()),
+                                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                                new Claim(ClaimTypes.PrimarySid, user.CompanyBranchId.ToString()),
+                                new Claim(ClaimTypes.Locality, user.AppLangId.ToString())
+
+                   };
+              var jwtToken = new JwtSecurityToken(
+                  claims: claims,
+                  notBefore: DateTime.UtcNow,
+                  expires: DateTime.UtcNow.AddDays(7),
+                  signingCredentials: new SigningCredentials(
+                      new SymmetricSecurityKey(
+                         Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"])
+                          ),
+                      SecurityAlgorithms.HmacSha256Signature)
+                  );
+              return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+          }*/
         // GET: api/<LoginController>
         [HttpGet]
         public IActionResult Get()
@@ -70,13 +73,37 @@ namespace CustomPortalV2.RestApi.Controllers
             });
         }
 
-        // GET api/<LoginController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
+        [HttpPost("RefreshToken")]
+        public async Task<IActionResult> Refresh(TokenDto dto)
+        {
+            
+
+            var token = _userservice.GenerateRefreshToken(dto.RefreshToken);
+
+            var user = _userservice.GetById(1, token.Data.AppUserId);
+
+            var newAccess = jwtService.GenerateAccessToken(user.Data);
+            var newRefresh = jwtService.GenerateRefreshToken();
+
+            var newToken = new RefreshToken
+            {
+                TokenHash = TokenHasher.Hash(newRefresh),
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddDays(14), // Sliding
+                AbsoluteExpiration = token.Data.AbsoluteExpiration, // Değişmez
+                AppUserId = user.Data.Id
+            };
+
+            _userservice.AddRefreshToken(newToken);
+
+
+            return Ok(new
+            {
+                accessToken = newAccess,
+                refreshToken = newRefresh
+            });
+        }
         // POST api/<LoginController>
         [HttpPost]
         [AllowAnonymous]
@@ -92,12 +119,26 @@ namespace CustomPortalV2.RestApi.Controllers
                     loginRequest.CompanyCode,
                     loginRequest.UserName,
                     loginRequest.password, ref user);
-               
+
                 if (loginReturn == Business.Helper.Enums.enumLoginReturn.Success)
                 {
                     if (user != null)
                     {
-                        returnType.token = generateJwtToken(user);
+                        var accessToken = jwtService.GenerateAccessToken(user);
+                        var refreshToken = jwtService.GenerateRefreshToken();
+
+
+                        var refToken = new RefreshToken
+                        {
+                            TokenHash = TokenHasher.Hash(refreshToken),
+                            Expires = DateTime.UtcNow.AddDays(7),
+                            Created = DateTime.UtcNow,
+                            AppUserId= user.Id,
+                            AbsoluteExpiration = DateTime.UtcNow.AddDays(8),
+                        };
+                        _userservice.AddRefreshToken(refToken);
+                        returnType.token = accessToken;
+                        returnType.refreshtoken = refreshToken;
                         returnType.UserId = user.Id;
                         returnType.IsLogin = true;
                     }

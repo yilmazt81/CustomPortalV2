@@ -24,8 +24,8 @@ import { cilLockLocked, cilUser, cilPhone, cilRoom, cilIndustry, cilMap } from '
 import "../../../../src/translation/i18";
 import { GetCountryForSale, GetCountryCity } from '../../../lib/countryapi.jsx';
 import {CreateCompany} from '../../../lib/companyapi.jsx';
-
-import styles  from './styles.css';
+import LoadingAnimation from '../../../components/LoadingAnimation.jsx';
+ 
  
 
 import { useTranslation } from "react-i18next";
@@ -212,7 +212,7 @@ const Register = () => {
                   </CCol>
                 </CRow>
                 <CRow>
-                  <Lottie animationData={process_color} loop={true} style={{width: "20%", height: "20%"}}></Lottie>
+                  <LoadingAnimation loading={usersLoading} /> 
                 </CRow>
               </CCardBody>
             </CCard>

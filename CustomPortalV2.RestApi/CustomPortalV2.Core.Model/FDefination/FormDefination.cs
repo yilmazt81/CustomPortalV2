@@ -19,13 +19,13 @@ namespace CustomPortalV2.Core.Model.FDefination
         public string CustomSectorName { get; set; }
         public  bool  Deleted { get; set; }
         public bool  DesingTemplate { get; set; }
-        public string TemplatePath { get; set; }
+        public string? TemplatePath { get; set; }
 
         public  bool BaseDefinationType { get; set; }
 
         public bool Deployed { get; set; }
 
-        public string TemplateFileName { get; set; }
+        public string? TemplateFileName { get; set; }
 
         public bool PublicDefiation { get; set; }
 

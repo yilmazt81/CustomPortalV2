@@ -389,7 +389,8 @@ namespace CustomPortalV2.RestApi.Controllers
                 FormDefinationId = Convert.ToInt32(data["FormDefinationId"]),
                 CreatedBy = User.GetUserFullName(),
                 CreatedDate = DateTime.Now,
-                CreatedId = User.GetUserId()
+                CreatedId = User.GetUserId(),
+           
             };
             if (formVersion.Id != 0)
             {

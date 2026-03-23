@@ -1,16 +1,18 @@
 ﻿using CustomPortalV2.Business.Concrete;
+using CustomPortalV2.Business.Helper;
 using CustomPortalV2.Core.Model.App;
+using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.DataAccessLayer.Concrete;
+using CustomPortalV2.DataAccessLayer.Repository;
+using CustomPortalV2.Model;
+using CustomPortalV2.Model.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using CustomPortalV2.DataAccessLayer.Repository;
-using CustomPortalV2.DataAccessLayer.Concrete;
-using static CustomPortalV2.Business.Helper.Enums; 
-using CustomPortalV2.Model.DTO;
-using CustomPortalV2.Model;
-using CustomPortalV2.Core.Model.DTO;
+using static CustomPortalV2.Business.Helper.Enums;
 
 namespace CustomPortalV2.Business.Service
 {
@@ -72,7 +74,7 @@ namespace CustomPortalV2.Business.Service
             try
             {
                 var user = _userRepository.Get(id);
-                if (user==null)
+                if (user == null)
                 {
                     throw new Exception("UserIsNull");
                 }
@@ -103,6 +105,57 @@ namespace CustomPortalV2.Business.Service
 
             return defaultReturn;
 
+        }
+        public string GenerateSecureRefreshToken()
+        {
+            var bytes = RandomNumberGenerator.GetBytes(64);
+            return Convert.ToBase64String(bytes)
+                .Replace("+", "-")
+                .Replace("/", "_")
+                .Replace("=", "");
+        }
+        public DefaultReturn<RefreshToken> GenerateRefreshToken(string refreshtoken)
+        {
+            DefaultReturn<RefreshToken> defaultReturn = new DefaultReturn<RefreshToken>();
+             
+            var hashed = TokenHasher.Hash(refreshtoken);
+             
+            var token = _userRepository.GetRefreshToken(hashed);
+
+
+            if (token == null)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "Unauthorized";
+                return defaultReturn;
+            }
+
+            if (token.IsRevoked)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "Tokenrevoked";
+                return defaultReturn;
+            } 
+
+            if (token.Expires < DateTime.UtcNow)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "Tokenexpired";
+                return defaultReturn;
+            } 
+
+            if (token.AbsoluteExpiration < DateTime.UtcNow)
+            {
+                defaultReturn.ReturnCode = 5;
+                defaultReturn.ReturnMessage = "Sessionexpired";
+                return defaultReturn;
+            }
+             
+            token.IsRevoked = true;
+            token.RevokedAt = DateTime.UtcNow;
+             
+            _userRepository.UpdateRefreshToken(token);
+            return defaultReturn;
         }
 
         public DefaultReturn<List<BranchPackage>> GetBranchPackage(int companyId, int userId)
@@ -295,16 +348,15 @@ namespace CustomPortalV2.Business.Service
                 {
                     return enumLoginReturn.UserNameOrPasswordWrong;
                 }
-
-                var encPassword = encryption.Encrypt(password.Trim());
-                if (encPassword == user.Password)
+                var hash = PasswordService.Hash(password);
+                if (!PasswordService.Verify(user.Password, password))
                 {
-                    loginLog.Success = true;
-                    return enumLoginReturn.Success;
+                    return enumLoginReturn.UserNameOrPasswordWrong;
                 }
                 else
                 {
-                    return enumLoginReturn.UserNameOrPasswordWrong;
+                    loginLog.Success = true;
+                    return enumLoginReturn.Success;
                 }
             }
             catch (Exception)
@@ -340,7 +392,10 @@ namespace CustomPortalV2.Business.Service
             return defaultReturn;
         }
 
-
+        public void AddRefreshToken(RefreshToken refreshToken)
+        {
+           _userRepository.AddRefreshToken(refreshToken);
+        }
     }
 
 

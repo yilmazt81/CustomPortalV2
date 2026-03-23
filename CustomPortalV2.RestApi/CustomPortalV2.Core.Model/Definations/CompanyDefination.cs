@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomPortalV2.Core.Model.Definations
@@ -34,7 +35,7 @@ namespace CustomPortalV2.Core.Model.Definations
         public string Email { get; set; }
 
 
-        [JsonProperty("definations")]
+        [JsonPropertyName("definations")]
         public virtual ICollection<CompanyDefinationDefinationType> CompanyDefinationDefinationType { get; set; }
     }
 }

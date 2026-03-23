@@ -232,4 +232,13 @@ export const TRANSLATIONS_RU = {
     Completed: "Завершено",
     CustomeWorkModalTitle: "Редактировать работу",
     CustomWorkName: "Название работы",
-};
+    AiChatTitle: "AI Чат",
+    AiChatDescription: "Задавайте вопросы о документах, рабочих процессах или формах.",
+    AiChatWelcomeMessage: "Здравствуйте, чем могу помочь?",
+    AiChatInputPlaceholder: "Введите ваш вопрос...",
+    AiChatSend: "Отправить",
+    AiChatUserLabel: "Вы",
+    AiChatAssistantLabel: "Ассистент",
+    AiChatFallbackMessage: "Сейчас не удалось сформировать ответ. Попробуйте еще раз.",
+    AiChatRequestError: "Произошла ошибка при подключении к AI сервису.",
+  };

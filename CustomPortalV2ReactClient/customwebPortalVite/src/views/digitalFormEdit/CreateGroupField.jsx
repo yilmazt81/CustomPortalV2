@@ -9,7 +9,6 @@ import {
     CFormCheck,
     CButton
 } from '@coreui/react'
-import { Autocomplete, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,9 +17,6 @@ import BrowserAdressModal from './ModalForm/AdresModal';
 import BrowserProductModal from './ModalForm/productModal';
 import BrowserFoodPersonModal from './ModalForm/FoodPersoneModal';
 
-import { cilMap, cilBarcode, cilUser } from '@coreui/icons';
-
-import CIcon from '@coreui/icons-react';
 import moment from 'moment';
 import 'dayjs/locale/tr';
 import dayjs from 'dayjs';
@@ -28,9 +24,7 @@ import dayjs from 'dayjs';
 
 import PropTypes from 'prop-types';
 import CustomeField from './CustomeField';
-import { FilterProduct, GetAutoComplateProduct } from "../../lib/customProductapi.jsx";
-import { FilterCompanyDefination, GetAutoComplateAdress } from '../../lib/companyAdressDef.jsx';
-import { FilterPersonel, GetAutoComplatePersonel } from '../../lib/foodPersonelApi.jsx';
+import AutoCompleteField from '../../components/AutoCompleteField.jsx';
 
 const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, controlValuesp, controlValuesCustomep }) => {
     const [autocomplatemodalform, setautocomplatemodalform] = useState(false);
@@ -38,8 +32,6 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
     const [autoComplatePersonelmodalForm, setautoComplatePersonelModalForm] = useState(false);
     const [formdefinationtypeid, setformdefinationtypeid] = useState(0);
     const [maxRowCount, setmaxRowCount] = useState(1);
-    const [autoCompleteOptions, setAutoCompleteOptions] = useState({});
-    const [autoCompleteLoading, setAutoCompleteLoading] = useState({});
 
 
     useEffect(() => {
@@ -69,11 +61,6 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
         modals[modalType]?.(true);
     }
 
-    function GetIcon(modalType) {
-        const icons = { CompanyDefination: cilMap, ProductDefination: cilBarcode, FoodPerson: cilUser };
-        return icons[modalType] ? <CIcon icon={icons[modalType]} /> : <></>;
-    }
-
     const getFieldValue = (fieldName) => controlValuesp.find(s => s.fieldName === fieldName)?.fieldValue ?? undefined;
     
     const GetControlValue = (fieldName) => getFieldValue(fieldName) ?? "";
@@ -92,91 +79,6 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
     const handleChangeChecked = (e) => onChangeData(`${e.target.name}`, e.target.checked ? "true" : "false");
     const handleChangeDatetime = (field, date) => onChangeData(field, moment(date.$d).format('DD-MM-YYYY'));
 
-    const filterConfig = {
-        CompanyDefination: { api: FilterCompanyDefination, labelKey: 'companyName' },
-        ProductDefination: { api: FilterProduct, labelKey: 'productName' },
-        FoodPerson: { api: FilterPersonel, labelKey: 'fullName' },
-    };
-
-    function CreateAutoComplateText(textField) {
-        const handleAutoCompleteChange = async (event, value) => {
-            handleChange(event);
-            if (value && value.length > 2) {
-                setAutoCompleteLoading(prev => ({ ...prev, [textField.tagName]: true }));
-                try {
-                    const config = filterConfig[textField.autoComlateType];
-                    const result = await config?.api({ formDefinationFieldId: textField.id, filterValue: value });
-                    if (result?.returnCode === 1) {
-                        setAutoCompleteOptions(prev => ({
-                            ...prev,
-                            [textField.tagName]: result.data.map(item => ({ label: item[config.labelKey], value: item.id }))
-                        }));
-                    }
-                } catch (error) {
-                    console.error('Autocomplete error:', error);
-                } finally {
-                    setAutoCompleteLoading(prev => ({ ...prev, [textField.tagName]: false }));
-                }
-            }
-        };
-
-        const handleAutoCompleteSelect = async (event, value) => {
-            if (value) {
-          
-                onChangeData(textField.tagName, value.label);
-                 
-
-                if (textField.autoComlateType == "CompanyDefination") {
-                    var filterServiceReturn = await GetAutoComplateAdress(textField.id, value.value);
-                    if (filterServiceReturn.returnCode === 1) {
-                        LoadControlData(filterServiceReturn.data);
-                    }
-
-                } else if (textField.autoComlateType == "ProductDefination") {
-                    var filterServiceReturn = await GetAutoComplateProduct(textField.id, value.value);
-                    if (filterServiceReturn.returnCode === 1) {
-                        LoadControlData(filterServiceReturn.data);
-                    }
-
-                } else if (textField.autoComlateType == "FoodPerson") {
-                    var filterServiceReturn = await GetAutoComplatePersonel(textField.id, value.value);
-                    if (filterServiceReturn.returnCode === 1) {
-                        LoadControlData(filterServiceReturn.data);
-                    }
-                }
-            }
-        };
-
-        return (
-            <>
-                <CCol sm={6}>
-                    <Autocomplete
-                        options={autoCompleteOptions[textField.tagName] || []}
-                        loading={autoCompleteLoading[textField.tagName] || false}
-                        inputValue={GetControlValue(textField.tagName)}
-                        onInputChange={(event, value) => handleAutoCompleteChange(event, value)}
-                        onChange={handleAutoCompleteSelect}
-                        getOptionLabel={(option) => option.label || option}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                name={textField.tagName}
-                                id={`txt${textField.tagName}`}
-                                placeholder="Yazın..."
-                                size="small"
-                            />
-                        )}
-                    />
-                </CCol>
-
-                <CCol sm={3}>
-                    <CButton color="primary" onClick={() => openModal(textField.autoComlateType, textField.id)}>
-                        {GetIcon(textField.autoComlateType)}
-                    </CButton>
-                </CCol>
-            </>
-        )
-    }
     function CreateText(textField) {
 
         return (
@@ -213,7 +115,17 @@ const CreateGroupField = ({ fieldList, onChangeData, onchangeDataCustomeField, c
                             <CFormLabel htmlFor={`txt${item.tagName}`} className="col-sm-3 col-form-label">{item.caption}</CFormLabel>
 
                             {
-                                item.autoComplate === true ? CreateAutoComplateText(item) : CreateText(item)
+                                item.autoComplate === true ? (
+                                    <AutoCompleteField
+                                        tagName={item.tagName}
+                                        autoComlateType={item.autoComlateType}
+                                        fieldId={item.id}
+                                        value={GetControlValue(item.tagName)}
+                                        onValueChange={onChangeData}
+                                        onLoadControlData={LoadControlData}
+                                        onOpenModal={openModal}
+                                    />
+                                ) : CreateText(item)
 
                             }
 
