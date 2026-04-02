@@ -137,6 +137,8 @@ namespace CustomPortalV2.DataAccessLayer
         public virtual DbSet<FoodPersonel> FoodPersonels { get; set; }
 
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
+        public virtual DbSet<MaincompanyParams> MaincompanyParams { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SalePackage>().ToTable("SalePackage");
@@ -293,8 +295,14 @@ namespace CustomPortalV2.DataAccessLayer
             modelBuilder.Entity<RefreshToken>().ToTable("refreshtoken");
             modelBuilder.Entity<RefreshToken>().HasKey(k => k.Id);
             modelBuilder.Entity<RefreshToken>().Property(k => k.Id).HasColumnName("Id");
+
+            modelBuilder.Entity<MaincompanyParams>().ToTable("MaincompanyParams");
+            modelBuilder.Entity<MaincompanyParams>().HasKey(k => k.Id);
+            modelBuilder.Entity<MaincompanyParams>().Property(k => k.Id).HasColumnName("Id");
+
             
-         
+
+
 
 
             //  modelBuilder.UseIdentityColumns();

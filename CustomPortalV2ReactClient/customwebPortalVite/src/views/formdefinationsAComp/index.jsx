@@ -61,7 +61,7 @@ const FormdefinationsAutoComlate = () => {
 
             if (editformdefination.returnCode === 1) {
                 setautoComplateField(editformdefination.data);
-                debugger;
+         
                
                 setfilterSelectVisible(editformdefination.data.complateObject == 'CompanyDefination');
  
@@ -160,7 +160,7 @@ const FormdefinationsAutoComlate = () => {
 
     function handleChange(event) {
         const { name, value } = event.target;
-        debugger;
+      
         setautoComplateField({ ...autoComplateField, [name]: value });
         if (name == 'complateObject') {
 

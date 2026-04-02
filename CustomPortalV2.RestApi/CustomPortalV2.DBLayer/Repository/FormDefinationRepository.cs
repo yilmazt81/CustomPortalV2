@@ -253,9 +253,9 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return dbAutoComplateFieldmap;
         }
 
-        public FormDefinationField GetDefinationField(int definationTypeId, string tagName)
+        public FormDefinationField? GetDefinationField(int definationTypeId, string tagName)
         {
-            return _dbContext.FormDefinationField.Single(s => s.FormDefinationId == definationTypeId && s.TagName == tagName && !s.Deleted);
+            return _dbContext.FormDefinationField.FirstOrDefault(s => s.FormDefinationId == definationTypeId && s.TagName == tagName && !s.Deleted);
         }
 
         public bool DeleteAutoComplateFieldMap(int autocomplateFieldMapid)

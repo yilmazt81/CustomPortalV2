@@ -64,9 +64,10 @@ const Login = () => {
         dispatch({ type: 'set', UserName: userInfo.UserName });        
         dispatch({ type: 'set', CompanyCode: userInfo.CompanyCode })
         axios.defaults.headers.common['Authorization'] = `Bearer ${loginresult.token}`;
+     
         setTokens(
           loginresult.token,
-          loginresult.refreshToken || loginresult.newRefreshToken || loginresult.refresh
+          loginresult.refreshtoken  
         );
         
         navigate('/dashboard');

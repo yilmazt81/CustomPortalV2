@@ -13,8 +13,9 @@ export function setTokens(accessToken, refreshToken) {
   if (accessToken) {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   }
-
+ 
   if (refreshToken) {
+    
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   }
 }

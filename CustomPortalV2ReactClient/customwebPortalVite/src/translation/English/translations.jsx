@@ -247,6 +247,15 @@ export const TRANSLATIONS_EN = {
     AiChatAssistantLabel: "Assistant",
     AiChatFallbackMessage: "I could not generate a response right now. Please try again.",
     AiChatRequestError: "An error occurred while connecting to the AI service.",
+    DasBoardDocumentCounts: "Document Counts",
+    DayDocumentCount:"Today's Document Count",
+    WeekDocumentCount:"This Week's Document Count",
+    MonthDocumentCount:"This Month's Document Count",
+    YearDocumentCount:"This Year's Document Count",
+    FormDefinationType: "Form Type",
+    SenderCompany: "Sender Company",
+    ReceiverCompany: "Receiver Company",
+    Actions: "Actions",
 };
 
 

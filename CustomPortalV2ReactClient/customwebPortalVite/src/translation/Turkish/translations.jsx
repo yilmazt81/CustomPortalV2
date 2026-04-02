@@ -248,6 +248,15 @@ export const TRANSLATIONS_TR = {
     AiChatAssistantLabel: "Asistan",
     AiChatFallbackMessage: "Şu an yanıt üretemedim. Lütfen tekrar deneyin.",
     AiChatRequestError: "AI servisine bağlanırken bir hata oluştu.",
+    DasBoardDocumentCounts: "Dokuman Sayıları",
+    DayDocumentCount: "Bugünün Dokuman Sayısı",
+    WeekDocumentCount: "Bu Haftanın Dokuman Sayısı",
+    MonthDocumentCount: "Bu Ayın Dokuman Sayısı",
+    YearDocumentCount: "Bu Yılın Dokuman Sayısı",
+    FormDefinationType: "Form Türü",
+    SenderCompany: "Gönderen Firma",
+    ReceiverCompany: "Alıcı Firma",
+    Actions: "İşlemler",
 
 };
 

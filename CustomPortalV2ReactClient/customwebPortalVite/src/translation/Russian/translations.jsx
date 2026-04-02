@@ -241,4 +241,13 @@ export const TRANSLATIONS_RU = {
     AiChatAssistantLabel: "Ассистент",
     AiChatFallbackMessage: "Сейчас не удалось сформировать ответ. Попробуйте еще раз.",
     AiChatRequestError: "Произошла ошибка при подключении к AI сервису.",
+    DasBoardDocumentCounts: "Количество документов",
+    DayDocumentCount: "Количество документов за сегодня",
+    WeekDocumentCount: "Количество документов за эту неделю",
+    MonthDocumentCount: "Количество документов за этот месяц",
+    YearDocumentCount: "Количество документов за этот год",
+    FormDefinationType: "Тип формы",
+    SenderCompany: "Компания-отправитель",
+    ReceiverCompany: "Компания-получатель",
+    Actions: "Действия",
   };

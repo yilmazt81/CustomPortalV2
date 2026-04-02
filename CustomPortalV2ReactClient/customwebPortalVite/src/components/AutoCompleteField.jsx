@@ -66,12 +66,14 @@ const AutoCompleteField = ({
     }
 
     const handleSelect = async (event, selected) => {
+       
         if (!selected) {
             return
         }
 
         if (applyLabelOnSelect && onValueChange) {
-            onValueChange(tagName, selected.label)
+         
+           // onValueChange(tagName, selected.label)
         }
 
         if (autoComlateType === 'CompanyDefination') {
@@ -94,8 +96,9 @@ const AutoCompleteField = ({
 
     return (
         <>
-            <CCol sm={6}>
+            <CCol sm={6}> 
                 <Autocomplete
+                    freeSolo
                     options={options}
                     loading={loading}
                     inputValue={value}
@@ -107,6 +110,10 @@ const AutoCompleteField = ({
                             {...params}
                             name={tagName}
                             id={`txt${tagName}`}
+                            inputProps={{
+                                ...params.inputProps,
+                                id: `txt${tagName}`
+                            }}
                             placeholder={placeholder}
                             size="small"
                         />
@@ -116,7 +123,7 @@ const AutoCompleteField = ({
             <CCol sm={3}>
                 <CButton
                     color="primary"
-                    onClick={() => onOpenModal?.(tagName, fieldId)}
+                    onClick={() => onOpenModal?.(autoComlateType, fieldId)}
                 >
                     {icons[autoComlateType] ? <CIcon icon={icons[autoComlateType]} /> : null}
                 </CButton>

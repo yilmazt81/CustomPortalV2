@@ -18,12 +18,12 @@ const GridColumsDigitalForm = (OptionClick) => {
         {
             field: 'id',
             headerName:"Id",
-            width: 50,
+            width: 70,
         },
         {
             field: 'formDefinationName',
             headerName: i18.t('FormDefinationName'),
-            width: 100,
+            width: 150,
         },
         {
             field: 'brancName',
@@ -70,7 +70,7 @@ const GridColumsDigitalForm = (OptionClick) => {
         },
         {
             field: 'actions',
-            headerName: 'Actions',
+            headerName: i18.t('Actions'),
             width: 200,
             renderCell: (params) => (
                 <div>

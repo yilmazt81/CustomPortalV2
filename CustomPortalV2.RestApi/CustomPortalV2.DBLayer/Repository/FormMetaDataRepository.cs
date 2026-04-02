@@ -44,6 +44,23 @@ namespace CustomPortalV2.DataAccessLayer.Repository
         public FormMetaData Save(FormMetaData formMetaData)
         {
             _dbContext.FormMetaData.Add(formMetaData);
+
+            var dbFormCounter = _dbContext.FormMetaDataCounter.SingleOrDefault(s => s.CompanyBranchId == formMetaData.CompanyBranchId && s.CounterDate.Date == DateTime.Now.Date);
+
+            if (dbFormCounter == null)
+            {
+                _dbContext.FormMetaDataCounter.Add(new FormMetaDataCounter()
+                {
+                    CompanyBranchId = formMetaData.CompanyBranchId,
+                    CounterDate = DateTime.Now.Date,
+                    FormCount = 1,
+                    MaincompanyId = formMetaData.MainCompanyId, 
+                }); 
+            }
+            else
+            {
+                dbFormCounter.FormCount = (dbFormCounter.FormCount.HasValue ? dbFormCounter.FormCount.Value + 1 : 1);
+            }
             _dbContext.SaveChanges();
             return formMetaData;
         }

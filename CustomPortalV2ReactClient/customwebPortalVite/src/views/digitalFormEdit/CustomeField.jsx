@@ -256,14 +256,12 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
 
         return (
             <CRow className="mb-12" >
-                {customeFielditems.map((item, i) => {
+                {customeFielditems.map((item) => {
 
                     return (
-                        <>
-                            <CCol key={item.id}>
-                                <CFormLabel key={i} className="col-form-label">{item.fieldCaption}</CFormLabel>
-                            </CCol>
-                        </>
+                        <CCol key={item.id}>
+                            <CFormLabel className="col-form-label">{item.fieldCaption}</CFormLabel>
+                        </CCol>
                     )
 
                 })}
@@ -290,16 +288,18 @@ function CustomeField({ customeFielType, rowCountP, onChangeDataCustomeField, co
     }
 
     function CreateOneLine(index) {
+     
         return (
-            <CRow className="mb-12" >
+            <CRow className="mb-12" key={`row_${index}`}>
+            
                 {customeFielditems.map((item, i) => {
-
-                    return getFieldControl(item, index)
+                    
+                    return getFieldControl(item, i)
 
                 })}
                 <CCol>
 
-                    <CButton color="primary" onClick={() => AddRowCount((rowCount) === index)}  >
+                    <CButton color="primary" onClick={() => AddRowCount((rowCount) === i)}  >
                         <CIcon icon={(rowCount) === index ? cilPlus : cilDelete} ></CIcon>
                     </CButton>
                 </CCol>

@@ -77,6 +77,8 @@ namespace CustomPortalV2.RestApi
 
             services.AddSingleton<IFirebaseStorage, FireStorage>();
             services.AddSingleton<IOpenAIService, OpenAIService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            
 
             services.AddSingleton<FirebaseService>();
 
@@ -98,12 +100,9 @@ namespace CustomPortalV2.RestApi
             services.AddScoped<IWorkFlowRepository, WorkFlowRepository>();
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IFoodPersonelRepository, FoodPersonelRepository>();
-            services.AddScoped<ILogRepository, LogRepository>();
-
-            services.AddScoped<ICustomWorkRepository, CustomWorkRepository>();
-            
-
-
+            services.AddScoped<ILogRepository, LogRepository>();         
+            services.AddScoped<ICustomWorkRepository, CustomWorkRepository>(); 
+            services.AddScoped<IDashboardRepository, DashboardRepository>();
 
 
             services.AddMemoryCache();

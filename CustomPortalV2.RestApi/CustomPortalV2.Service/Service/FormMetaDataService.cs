@@ -76,17 +76,17 @@ namespace CustomPortalV2.Business.Service
         {
             DefaultReturn<List<FormMetaData>> defaultReturn = new DefaultReturn<List<FormMetaData>>();
             var branch = _branchRepository.Get(s => s.Id == brachId);
-
+            var formData = _formMetaDataRepository.GetQueryable();
             if (branch.CompanyAdmin)
             {
-                defaultReturn.Data = _formMetaDataRepository.Get(s => s.MainCompanyId == companyId && !s.Deleted, 50).ToList().OrderBy(s => s.Id).ToList();
+                formData = formData.Where(s => s.MainCompanyId == companyId && !s.Deleted);
             }
             else
             {
-                defaultReturn.Data = _formMetaDataRepository.Get(s => s.MainCompanyId == companyId && s.CompanyBranchId == brachId && !s.Deleted, 50).ToList().OrderBy(s => s.Id).ToList();
+                formData = formData.Where(s => s.MainCompanyId == companyId && s.CompanyBranchId == brachId && !s.Deleted);
             }
-
-
+            defaultReturn.Data = formData.Take(50).OrderBy(s => s.Id).ToList();
+                
             return defaultReturn;
 
         }

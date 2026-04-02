@@ -9,8 +9,10 @@ namespace CustomPortalV2.Core.Model.Form
     public partial class FormMetaDataCounter
     {
         public int Id { get; set; }
-        public System.DateTime? CounterDate { get; set; }
+        public System.DateTime  CounterDate { get; set; }
         public int CompanyBranchId { get; set; }
         public int? FormCount { get; set; }
+
+        public int MaincompanyId { get; set; }
     }
 }

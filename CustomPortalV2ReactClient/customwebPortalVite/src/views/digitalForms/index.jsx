@@ -51,6 +51,7 @@ const DigitalForms = () => {
     const [formActionModal, setFormActionModal] = useState(false);
     const [formCopyModal, setformCopyModal] = useState(false);
     const [formDeleteModal, setformDeleteModal] = useState(false);
+    
     const [selectedFormId, setSelectedFormId] = useState(0);
 
     async function LoadCustomSectors() {
