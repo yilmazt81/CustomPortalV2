@@ -150,5 +150,12 @@ namespace CustomPortalV2.RestApi.Controllers
             return Ok(returnV);
         }
 
+        [HttpPost("FilterFormMetaDataField")]
+        public IActionResult GetAutoComplateFields(DefinationFilterDTO definationFilterDTO)
+        {
+            var autoComplateFields = _formMetaDataService.Filter(User.GetCompanyId(), User.GetBranchId(), definationFilterDTO);
+            return Ok(autoComplateFields);
+        }
+
     }
 }

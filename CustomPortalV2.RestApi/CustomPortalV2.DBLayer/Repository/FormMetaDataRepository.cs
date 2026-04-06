@@ -1,4 +1,5 @@
-﻿using CustomPortalV2.Core.Model.Form;
+﻿using CustomPortalV2.Core.Model.DTO;
+using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.Core.Model.Log;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,43 @@ namespace CustomPortalV2.DataAccessLayer.Repository
             return _dbContext.FormMetaData.Include(s => s.FormMetaDataAttribute).Include(s => s.FormMetaDataAttribute_CustomeField).Single(s => s.Id == id);
         }
 
+        public IEnumerable<DefaultAutoComplateDTO> GetAutoComplateValuesByCompanyId(int companyId,
+            int branchId,
+            DefinationFilterDTO companyDefinationFilterDTO)
+        {
+
+            var userBranch = _dbContext.Branches.Single(s => s.Id == branchId);
+
+            var formData = _dbContext.FormMetaData.AsQueryable();
+
+            if (!userBranch.SysAdmin)
+            {
+                formData = formData.Where(s => s.MainCompanyId == companyId);
+            }
+
+            if (!userBranch.CompanyAdmin)
+            {
+
+                formData = formData.Where(s => s.CompanyBranchId == branchId);
+            }
+
+            var result = formData
+              .Join(_dbContext.FormMetaDataAttribute,
+                      c => c.Id,
+                      o => o.FormMetaDataId,
+                      (c, o) => new { c, o })
+              .Where(x => x.c.MainCompanyId == companyId && !x.c.Deleted &&
+              x.o.FormDefinationFieldId == companyDefinationFilterDTO.FormDefinationFieldId && !string.IsNullOrEmpty(x.o.FieldValue))
+              .Select(x => x.o.FieldValue)
+              .Distinct()
+              .ToList();
+            if (!string.IsNullOrEmpty(companyDefinationFilterDTO.FilterValue))
+            {
+                result = result.Where(s => s.ToLower().Contains(companyDefinationFilterDTO.FilterValue.ToLower())).ToList();
+            }
+            return result.Select((i, s) => new DefaultAutoComplateDTO() { Name = i, Id = s });
+        }
+
         public IQueryable<FormMetaData> GetQueryable()
         {
             return _dbContext.FormMetaData.AsQueryable<FormMetaData>();
@@ -54,8 +92,8 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                     CompanyBranchId = formMetaData.CompanyBranchId,
                     CounterDate = DateTime.Now.Date,
                     FormCount = 1,
-                    MaincompanyId = formMetaData.MainCompanyId, 
-                }); 
+                    MaincompanyId = formMetaData.MainCompanyId,
+                });
             }
             else
             {

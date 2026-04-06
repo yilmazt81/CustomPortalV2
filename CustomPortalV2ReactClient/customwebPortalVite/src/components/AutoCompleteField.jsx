@@ -9,11 +9,13 @@ import CIcon from '@coreui/icons-react'
 import { FilterProduct, GetAutoComplateProduct } from '../lib/customProductapi.jsx'
 import { FilterCompanyDefination, GetAutoComplateAdress } from '../lib/companyAdressDef.jsx'
 import { FilterPersonel, GetAutoComplatePersonel } from '../lib/foodPersonelApi.jsx'
+import { FilterFormMetaDataField } from '../lib/formMetaDataApi.jsx'
 
 const filterConfig = {
     CompanyDefination: { api: FilterCompanyDefination, labelKey: 'companyName' },
     ProductDefination: { api: FilterProduct, labelKey: 'productName' },
-    FoodPerson: { api: FilterPersonel, labelKey: 'fullName' }
+    FoodPerson: { api: FilterPersonel, labelKey: 'fullName' },
+    DefaultDefination: { api: FilterFormMetaDataField, labelKey: 'name' }
 }
 
 const icons = {
@@ -44,6 +46,9 @@ const AutoCompleteField = ({
         if (inputValue && inputValue.length > 2) {
             setLoading(true)
             try {
+                if (autoComlateType === null) {
+                    autoComlateType = 'DefaultDefination'
+                }
                 const config = filterConfig[autoComlateType]
                 const result = await config?.api({
                     formDefinationFieldId: fieldId,
@@ -66,14 +71,14 @@ const AutoCompleteField = ({
     }
 
     const handleSelect = async (event, selected) => {
-       
+
         if (!selected) {
             return
         }
 
         if (applyLabelOnSelect && onValueChange) {
-         
-           // onValueChange(tagName, selected.label)
+
+            // onValueChange(tagName, selected.label)
         }
 
         if (autoComlateType === 'CompanyDefination') {
@@ -91,12 +96,15 @@ const AutoCompleteField = ({
             if (response?.returnCode === 1) {
                 onLoadControlData?.(response.data)
             }
+        } else {
+            debugger;
+            onValueChange(tagName, selected.label)
         }
     }
 
     return (
         <>
-            <CCol sm={6}> 
+            <CCol sm={6}>
                 <Autocomplete
                     freeSolo
                     options={options}
@@ -120,14 +128,16 @@ const AutoCompleteField = ({
                     )}
                 />
             </CCol>
-            <CCol sm={3}>
-                <CButton
-                    color="primary"
-                    onClick={() => onOpenModal?.(autoComlateType, fieldId)}
-                >
-                    {icons[autoComlateType] ? <CIcon icon={icons[autoComlateType]} /> : null}
-                </CButton>
-            </CCol>
+            {autoComlateType ? (
+                <CCol sm={3}>
+                    <CButton
+                        color="primary"
+                        onClick={() => onOpenModal?.(autoComlateType, fieldId)}
+                    >
+                        {icons[autoComlateType] ? <CIcon icon={icons[autoComlateType]} /> : null}
+                    </CButton>
+                </CCol>
+            ) : null}
         </>
     )
 }

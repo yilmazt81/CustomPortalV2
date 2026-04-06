@@ -1,4 +1,5 @@
 ﻿using CustomPortalV2.Core.Model.Company;
+using CustomPortalV2.Core.Model.DTO;
 using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.Core.Model.Log;
 using System;
@@ -20,6 +21,8 @@ namespace CustomPortalV2.DataAccessLayer.Concrete
 
         void AddCopyDocumentLog(CopyDocumentLog copyDocumentLog);
         IQueryable<FormMetaData> GetQueryable();
+
+        IEnumerable<DefaultAutoComplateDTO> GetAutoComplateValuesByCompanyId(int companyId, int branchId, DefinationFilterDTO companyDefinationFilterDTO);
 
     }
 }

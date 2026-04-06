@@ -3,24 +3,12 @@ import i18 from '../../translation/i18.jsx'
 
 import * as React from 'react';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AutoModeIcon from '@mui/icons-material/AutoMode'; 
 
 import {
-  CButton,
-  CCol,
-  CAlert,
-  CRow,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalFooter,
-  CModalBody,
   CFormLabel,
-  CFormInput,
-  CFormCheck,
   CFormSwitch
 
 } from '@coreui/react'

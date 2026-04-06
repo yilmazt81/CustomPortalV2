@@ -43,6 +43,13 @@ export async function  FilterForms(filterrequest) {
 };
 
 
+export async function  FilterFormMetaDataField(definationFilter) {   
+  
+  const { data } =  await Post (`/api/FormMetaData/FilterFormMetaDataField/`,definationFilter);
+  return data;
+};
+
+
 
 export async function SaveMetaData(formid,fordefinationtypeid,fieldList,isdefault,workid,custimefieldList) {
  
