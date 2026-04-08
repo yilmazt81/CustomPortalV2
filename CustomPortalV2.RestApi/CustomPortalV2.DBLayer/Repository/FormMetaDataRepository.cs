@@ -63,14 +63,11 @@ namespace CustomPortalV2.DataAccessLayer.Repository
                       o => o.FormMetaDataId,
                       (c, o) => new { c, o })
               .Where(x => x.c.MainCompanyId == companyId && !x.c.Deleted &&
-              x.o.FormDefinationFieldId == companyDefinationFilterDTO.FormDefinationFieldId && !string.IsNullOrEmpty(x.o.FieldValue))
+              x.o.FormDefinationFieldId == companyDefinationFilterDTO.FormDefinationFieldId && x.o.FieldValue.ToLower().Contains(companyDefinationFilterDTO.FilterValue.ToLower()))
               .Select(x => x.o.FieldValue)
               .Distinct()
               .ToList();
-            if (!string.IsNullOrEmpty(companyDefinationFilterDTO.FilterValue))
-            {
-                result = result.Where(s => s.ToLower().Contains(companyDefinationFilterDTO.FilterValue.ToLower())).ToList();
-            }
+            
             return result.Select((i, s) => new DefaultAutoComplateDTO() { Name = i, Id = s });
         }
 

@@ -9,6 +9,7 @@ using CustomPortalV2.Core.Model.Form;
 using CustomPortalV2.DataAccessLayer.Concrete;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -488,12 +489,14 @@ namespace CustomPortalV2.Business.Service
 
                 var formGroups = _formDefinationService.GetFormGroups(formdefinationId);
                 string templateFile = string.Empty;
-                using (WebClient webClient = new WebClient())
-                {
-                    var templateArray = webClient.DownloadData(formDefination.TemplatePath);
-                    templateFile = System.Text.Encoding.Default.GetString(templateArray);
-                }
+                /* using (WebClient webClient = new WebClient())
+                 {
+                     var templateArray = webClient.DownloadData(formDefination.TemplatePath);
+                     templateFile = System.Text.Encoding.Default.GetString(templateArray);
+                 }*/
+                templateFile = File.ReadAllText(@"D:\Personel\Project\Gumruk\CustomPortalV2\CustomPortalV2.RestApi\CustomPortalV2.RestApi\TempFolder\OnSaglik.html", System.Text.Encoding.UTF8);
                 defaultReturn.Data = templateFile;
+                /*
                 foreach (var oneGroup in formGroups)
                 {
                     defaultReturn.Data = defaultReturn.Data.Replace($"@Group_{oneGroup.GroupTag}@", oneGroup.FormNumber + " " + oneGroup.Name);
@@ -559,6 +562,7 @@ namespace CustomPortalV2.Business.Service
                         }
                     }
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -582,7 +586,7 @@ namespace CustomPortalV2.Business.Service
             DefaultReturn<FormVersion> defaultReturn = new DefaultReturn<FormVersion>();
             try
             {
-            
+
 
                 if (formDefination.Id == 0)
                 {
@@ -593,7 +597,7 @@ namespace CustomPortalV2.Business.Service
                     defaultReturn.Data = _formDefinationService.Update(formDefination);
                 }
 
-            
+
             }
             catch (Exception ex)
             {
@@ -801,7 +805,7 @@ namespace CustomPortalV2.Business.Service
             DefaultReturn<List<FormGroup>> defaultReturn = new DefaultReturn<List<FormGroup>>();
 
             var formdefination = _formDefinationService.GetFormDefination(targetDefinationId);
-           
+
             if (targetDefinationId == 0)
             {
                 defaultReturn.ReturnCode = 5;
@@ -819,16 +823,16 @@ namespace CustomPortalV2.Business.Service
             {
                 var formGroupSource = _formDefinationService.GetFormGroup(groupId);
                 var formGroup = _formDefinationService.CloneFormGroup(formGroupSource, formdefination);
-            } 
+            }
 
-            defaultReturn.Data = _formDefinationService.GetFormGroups(targetDefinationId).ToList(); 
+            defaultReturn.Data = _formDefinationService.GetFormGroups(targetDefinationId).ToList();
 
             return defaultReturn;
         }
 
         public DefaultReturn<List<string>> GetDistinctFieldNames(int mainCompanyId)
         {
-            DefaultReturn<List<string>> defaultReturn= new DefaultReturn<List<string>>();
+            DefaultReturn<List<string>> defaultReturn = new DefaultReturn<List<string>>();
 
             defaultReturn.Data = _formDefinationService.GetDistinctFieldNames(mainCompanyId).ToList();
             return defaultReturn;

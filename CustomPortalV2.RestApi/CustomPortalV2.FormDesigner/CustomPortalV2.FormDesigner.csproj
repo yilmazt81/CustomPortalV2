@@ -152,15 +152,18 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DigitalArchive.Api\DigitalArchive.Api.csproj">
-      <Project>{e2ef5273-db13-481c-9ccb-085b3fa5ddaf}</Project>
-      <Name>DigitalArchive.Api</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <ItemGroup>
     <Analyzer Include="C:\Program Files\DevExpress 25.2\Components\Offline Packages\devexpress.data\25.2.4\analyzers\dotnet\DevExpress.Generator.dll" Visible="false" Condition="Exists('C:\Program Files\DevExpress 25.2\Components\Offline Packages\devexpress.data\25.2.4\analyzers\dotnet\DevExpress.Generator.dll')" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomPortalV2.Core.Model\CustomPortalV2.Core.Model.csproj">
+      <Project>{17adcda2-d63c-46f1-858a-02b272b84351}</Project>
+      <Name>CustomPortalV2.Core.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomPortalV2.Utils\CustomPortalV2.Utils.csproj">
+      <Project>{f2cc97bf-4260-48f0-a3c1-089cf24f8a1a}</Project>
+      <Name>CustomPortalV2.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

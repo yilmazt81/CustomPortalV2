@@ -97,7 +97,7 @@ namespace CustomPortalV2.DataAccessLayer.Repository
 
         public void UpdateRefreshToken(RefreshToken token)
         {
-            var dbToken = _dbContext.RefreshTokens.Single(s => s.Id == 0);
+            var dbToken = _dbContext.RefreshTokens.Single(s => s.Id == token.Id);
             dbToken.IsRevoked = token.IsRevoked;
             dbToken.RevokedAt = token.RevokedAt;
 

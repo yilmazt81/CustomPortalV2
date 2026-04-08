@@ -4,11 +4,9 @@ using System.Text;
 
 namespace CustomPortalV2.Core.Model.DTO
 {
-    public class TokenDto
+    public class RefreshTokenReturnDTO
     {
-        public string refreshToken { get; set; }
-        public string token { get; set; }
-
         public string accessToken { get; set; }
+        public string refreshToken { get; set; }
     }
 }

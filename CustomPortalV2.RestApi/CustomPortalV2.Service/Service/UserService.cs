@@ -129,13 +129,13 @@ namespace CustomPortalV2.Business.Service
                 defaultReturn.ReturnMessage = "Unauthorized";
                 return defaultReturn;
             }
-
-            if (token.IsRevoked)
+            /*
+            if (!token.IsRevoked)
             {
                 defaultReturn.ReturnCode = 5;
                 defaultReturn.ReturnMessage = "Tokenrevoked";
                 return defaultReturn;
-            } 
+            } */
 
             if (token.Expires < DateTime.UtcNow)
             {
@@ -155,6 +155,7 @@ namespace CustomPortalV2.Business.Service
             token.RevokedAt = DateTime.UtcNow;
              
             _userRepository.UpdateRefreshToken(token);
+            defaultReturn.Data = token;
             return defaultReturn;
         }
 

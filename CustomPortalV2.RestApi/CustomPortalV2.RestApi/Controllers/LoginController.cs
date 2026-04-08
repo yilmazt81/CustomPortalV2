@@ -77,32 +77,43 @@ namespace CustomPortalV2.RestApi.Controllers
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> Refresh(TokenDto dto)
         {
-            
 
-            var token = _userservice.GenerateRefreshToken(dto.RefreshToken);
 
-            var user = _userservice.GetById(1, token.Data.AppUserId);
-
-            var newAccess = jwtService.GenerateAccessToken(user.Data);
-            var newRefresh = jwtService.GenerateRefreshToken();
-
-            var newToken = new RefreshToken
+            try
             {
-                TokenHash = TokenHasher.Hash(newRefresh),
-                Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(14), // Sliding
-                AbsoluteExpiration = token.Data.AbsoluteExpiration, // Değişmez
-                AppUserId = user.Data.Id
-            };
+                var token = _userservice.GenerateRefreshToken(dto.refreshToken);
 
-            _userservice.AddRefreshToken(newToken);
+                var user = _userservice.GetById(token.Data.MainCompanyId, token.Data.AppUserId);
 
+                var newAccess = jwtService.GenerateAccessToken(user.Data);
+                var newRefresh = jwtService.GenerateRefreshToken();
 
-            return Ok(new
+                var newToken = new RefreshToken
+                {
+                    TokenHash = TokenHasher.Hash(newRefresh),
+                    Created = DateTime.UtcNow,
+                    Expires = DateTime.UtcNow.AddDays(14), // Sliding
+                    AbsoluteExpiration = token.Data.AbsoluteExpiration, // Değişmez
+                    AppUserId = user.Data.Id,
+                    MainCompanyId= user.Data.MainCompanyId
+                };
+
+                _userservice.AddRefreshToken(newToken);
+
+                DefaultReturn<RefreshTokenReturnDTO> defaultReturn = new DefaultReturn<RefreshTokenReturnDTO>()
+                {
+                    Data = new RefreshTokenReturnDTO()
+                    {
+                        accessToken = newAccess,
+                        refreshToken = newRefresh
+                    }
+                };
+                return Ok(defaultReturn);
+            }
+            catch (Exception ex)
             {
-                accessToken = newAccess,
-                refreshToken = newRefresh
-            });
+                return Unauthorized(ex.Message);
+            }
         }
         // POST api/<LoginController>
         [HttpPost]
@@ -135,6 +146,7 @@ namespace CustomPortalV2.RestApi.Controllers
                             Created = DateTime.UtcNow,
                             AppUserId= user.Id,
                             AbsoluteExpiration = DateTime.UtcNow.AddDays(8),
+                            MainCompanyId= user.MainCompanyId
                         };
                         _userservice.AddRefreshToken(refToken);
                         returnType.token = accessToken;

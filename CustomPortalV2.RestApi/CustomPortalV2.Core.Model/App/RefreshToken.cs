@@ -18,5 +18,7 @@ namespace CustomPortalV2.Core.Model.App
         public DateTime? RevokedAt { get; set; }
 
         public int AppUserId { get; set; }
+
+        public int MainCompanyId { get; set; }
     }
 }

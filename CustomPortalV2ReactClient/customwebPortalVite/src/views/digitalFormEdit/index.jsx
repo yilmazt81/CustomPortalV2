@@ -140,7 +140,7 @@ const DigitalFormEdit = () => {
 
                         for (var i = 0; i < fSectorService.data.formMetaDataAttribute_CustomeField.length; i++) {
                             var attribute = fSectorService.data.formMetaDataAttribute_CustomeField[i];
-                            controlCustomeValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue,fieldOrder:attribute.dataOrder })
+                            controlCustomeValues.push({ fieldName: attribute.tagName, fieldValue: attribute.fieldValue, fieldOrder: attribute.dataOrder })
                         }
                         setcontrolCustomeValues(controlCustomeValues);
                     }
@@ -241,13 +241,13 @@ const DigitalFormEdit = () => {
         setControlValues([...controlValues]);
     }
 
-    function changeDynamicControlCustomeValues(name, value,orderNumber) {
+    function changeDynamicControlCustomeValues(name, value, orderNumber) {
 
-         
-        var findField = controlCustomeValues.find(s => s.fieldName === name & s.fieldOrder===orderNumber);
+
+        var findField = controlCustomeValues.find(s => s.fieldName === name & s.fieldOrder === orderNumber);
 
         if (findField === undefined) {
-            controlCustomeValues.push({ fieldName: name, fieldValue: value,fieldOrder:orderNumber })
+            controlCustomeValues.push({ fieldName: name, fieldValue: value, fieldOrder: orderNumber })
         } else {
             findField.fieldValue = value;
         }
@@ -261,20 +261,20 @@ const DigitalFormEdit = () => {
         if (value === "Save") {
             try {
                 setLoading(true);
-                
+
                 // Filter out records with null or empty fieldName
                 const filteredControlValues = controlValues.filter(item => item.fieldName && item.fieldName.trim() !== '');
                 const filteredControlCustomeValues = controlCustomeValues.filter(item => item.fieldName && item.fieldName.trim() !== '');
-                
+
                 var fsaveReturn = await SaveMetaData(
-                    (formMetaData == null ? 0 : formMetaData.id), 
-                    formdefinationType, 
+                    (formMetaData == null ? 0 : formMetaData.id),
+                    formdefinationType,
                     filteredControlValues,
                     false,
                     0,
                     filteredControlCustomeValues
                 );
-                
+
                 if (fsaveReturn.returnCode === 1) {
                     setformMetaData(fsaveReturn.data);
                     setFormProcessAfterSave(true);
@@ -353,12 +353,12 @@ const DigitalFormEdit = () => {
 
                             useTemplate ? <DesingFormTemplate
                                 onChangeData={(fieldname, e) => changeDynamicControlValues(fieldname, e)}
-
+                                formgroups={formdefinationGroups}
                                 controlValuesp={controlValues}
                                 formdefinationTypeIdp={formdefinationType}></DesingFormTemplate> :
                                 <DynamicForm
                                     OnValueChanged={(fieldname, e) => changeDynamicControlValues(fieldname, e)}
-                                    OnCustomeValueChanged={(fieldName,value,order)=>changeDynamicControlCustomeValues(fieldName,value,order)}
+                                    OnCustomeValueChanged={(fieldName, value, order) => changeDynamicControlCustomeValues(fieldName, value, order)}
                                     controlValues={controlValues}
                                     formdefinationTypeIdp={formdefinationType}
                                     formgroups={formdefinationGroups}

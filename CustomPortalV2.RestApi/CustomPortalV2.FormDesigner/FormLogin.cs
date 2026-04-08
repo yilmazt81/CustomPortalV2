@@ -1,4 +1,5 @@
-﻿using DigitalArchive.Api;
+﻿
+using CustomPortalV2.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace CustomPortalV2.FormDesigner
 {
     public partial class FormLogin : Form
     {
-        RestHelper restHelper = null;
+        RestApiHelper restHelper = null;
         public FormLogin()
         {
             InitializeComponent();
@@ -21,13 +22,11 @@ namespace CustomPortalV2.FormDesigner
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-             restHelper = new RestHelper("https://customdigiform.istanbulyazilimofisi.com.tr/", "");
-            //restHelper = new RestHelper("https://onlineislemler.adagumrukleme.com/", "");
- 
+             restHelper = new RestApiHelper(); 
+  
+            var loginInfo = restHelper.LoginUser(textBoxUserName.Text,textBoxPassword.Text,textBoxCompanyCode.Text);
 
-            var loginInfo = restHelper.LoginUser(textBoxUserName.Text, textBoxPassword.Text);
-
-            if (loginInfo.iserror)
+            if (!loginInfo.IsLogin)
             {
                 MessageBox.Show("Hatalı Kullanıcı adı ve şifre", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -37,6 +36,11 @@ namespace CustomPortalV2.FormDesigner
                 DialogResult = DialogResult.OK;
             }
 
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
         }
     }
 }

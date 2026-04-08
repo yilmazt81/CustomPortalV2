@@ -1,6 +1,7 @@
-﻿using DevExpress.XtraReports.UI;
+﻿using CustomPortalV2.Core.Model.FDefination;
+using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.UserDesigner;
-using DigitalArchive.Api;
+ 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
